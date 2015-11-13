@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AxEnumerable.Extensions
+namespace AxEnumerable
 {
     public static class EnumerableExtensions
     {

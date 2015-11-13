@@ -7,8 +7,8 @@
     <ProjectGuid>{650B0B3F-C4ED-4253-ABF1-D42F84ADCBDC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AxEnumerable.Extensions</RootNamespace>
-    <AssemblyName>AxEnumerable.Extensions</AssemblyName>
+    <RootNamespace>AxEnumerable</RootNamespace>
+    <AssemblyName>AxEnumerable</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
