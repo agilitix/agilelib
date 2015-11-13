@@ -13,7 +13,7 @@ namespace AxUnit.Sample.UnitTests
         /// <summary>
         /// The object to stress.
         /// </summary>
-        protected Accumulator StressedObject;
+        protected Accumulator TestedObject;
 
         /// <summary>
         /// The validator mock need by the calculator.
@@ -25,13 +25,12 @@ namespace AxUnit.Sample.UnitTests
             // Create the validator mock.
             ValidatorMock = new Mock<IValidator>();
 
-            // Create the object to stress.
-            StressedObject = new Accumulator(ValidatorMock.Object);
+            // Create the object to test.
+            TestedObject = new Accumulator(ValidatorMock.Object);
         }
     }
 
-    public class CalculatorTest_adding_sequence_of_valid_numbers
-        : CalculatorTest
+    public class CalculatorTest_adding_sequence_of_valid_numbers : CalculatorTest
     {
         protected Exception ResultException;
         protected double[] Numbers;
@@ -58,12 +57,12 @@ namespace AxUnit.Sample.UnitTests
         public override void Act()
         {
             // Reset the accumulator value.
-            StressedObject.Value = 0;
+            TestedObject.Value = 0;
 
             // Run the test case : the Add method is called on all the numbers.
             Numbers.ForEach(number =>
             {
-                Exception ex = Try(() => StressedObject.Add(number));
+                Exception ex = Try(() => TestedObject.Add(number));
                 if (ResultException == null)
                 {
                     ResultException = ex; // Store any exception.
@@ -78,7 +77,7 @@ namespace AxUnit.Sample.UnitTests
         public void Assert_accumulator_must_be_equal_to_the_sum_of_all_numbers()
         {
             // The accumulator must be equal to the expected result.
-            Assert.AreEqual(StressedObject.Value, ExpectedResult);
+            Assert.AreEqual(TestedObject.Value, ExpectedResult);
         }
 
         [Test]
@@ -96,8 +95,7 @@ namespace AxUnit.Sample.UnitTests
         }
     }
 
-    public class CalculatorTest_adding_sequence_of_invalid_numbers
-        : CalculatorTest
+    public class CalculatorTest_adding_sequence_of_invalid_numbers : CalculatorTest
     {
         protected IList<Exception> ResultExceptions;
         protected double[] Numbers;
@@ -109,16 +107,13 @@ namespace AxUnit.Sample.UnitTests
         public override void Arrange()
         {
             // Reset the accumulator value.
-            StressedObject.Value = 0;
+            TestedObject.Value = 0;
 
             // Invalid numbers to add.
             Numbers = new[] {double.NaN, double.NegativeInfinity, double.PositiveInfinity};
 
             // Setup the validator, returns "false" validity for all the numbers.
-            Numbers.ForEach(number =>
-            {
-                ValidatorMock.Setup(v => v.IsValid(number)).Returns(false);
-            });
+            Numbers.ForEach(number => { ValidatorMock.Setup(v => v.IsValid(number)).Returns(false); });
 
             // The expected exception when we try to add invalid numbers.
             ExpectedException = new ArgumentException();
@@ -133,7 +128,7 @@ namespace AxUnit.Sample.UnitTests
         public override void Act()
         {
             // Run the test case.
-            Numbers.ForEach(number => { ResultExceptions.Add(Try(() => StressedObject.Add(number))); });
+            Numbers.ForEach(number => { ResultExceptions.Add(Try(() => TestedObject.Add(number))); });
         }
 
         /// <summary>
@@ -155,8 +150,7 @@ namespace AxUnit.Sample.UnitTests
     }
 
 
-    public class CalculatorTest_adding_sequence_of_valid_and_invalid_numbers
-        : CalculatorTest
+    public class CalculatorTest_adding_sequence_of_valid_and_invalid_numbers : CalculatorTest
     {
         protected IList<Type> ResultExceptions;
         protected double[] Numbers;
@@ -168,7 +162,7 @@ namespace AxUnit.Sample.UnitTests
         public override void Arrange()
         {
             // Reset the accumulator value.
-            StressedObject.Value = 0;
+            TestedObject.Value = 0;
 
             // Invalid/valid sequence of numbers to add.
             Numbers = new[] {1.0, double.NaN, 4.0, double.NegativeInfinity, double.PositiveInfinity, 7.5};
@@ -202,7 +196,7 @@ namespace AxUnit.Sample.UnitTests
             // Run the test case and store the exceptions types.
             Numbers.ForEach(number =>
             {
-                Exception ex = Try(() => StressedObject.Add(number));
+                Exception ex = Try(() => TestedObject.Add(number));
                 ResultExceptions.Add(ex != null ? ex.GetType() : null);
             });
         }
@@ -211,7 +205,7 @@ namespace AxUnit.Sample.UnitTests
         /// Assert.
         /// </summary>
         [Test]
-        public void Assert_calculator_should_raise_expected_argument_exceptions()
+        public void Assert_calculator_should_raise_expected_exceptions()
         {
             // Check the calculator has raised the expected exceptions.
             Assert.IsTrue(ResultExceptions.SequenceEqual(ExpectedExceptions));

@@ -3,11 +3,13 @@ using NUnit.Framework;
 
 namespace AxUnit
 {
+    /// <summary>
+    /// Arrange is variable declaration and initialization for the test.
+    /// Act is invoking the code under test.
+    /// Assert is the [Test] methods to verify that expectations were met.
+    /// </summary>
     public class ArrangeActAssert
     {
-        /// <summary>
-        /// Prepare the environment then run the test.
-        /// </summary>
         [TestFixtureSetUp]
         public void SetUp()
         {
@@ -15,9 +17,6 @@ namespace AxUnit
             Act();
         }
 
-        /// <summary>
-        /// Cleanup code to run after the test has been done.
-        /// </summary>
         [TestFixtureTearDown]
         public void TearDown()
         {
@@ -25,14 +24,14 @@ namespace AxUnit
         }
 
         /// <summary>
-        /// Create the context (objects, dependencies, mocks, data, etc.) need by the test.
+        /// Initialize the test environment (variables, objects, etc).
         /// </summary>
         public virtual void Arrange()
         {
         }
 
         /// <summary>
-        /// Run the test case.
+        /// Invoke the code under test.
         /// </summary>
         public virtual void Act()
         {
@@ -46,10 +45,8 @@ namespace AxUnit
         }
 
         /// <summary>
-        /// Try to run an action and return the resulting exception.
+        /// Try to run an action, returns the thrown exception.
         /// </summary>
-        /// <param name="action"></param>
-        /// <returns></returns>
         public Exception Try(Action action)
         {
             Exception result = null;

@@ -53,9 +53,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\AxEnumerable.Extensions\AxEnumerable.Extensions.csproj">
+    <ProjectReference Include="..\..\..\AxEnumerable\AxEnumerable.csproj">
       <Project>{650B0B3F-C4ED-4253-ABF1-D42F84ADCBDC}</Project>
-      <Name>AxEnumerable.Extensions</Name>
+      <Name>AxEnumerable</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\AxEnum\AxEnum.csproj">
       <Project>{16b1815a-372c-47af-ad4f-91fd1acb117b}</Project>
