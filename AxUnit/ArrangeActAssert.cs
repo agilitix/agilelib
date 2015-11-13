@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace AxUnit
 {
-    public class AxArrangeActAssert
+    public class ArrangeActAssert
     {
         /// <summary>
         /// Prepare the environment then run the test.

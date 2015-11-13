@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 namespace AxUnit.Sample.UnitTests
 {
-    public class CalculatorTest : AxArrangeActAssert
+    public class CalculatorTest : ArrangeActAssert
     {
         /// <summary>
         /// The object to stress.
