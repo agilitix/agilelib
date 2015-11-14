@@ -13,15 +13,5 @@ namespace AxEnum
             }
             return name;
         }
-
-        public static T ToEnum<T>(this string self) where T : struct
-        {
-            Type typeT = typeof(T);
-            if (!typeT.IsEnum)
-            {
-                throw new ArgumentException();
-            }
-            return (T)Enum.Parse(typeT, self);
-        }
     }
 }

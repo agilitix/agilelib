@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AxEnumerable
 {
@@ -16,6 +17,11 @@ namespace AxEnumerable
             {
                 action(item);
             }
+        }
+
+        public static bool IsNullOrEmpty<T>(this IEnumerable<T> self)
+        {
+            return self == null || !self.Any();
         }
     }
 }
