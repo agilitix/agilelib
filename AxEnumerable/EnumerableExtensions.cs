@@ -23,5 +23,16 @@ namespace AxEnumerable
         {
             return self == null || !self.Any();
         }
+
+        public static IEnumerable<T> Distinct<T, TKey>(this IEnumerable<T> self, Func<T, TKey> keyGetter)
+        {
+            var keys = new HashSet<TKey>();
+            foreach (T item in self)
+            {
+                TKey key = keyGetter(item);
+                if (keys.Add(key))
+                    yield return item;
+            }
+        }
     }
 }
