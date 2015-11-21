@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxEnumerable", "AxEnumerabl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxString", "AxString\AxString.csproj", "{35E3A8B9-E2A3-48EA-B6F8-0B7BE08FD723}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxEqualityComparer", "AxEqualityComparer\AxEqualityComparer.csproj", "{010A6E7A-C943-43F9-9172-CF4B2942FB8F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{35E3A8B9-E2A3-48EA-B6F8-0B7BE08FD723}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35E3A8B9-E2A3-48EA-B6F8-0B7BE08FD723}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35E3A8B9-E2A3-48EA-B6F8-0B7BE08FD723}.Release|Any CPU.Build.0 = Release|Any CPU
+		{010A6E7A-C943-43F9-9172-CF4B2942FB8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{010A6E7A-C943-43F9-9172-CF4B2942FB8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{010A6E7A-C943-43F9-9172-CF4B2942FB8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{010A6E7A-C943-43F9-9172-CF4B2942FB8F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

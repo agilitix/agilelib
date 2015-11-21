@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AxEnum;
 using AxEnumerable;
 using AxUnit.Sample.Interfaces;
 using Moq;
@@ -215,7 +216,7 @@ namespace AxUnit.Sample.UnitTests
         public void Assert_calculator_should_check_the_numbers_validity()
         {
             // The calculator must call the validator to check the validitity of the added numbers.
-            Numbers.ForEach(number => { ValidatorMock.Verify(v => v.IsValid(number), Times.Once); });
+            Numbers.ForEach(number => { ValidatorMock.Verify(validator => validator.IsValid(number), Times.Once); });
         }
     }
 }
