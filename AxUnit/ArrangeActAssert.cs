@@ -6,7 +6,7 @@ namespace AxUnit
     /// <summary>
     /// Arrange is variable declaration and initialization for the test.
     /// Act is invoking the code under test.
-    /// Assert is the [Test] methods to verify that expectations were met.
+    /// Assert is the methods to verify that expectations were met.
     /// </summary>
     public class ArrangeActAssert
     {

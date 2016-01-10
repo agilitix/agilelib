@@ -42,6 +42,12 @@
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AxEqualityComparer\AxEqualityComparer.csproj">
+      <Project>{010A6E7A-C943-43F9-9172-CF4B2942FB8F}</Project>
+      <Name>AxEqualityComparer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

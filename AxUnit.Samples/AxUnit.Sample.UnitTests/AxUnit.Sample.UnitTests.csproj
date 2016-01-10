@@ -49,7 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CalculatorTest.cs" />
+    <Compile Include="CalculatorUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -61,9 +61,17 @@
       <Project>{16b1815a-372c-47af-ad4f-91fd1acb117b}</Project>
       <Name>AxEnum</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\AxUnit.csproj">
+    <ProjectReference Include="..\..\AxUnit\AxUnit.csproj">
       <Project>{EBF4DE7B-53CB-4F6A-8A86-BD7E0190E469}</Project>
       <Name>AxUnit</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AxUnit.Sample.Interfaces\AxUnit.Sample.Interfaces.csproj">
+      <Project>{DE7160E5-7DB0-4B94-9CBE-280881A97E7B}</Project>
+      <Name>AxUnit.Sample.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AxUnit.Sample\AxUnit.Sample.csproj">
+      <Project>{87BBF49D-94CF-499F-825F-5643CB841B08}</Project>
+      <Name>AxUnit.Sample</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

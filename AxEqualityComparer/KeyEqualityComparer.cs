@@ -1,26 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace AxEqualityComparer
 {
-    public class EqualityComparer<T> : IEqualityComparer<T>
+    public class KeyEqualityComparer<T, TKey> : IEqualityComparer<T>
     {
-        private readonly Func<T, T, bool> _equalityComparer;
+        private readonly Func<T, TKey> _keyGetter;
 
-        public EqualityComparer(Func<T, T, bool> equalityComparer)
+        public KeyEqualityComparer(Func<T, TKey> keyGetter)
         {
-            if (equalityComparer == null)
+            if (keyGetter == null)
             {
                 throw new ArgumentNullException();
             }
-            _equalityComparer = equalityComparer;
+            _keyGetter = keyGetter;
         }
 
         bool IEqualityComparer<T>.Equals(T x, T y)
         {
-            return _equalityComparer(x, y);
+            return EqualityComparer<TKey>.Default.Equals(_keyGetter(x), _keyGetter(y));
         }
 
         int IEqualityComparer<T>.GetHashCode(T obj)
@@ -29,7 +27,7 @@ namespace AxEqualityComparer
             {
                 throw new ArgumentNullException();
             }
-            return obj.GetHashCode();
+            return EqualityComparer<TKey>.Default.GetHashCode(_keyGetter(obj));
         }
     }
 }

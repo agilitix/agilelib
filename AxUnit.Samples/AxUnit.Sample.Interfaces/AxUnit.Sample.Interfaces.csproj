@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{010A6E7A-C943-43F9-9172-CF4B2942FB8F}</ProjectGuid>
+    <ProjectGuid>{DE7160E5-7DB0-4B94-9CBE-280881A97E7B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AxEqualityComparer</RootNamespace>
-    <AssemblyName>AxEqualityComparer</AssemblyName>
+    <RootNamespace>AxUnit.Sample.Interfaces</RootNamespace>
+    <AssemblyName>AxUnit.Sample.Interfaces</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,7 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="KeyEqualityComparer.cs" />
+    <Compile Include="IAccumulator.cs" />
+    <Compile Include="IValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

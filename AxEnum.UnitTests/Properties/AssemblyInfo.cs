@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("AxEqualityComparer")]
+[assembly: AssemblyTitle("AxEnum.UnitTests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("AxEqualityComparer")]
+[assembly: AssemblyProduct("AxEnum.UnitTests")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -23,7 +23,7 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 
-[assembly: Guid("0ea50803-0197-4653-925a-2f841dae8d7a")]
+[assembly: Guid("e1f8b517-33c9-4f2b-8951-3d9125e760f8")]
 
 // Version information for an assembly consists of the following four values:
 //

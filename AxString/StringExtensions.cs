@@ -6,21 +6,21 @@ namespace AxString
     {
         public static string Right(this string self, int length)
         {
-            return self != null && self.Length > length
+            return !string.IsNullOrEmpty(self) && self.Length > length
                 ? self.Substring(self.Length - length)
                 : self;
         }
 
         public static string Left(this string self, int length)
         {
-            return self != null && self.Length > length
+            return !string.IsNullOrEmpty(self) && self.Length > length
                 ? self.Substring(0, length)
                 : self;
         }
 
         public static string Format(this string self, params object[] args)
         {
-            return self != null
+            return !string.IsNullOrEmpty(self)
                 ? string.Format(self, args)
                 : null;
         }
@@ -41,9 +41,9 @@ namespace AxString
             {
                 return self;
             }
-            char[] charArray = self.ToCharArray();
-            Array.Reverse(charArray);
-            return new string(charArray);
+            char[] result = self.ToCharArray();
+            Array.Reverse(result);
+            return new string(result);
         }
 
         public static string JoinValues<T>(this string self, string separator, T[] values)
