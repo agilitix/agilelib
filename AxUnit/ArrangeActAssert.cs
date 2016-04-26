@@ -26,23 +26,17 @@ namespace AxUnit
         /// <summary>
         /// Initialize the test environment (variables, objects, etc).
         /// </summary>
-        public virtual void Arrange()
-        {
-        }
+        public virtual void Arrange() {}
 
         /// <summary>
         /// Invoke the code under test.
         /// </summary>
-        public virtual void Act()
-        {
-        }
+        public virtual void Act() {}
 
         /// <summary>
         /// Cleanup code after the test is done.
         /// </summary>
-        public virtual void Cleanup()
-        {
-        }
+        public virtual void Cleanup() {}
 
         /// <summary>
         /// Try to run an action, returns the thrown exception.

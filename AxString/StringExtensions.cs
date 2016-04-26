@@ -7,22 +7,22 @@ namespace AxString
         public static string Right(this string self, int length)
         {
             return !string.IsNullOrEmpty(self) && self.Length > length
-                ? self.Substring(self.Length - length)
-                : self;
+                       ? self.Substring(self.Length - length)
+                       : self;
         }
 
         public static string Left(this string self, int length)
         {
             return !string.IsNullOrEmpty(self) && self.Length > length
-                ? self.Substring(0, length)
-                : self;
+                       ? self.Substring(0, length)
+                       : self;
         }
 
         public static string Format(this string self, params object[] args)
         {
             return !string.IsNullOrEmpty(self)
-                ? string.Format(self, args)
-                : null;
+                       ? string.Format(self, args)
+                       : null;
         }
 
         public static bool IsNullOrEmpty(this string self)

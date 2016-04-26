@@ -11,17 +11,15 @@ namespace AxConfiguration
             {
                 filePath = "App.config";
             }
+
             if (!File.Exists(filePath))
             {
                 throw new FileNotFoundException();
             }
 
             ExeConfigurationFileMap exeConfigurationFileMap = new ExeConfigurationFileMap {ExeConfigFilename = filePath};
-
-            Configuration config = ConfigurationManager.OpenMappedExeConfiguration(
-                exeConfigurationFileMap,
-                ConfigurationUserLevel.None);
-
+            Configuration config = ConfigurationManager.OpenMappedExeConfiguration(exeConfigurationFileMap,
+                                                                                   ConfigurationUserLevel.None);
             return config;
         }
     }

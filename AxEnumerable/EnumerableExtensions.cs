@@ -31,7 +31,9 @@ namespace AxEnumerable
             {
                 TKey key = keyGetter(item);
                 if (keys.Add(key))
+                {
                     yield return item;
+                }
             }
         }
     }

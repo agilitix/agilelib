@@ -18,8 +18,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxString", "AxString\AxStri
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxEqualityComparer", "AxEqualityComparer\AxEqualityComparer.csproj", "{010A6E7A-C943-43F9-9172-CF4B2942FB8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxThreading", "AxThreading\AxThreading.csproj", "{6401942E-A02A-465C-B968-31F3788662DE}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxConfiguration", "AxConfiguration\AxConfiguration.csproj", "{38C34733-3C7D-484D-9BD1-39C9F1744371}"
 EndProject
 Global
@@ -48,10 +46,6 @@ Global
 		{010A6E7A-C943-43F9-9172-CF4B2942FB8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{010A6E7A-C943-43F9-9172-CF4B2942FB8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{010A6E7A-C943-43F9-9172-CF4B2942FB8F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6401942E-A02A-465C-B968-31F3788662DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6401942E-A02A-465C-B968-31F3788662DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6401942E-A02A-465C-B968-31F3788662DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6401942E-A02A-465C-B968-31F3788662DE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{38C34733-3C7D-484D-9BD1-39C9F1744371}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{38C34733-3C7D-484D-9BD1-39C9F1744371}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38C34733-3C7D-484D-9BD1-39C9F1744371}.Release|Any CPU.ActiveCfg = Release|Any CPU
