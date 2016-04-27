@@ -24,7 +24,7 @@ namespace AxEnum.UnitTests
             for (int i = 0; matching && i < stringEnumValues.Length; ++i)
             {
                 TestedEnum result = enumValues.ElementAt(i);
-                TestedEnum input = (TestedEnum)Enum.Parse(typeof(TestedEnum), stringEnumValues.ElementAt(i));
+                TestedEnum input = (TestedEnum) Enum.Parse(typeof (TestedEnum), stringEnumValues.ElementAt(i));
                 matching &= result == input;
             }
             return matching;

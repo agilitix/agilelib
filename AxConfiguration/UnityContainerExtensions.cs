@@ -1,29 +1,32 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 
 namespace AxConfiguration
 {
     /// <summary>
-    /// Allow Unity container to load several files and merge them together through kind of
-    /// inheritance files tree. A child file can inherit from several parent files, the parent
-    /// files will apply first before the child file, just like base classes of a child class.
+    /// Allow a Unity container to load several files and merge them together through kind of
+    /// inherited files tree. A child file can inherit from several parent files, the parent
+    /// files will apply first before the child file, just like base classes and a child class.
     ///
-    /// Example of use from a "child" file "unity.dev.config" :
+    /// Example of usage within a "child" file called "unity.main.config" :
     /// ....
     /// <appSettings>
-    ///    <add key="base" value="unity.dev-components.config, unity.dev-database.config" />
+    ///    <add key="base" value="unity.dev-instances.config, unity.dev-database.config" />
     /// </appSettings>
     /// ....
-    /// The child file declares two base files which are read and applied first,
-    /// the whole files will be run in this order :
-    ///     1) unity.dev-components.config
+    /// The child file depends on two base files, the initialization sequence will be :
+    ///     1) unity.dev-instances.config
     ///     2) unity.dev-database.config
-    ///     3) unity.dev.config
+    ///     3) unity.main.config
+    /// 
+    /// This sequence allow you to declare more generic/common initializations in the base files,
+    /// and more specific initializations in the children files.
     /// </summary>
-    internal static class UnityContainerExtensions
+    public static class UnityContainerExtensions
     {
         private static void LoadConfigurationFromFile(this IUnityContainer self,
                                                       string configurationFileName,
@@ -52,22 +55,47 @@ namespace AxConfiguration
                 }
             }
 
-            // Load the Unity configuration from current file.
+            // Load the Unity configuration from current file, only if the requested container exists.
             UnityConfigurationSection unitySection = (UnityConfigurationSection) configuration.GetSection("unity");
-            self.LoadConfiguration(unitySection, containerName);
+            if (!string.IsNullOrWhiteSpace(containerName))
+            {
+                if (unitySection.Containers.Any(container => container.Name.Equals(containerName)))
+                {
+                    self.LoadConfiguration(unitySection, containerName);
+                }
+            }
+            else
+            {
+                if (unitySection.Containers.Any(container => string.IsNullOrWhiteSpace(container.Name)))
+                {
+                    self.LoadConfiguration(unitySection);
+                }
+            }
         }
 
+        /// <summary>
+        /// Load Unity configuration files from a folder, the main configuration file
+        /// will be resolved by using the following patterns sequence :
+        /// folderName\unity.USERNAME.config
+        /// folderName\unity.MACHINENAME.config
+        /// folderName\unity.main.config
+        /// 
+        /// If none of the files exists in the folder a FileNotFoundException exception
+        /// will be raised.
+        /// </summary>
+        /// <param name="folderName">The folder containing the Unity configuration files.</param>
+        /// <param name="unityContainerName">The Unity named container to load, the default container if not defined.</param>
         public static void LoadConfigurationFromFolder(this IUnityContainer self,
                                                        string folderName,
-                                                       string unityContainerName = "")
+                                                       string unityContainerName = null)
         {
-            // Lookup sequentially to those files in the given folder, the first existing file will be used as the root
-            // configuration file, the following files in the array will be ignored.
+            // Lookup sequentially to those files in the given folder, the first existing file will be used as the main
+            // configuration file, the next files in the array will be ignored.
             string[] defaultFiles =
             {
-                string.Format("unity.{0}.config", Environment.UserName), // unity.antonio.config
+                string.Format("unity.{0}.config", Environment.UserName),    // unity.michel.config
                 string.Format("unity.{0}.config", Environment.MachineName), // unity.FR001VIRGO.config
-                "unity.default.config",
+                "unity.main.config",
             };
 
             foreach (string file in defaultFiles)
@@ -75,7 +103,7 @@ namespace AxConfiguration
                 string rootFile = Path.Combine(folderName, file);
                 if (File.Exists(rootFile))
                 {
-                    // We found an existing root file, load it and its children then return.
+                    // We found an existing main file, load it (and recursively its children) then return.
                     LoadConfigurationFromFile(self, rootFile, unityContainerName);
                     return;
                 }

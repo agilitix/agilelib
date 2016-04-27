@@ -20,6 +20,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxEqualityComparer", "AxEqu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxEnum.UnitTests", "AxEnum.UnitTests\AxEnum.UnitTests.csproj", "{DDE311BB-FEEB-4DE9-8F53-5C2DC5B8A63F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxConfiguration.UnitTests", "AxConfiguration.UnitTests\AxConfiguration.UnitTests.csproj", "{3416A2BF-4ADF-4A72-B0D9-4149A60D21E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxConfiguration", "AxConfiguration\AxConfiguration.csproj", "{38C34733-3C7D-484D-9BD1-39C9F1744371}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,8 +54,19 @@ Global
 		{DDE311BB-FEEB-4DE9-8F53-5C2DC5B8A63F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DDE311BB-FEEB-4DE9-8F53-5C2DC5B8A63F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DDE311BB-FEEB-4DE9-8F53-5C2DC5B8A63F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3416A2BF-4ADF-4A72-B0D9-4149A60D21E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3416A2BF-4ADF-4A72-B0D9-4149A60D21E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3416A2BF-4ADF-4A72-B0D9-4149A60D21E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3416A2BF-4ADF-4A72-B0D9-4149A60D21E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38C34733-3C7D-484D-9BD1-39C9F1744371}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38C34733-3C7D-484D-9BD1-39C9F1744371}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38C34733-3C7D-484D-9BD1-39C9F1744371}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38C34733-3C7D-484D-9BD1-39C9F1744371}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
 	EndGlobalSection
 EndGlobal
