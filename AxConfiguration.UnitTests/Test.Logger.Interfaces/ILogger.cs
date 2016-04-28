@@ -2,6 +2,8 @@
 {
     public interface ILogger
     {
+        string LoggerName { get; }
+
         void Log(string message);
     }
 }

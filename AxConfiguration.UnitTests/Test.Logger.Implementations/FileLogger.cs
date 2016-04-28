@@ -6,15 +6,24 @@ namespace AxConfiguration.UnitTests.Test.Logger.Implementations
     public class FileLogger : ILogger
     {
         private readonly string _logFileName;
+        private readonly string _timeStampFormat;
 
-        public FileLogger(string logFileName)
+        public string LoggerName { get; private set; }
+
+        public FileLogger(string loggerName, string logFileName, string timeStampFormat)
         {
+            LoggerName = loggerName;
             _logFileName = logFileName;
+            _timeStampFormat = timeStampFormat;
         }
 
         public void Log(string message)
         {
-            Console.WriteLine("Log to file {0}: {1}", _logFileName, message);
+            Console.WriteLine("LoggerName={0} File={1}: {2} {3}",
+                              LoggerName,
+                              _logFileName,
+                              DateTime.Now.ToString(_timeStampFormat),
+                              message);
         }
     }
 }

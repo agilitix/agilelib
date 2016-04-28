@@ -1,4 +1,4 @@
-﻿using AxConfiguration.UnitTests.Test.Logger.Implementations;
+﻿using System;
 using AxConfiguration.UnitTests.Test.Logger.Interfaces;
 using AxUnit;
 using Microsoft.Practices.Unity;
@@ -6,28 +6,47 @@ using NUnit.Framework;
 
 namespace AxConfiguration.UnitTests
 {
-    // TODO
+    public class UnityContainerExtensionsTests : ArrangeActAssert
+    {
+        protected IUnityContainer UnityContainerUnderTest;
 
-    //public class UnityContainerExtensionsTests : ArrangeActAssert
-    //{
-    //    protected IUnityContainer UnityContainerUnderTest;
+        public override void Arrange()
+        {
+            UnityContainerUnderTest = new UnityContainer();
+        }
+    }
 
-    //    public override void Arrange()
-    //    {
-    //        UnityContainerUnderTest = new UnityContainer();
-    //        UnityContainerUnderTest.LoadConfigurationFromFolder(@".\Configuration");
-    //    }
-    //}
+    public class UnityContainerExtensionsTests_default_container : UnityContainerExtensionsTests
+    {
+        protected Exception LoadDefaultContainerException;
 
-    //public class UnityContainerExtensionsTests_should_load_config : UnityContainerExtensionsTests
-    //{
-    //    [Test]
-    //    public void Check_files_are_loaded()
-    //    {
-    //        var logger = UnityContainerUnderTest.Resolve<ILogger>("Logger");
-    //        logger.Log("message");
+        public override void Act()
+        {
+            LoadDefaultContainerException =
+                base.Try(() => UnityContainerUnderTest.LoadConfigurationFromFolder(@".\Configuration"));
+        }
 
-    //        Assert.IsInstanceOf<FileLogger>(logger);
-    //    }
-    //}
+        [Test]
+        public void Check_no_exceptions_after_loading_default_container()
+        {
+            Assert.IsNull(LoadDefaultContainerException);
+        }
+    }
+
+    public class UnityContainerExtensionsTests_loggers_container : UnityContainerExtensionsTests
+    {
+        protected Exception LoadLoggersContainerException;
+
+        public override void Act()
+        {
+            LoadLoggersContainerException =
+                base.Try(() => UnityContainerUnderTest.LoadConfigurationFromFolder(@".\Configuration", "Loggers"));
+        }
+
+        [Test]
+        public void Check_no_exceptions_after_loading_loggers_container()
+        {
+            Assert.IsNull(LoadLoggersContainerException);
+        }
+    }
 }

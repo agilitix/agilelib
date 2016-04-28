@@ -5,9 +5,16 @@ namespace AxConfiguration.UnitTests.Test.Logger.Implementations
 {
     public class ConsoleLogger : ILogger
     {
+        public string LoggerName { get; private set; }
+
+        public ConsoleLogger(string loggerName)
+        {
+            LoggerName = loggerName;
+        }
+
         public void Log(string message)
         {
-            Console.WriteLine("Log to console: " + message);
+            Console.WriteLine("LoggerName={0} : {1}", LoggerName, message);
         }
     }
 }
