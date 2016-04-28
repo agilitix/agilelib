@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Microsoft.Practices.Unity;
@@ -28,10 +29,12 @@ namespace AxConfiguration
     /// </summary>
     public static class UnityContainerExtensions
     {
-        private static void LoadConfigurationFromFile(this IUnityContainer self,
+        private static bool LoadConfigurationFromFile(this IUnityContainer self,
                                                       string configurationFileName,
                                                       string containerName)
         {
+            bool result = false;
+
             // Open the given configuration file.
             var fileMap = new ExeConfigurationFileMap {ExeConfigFilename = configurationFileName};
             Configuration configuration = ConfigurationManager.OpenMappedExeConfiguration(fileMap,
@@ -51,7 +54,7 @@ namespace AxConfiguration
                                                                       baseFile));
                     }
 
-                    self.LoadConfigurationFromFile(baseFile, containerName);
+                    result = self.LoadConfigurationFromFile(baseFile, containerName);
                 }
             }
 
@@ -62,6 +65,7 @@ namespace AxConfiguration
                 if (unitySection.Containers.Any(container => container.Name.Equals(containerName)))
                 {
                     self.LoadConfiguration(unitySection, containerName);
+                    result = true;
                 }
             }
             else
@@ -69,8 +73,11 @@ namespace AxConfiguration
                 if (unitySection.Containers.Any(container => string.IsNullOrWhiteSpace(container.Name)))
                 {
                     self.LoadConfiguration(unitySection);
+                    result = true;
                 }
             }
+
+            return result;
         }
 
         /// <summary>
@@ -104,12 +111,16 @@ namespace AxConfiguration
                 if (File.Exists(rootFile))
                 {
                     // We found an existing main file, load it (and recursively its children) then return.
-                    LoadConfigurationFromFile(self, rootFile, unityContainerName);
+                    bool result = LoadConfigurationFromFile(self, rootFile, unityContainerName);
+                    if (!result)
+                    {
+                        throw new ArgumentException("Cannot load the Unity configuration");
+                    }
                     return;
                 }
             }
 
-            throw new FileNotFoundException("Cannot find the default unity configuration file");
+            throw new FileNotFoundException("Cannot find the default Unity configuration file");
         }
     }
 }
