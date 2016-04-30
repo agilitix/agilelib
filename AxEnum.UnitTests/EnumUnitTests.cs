@@ -8,7 +8,7 @@ namespace AxEnum.UnitTests
 {
     public class EnumUnitTests : ArrangeActAssert
     {
-        protected enum TestedEnum
+        protected enum EnumUnderTest
         {
             A,
             B = 10,
@@ -16,15 +16,15 @@ namespace AxEnum.UnitTests
             D
         }
 
-        protected IEnumerable<TestedEnum> AsEnumerable;
+        protected IEnumerable<EnumUnderTest> AsEnumerable;
 
-        protected bool AreMatching(string[] stringEnumValues, TestedEnum[] enumValues)
+        protected bool AreMatching(string[] stringEnumValues, EnumUnderTest[] enumValues)
         {
             bool matching = stringEnumValues.Length == enumValues.Length;
             for (int i = 0; matching && i < stringEnumValues.Length; ++i)
             {
-                TestedEnum result = enumValues.ElementAt(i);
-                TestedEnum input = (TestedEnum) Enum.Parse(typeof (TestedEnum), stringEnumValues.ElementAt(i));
+                EnumUnderTest result = enumValues.ElementAt(i);
+                EnumUnderTest input = (EnumUnderTest) Enum.Parse(typeof (EnumUnderTest), stringEnumValues.ElementAt(i));
                 matching &= result == input;
             }
             return matching;
@@ -34,14 +34,14 @@ namespace AxEnum.UnitTests
     public class EnumUnitTests_check_parsing_from_valid_enum_strings_base : EnumUnitTests
     {
         protected string[] InputStringEnumValues;
-        protected TestedEnum[] ExpectedEnumValuesFromStringValues;
-        protected IList<TestedEnum> Results;
+        protected EnumUnderTest[] ExpectedEnumValuesFromStringValues;
+        protected IList<EnumUnderTest> Results;
 
         public override void Arrange()
         {
             InputStringEnumValues = new[] {"A", "B", "C", "D"};
-            Results = new List<TestedEnum>();
-            ExpectedEnumValuesFromStringValues = new[] {TestedEnum.A, TestedEnum.B, TestedEnum.C, TestedEnum.D};
+            Results = new List<EnumUnderTest>();
+            ExpectedEnumValuesFromStringValues = new[] {EnumUnderTest.A, EnumUnderTest.B, EnumUnderTest.C, EnumUnderTest.D};
         }
     }
 
@@ -52,7 +52,7 @@ namespace AxEnum.UnitTests
         {
             foreach (string strEnum in InputStringEnumValues)
             {
-                TestedEnum result = Enum<TestedEnum>.Parse(strEnum);
+                EnumUnderTest result = Enum<EnumUnderTest>.Parse(strEnum);
                 Results.Add(result);
             }
         }
@@ -74,8 +74,8 @@ namespace AxEnum.UnitTests
             Succedded = true;
             foreach (string strEnum in InputStringEnumValues)
             {
-                TestedEnum result;
-                Succedded &= Enum<TestedEnum>.TryParse(strEnum, out result);
+                EnumUnderTest result;
+                Succedded &= Enum<EnumUnderTest>.TryParse(strEnum, out result);
                 Results.Add(result);
             }
         }

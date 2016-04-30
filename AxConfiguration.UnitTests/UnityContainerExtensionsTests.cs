@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using AxConfiguration.UnitTests.Test.Logger.Implementations;
 using AxConfiguration.UnitTests.Test.Logger.Interfaces;
 using AxUnit;
@@ -7,17 +8,13 @@ using NUnit.Framework;
 
 namespace AxConfiguration.UnitTests
 {
-    public abstract class UnityContainerExtensionsTests : ArrangeActAssert
+    //================================================================================================================
+    //================================================================================================================
+    //================================================================================================================
+
+    public class UnityContainerExtensionsTests_default_container_resolving_file_logger : ArrangeActAssert
     {
         protected IUnityContainer UnityContainerUnderTest;
-    }
-
-    //================================================================================================================
-    //================================================================================================================
-    //================================================================================================================
-
-    public class UnityContainerExtensionsTests_default_container_resolving_file_logger : UnityContainerExtensionsTests
-    {
         protected ILogger ResolvedLogger;
 
         public override void Arrange()
@@ -48,8 +45,10 @@ namespace AxConfiguration.UnitTests
     //================================================================================================================
     //================================================================================================================
 
-    public class UnityContainerExtensionsTests_default_container_resolving_global_vars : UnityContainerExtensionsTests
+    public class UnityContainerExtensionsTests_default_container_resolving_global_vars : ArrangeActAssert
     {
+        protected IUnityContainer UnityContainerUnderTest;
+
         public override void Arrange()
         {
             UnityContainerUnderTest = new UnityContainer();
@@ -129,9 +128,9 @@ namespace AxConfiguration.UnitTests
     //================================================================================================================
     //================================================================================================================
 
-    public class UnityContainerExtensionsTests_loggers_container_resolving_console_logger :
-        UnityContainerExtensionsTests
+    public class UnityContainerExtensionsTests_loggers_container_resolving_console_logger : ArrangeActAssert
     {
+        protected IUnityContainer UnityContainerUnderTest;
         protected ILogger ResolvedLogger;
 
         public override void Arrange()
@@ -158,12 +157,46 @@ namespace AxConfiguration.UnitTests
         }
     }
 
+    public class UnityContainerExtensionsTests_loggers_container_resolving_unknown_instance_should_not_work :
+        ArrangeActAssert
+    {
+        protected IUnityContainer UnityContainerUnderTest;
+        protected Exception ExceptionWhileResolving;
+        protected ILogger ResolvedLogger;
+
+        public override void Arrange()
+        {
+            UnityContainerUnderTest = new UnityContainer();
+            UnityContainerUnderTest.LoadConfigurationFromFolder(@".\Configuration", "Loggers");
+        }
+
+        public override void Act()
+        {
+            ExceptionWhileResolving =
+                base.Try(() => ResolvedLogger = UnityContainerUnderTest.Resolve<ILogger>("UnknownLogger"));
+        }
+
+        [Test]
+        public void Assert_resolution_failed_exception_has_been_raised()
+        {
+            Assert.IsInstanceOf<ResolutionFailedException>(ExceptionWhileResolving);
+        }
+
+        [Test]
+        public void Assert_the_instance_has_not_been_resolved()
+        {
+            Assert.IsNull(ResolvedLogger);
+        }
+    }
+
     //================================================================================================================
     //================================================================================================================
     //================================================================================================================
 
-    public class UnityContainerExtensionsTests_loggers_container_resolving_global_vars : UnityContainerExtensionsTests
+    public class UnityContainerExtensionsTests_loggers_container_resolving_global_vars : ArrangeActAssert
     {
+        protected IUnityContainer UnityContainerUnderTest;
+
         public override void Arrange()
         {
             UnityContainerUnderTest = new UnityContainer();
@@ -226,9 +259,9 @@ namespace AxConfiguration.UnitTests
     //================================================================================================================
     //================================================================================================================
 
-    public class UnityContainerExtensionsTests_loading_an_unknown_container_should_raise_an_exception :
-        UnityContainerExtensionsTests
+    public class UnityContainerExtensionsTests_loading_an_unknown_container_should_raise_an_exception : ArrangeActAssert
     {
+        protected IUnityContainer UnityContainerUnderTest;
         protected Exception LoadContainerException;
 
         public override void Arrange()
@@ -251,8 +284,9 @@ namespace AxConfiguration.UnitTests
     }
 
     public class UnityContainerExtensionsTests_loading_an_unknown_container_and_resolving_instances_should_not_work :
-        UnityContainerExtensionsTests
+        ArrangeActAssert
     {
+        protected IUnityContainer UnityContainerUnderTest;
         protected Exception ExceptionWhileResolving;
         protected ILogger ResolvedLogger;
 

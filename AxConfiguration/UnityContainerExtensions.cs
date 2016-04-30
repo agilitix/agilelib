@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Configuration;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Microsoft.Practices.Unity;
@@ -10,10 +9,11 @@ namespace AxConfiguration
 {
     /// <summary>
     /// Allow a Unity container to load several files and merge them together through kind of
-    /// inherited files tree. A child file can inherit from several parent files, the parent
-    /// files will apply first before the child file, just like base classes and a child class.
+    /// inheritance tree files. A child file can inherit from several parent files, the parent
+    /// files will be processed first before the child file (like base class/child class
+    /// when constructed).
     ///
-    /// Example of usage within a "child" file called "unity.main.config" :
+    /// Example of usage in a "child" file called "unity.main.config" :
     /// ....
     /// <appSettings>
     ///    <add key="base" value="unity.dev-instances.config, unity.dev-database.config" />
@@ -24,7 +24,7 @@ namespace AxConfiguration
     ///     2) unity.dev-database.config
     ///     3) unity.main.config
     /// 
-    /// This sequence allow you to declare more generic/common initializations in the base files,
+    /// This sequence allow you to declare the most generic/common initializations in the base files,
     /// and more specific initializations in the children files.
     /// </summary>
     public static class UnityContainerExtensions
@@ -33,6 +33,7 @@ namespace AxConfiguration
                                                       string configurationFileName,
                                                       string containerName)
         {
+            // Indicates if we have load something or not.
             bool result = false;
 
             // Open the given configuration file.
@@ -40,7 +41,7 @@ namespace AxConfiguration
             Configuration configuration = ConfigurationManager.OpenMappedExeConfiguration(fileMap,
                                                                                           ConfigurationUserLevel.None);
 
-            // Load the "base/parents" configuration files.
+            // Load first the "base/parents" files (if "base" is declared in the current configuration file).
             KeyValueConfigurationElement baseFiles = configuration.AppSettings.Settings["base"];
             if (baseFiles != null)
             {
@@ -58,7 +59,7 @@ namespace AxConfiguration
                 }
             }
 
-            // Load the Unity configuration from current file, only if the requested container exists.
+            // No more base/parents files, start loading the configurations.
             UnityConfigurationSection unitySection = (UnityConfigurationSection) configuration.GetSection("unity");
             if (!string.IsNullOrWhiteSpace(containerName))
             {
@@ -100,9 +101,9 @@ namespace AxConfiguration
             // configuration file, the next files in the array will be ignored.
             string[] defaultFiles =
             {
-                string.Format("unity.{0}.config", Environment.UserName),    // unity.michel.config
-                string.Format("unity.{0}.config", Environment.MachineName), // unity.FR001VIRGO.config
-                "unity.main.config",
+                string.Format("unity.{0}.config", Environment.UserName), // unity.robert.config
+                string.Format("unity.{0}.config", Environment.MachineName), // unity.US001VIRGO.config
+                "unity.main.config"
             };
 
             foreach (string file in defaultFiles)
@@ -110,16 +111,18 @@ namespace AxConfiguration
                 string rootFile = Path.Combine(folderName, file);
                 if (File.Exists(rootFile))
                 {
-                    // We found an existing main file, load it (and recursively its children) then return.
+                    // A main file exists, load it.
                     bool result = LoadConfigurationFromFile(self, rootFile, unityContainerName);
                     if (!result)
                     {
+                        // Nothing was loaded (the named container does not exists, ...), raise an exception.
                         throw new ArgumentException("Cannot load the Unity configuration");
                     }
                     return;
                 }
             }
 
+            // No default file found, raise an exception.
             throw new FileNotFoundException("Cannot find the default Unity configuration file");
         }
     }
