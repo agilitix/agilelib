@@ -54,8 +54,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigFileProvider\AppConfigFileProvider.cs" />
+    <Compile Include="ConfigFileProvider\ConfigFileProvider.cs" />
     <Compile Include="ConfigurationFactory.cs" />
+    <Compile Include="Interfaces\IConfigFileProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ConfigFileProvider\UnityConfigFileProvider.cs" />
     <Compile Include="UnityContainerExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

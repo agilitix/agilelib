@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using AxConfiguration.Interfaces;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 
@@ -82,48 +83,24 @@ namespace AxConfiguration
         }
 
         /// <summary>
-        /// Load Unity configuration files from a folder, the main configuration file
-        /// will be resolved by using the following patterns sequence :
-        /// folderName\unity.USERNAME.config
-        /// folderName\unity.MACHINENAME.config
-        /// folderName\unity.main.config
-        /// 
-        /// If none of the files exists in the folder a FileNotFoundException exception
-        /// will be raised.
+        /// Load Unity configuration file.
         /// </summary>
-        /// <param name="folderName">The folder containing the Unity configuration files.</param>
-        /// <param name="unityContainerName">The Unity named container to load, the default container if not defined.</param>
-        public static void LoadConfigurationFromFolder(this IUnityContainer self,
-                                                       string folderName,
-                                                       string unityContainerName = null)
+        public static void LoadUnityConfiguration(this IUnityContainer self,
+                                                  IConfigFileProvider configFileProvider,
+                                                  string unityContainerName = null)
         {
-            // Lookup sequentially to those files in the given folder, the first existing file will be used as the main
-            // configuration file, the next files in the array will be ignored.
-            string[] defaultFiles =
+            string mainConfigFile = configFileProvider.GetMainConfigFile();
+            if (!string.IsNullOrWhiteSpace(mainConfigFile))
             {
-                string.Format("unity.{0}.config", Environment.UserName), // unity.robert.config
-                string.Format("unity.{0}.config", Environment.MachineName), // unity.US001VIRGO.config
-                "unity.main.config"
-            };
-
-            foreach (string file in defaultFiles)
-            {
-                string rootFile = Path.Combine(folderName, file);
-                if (File.Exists(rootFile))
+                bool result = LoadConfigurationFromFile(self, mainConfigFile, unityContainerName);
+                if (result)
                 {
-                    // A main file exists, load it.
-                    bool result = LoadConfigurationFromFile(self, rootFile, unityContainerName);
-                    if (!result)
-                    {
-                        // Nothing was loaded (the named container does not exists, ...), raise an exception.
-                        throw new ArgumentException("Cannot load the Unity configuration");
-                    }
                     return;
                 }
+                throw new ArgumentException("The requested container does not exist in the unity configuration files");
             }
 
-            // No default file found, raise an exception.
-            throw new FileNotFoundException("Cannot find the default Unity configuration file");
+            throw new FileLoadException("Cannot load the Unity configuration file");
         }
     }
 }
