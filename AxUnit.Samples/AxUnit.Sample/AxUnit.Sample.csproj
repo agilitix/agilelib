@@ -43,6 +43,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\AxUnit\AxUnit.csproj">
+      <Project>{ebf4de7b-53cb-4f6a-8a86-bd7e0190e469}</Project>
+      <Name>AxUnit</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AxUnit.Sample.Interfaces\AxUnit.Sample.Interfaces.csproj">
       <Project>{DE7160E5-7DB0-4B94-9CBE-280881A97E7B}</Project>
       <Name>AxUnit.Sample.Interfaces</Name>
