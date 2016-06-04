@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AxEqualityComparer
+namespace AxComparison
 {
+    /// <summary>
+    /// Compare two objects for equality, the evaluation is done on a key provided by a key getter.
+    /// </summary>
     public class AnonymousEqualityComparer<T, TKey> : IEqualityComparer<T>
     {
         private readonly Func<T, TKey> _ketGetter;
@@ -15,9 +18,7 @@ namespace AxEqualityComparer
         }
 
         public AnonymousEqualityComparer(Func<T, TKey> keyGetter)
-            : this(keyGetter, null)
-        {
-        }
+            : this(keyGetter, null) {}
 
         public bool Equals(T first, T second)
         {

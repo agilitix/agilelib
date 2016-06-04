@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AxEqualityComparer
+namespace AxComparison
 {
+    /// <summary>
+    /// Compares two objects and indicates whether one is less than, equal to, or greater than the other.
+    /// The comparison is done on a key extracted from the object.
+    /// </summary>
     public class AnonymousComparer<T, TKey> : IComparer<T>
     {
         private readonly Func<T, TKey> _ketGetter;
@@ -15,9 +19,7 @@ namespace AxEqualityComparer
         }
 
         public AnonymousComparer(Func<T, TKey> keyGetter)
-            : this(keyGetter, null)
-        {
-        }
+            : this(keyGetter, null) {}
 
         public int Compare(T first, T second)
         {
