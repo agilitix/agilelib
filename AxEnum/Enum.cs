@@ -11,6 +11,11 @@ namespace AxEnum
             return Enum.GetValues(typeof (T)).Cast<T>().AsEnumerable();
         }
 
+        public static IEnumerable<string> GetNames()
+        {
+            return Enum.GetNames(typeof (T)).AsEnumerable();
+        }
+
         public static T Parse(string enumString)
         {
             return Parse(enumString, false);

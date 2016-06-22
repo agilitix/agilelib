@@ -7,7 +7,6 @@ namespace AxConfiguration.ConfigFileProvider
     {
         private readonly string _configFolder;
         private readonly string[] _configFileNamesToTry;
-        private readonly string _defaultConfigFile = "app.config";
 
         public ConfigFileProvider(string configFolder, string[] configFileNamesToTry)
         {
@@ -24,11 +23,6 @@ namespace AxConfiguration.ConfigFileProvider
                 {
                     return filePath;
                 }
-            }
-
-            if (File.Exists(_defaultConfigFile))
-            {
-                return _defaultConfigFile;
             }
 
             throw new FileNotFoundException("Main configuration file not found");
