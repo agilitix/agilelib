@@ -13,6 +13,7 @@ namespace AxUnit
         [TestFixtureSetUp]
         public void SetUp()
         {
+            Startup();
             Arrange();
             Act();
         }
@@ -22,6 +23,11 @@ namespace AxUnit
         {
             Cleanup();
         }
+
+        /// <summary>
+        /// Create required resources before the tests start.
+        /// </summary>
+        public virtual void Startup() {}
 
         /// <summary>
         /// Initialize the test environment (variables, objects, etc).
@@ -34,7 +40,7 @@ namespace AxUnit
         public virtual void Act() {}
 
         /// <summary>
-        /// Cleanup code after the test is done.
+        /// Cleanup resources after the tests are done.
         /// </summary>
         public virtual void Cleanup() {}
 
