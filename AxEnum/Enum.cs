@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 
 namespace AxEnum
 {
@@ -16,31 +18,76 @@ namespace AxEnum
             return Enum.GetNames(typeof (T)).AsEnumerable();
         }
 
-        public static T Parse(string enumString)
+        public static IEnumerable<string> GetDescriptions()
         {
-            return Parse(enumString, false);
+            IEnumerable<T> enumValues = AsEnumarable();
+
+            IEnumerable<string> result = enumValues.Select(x =>
+            {
+                FieldInfo fieldInfo = typeof(T).GetField(x.ToString());
+                string description = fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false)
+                                              .Cast<DescriptionAttribute>()
+                                              .Select(attribute => attribute.Description)
+                                              .FirstOrDefault();
+                return description;
+            });
+            return result;
         }
 
-        public static T Parse(string enumString, bool ignoreCase)
+        public static string GetDescription(T value)
         {
-            return (T) Enum.Parse(typeof (T), enumString, ignoreCase);
+            FieldInfo fieldInfo = typeof (T).GetField(value.ToString());
+            string result = fieldInfo.GetCustomAttributes(typeof (DescriptionAttribute), false)
+                                     .Cast<DescriptionAttribute>()
+                                     .Select(attribute => attribute.Description)
+                                     .FirstOrDefault();
+            return result;
         }
 
-        public static bool TryParse(string enumString, out T result)
+
+        public static IEnumerable<KeyValuePair<T, string>> GetValuesAndDescriptions()
         {
-            return TryParse(enumString, false, out result);
+            IEnumerable<T> enumValues = AsEnumarable();
+
+            var result = enumValues.Select(x =>
+                                           {
+                                               FieldInfo fieldInfo = typeof (T).GetField(x.ToString());
+                                               string description = fieldInfo.GetCustomAttributes(typeof (DescriptionAttribute), false)
+                                                                             .Cast<DescriptionAttribute>()
+                                                                             .Select(attribute => attribute.Description)
+                                                                             .FirstOrDefault();
+                                               return new KeyValuePair<T, string>(x, description);
+                                           });
+            return result;
         }
 
-        public static bool TryParse(string enumString, bool ignoreCase, out T result)
+        // TODO: [try]parse description
+
+        public static T ParseName(string name)
         {
-            return Enum.TryParse(enumString, ignoreCase, out result);
+            return ParseName(name, false);
         }
 
-        public static bool TryCast(int inputValue, out T result)
+        public static T ParseName(string name, bool ignoreCase)
+        {
+            return (T) Enum.Parse(typeof (T), name, ignoreCase);
+        }
+
+        public static bool TryParseName(string name, out T result)
+        {
+            return TryParseName(name, false, out result);
+        }
+
+        public static bool TryParseName(string name, bool ignoreCase, out T result)
+        {
+            return Enum.TryParse(name, ignoreCase, out result);
+        }
+
+        public static bool TryCast(int input, out T result)
         {
             foreach (var enumValue in Enum.GetValues(typeof (T)))
             {
-                if (inputValue == (int) enumValue)
+                if (input == (int) enumValue)
                 {
                     result = (T) enumValue;
                     return true;

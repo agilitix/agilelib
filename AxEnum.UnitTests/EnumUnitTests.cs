@@ -52,7 +52,7 @@ namespace AxEnum.UnitTests
         {
             foreach (string strEnum in InputStringEnumValues)
             {
-                EnumUnderTest result = Enum<EnumUnderTest>.Parse(strEnum);
+                EnumUnderTest result = Enum<EnumUnderTest>.ParseName(strEnum);
                 Results.Add(result);
             }
         }
@@ -75,7 +75,7 @@ namespace AxEnum.UnitTests
             foreach (string strEnum in InputStringEnumValues)
             {
                 EnumUnderTest result;
-                Succedded &= Enum<EnumUnderTest>.TryParse(strEnum, out result);
+                Succedded &= Enum<EnumUnderTest>.TryParseName(strEnum, out result);
                 Results.Add(result);
             }
         }
