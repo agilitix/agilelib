@@ -47,7 +47,7 @@ namespace AxUnit
         /// <summary>
         /// Try to run an action, returns the thrown exception.
         /// </summary>
-        public Exception Try(Action action)
+        public Exception Trying(Action action)
         {
             Exception result = null;
             try

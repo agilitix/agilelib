@@ -66,7 +66,7 @@ namespace AxUnit.Sample.UnitTests
             foreach (double number in Numbers)
             {
                 double n = number;
-                Exception ex = Try(() => TestedObject.Add(n));
+                Exception ex = Trying(() => TestedObject.Add(n));
                 if (ResultException == null)
                 {
                     ResultException = ex; // Store any exception.
@@ -143,7 +143,7 @@ namespace AxUnit.Sample.UnitTests
             foreach (double number in Numbers)
             {
                 double n = number;
-                ResultExceptions.Add(Try(() => TestedObject.Add(n)));
+                ResultExceptions.Add(Trying(() => TestedObject.Add(n)));
             }
         }
 
@@ -220,7 +220,7 @@ namespace AxUnit.Sample.UnitTests
             foreach (double number in Numbers)
             {
                 double n = number;
-                Exception ex = Try(() => TestedObject.Add(n));
+                Exception ex = Trying(() => TestedObject.Add(n));
                 ResultExceptions.Add(ex != null ? ex.GetType() : null);
             }
         }

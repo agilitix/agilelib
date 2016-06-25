@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Linq;
 
 namespace AxEnum
 {
@@ -6,12 +8,17 @@ namespace AxEnum
     {
         public static string GetName(this Enum self)
         {
-            string name = Enum.GetName(self.GetType(), self);
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException();
-            }
-            return name;
+            return Enum.GetName(self.GetType(), self);
+        }
+
+        public static string GetDescription(this Enum self)
+        {
+            Type type = self.GetType();
+            return type.GetField(self.ToString())
+                       .GetCustomAttributes(typeof (DescriptionAttribute), false)
+                       .Cast<DescriptionAttribute>()
+                       .Select(attribute => attribute.Description)
+                       .FirstOrDefault();
         }
     }
 }

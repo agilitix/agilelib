@@ -187,7 +187,7 @@ namespace AxConfiguration.UnitTests
         public override void Act()
         {
             ExceptionWhileResolving =
-                base.Try(() => ResolvedLogger = UnityContainerUnderTest.Resolve<ILogger>("UnknownLogger"));
+                base.Trying(() => ResolvedLogger = UnityContainerUnderTest.Resolve<ILogger>("UnknownLogger"));
         }
 
         [Test]
@@ -291,7 +291,7 @@ namespace AxConfiguration.UnitTests
         public override void Act()
         {
             LoadContainerException =
-                base.Try(() => UnityContainerUnderTest.LoadUnityConfiguration(ConfigFileProvider,
+                base.Trying(() => UnityContainerUnderTest.LoadUnityConfiguration(ConfigFileProvider,
                                                                               "UnknownContainerName"));
         }
 
@@ -315,13 +315,13 @@ namespace AxConfiguration.UnitTests
             ConfigFileProvider = new UnityConfigFileProvider(@".\Configuration");
 
             UnityContainerUnderTest = new UnityContainer();
-            base.Try(() => UnityContainerUnderTest.LoadUnityConfiguration(ConfigFileProvider,
+            base.Trying(() => UnityContainerUnderTest.LoadUnityConfiguration(ConfigFileProvider,
                                                                           "UnknownContainerName"));
         }
 
         public override void Act()
         {
-            ExceptionWhileResolving = base.Try(() => ResolvedLogger = UnityContainerUnderTest.Resolve<ILogger>("Logger"));
+            ExceptionWhileResolving = base.Trying(() => ResolvedLogger = UnityContainerUnderTest.Resolve<ILogger>("Logger"));
         }
 
         [Test]
