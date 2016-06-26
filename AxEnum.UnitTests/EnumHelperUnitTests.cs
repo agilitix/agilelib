@@ -14,9 +14,12 @@ namespace AxEnum.UnitTests
         {
             [System.ComponentModel.Description("DescA")]
             A,
+
             B = 10,
+
             [System.ComponentModel.Description("DescC")]
             C,
+
             [System.ComponentModel.Description("DescD")]
             D
         }

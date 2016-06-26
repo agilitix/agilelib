@@ -9,12 +9,7 @@ namespace AxEnum
     {
         public static IEnumerable<T> AsEnumarable()
         {
-            return Enum.GetValues(typeof (T)).Cast<T>().AsEnumerable();
-        }
-
-        public static IEnumerable<string> GetNames()
-        {
-            return Enum.GetNames(typeof (T)).AsEnumerable();
+            return Enum.GetValues(typeof (T)).Cast<T>();
         }
 
         public static string GetName(T value)
@@ -22,15 +17,9 @@ namespace AxEnum
             return Enum.GetName(typeof (T), value);
         }
 
-
-        public static IEnumerable<string> GetDescriptions()
+        public static IEnumerable<string> GetNames()
         {
-            Type type = typeof (T);
-            return Enum.GetValues(type)
-                       .Cast<T>()
-                       .Select(enumValue => type.GetField(enumValue.ToString()))
-                       .Select(fieldInfo => fieldInfo.GetCustomAttributes(typeof (DescriptionAttribute), false).Cast<DescriptionAttribute>())
-                       .Select(attribute => attribute.Select(x => x.Description).FirstOrDefault());
+            return Enum.GetNames(typeof (T));
         }
 
         public static string GetDescription(T value)
@@ -41,6 +30,16 @@ namespace AxEnum
                        .Cast<DescriptionAttribute>()
                        .Select(attribute => attribute.Description)
                        .FirstOrDefault();
+        }
+
+        public static IEnumerable<string> GetDescriptions()
+        {
+            Type type = typeof (T);
+            return Enum.GetValues(type)
+                       .Cast<T>()
+                       .Select(enumValue => type.GetField(enumValue.ToString()))
+                       .Select(fieldInfo => fieldInfo.GetCustomAttributes(typeof (DescriptionAttribute), false).Cast<DescriptionAttribute>())
+                       .Select(attribute => attribute.Select(x => x.Description).FirstOrDefault());
         }
 
         public static IEnumerable<KeyValuePair<T, string>> GetValuesAndDescriptions()
@@ -64,11 +63,9 @@ namespace AxEnum
                             .SelectMany(enumValue => type.GetField(enumValue.ToString())
                                                          .GetCustomAttributes(typeof (DescriptionAttribute), false),
                                         (fld, att) => new {Field = fld, Attribute = att})
-                            .SingleOrDefault(x => ((DescriptionAttribute) x.Attribute).Description.Equals(description,
-                                                                                                          ignoreCase
-                                                                                                              ? StringComparison.OrdinalIgnoreCase
-                                                                                                              : StringComparison.Ordinal));
-
+                            .SingleOrDefault(x => ignoreCase
+                                                      ? ((DescriptionAttribute) x.Attribute).Description.Equals(description, StringComparison.OrdinalIgnoreCase)
+                                                      : ((DescriptionAttribute) x.Attribute).Description.Equals(description));
             if (found != null)
             {
                 return found.Field;
@@ -103,7 +100,7 @@ namespace AxEnum
 
         public static T ParseName(string name)
         {
-            return ParseName(name, false);
+            return (T) Enum.Parse(typeof (T), name);
         }
 
         public static T ParseName(string name, bool ignoreCase)
@@ -113,7 +110,7 @@ namespace AxEnum
 
         public static bool TryParseName(string name, out T result)
         {
-            return TryParseName(name, false, out result);
+            return Enum.TryParse(name, out result);
         }
 
         public static bool TryParseName(string name, bool ignoreCase, out T result)
@@ -121,16 +118,47 @@ namespace AxEnum
             return Enum.TryParse(name, ignoreCase, out result);
         }
 
-        public static bool TryCast(int input, out T result)
+        public static T Cast(int input)
         {
             Type type = typeof (T);
             if (Enum.IsDefined(type, input))
             {
-                result = (T) Enum.ToObject(type, input);
+                return (T) Enum.ToObject(type, input);
+            }
+
+            throw new InvalidEnumArgumentException();
+        }
+
+        public static bool TryCast(int input, out T result)
+        {
+            try
+            {
+                result = Cast(input);
                 return true;
             }
-            result = default(T);
-            return false;
+            catch (Exception)
+            {
+                result = default(T);
+                return false;
+            }
+        }
+
+        public static bool IsDefined(int value)
+        {
+            Type type = typeof (T);
+            return Enum.IsDefined(type, value);
+        }
+
+        public static bool IsDefined(string name, bool ignoreCase)
+        {
+            return GetNames().Any(x => ignoreCase
+                                           ? x.Equals(name, StringComparison.OrdinalIgnoreCase)
+                                           : x.Equals(name));
+        }
+
+        public static bool IsDefined(string name)
+        {
+            return IsDefined(name, false);
         }
     }
 }
