@@ -1,2 +1,2 @@
 # agilib
-CSharp library for agile development
+CSharp library for agile development.
