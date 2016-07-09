@@ -53,13 +53,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AxEnumerable\AxEnumerable.csproj">
-      <Project>{650B0B3F-C4ED-4253-ABF1-D42F84ADCBDC}</Project>
-      <Name>AxEnumerable</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AxEnum\AxEnum.csproj">
-      <Project>{16b1815a-372c-47af-ad4f-91fd1acb117b}</Project>
-      <Name>AxEnum</Name>
+    <ProjectReference Include="..\AxExtensions\AxExtensions.csproj">
+      <Project>{f3eefdb9-ee62-4962-b8fe-6d709f0c63f8}</Project>
+      <Name>AxExtensions</Name>
     </ProjectReference>
     <ProjectReference Include="..\AxQuality.Sample\AxQuality.Sample.Interfaces\AxQuality.Sample.Interfaces.csproj">
       <Project>{de7160e5-7db0-4b94-9cbe-280881a97e7b}</Project>

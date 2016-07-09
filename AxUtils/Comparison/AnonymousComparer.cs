@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AxComparison
+namespace AxUtils.Comparison
 {
     /// <summary>
     /// Compares two objects and indicates whether one is less than, equal to, or greater than the other.

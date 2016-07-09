@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using AxUnit;
+using AxUtils.Enum;
 using NUnit.Framework;
 
 namespace AxEnum.UnitTests
@@ -34,48 +35,66 @@ namespace AxEnum.UnitTests
             return false;
         }
 
-        protected IList<string> GetDescriptions()
+        protected string[] GetAllNames()
         {
-            Type type = typeof (EnumUnderTest);
-            return Enum.GetValues(typeof (EnumUnderTest))
-                       .Cast<EnumUnderTest>()
-                       .AsEnumerable()
-                       .Select(enumValue => type.GetField(enumValue.ToString()))
-                       .Select(fieldInfo => fieldInfo.GetCustomAttributes(typeof (System.ComponentModel.DescriptionAttribute), false)
-                                                     .Cast<System.ComponentModel.DescriptionAttribute>())
-                       .Select(attribute => attribute.Select(x => x.Description).FirstOrDefault())
-                       .ToList();
+            return new[] { "A", "B", "C", "D" };
         }
 
-        protected IList<EnumUnderTest> GetValues()
+        protected string[] GetAllDescriptions()
         {
-            return Enum.GetValues(typeof (EnumUnderTest)).Cast<EnumUnderTest>().ToList();
+            return new[] {"DescA", null, "DescC", "DescD"};
+        }
+
+        protected string[] GetExistingDescriptions()
+        {
+            return GetAllDescriptions().Except(new string[] {null}).ToArray();
+        }
+
+        protected EnumUnderTest[] GetAllValues()
+        {
+            return new[] {EnumUnderTest.A, EnumUnderTest.B, EnumUnderTest.C, EnumUnderTest.D};
+        }
+
+        protected EnumUnderTest[] GetValuesHavingDescriptions()
+        {
+            return GetAllValues().Except(new[] {EnumUnderTest.B}).ToArray();
+        }
+
+        protected KeyValuePair<EnumUnderTest, string>[] GetValuesAndDescriptions()
+        {
+            return new[]
+                   {
+                       new KeyValuePair<EnumUnderTest, string>(EnumUnderTest.A, "DescA"),
+                       new KeyValuePair<EnumUnderTest, string>(EnumUnderTest.B, null),
+                       new KeyValuePair<EnumUnderTest, string>(EnumUnderTest.C, "DescC"),
+                       new KeyValuePair<EnumUnderTest, string>(EnumUnderTest.D, "DescD"),
+                   };
         }
     }
 
-    public class EnumHelperUnitTests_check_descriptions : EnumHelperUnitTests
+    public class EnumHelperUnitTests_retrieve_all_the_descriptions : EnumHelperUnitTests
     {
         protected string[] ExpectedDescriptions;
         protected IList<string> Result;
 
         public override void Arrange()
         {
-            ExpectedDescriptions = new[] {"DescA", null, "DescC", "DescD"};
+            ExpectedDescriptions = GetAllDescriptions();
         }
 
         public override void Act()
         {
-            Result = EnumHelper<EnumUnderTest>.GetDescriptions().ToList();
+            Result = EnumUtils<EnumUnderTest>.GetDescriptions().ToList();
         }
 
         [Test]
-        public void Assert_all_descriptions_are_matching()
+        public void Assert_all_descriptions_were_retrieved_as_expected()
         {
             Assert.IsTrue(ExpectedDescriptions.SequenceEqual(Result));
         }
     }
 
-    public class EnumHelperUnitTests_check_descriptions_one_by_one : EnumHelperUnitTests_check_descriptions
+    public class EnumHelperUnitTests_retrieve_descriptions_one_by_one : EnumHelperUnitTests_retrieve_all_the_descriptions
     {
         public override void Arrange()
         {
@@ -85,79 +104,62 @@ namespace AxEnum.UnitTests
 
         public override void Act()
         {
-            foreach (EnumUnderTest enumValue in Enum.GetValues(typeof (EnumUnderTest)))
+            foreach (EnumUnderTest enumValue in GetAllValues())
             {
-                Result.Add(EnumHelper<EnumUnderTest>.GetDescription(enumValue));
+                Result.Add(EnumUtils<EnumUnderTest>.GetDescription(enumValue));
             }
         }
     }
 
-    public class EnumHelperUnitTests_check_values_and_descriptions_pairs : EnumHelperUnitTests
+    public class EnumHelperUnitTests_retrieve_values_and_descriptions_pairs : EnumHelperUnitTests
     {
         protected KeyValuePair<EnumUnderTest, string>[] ExpectedPairs;
         protected IList<KeyValuePair<EnumUnderTest, string>> Result;
 
         public override void Arrange()
         {
-            ExpectedPairs = new[]
-                            {
-                                new KeyValuePair<EnumUnderTest, string>(EnumUnderTest.A, "DescA"),
-                                new KeyValuePair<EnumUnderTest, string>(EnumUnderTest.B, null),
-                                new KeyValuePair<EnumUnderTest, string>(EnumUnderTest.C, "DescC"),
-                                new KeyValuePair<EnumUnderTest, string>(EnumUnderTest.D, "DescD"),
-                            };
+            ExpectedPairs = GetValuesAndDescriptions();
         }
 
         public override void Act()
         {
-            Result = EnumHelper<EnumUnderTest>.GetValuesAndDescriptions().ToList();
+            Result = EnumUtils<EnumUnderTest>.GetValuesAndDescriptions().ToList();
         }
 
         [Test]
-        public void Assert_all_descriptions_are_matching()
+        public void Assert_all_descriptions_pairs_were_retrieved_as_expected()
         {
             Assert.IsTrue(ExpectedPairs.SequenceEqual(Result));
         }
     }
 
-    public class EnumHelperUnitTests_check_parsing_descriptions_to_retrieve_values : EnumHelperUnitTests
+    public class EnumHelperUnitTests_parsing_only_existing_descriptions_to_retrieve_enum_values : EnumHelperUnitTests
     {
-        protected IList<EnumUnderTest> ExpectedValues;
+        protected EnumUnderTest[] ExpectedValues;
         protected IList<EnumUnderTest> Result;
 
         public override void Arrange()
         {
-            ExpectedValues = Enum.GetValues(typeof (EnumUnderTest)).Cast<EnumUnderTest>().ToList();
-            ExpectedValues.Remove(EnumUnderTest.B); // "B" has no description
+            ExpectedValues = GetValuesHavingDescriptions();
             Result = new List<EnumUnderTest>();
         }
 
         public override void Act()
         {
-            Type type = typeof (EnumUnderTest);
-            foreach (EnumUnderTest enumValue in Enum.GetValues(typeof (EnumUnderTest)).Cast<EnumUnderTest>().AsEnumerable())
+            foreach (string description in GetExistingDescriptions())
             {
-                FieldInfo fieldInfo = type.GetField(enumValue.ToString());
-                IEnumerable<System.ComponentModel.DescriptionAttribute> attributes =
-                    fieldInfo.GetCustomAttributes(typeof (System.ComponentModel.DescriptionAttribute), false)
-                             .Cast<System.ComponentModel.DescriptionAttribute>();
-                string description = attributes.Select(x => x.Description)
-                                               .FirstOrDefault();
-                if (description != null)
-                {
-                    Result.Add(EnumHelper<EnumUnderTest>.ParseDescription(description));
-                }
+                Result.Add(EnumUtils<EnumUnderTest>.ParseDescription(description));
             }
         }
 
         [Test]
-        public void Assert_all_descriptions_are_matching()
+        public void Assert_all_descriptions_pairs_are_expected()
         {
             Assert.IsTrue(ExpectedValues.SequenceEqual(Result));
         }
     }
 
-    public class EnumHelperUnitTests_check_parsing_undefined_descriptions_should_raise_exceptions : EnumHelperUnitTests
+    public class EnumHelperUnitTests_parsing_undefined_descriptions_should_raise_exceptions : EnumHelperUnitTests
     {
         protected IList<Exception> Result;
 
@@ -168,14 +170,14 @@ namespace AxEnum.UnitTests
 
         public override void Act()
         {
-            Result.Add(Trying(() => EnumHelper<EnumUnderTest>.ParseDescription(null)));
-            Result.Add(Trying(() => EnumHelper<EnumUnderTest>.ParseDescription("")));
-            Result.Add(Trying(() => EnumHelper<EnumUnderTest>.ParseDescription("  ")));
-            Result.Add(Trying(() => EnumHelper<EnumUnderTest>.ParseDescription("Toto")));
+            Result.Add(Trying(() => EnumUtils<EnumUnderTest>.ParseDescription(null)));
+            Result.Add(Trying(() => EnumUtils<EnumUnderTest>.ParseDescription("")));
+            Result.Add(Trying(() => EnumUtils<EnumUnderTest>.ParseDescription("  ")));
+            Result.Add(Trying(() => EnumUtils<EnumUnderTest>.ParseDescription("Toto")));
         }
 
         [Test]
-        public void Assert_we_got_the_expected_exception_for_unknow_definitions()
+        public void Assert_we_got_expected_exceptions_for_unknow_definitions()
         {
             foreach (Exception ex in Result)
             {
@@ -184,7 +186,7 @@ namespace AxEnum.UnitTests
         }
     }
 
-    public class EnumHelperUnitTests_check_trying_to_parse_undefined_description_always_return_false : EnumHelperUnitTests
+    public class EnumHelperUnitTests_trying_to_parse_undefined_description_always_return_false : EnumHelperUnitTests
     {
         protected IList<bool> Result;
 
@@ -196,23 +198,20 @@ namespace AxEnum.UnitTests
         public override void Act()
         {
             EnumUnderTest output;
-            Result.Add(EnumHelper<EnumUnderTest>.TryParseDescription(null, out output));
-            Result.Add(EnumHelper<EnumUnderTest>.TryParseDescription("", out output));
-            Result.Add(EnumHelper<EnumUnderTest>.TryParseDescription("  ", out output));
-            Result.Add(EnumHelper<EnumUnderTest>.TryParseDescription("Toto", out output));
+            Result.Add(EnumUtils<EnumUnderTest>.TryParseDescription(null, out output));
+            Result.Add(EnumUtils<EnumUnderTest>.TryParseDescription("", out output));
+            Result.Add(EnumUtils<EnumUnderTest>.TryParseDescription("  ", out output));
+            Result.Add(EnumUtils<EnumUnderTest>.TryParseDescription("Toto", out output));
         }
 
         [Test]
-        public void Assert_all_the_tries_returned_false_for_unknown_descriptions()
+        public void Assert_all_the_attempts_returned_false_for_unknown_descriptions()
         {
-            foreach (bool b in Result)
-            {
-                Assert.IsFalse(b);
-            }
+            Assert.IsTrue(!Result.All(x => x));
         }
     }
 
-    public class EnumHelperUnitTests_check_trying_to_parse_existing_descriptions_always_succeed : EnumHelperUnitTests
+    public class EnumHelperUnitTests_trying_to_parse_existing_descriptions_always_return_true : EnumHelperUnitTests
     {
         protected IList<bool> Result;
 
@@ -223,31 +222,21 @@ namespace AxEnum.UnitTests
 
         public override void Act()
         {
-            Type type = typeof (EnumUnderTest);
-            foreach (EnumUnderTest enumValue in Enum.GetValues(typeof (EnumUnderTest)).Cast<EnumUnderTest>().AsEnumerable())
+            foreach (string description in GetExistingDescriptions())
             {
-                FieldInfo fieldInfo = type.GetField(enumValue.ToString());
-                IEnumerable<System.ComponentModel.DescriptionAttribute> attributes =
-                    fieldInfo.GetCustomAttributes(typeof (System.ComponentModel.DescriptionAttribute), false)
-                             .Cast<System.ComponentModel.DescriptionAttribute>();
-                string description = attributes.Select(x => x.Description)
-                                               .FirstOrDefault();
-                if (description != null)
-                {
-                    EnumUnderTest output;
-                    Result.Add(EnumHelper<EnumUnderTest>.TryParseDescription(description, out output));
-                }
+                EnumUnderTest output;
+                Result.Add(EnumUtils<EnumUnderTest>.TryParseDescription(description, out output));
             }
         }
 
         [Test]
-        public void Assert_all_descriptions_tries_have_succeeded()
+        public void Assert_all_the_attempts_returned_true_for_existing_descriptions()
         {
             Assert.IsTrue(Result.All(x => x));
         }
     }
 
-    public class EnumHelperUnitTests_check_parsing_from_strings_base : EnumHelperUnitTests
+    public class EnumHelperUnitTests_parsing_name_from_strings_base : EnumHelperUnitTests
     {
         protected string[] InputStringEnumValues;
         protected EnumUnderTest[] ExpectedEnumValuesFromStringValues;
@@ -255,20 +244,16 @@ namespace AxEnum.UnitTests
 
         public override void Arrange()
         {
-            InputStringEnumValues = new[] {"A", "B", "C", "D"};
-            Results = new List<EnumUnderTest>();
+            InputStringEnumValues = GetAllNames();
             ExpectedEnumValuesFromStringValues = new[] {EnumUnderTest.A, EnumUnderTest.B, EnumUnderTest.C, EnumUnderTest.D};
+            Results = new List<EnumUnderTest>();
         }
-    }
 
-    public class EnumHelperUnitTests_check_parsename_from_strings :
-        EnumHelperUnitTests_check_parsing_from_strings_base
-    {
         public override void Act()
         {
             foreach (string strEnum in InputStringEnumValues)
             {
-                EnumUnderTest result = EnumHelper<EnumUnderTest>.ParseName(strEnum);
+                EnumUnderTest result = EnumUtils<EnumUnderTest>.ParseName(strEnum);
                 Results.Add(result);
             }
         }
@@ -280,32 +265,32 @@ namespace AxEnum.UnitTests
         }
     }
 
-    public class EnumHelperUnitTests_check_tryparsename_from_strings :
-        EnumHelperUnitTests_check_parsing_from_strings_base
+    public class EnumHelperUnitTestsTryparsenameFromStrings : EnumHelperUnitTests
     {
-        protected bool Succedded;
+        protected string[] InputStringEnumValues;
+        protected EnumUnderTest[] ExpectedEnumValuesFromStringValues;
+        protected IList<bool> Result;
+
+        public override void Arrange()
+        {
+            InputStringEnumValues = GetAllNames();
+            ExpectedEnumValuesFromStringValues = new[] { EnumUnderTest.A, EnumUnderTest.B, EnumUnderTest.C, EnumUnderTest.D };
+            Result = new List<bool>();
+        }
 
         public override void Act()
         {
-            Succedded = true;
             foreach (string strEnum in InputStringEnumValues)
             {
                 EnumUnderTest result;
-                Succedded &= EnumHelper<EnumUnderTest>.TryParseName(strEnum, out result);
-                Results.Add(result);
+                Result.Add(EnumUtils<EnumUnderTest>.TryParseName(strEnum, out result));
             }
         }
 
         [Test]
         public void Assert_all_try_parse_calls_succeeded()
         {
-            Assert.IsTrue(Succedded);
-        }
-
-        [Test]
-        public void Assert_the_strings_and_the_enum_values_are_matching_together()
-        {
-            Assert.IsTrue(AreMatching(InputStringEnumValues, Results.ToArray()));
+            Assert.IsTrue(Result.All(x => x));
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AxComparison
+namespace AxUtils.Comparison
 {
     /// <summary>
     /// Compare two objects for equality, the evaluation is done on a key provided by a key getter.

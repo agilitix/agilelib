@@ -2,16 +2,16 @@
 using System.ComponentModel;
 using System.Linq;
 
-namespace AxEnum
+namespace AxExtensions.Enum
 {
     public static class EnumExtensions
     {
-        public static string GetName(this Enum self)
+        public static string GetName(this System.Enum self)
         {
-            return Enum.GetName(self.GetType(), self);
+            return System.Enum.GetName(self.GetType(), self);
         }
 
-        public static string GetDescription(this Enum self)
+        public static string GetDescription(this System.Enum self)
         {
             Type type = self.GetType();
             return type.GetField(self.ToString())
