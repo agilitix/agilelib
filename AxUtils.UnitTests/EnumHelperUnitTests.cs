@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Reflection;
 using AxUnit;
 using AxUtils.Enum;
 using NUnit.Framework;
 
-namespace AxEnum.UnitTests
+namespace AxUtils.UnitTests
 {
     public class EnumHelperUnitTests : ArrangeActAssert
     {
@@ -29,7 +28,7 @@ namespace AxEnum.UnitTests
         {
             if (stringEnumValues.Length == enumValues.Length)
             {
-                EnumUnderTest[] parsed = stringEnumValues.Select(x => (EnumUnderTest) Enum.Parse(typeof (EnumUnderTest), x)).ToArray();
+                EnumUnderTest[] parsed = stringEnumValues.Select(x => (EnumUnderTest) System.Enum.Parse(typeof (EnumUnderTest), x)).ToArray();
                 return parsed.SequenceEqual(enumValues);
             }
             return false;
