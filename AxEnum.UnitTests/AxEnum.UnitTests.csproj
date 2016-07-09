@@ -62,9 +62,9 @@
       <Project>{16b1815a-372c-47af-ad4f-91fd1acb117b}</Project>
       <Name>AxEnum</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AxUnit\AxUnit.csproj">
+    <ProjectReference Include="..\AxQuality\AxQuality.csproj">
       <Project>{EBF4DE7B-53CB-4F6A-8A86-BD7E0190E469}</Project>
-      <Name>AxUnit</Name>
+      <Name>AxQuality</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

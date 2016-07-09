@@ -4,14 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EBF4DE7B-53CB-4F6A-8A86-BD7E0190E469}</ProjectGuid>
+    <ProjectGuid>{D5F9154F-E74C-4BCC-88D8-71502F8115C8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AxUnit</RootNamespace>
-    <AssemblyName>AxUnit</AssemblyName>
+    <RootNamespace>AxQuality.Sample.UnitTests</RootNamespace>
+    <AssemblyName>AxQuality.Sample.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
       <Private>True</Private>
@@ -45,8 +49,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArrangeActAssert.cs" />
+    <Compile Include="CalculatorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AxEnumerable\AxEnumerable.csproj">
+      <Project>{650B0B3F-C4ED-4253-ABF1-D42F84ADCBDC}</Project>
+      <Name>AxEnumerable</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AxEnum\AxEnum.csproj">
+      <Project>{16b1815a-372c-47af-ad4f-91fd1acb117b}</Project>
+      <Name>AxEnum</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AxQuality.Sample\AxQuality.Sample.Interfaces\AxQuality.Sample.Interfaces.csproj">
+      <Project>{de7160e5-7db0-4b94-9cbe-280881a97e7b}</Project>
+      <Name>AxQuality.Sample.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AxQuality.Sample\AxQuality.Sample\AxQuality.Sample.csproj">
+      <Project>{87bbf49d-94cf-499f-825f-5643cb841b08}</Project>
+      <Name>AxQuality.Sample %28AxQuality.Sample\AxQuality.Sample%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AxQuality\AxQuality.csproj">
+      <Project>{EBF4DE7B-53CB-4F6A-8A86-BD7E0190E469}</Project>
+      <Name>AxQuality</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

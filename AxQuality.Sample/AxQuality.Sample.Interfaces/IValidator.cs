@@ -1,4 +1,4 @@
-﻿namespace AxUnit.Sample.Interfaces
+﻿namespace AxQuality.Sample.Interfaces
 {
     public interface IValidator
     {

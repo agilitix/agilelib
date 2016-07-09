@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AxEnum;
 using AxEnumerable;
-using AxUnit.Sample.Interfaces;
+using AxQuality.Sample.Interfaces;
+using AxUnit;
 using Moq;
 using NUnit.Framework;
 
-namespace AxUnit.Sample.UnitTests
+namespace AxQuality.Sample.UnitTests
 {
     public class CalculatorTest : ArrangeActAssert
     {
@@ -63,7 +63,7 @@ namespace AxUnit.Sample.UnitTests
             // Run the test case : the Add method is called on all the numbers.
             Numbers.ForEach(number =>
             {
-                Exception ex = Try(() => TestedObject.Add(number));
+                Exception ex = Trying(() => TestedObject.Add(number));
                 if (ResultException == null)
                 {
                     ResultException = ex; // Store any exception.
@@ -129,7 +129,7 @@ namespace AxUnit.Sample.UnitTests
         public override void Act()
         {
             // Run the test case.
-            Numbers.ForEach(number => { ResultExceptions.Add(Try(() => TestedObject.Add(number))); });
+            Numbers.ForEach(number => { ResultExceptions.Add(Trying(() => TestedObject.Add(number))); });
         }
 
         /// <summary>
@@ -197,7 +197,7 @@ namespace AxUnit.Sample.UnitTests
             // Run the test case and store the exceptions types.
             Numbers.ForEach(number =>
             {
-                Exception ex = Try(() => TestedObject.Add(number));
+                Exception ex = Trying(() => TestedObject.Add(number));
                 ResultExceptions.Add(ex != null ? ex.GetType() : null);
             });
         }

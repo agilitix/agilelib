@@ -53,9 +53,9 @@
       <Project>{72d78fd6-5191-44be-98ef-2d847e7ee12d}</Project>
       <Name>AxCrypt</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AxUnit\AxUnit.csproj">
+    <ProjectReference Include="..\AxQuality\AxQuality.csproj">
       <Project>{EBF4DE7B-53CB-4F6A-8A86-BD7E0190E469}</Project>
-      <Name>AxUnit</Name>
+      <Name>AxQuality</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

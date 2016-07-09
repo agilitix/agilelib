@@ -1,7 +1,7 @@
 ﻿using System;
-using AxUnit.Sample.Interfaces;
+using AxQuality.Sample.Interfaces;
 
-namespace AxUnit.Sample
+namespace AxQuality.Sample
 {
     public class Accumulator : IAccumulator
     {
