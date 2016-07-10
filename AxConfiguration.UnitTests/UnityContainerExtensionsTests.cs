@@ -3,7 +3,7 @@ using AxConfiguration.ConfigFileProvider;
 using AxConfiguration.Interfaces;
 using AxConfiguration.UnitTests.Test.Logger.Implementations;
 using AxConfiguration.UnitTests.Test.Logger.Interfaces;
-using AxUnit;
+using AxQuality;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
 

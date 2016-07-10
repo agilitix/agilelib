@@ -39,9 +39,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Comparison\AnonymousComparer.cs" />
-    <Compile Include="Comparison\AnonymousEqualityComparer.cs" />
-    <Compile Include="Enum\EnumUtils.cs" />
+    <Compile Include="AnonymousComparer.cs" />
+    <Compile Include="AnonymousEqualityComparer.cs" />
+    <Compile Include="EnumUtils.cs" />
+    <Compile Include="CommonExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

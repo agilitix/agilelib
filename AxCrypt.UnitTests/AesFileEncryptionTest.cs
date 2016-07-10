@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using AxUnit;
+using AxQuality;
 using NUnit.Framework;
 
 namespace AxCrypt.UnitTests

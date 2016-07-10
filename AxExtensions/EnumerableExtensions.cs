@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AxExtensions.Enumerable
+namespace AxExtensions
 {
     public static class EnumerableExtensions
     {
@@ -35,6 +35,16 @@ namespace AxExtensions.Enumerable
                     yield return item;
                 }
             }
+        }
+
+        public static void With<T>(this T self, Action<T> action)
+        {
+            if (self == null || action == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            action(self);
         }
     }
 }

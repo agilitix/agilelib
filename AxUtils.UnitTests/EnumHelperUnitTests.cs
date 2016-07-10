@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using AxUnit;
-using AxUtils.Enum;
+using AxQuality;
 using NUnit.Framework;
 
 namespace AxUtils.UnitTests

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AxExtensions.Enumerable;
+using AxExtensions;
 using AxQuality.Sample.Interfaces;
-using AxUnit;
 using Moq;
 using NUnit.Framework;
 

@@ -3,23 +3,23 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
-namespace AxUtils.Enum
+namespace AxUtils
 {
     public static class EnumUtils<T> where T : struct
     {
         public static IEnumerable<T> AsEnumarable()
         {
-            return System.Enum.GetValues(typeof (T)).Cast<T>();
+            return Enum.GetValues(typeof (T)).Cast<T>();
         }
 
         public static string GetName(T value)
         {
-            return System.Enum.GetName(typeof (T), value);
+            return Enum.GetName(typeof (T), value);
         }
 
         public static IEnumerable<string> GetNames()
         {
-            return System.Enum.GetNames(typeof (T));
+            return Enum.GetNames(typeof (T));
         }
 
         public static string GetDescription(T value)
@@ -35,7 +35,7 @@ namespace AxUtils.Enum
         public static IEnumerable<string> GetDescriptions()
         {
             Type type = typeof (T);
-            return System.Enum.GetValues(type)
+            return Enum.GetValues(type)
                        .Cast<T>()
                        .Select(enumValue => type.GetField(enumValue.ToString()))
                        .Select(fieldInfo => fieldInfo.GetCustomAttributes(typeof (DescriptionAttribute), false).Cast<DescriptionAttribute>())
@@ -45,7 +45,7 @@ namespace AxUtils.Enum
         public static IEnumerable<KeyValuePair<T, string>> GetValuesAndDescriptions()
         {
             Type type = typeof (T);
-            return System.Enum.GetValues(type)
+            return Enum.GetValues(type)
                        .Cast<T>()
                        .Select(enumValue => new KeyValuePair<T, string>(enumValue,
                                                                         type.GetField(enumValue.ToString())
@@ -58,7 +58,7 @@ namespace AxUtils.Enum
         public static T ParseDescription(string description, bool ignoreCase)
         {
             Type type = typeof (T);
-            var found = System.Enum.GetValues(type)
+            var found = Enum.GetValues(type)
                             .Cast<T>()
                             .SelectMany(enumValue => type.GetField(enumValue.ToString())
                                                          .GetCustomAttributes(typeof (DescriptionAttribute), false),
@@ -100,30 +100,30 @@ namespace AxUtils.Enum
 
         public static T ParseName(string name)
         {
-            return (T) System.Enum.Parse(typeof (T), name);
+            return (T) Enum.Parse(typeof (T), name);
         }
 
         public static T ParseName(string name, bool ignoreCase)
         {
-            return (T) System.Enum.Parse(typeof (T), name, ignoreCase);
+            return (T) Enum.Parse(typeof (T), name, ignoreCase);
         }
 
         public static bool TryParseName(string name, out T result)
         {
-            return System.Enum.TryParse(name, out result);
+            return Enum.TryParse(name, out result);
         }
 
         public static bool TryParseName(string name, bool ignoreCase, out T result)
         {
-            return System.Enum.TryParse(name, ignoreCase, out result);
+            return Enum.TryParse(name, ignoreCase, out result);
         }
 
         public static T Cast(int input)
         {
             Type type = typeof (T);
-            if (System.Enum.IsDefined(type, input))
+            if (Enum.IsDefined(type, input))
             {
-                return (T) System.Enum.ToObject(type, input);
+                return (T) Enum.ToObject(type, input);
             }
 
             throw new InvalidEnumArgumentException();
@@ -146,7 +146,7 @@ namespace AxUtils.Enum
         public static bool IsDefined(int value)
         {
             Type type = typeof (T);
-            return System.Enum.IsDefined(type, value);
+            return Enum.IsDefined(type, value);
         }
 
         public static bool IsDefined(string name, bool ignoreCase)

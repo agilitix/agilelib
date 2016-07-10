@@ -39,10 +39,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enumerable\EnumerableExtensions.cs" />
-    <Compile Include="Enum\EnumExtensions.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="EnumExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="String\StringExtensions.cs" />
+    <Compile Include="RandomExtensions.cs" />
+    <Compile Include="StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

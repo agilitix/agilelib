@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 
-namespace AxUnit
+namespace AxQuality
 {
     /// <summary>
     /// Arrange is variable declaration and initialization for the test.
