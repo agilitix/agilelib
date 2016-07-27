@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 
-namespace AxUtils
+namespace AxExtensions
 {
-    static class CommonExtensions
+    internal static class CommonExtensions
     {
         public static bool IsAnyOf<T>(this T self, params T[] any)
         {
@@ -12,6 +12,14 @@ namespace AxUtils
                 throw new ArgumentNullException();
             }
             return any.Contains(self);
+        }
+
+        public static void ThrowIfNull<T>(this T self) where T : class
+        {
+            if (self == null)
+            {
+                throw new ArgumentNullException();
+            }
         }
     }
 }

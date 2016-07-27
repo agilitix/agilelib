@@ -41,8 +41,9 @@
   <ItemGroup>
     <Compile Include="AnonymousComparer.cs" />
     <Compile Include="AnonymousEqualityComparer.cs" />
+    <Compile Include="DisposableAction.cs" />
+    <Compile Include="DisposeHelper.cs" />
     <Compile Include="EnumUtils.cs" />
-    <Compile Include="CommonExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

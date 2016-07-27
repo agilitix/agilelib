@@ -39,7 +39,7 @@ namespace AxUtils
             {
                 throw new ArgumentNullException();
             }
-            return value.GetHashCode();
+            return _ketGetter(value).GetHashCode();
         }
     }
 }
