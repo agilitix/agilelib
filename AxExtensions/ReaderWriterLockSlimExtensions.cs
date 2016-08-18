@@ -8,25 +8,25 @@ namespace AxExtensions
         public static IDisposable GetReadLock(this ReaderWriterLockSlim self)
         {
             self.EnterReadLock();
-            return new DisposableReaderWriterLock(self.ExitReadLock);
+            return new ReaderWriterLockDisposable(self.ExitReadLock);
         }
 
         public static IDisposable GetWriteLock(this ReaderWriterLockSlim self)
         {
             self.EnterWriteLock();
-            return new DisposableReaderWriterLock(self.ExitWriteLock);
+            return new ReaderWriterLockDisposable(self.ExitWriteLock);
         }
 
         public static IDisposable GetUpgradeableReadLock(this ReaderWriterLockSlim self)
         {
             self.EnterUpgradeableReadLock();
-            return new DisposableReaderWriterLock(self.ExitUpgradeableReadLock);
+            return new ReaderWriterLockDisposable(self.ExitUpgradeableReadLock);
         }
 
-        private sealed class DisposableReaderWriterLock : IDisposable
+        private sealed class ReaderWriterLockDisposable : IDisposable
         {
             private readonly Action _action;
-            public DisposableReaderWriterLock(Action action)
+            public ReaderWriterLockDisposable(Action action)
             {
                 _action = action;
             }
