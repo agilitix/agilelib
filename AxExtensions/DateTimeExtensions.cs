@@ -6,63 +6,133 @@ namespace AxExtensions
     {
         public int Years;
         public int Months;
+        public int Weeks;
         public int Days;
+        public int Hours;
+        public int Minutes;
+        public int Seconds;
+
+        public override string ToString()
+        {
+            return string.Format("{0}Y {1}m {2}W {3}D {4}H {5}M {6}S", Years, Months, Weeks, Days, Hours, Minutes, Seconds);
+        }
     }
 
     public static class DateTimeExtensions
     {
-        public static int CalculateYearsTo(this DateTime self, DateTime other)
+        public static int YearsTo(this DateTime self, DateTime end)
         {
-            DateTimeAge age = self.CalculateAgeTo(other);
+            DateTimeAge age = self.AgeTo(end);
             return age.Years;
         }
 
-        public static int CalculateMonthsTo(this DateTime self, DateTime other)
+        public static int MonthsTo(this DateTime self, DateTime end)
         {
-            DateTimeAge age = self.CalculateAgeTo(other);
-            return age.Years * 12 + age.Months;
+            DateTimeAge age = self.AgeTo(end);
+            return age.Years*12 + age.Months;
         }
 
-        public static int CalculateDaysTo(this DateTime self, DateTime other)
+        public static int DaysTo(this DateTime self, DateTime end)
         {
-            DateTime start, end;
-            if (self < other)
+            DateTime first, last;
+            if (self < end)
             {
-                start = self;
-                end = other;
+                first = self;
+                last = end;
             }
             else
             {
-                start = other;
-                end = self;
+                first = end;
+                last = self;
             }
 
-            return (int)end.Subtract(start).TotalDays;
+            return (int) last.Subtract(first).TotalDays;
         }
 
-        public static DateTimeAge CalculateAgeTo(this DateTime self, DateTime other)
+        public static int WeeksTo(this DateTime self, DateTime end)
         {
-            DateTime start, end;
-            if (self < other)
+            return DaysTo(self, end)/7;
+        }
+
+        public static int HoursTo(this DateTime self, DateTime end)
+        {
+            return DaysTo(self, end)*24;
+        }
+
+        public static int MinutesTo(this DateTime self, DateTime end)
+        {
+            return DaysTo(self, end)*24*60;
+        }
+
+        public static int SecondsTo(this DateTime self, DateTime end)
+        {
+            return DaysTo(self, end)*24*60*60;
+        }
+
+        public static DateTimeAge AgeTo(this DateTime self, DateTime end)
+        {
+            DateTime first, last;
+            if (self < end)
             {
-                start = self;
-                end = other;
+                first = self;
+                last = end;
             }
             else
             {
-                start = other;
-                end = self;
+                first = end;
+                last = self;
             }
 
-            DateTimeOffset minOffset = DateTimeOffset.MinValue;
-            DateTimeOffset offset = minOffset.AddDays(end.Subtract(start).TotalDays);
+            int seconds = last.Second - first.Second;
+            if (seconds < 0)
+            {
+                last = last.AddMinutes(-1);
+                seconds += 60;
+            }
+
+            int minutes = last.Minute - first.Minute;
+            if (minutes < 0)
+            {
+                last = last.AddHours(-1);
+                minutes += 60;
+            }
+
+            int hours = last.Hour - first.Hour;
+            if (hours < 0)
+            {
+                last = last.AddDays(-1);
+                hours += 24;
+            }
+
+            int days = last.Day - first.Day;
+            if (days < 0)
+            {
+                last = last.AddMonths(-1);
+                days += DateTime.DaysInMonth(last.Year, last.Month);
+            }
+
+            int weeks = days/7;
+            days %= 7;
+
+            int months = last.Month - first.Month;
+            if (months < 0)
+            {
+                last = last.AddYears(-1);
+                months += 12;
+            }
+
+            int years = last.Year - first.Year;
 
             return new DateTimeAge
-            {
-                Years = offset.Year - minOffset.Year,
-                Months = offset.Month - minOffset.Month,
-                Days = offset.Day - minOffset.Day
-            };
+                   {
+                       Years = years,
+                       Months = months,
+                       Weeks = weeks,
+                       Days = days,
+                       Hours = hours,
+                       Minutes = minutes,
+                       Seconds = seconds
+                   };
         }
     }
 }
