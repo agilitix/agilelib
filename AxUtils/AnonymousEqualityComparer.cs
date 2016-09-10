@@ -4,21 +4,17 @@ using System.Collections.Generic;
 namespace AxUtils
 {
     /// <summary>
-    /// Compare two objects for equality, the evaluation is done on a key provided by a key getter.
+    /// Compare two objects for equality, the evaluation can be done
+    /// through given comparer.
     /// </summary>
-    public class AnonymousEqualityComparer<T, TKey> : IEqualityComparer<T>
+    public class AnonymousEqualityComparer<T> : IEqualityComparer<T>
     {
-        private readonly Func<T, TKey> _ketGetter;
-        private readonly IEqualityComparer<TKey> _keyComparer;
+        private readonly Func<T, T, bool> _comparer;
 
-        public AnonymousEqualityComparer(Func<T, TKey> keyGetter, IEqualityComparer<TKey> keyComparer)
+        public AnonymousEqualityComparer(Func<T, T, bool> comparer)
         {
-            _ketGetter = keyGetter;
-            _keyComparer = keyComparer ?? EqualityComparer<TKey>.Default;
+            _comparer = comparer;
         }
-
-        public AnonymousEqualityComparer(Func<T, TKey> keyGetter)
-            : this(keyGetter, null) {}
 
         public bool Equals(T first, T second)
         {
@@ -30,7 +26,7 @@ namespace AxUtils
             {
                 return false;
             }
-            return _keyComparer.Equals(_ketGetter(first), _ketGetter(second));
+            return _comparer(first, second);
         }
 
         public int GetHashCode(T value)
@@ -39,7 +35,7 @@ namespace AxUtils
             {
                 throw new ArgumentNullException();
             }
-            return _ketGetter(value).GetHashCode();
+            return value.GetHashCode();
         }
     }
 }

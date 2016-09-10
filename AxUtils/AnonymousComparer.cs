@@ -4,8 +4,9 @@ using System.Collections.Generic;
 namespace AxUtils
 {
     /// <summary>
-    /// Compares two objects and indicates whether one is less than, equal to, or greater than the other.
-    /// The comparison is done on a key extracted from the object.
+    /// Compares two objects and indicates whether one is less than, equal to,
+    /// or greater than the other. The comparison is done on a key extracted
+    /// from the object.
     /// </summary>
     public class AnonymousComparer<T, TKey> : IComparer<T>
     {
@@ -19,7 +20,9 @@ namespace AxUtils
         }
 
         public AnonymousComparer(Func<T, TKey> keyGetter)
-            : this(keyGetter, null) {}
+            : this(keyGetter, null)
+        {
+        }
 
         public int Compare(T first, T second)
         {

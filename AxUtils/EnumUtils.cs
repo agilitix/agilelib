@@ -5,160 +5,208 @@ using System.Linq;
 
 namespace AxUtils
 {
+    public class EnumInfos<T> where T : struct
+    {
+        public T Value;
+        public string Name;
+        public string Description;
+    }
+
     public static class EnumUtils<T> where T : struct
     {
-        public static IEnumerable<T> AsEnumarable()
+        private static readonly Lazy<IDictionary<T, EnumInfos<T>>> _valueToInfos =
+            new Lazy<IDictionary<T, EnumInfos<T>>>(() => new Dictionary<T, EnumInfos<T>>());
+
+        private static readonly Lazy<IDictionary<string, EnumInfos<T>>> _nameToInfos =
+            new Lazy<IDictionary<string, EnumInfos<T>>>(() => new Dictionary<string, EnumInfos<T>>());
+
+        private static readonly Lazy<IDictionary<string, EnumInfos<T>>> _descriptionToInfos =
+            new Lazy<IDictionary<string, EnumInfos<T>>>(() => new Dictionary<string, EnumInfos<T>>());
+
+        static EnumUtils()
         {
-            return Enum.GetValues(typeof (T)).Cast<T>();
+            if (!IsEnum())
+            {
+                throw new InvalidEnumArgumentException();
+            }
+
+            IList<EnumInfos<T>> enumInfos = Initialize().ToList();
+
+            enumInfos.Aggregate(_valueToInfos.Value,
+                                (accu, item) =>
+                                {
+                                    accu[item.Value] = item;
+                                    return accu;
+                                });
+
+            enumInfos.Aggregate(_nameToInfos.Value,
+                                (accu, item) =>
+                                {
+                                    accu[item.Name] = item;
+                                    return accu;
+                                });
+
+            enumInfos.Where(x => !string.IsNullOrWhiteSpace(x.Description))
+                     .Aggregate(_descriptionToInfos.Value,
+                                (accu, item) =>
+                                {
+                                    accu[item.Description] = item;
+                                    return accu;
+                                });
+        }
+
+        public static bool IsNullableEnum()
+        {
+            Type type = typeof (T);
+            return type.IsGenericType
+                   && type.GetGenericTypeDefinition() == typeof (Nullable<>)
+                   && type.GetGenericArguments()[0].IsEnum;
+        }
+
+        public static bool IsEnum()
+        {
+            Type type = typeof (T);
+            return type.IsEnum;
+        }
+
+        public static IEnumerable<T> GetValues()
+        {
+            return _valueToInfos.Value.Keys;
         }
 
         public static string GetName(T value)
         {
-            return Enum.GetName(typeof (T), value);
+            EnumInfos<T> info;
+            return _valueToInfos.Value.TryGetValue(value, out info) ? info.Name : null;
         }
 
         public static IEnumerable<string> GetNames()
         {
-            return Enum.GetNames(typeof (T));
+            return _nameToInfos.Value.Keys;
         }
 
         public static string GetDescription(T value)
         {
-            Type type = typeof (T);
-            return type.GetField(value.ToString())
-                       .GetCustomAttributes(typeof (DescriptionAttribute), false)
-                       .Cast<DescriptionAttribute>()
-                       .Select(attribute => attribute.Description)
-                       .FirstOrDefault();
+            EnumInfos<T> info;
+            return _valueToInfos.Value.TryGetValue(value, out info) ? info.Description : null;
         }
 
         public static IEnumerable<string> GetDescriptions()
         {
-            Type type = typeof (T);
-            return Enum.GetValues(type)
-                       .Cast<T>()
-                       .Select(enumValue => type.GetField(enumValue.ToString()))
-                       .Select(fieldInfo => fieldInfo.GetCustomAttributes(typeof (DescriptionAttribute), false).Cast<DescriptionAttribute>())
-                       .Select(attribute => attribute.Select(x => x.Description).FirstOrDefault());
-        }
-
-        public static IEnumerable<KeyValuePair<T, string>> GetValuesAndDescriptions()
-        {
-            Type type = typeof (T);
-            return Enum.GetValues(type)
-                       .Cast<T>()
-                       .Select(enumValue => new KeyValuePair<T, string>(enumValue,
-                                                                        type.GetField(enumValue.ToString())
-                                                                            .GetCustomAttributes(typeof (DescriptionAttribute), false)
-                                                                            .Cast<DescriptionAttribute>()
-                                                                            .Select(attribute => attribute.Description)
-                                                                            .FirstOrDefault()));
-        }
-
-        public static T ParseDescription(string description, bool ignoreCase)
-        {
-            Type type = typeof (T);
-            var found = Enum.GetValues(type)
-                            .Cast<T>()
-                            .SelectMany(enumValue => type.GetField(enumValue.ToString())
-                                                         .GetCustomAttributes(typeof (DescriptionAttribute), false),
-                                        (fld, att) => new {Field = fld, Attribute = att})
-                            .SingleOrDefault(x => ignoreCase
-                                                      ? ((DescriptionAttribute) x.Attribute).Description.Equals(description, StringComparison.OrdinalIgnoreCase)
-                                                      : ((DescriptionAttribute) x.Attribute).Description.Equals(description));
-            if (found != null)
-            {
-                return found.Field;
-            }
-
-            throw new InvalidEnumArgumentException();
+            return _descriptionToInfos.Value.Keys;
         }
 
         public static T ParseDescription(string description)
         {
-            return ParseDescription(description, false);
+            T result;
+            if (!TryParseDescription(description, out result))
+            {
+                throw new InvalidEnumArgumentException();
+            }
+            return result;
         }
 
         public static bool TryParseDescription(string description, out T result)
         {
-            return TryParseDescription(description, false, out result);
-        }
-
-        public static bool TryParseDescription(string description, bool ignoreCase, out T result)
-        {
-            try
+            EnumInfos<T> info;
+            if (!string.IsNullOrWhiteSpace(description) && _descriptionToInfos.Value.TryGetValue(description, out info))
             {
-                result = ParseDescription(description);
+                result = info.Value;
                 return true;
             }
-            catch
-            {
-                result = default(T);
-                return false;
-            }
+            result = default(T);
+            return false;
         }
 
         public static T ParseName(string name)
         {
-            return (T) Enum.Parse(typeof (T), name);
-        }
-
-        public static T ParseName(string name, bool ignoreCase)
-        {
-            return (T) Enum.Parse(typeof (T), name, ignoreCase);
+            T result;
+            if (!TryParseName(name, out result))
+            {
+                throw new InvalidEnumArgumentException();
+            }
+            return result;
         }
 
         public static bool TryParseName(string name, out T result)
         {
-            return Enum.TryParse(name, out result);
-        }
-
-        public static bool TryParseName(string name, bool ignoreCase, out T result)
-        {
-            return Enum.TryParse(name, ignoreCase, out result);
+            EnumInfos<T> info;
+            if (!string.IsNullOrWhiteSpace(name) && _nameToInfos.Value.TryGetValue(name, out info))
+            {
+                result = info.Value;
+                return true;
+            }
+            result = default(T);
+            return false;
         }
 
         public static T Cast(int input)
         {
-            Type type = typeof (T);
-            if (Enum.IsDefined(type, input))
+            T result;
+            if (!TryCast(input, out result))
             {
-                return (T) Enum.ToObject(type, input);
+                throw new InvalidEnumArgumentException();
             }
-
-            throw new InvalidEnumArgumentException();
+            return result;
         }
 
         public static bool TryCast(int input, out T result)
         {
             try
             {
-                result = Cast(input);
-                return true;
+                Type type = typeof (T);
+                EnumInfos<T> info;
+                if (_valueToInfos.Value.TryGetValue((T) Enum.ToObject(type, input), out info))
+                {
+                    result = info.Value;
+                    return true;
+                }
             }
-            catch (Exception)
+            catch
             {
-                result = default(T);
-                return false;
             }
+            result = default(T);
+            return false;
         }
 
-        public static bool IsDefined(int value)
+        public static bool IsValueDefined(int input)
+        {
+            T result;
+            return TryCast(input, out result);
+        }
+
+        public static bool IsNameDefined(string name)
+        {
+            EnumInfos<T> info;
+            return !string.IsNullOrWhiteSpace(name) && _nameToInfos.Value.TryGetValue(name, out info);
+        }
+
+        public static bool IsDescriptionDefined(string description)
+        {
+            EnumInfos<T> info;
+            return !string.IsNullOrWhiteSpace(description) && _descriptionToInfos.Value.TryGetValue(description, out info);
+        }
+
+        public static IEnumerable<EnumInfos<T>> GetEnumInfos()
+        {
+            return _valueToInfos.Value.Values;
+        }
+
+        private static IEnumerable<EnumInfos<T>> Initialize()
         {
             Type type = typeof (T);
-            return Enum.IsDefined(type, value);
-        }
-
-        public static bool IsDefined(string name, bool ignoreCase)
-        {
-            return GetNames().Any(x => ignoreCase
-                                           ? x.Equals(name, StringComparison.OrdinalIgnoreCase)
-                                           : x.Equals(name));
-        }
-
-        public static bool IsDefined(string name)
-        {
-            return IsDefined(name, false);
+            return Enum.GetValues(type)
+                       .Cast<T>()
+                       .Select(enumValue => new EnumInfos<T>
+                                            {
+                                                Value = enumValue,
+                                                Description = type.GetField(enumValue.ToString())
+                                                                  .GetCustomAttributes(typeof (DescriptionAttribute), false)
+                                                                  .Cast<DescriptionAttribute>()
+                                                                  .Select(attribute => attribute.Description)
+                                                                  .FirstOrDefault(),
+                                                Name = Enum.GetName(typeof (T), enumValue)
+                                            });
         }
     }
 }

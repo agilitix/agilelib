@@ -19,6 +19,21 @@ namespace AxExtensions
 
     public static class DateTimeExtensions
     {
+        public static bool IsEarlierThan(this DateTime self, DateTime other)
+        {
+            return self.CompareTo(other) < 0;
+        }
+
+        public static bool IsLaterThan(this DateTime self, DateTime other)
+        {
+            return self.CompareTo(other) > 0;
+        }
+
+        public static bool IsSameAs(this DateTime self, DateTime other)
+        {
+            return self.CompareTo(other) == 0;
+        }
+
         public static int YearsTo(this DateTime self, DateTime end)
         {
             DateTimeAge age = self.AgeTo(end);

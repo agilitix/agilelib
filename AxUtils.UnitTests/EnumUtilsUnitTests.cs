@@ -7,8 +7,14 @@ using NUnit.Framework;
 
 namespace AxUtils.UnitTests
 {
-    public class EnumHelperUnitTests : ArrangeActAssert
+    public class EnumUtilsUnitTests : ArrangeActAssert
     {
+        protected AnonymousEqualityComparer<EnumInfos<EnumUnderTest>> _comparer = new AnonymousEqualityComparer<EnumInfos<EnumUnderTest>>((x, y) =>
+                                                                                                                                          x.Value == y.Value
+                                                                                                                                          && x.Description
+                                                                                                                                          == y.Description
+                                                                                                                                          && x.Name == y.Name);
+
         protected enum EnumUnderTest
         {
             [System.ComponentModel.Description("DescA")]
@@ -27,7 +33,7 @@ namespace AxUtils.UnitTests
         {
             if (stringEnumValues.Length == enumValues.Length)
             {
-                EnumUnderTest[] parsed = stringEnumValues.Select(x => (EnumUnderTest) System.Enum.Parse(typeof (EnumUnderTest), x)).ToArray();
+                EnumUnderTest[] parsed = stringEnumValues.Select(x => (EnumUnderTest) Enum.Parse(typeof (EnumUnderTest), x)).ToArray();
                 return parsed.SequenceEqual(enumValues);
             }
             return false;
@@ -35,17 +41,12 @@ namespace AxUtils.UnitTests
 
         protected string[] GetAllNames()
         {
-            return new[] { "A", "B", "C", "D" };
+            return new[] {"A", "B", "C", "D"};
         }
 
         protected string[] GetAllDescriptions()
         {
-            return new[] {"DescA", null, "DescC", "DescD"};
-        }
-
-        protected string[] GetExistingDescriptions()
-        {
-            return GetAllDescriptions().Except(new string[] {null}).ToArray();
+            return new[] {"DescA", "DescC", "DescD"};
         }
 
         protected EnumUnderTest[] GetAllValues()
@@ -58,21 +59,21 @@ namespace AxUtils.UnitTests
             return GetAllValues().Except(new[] {EnumUnderTest.B}).ToArray();
         }
 
-        protected KeyValuePair<EnumUnderTest, string>[] GetValuesAndDescriptions()
+        protected EnumInfos<EnumUnderTest>[] GetInfos()
         {
             return new[]
                    {
-                       new KeyValuePair<EnumUnderTest, string>(EnumUnderTest.A, "DescA"),
-                       new KeyValuePair<EnumUnderTest, string>(EnumUnderTest.B, null),
-                       new KeyValuePair<EnumUnderTest, string>(EnumUnderTest.C, "DescC"),
-                       new KeyValuePair<EnumUnderTest, string>(EnumUnderTest.D, "DescD"),
+                       new EnumInfos<EnumUnderTest> {Value = EnumUnderTest.A, Name = "A", Description = "DescA"},
+                       new EnumInfos<EnumUnderTest> {Value = EnumUnderTest.B, Name = "B", Description = null},
+                       new EnumInfos<EnumUnderTest> {Value = EnumUnderTest.C, Name = "C", Description = "DescC"},
+                       new EnumInfos<EnumUnderTest> {Value = EnumUnderTest.D, Name = "D", Description = "DescD"},
                    };
         }
     }
 
-    public class EnumHelperUnitTests_retrieve_all_the_descriptions : EnumHelperUnitTests
+    public class EnumUtilsUnitTestsRetrieveAllTheDescriptions : EnumUtilsUnitTests
     {
-        protected string[] ExpectedDescriptions;
+        protected IList<string> ExpectedDescriptions;
         protected IList<string> Result;
 
         public override void Arrange()
@@ -92,46 +93,39 @@ namespace AxUtils.UnitTests
         }
     }
 
-    public class EnumHelperUnitTests_retrieve_descriptions_one_by_one : EnumHelperUnitTests_retrieve_all_the_descriptions
+    public class EnumUtilsUnitTestsRetrieveDescriptionsOneByOne : EnumUtilsUnitTestsRetrieveAllTheDescriptions
     {
-        public override void Arrange()
-        {
-            base.Arrange();
-            Result = new List<string>();
-        }
-
         public override void Act()
         {
-            foreach (EnumUnderTest enumValue in GetAllValues())
-            {
-                Result.Add(EnumUtils<EnumUnderTest>.GetDescription(enumValue));
-            }
+            Result = GetAllValues().Select(EnumUtils<EnumUnderTest>.GetDescription)
+                                   .Where(description => description != null)
+                                   .ToList();
         }
     }
 
-    public class EnumHelperUnitTests_retrieve_values_and_descriptions_pairs : EnumHelperUnitTests
+    public class EnumUtilsUnitTestsRetrieveValuesAndDescriptionsPairs : EnumUtilsUnitTests
     {
-        protected KeyValuePair<EnumUnderTest, string>[] ExpectedPairs;
-        protected IList<KeyValuePair<EnumUnderTest, string>> Result;
+        protected IList<EnumInfos<EnumUnderTest>> ExpectedPairs;
+        protected IList<EnumInfos<EnumUnderTest>> Result;
 
         public override void Arrange()
         {
-            ExpectedPairs = GetValuesAndDescriptions();
+            ExpectedPairs = GetInfos();
         }
 
         public override void Act()
         {
-            Result = EnumUtils<EnumUnderTest>.GetValuesAndDescriptions().ToList();
+            Result = EnumUtils<EnumUnderTest>.GetEnumInfos().ToList();
         }
 
         [Test]
         public void Assert_all_descriptions_pairs_were_retrieved_as_expected()
         {
-            Assert.IsTrue(ExpectedPairs.SequenceEqual(Result));
+            Assert.IsTrue(ExpectedPairs.SequenceEqual(Result, _comparer));
         }
     }
 
-    public class EnumHelperUnitTests_parsing_only_existing_descriptions_to_retrieve_enum_values : EnumHelperUnitTests
+    public class EnumUtilsUnitTestsParsingOnlyExistingDescriptionsToRetrieveEnumValues : EnumUtilsUnitTests
     {
         protected EnumUnderTest[] ExpectedValues;
         protected IList<EnumUnderTest> Result;
@@ -144,7 +138,7 @@ namespace AxUtils.UnitTests
 
         public override void Act()
         {
-            foreach (string description in GetExistingDescriptions())
+            foreach (string description in GetAllDescriptions())
             {
                 Result.Add(EnumUtils<EnumUnderTest>.ParseDescription(description));
             }
@@ -157,7 +151,7 @@ namespace AxUtils.UnitTests
         }
     }
 
-    public class EnumHelperUnitTests_parsing_undefined_descriptions_should_raise_exceptions : EnumHelperUnitTests
+    public class EnumUtilsUnitTestsParsingUndefinedDescriptionsShouldRaiseExceptions : EnumUtilsUnitTests
     {
         protected IList<Exception> Result;
 
@@ -184,7 +178,7 @@ namespace AxUtils.UnitTests
         }
     }
 
-    public class EnumHelperUnitTests_trying_to_parse_undefined_description_always_return_false : EnumHelperUnitTests
+    public class EnumUtilsUnitTestsTryingToParseUndefinedDescriptionAlwaysReturnFalse : EnumUtilsUnitTests
     {
         protected IList<bool> Result;
 
@@ -209,7 +203,7 @@ namespace AxUtils.UnitTests
         }
     }
 
-    public class EnumHelperUnitTests_trying_to_parse_existing_descriptions_always_return_true : EnumHelperUnitTests
+    public class EnumUtilsUnitTestsTryingToParseExistingDescriptionsAlwaysReturnTrue : EnumUtilsUnitTests
     {
         protected IList<bool> Result;
 
@@ -220,7 +214,7 @@ namespace AxUtils.UnitTests
 
         public override void Act()
         {
-            foreach (string description in GetExistingDescriptions())
+            foreach (string description in GetAllDescriptions())
             {
                 EnumUnderTest output;
                 Result.Add(EnumUtils<EnumUnderTest>.TryParseDescription(description, out output));
@@ -234,7 +228,7 @@ namespace AxUtils.UnitTests
         }
     }
 
-    public class EnumHelperUnitTests_parsing_name_from_strings_base : EnumHelperUnitTests
+    public class EnumUtilsUnitTestsParsingNameFromStringsBase : EnumUtilsUnitTests
     {
         protected string[] InputStringEnumValues;
         protected EnumUnderTest[] ExpectedEnumValuesFromStringValues;
@@ -263,7 +257,7 @@ namespace AxUtils.UnitTests
         }
     }
 
-    public class EnumHelperUnitTestsTryparsenameFromStrings : EnumHelperUnitTests
+    public class EnumUtilsUnitTestsTryparsenameFromStrings : EnumUtilsUnitTests
     {
         protected string[] InputStringEnumValues;
         protected EnumUnderTest[] ExpectedEnumValuesFromStringValues;
@@ -272,7 +266,7 @@ namespace AxUtils.UnitTests
         public override void Arrange()
         {
             InputStringEnumValues = GetAllNames();
-            ExpectedEnumValuesFromStringValues = new[] { EnumUnderTest.A, EnumUnderTest.B, EnumUnderTest.C, EnumUnderTest.D };
+            ExpectedEnumValuesFromStringValues = new[] {EnumUnderTest.A, EnumUnderTest.B, EnumUnderTest.C, EnumUnderTest.D};
             Result = new List<bool>();
         }
 
