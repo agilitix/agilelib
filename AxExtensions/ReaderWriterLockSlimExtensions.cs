@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using AxUtils;
 
 namespace AxExtensions
 {
@@ -8,33 +9,19 @@ namespace AxExtensions
         public static IDisposable GetReadLock(this ReaderWriterLockSlim self)
         {
             self.EnterReadLock();
-            return new ReaderWriterLockDisposable(self.ExitReadLock);
+            return new DisposableAction(self.ExitReadLock);
         }
 
         public static IDisposable GetWriteLock(this ReaderWriterLockSlim self)
         {
             self.EnterWriteLock();
-            return new ReaderWriterLockDisposable(self.ExitWriteLock);
+            return new DisposableAction(self.ExitWriteLock);
         }
 
         public static IDisposable GetUpgradeableReadLock(this ReaderWriterLockSlim self)
         {
             self.EnterUpgradeableReadLock();
-            return new ReaderWriterLockDisposable(self.ExitUpgradeableReadLock);
-        }
-
-        private sealed class ReaderWriterLockDisposable : IDisposable
-        {
-            private readonly Action _action;
-            public ReaderWriterLockDisposable(Action action)
-            {
-                _action = action;
-            }
-
-            public void Dispose()
-            {
-                _action();
-            }
+            return new DisposableAction(self.ExitUpgradeableReadLock);
         }
     }
 }

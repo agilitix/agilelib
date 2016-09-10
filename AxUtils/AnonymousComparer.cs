@@ -3,25 +3,18 @@ using System.Collections.Generic;
 
 namespace AxUtils
 {
-    /// <summary>
-    /// Compares two objects and indicates whether one is less than, equal to,
-    /// or greater than the other. The comparison is done on a key extracted
-    /// from the object.
-    /// </summary>
-    public class AnonymousComparer<T, TKey> : IComparer<T>
+    public class AnonymousComparer<T> : IComparer<T>
     {
-        private readonly Func<T, TKey> _ketGetter;
-        private readonly IComparer<TKey> _keyComparer;
+        private readonly Func<T, T, int> _comparer;
 
-        public AnonymousComparer(Func<T, TKey> keyGetter, IComparer<TKey> keyComparer)
+        public static IComparer<T> DefaultComparer
         {
-            _ketGetter = keyGetter;
-            _keyComparer = keyComparer ?? Comparer<TKey>.Default;
+            get { return Comparer<T>.Default; }
         }
 
-        public AnonymousComparer(Func<T, TKey> keyGetter)
-            : this(keyGetter, null)
+        public AnonymousComparer(Func<T, T, int> comparer)
         {
+            _comparer = comparer;
         }
 
         public int Compare(T first, T second)
@@ -38,7 +31,7 @@ namespace AxUtils
             {
                 return 1;
             }
-            return _keyComparer.Compare(_ketGetter(first), _ketGetter(second));
+            return _comparer(first, second);
         }
     }
 }
