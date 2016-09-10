@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 
 namespace AxCrypt
 {
-    public class AesFileEncryption
+    public class AesStringEncryption
     {
         // Recommended is >= 1000
         protected readonly int Iterations = 1024;
@@ -82,38 +82,55 @@ namespace AxCrypt
 
         #endregion
 
-        public void EncryptFile(string sourceFilename, string destinationFilename, string password)
-        {
-            Run(sourceFilename, destinationFilename, password, aes => aes.CreateEncryptor(aes.Key, aes.IV));
-        }
-
-        public void DecryptFile(string sourceFilename, string destinationFilename, string password)
-        {
-            Run(sourceFilename, destinationFilename, password, aes => aes.CreateDecryptor(aes.Key, aes.IV));
-        }
-
-        private void Run(string sourceFilename, string destinationFilename, string password, Func<RijndaelManaged, ICryptoTransform> transformBuilder)
+        public string Encrypt(string source, string password)
         {
             Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(password, Salt, Iterations);
 
             var aes = new RijndaelManaged();
             aes.KeySize = aes.LegalKeySizes[0].MaxSize;
             aes.BlockSize = aes.LegalBlockSizes[0].MaxSize;
-            aes.Key = key.GetBytes(aes.KeySize/8);
-            aes.IV = key.GetBytes(aes.BlockSize/8);
+            aes.Key = key.GetBytes(aes.KeySize / 8);
+            aes.IV = key.GetBytes(aes.BlockSize / 8);
             aes.Mode = CipherMode.CBC;
             aes.Padding = PaddingMode.ISO10126;
 
-            ICryptoTransform transform = transformBuilder(aes);
+            ICryptoTransform transform = aes.CreateEncryptor(aes.Key, aes.IV);
 
-            using (FileStream destination = new FileStream(destinationFilename, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+            using (MemoryStream output = new MemoryStream())
             {
-                using (CryptoStream cryptoStream = new CryptoStream(destination, transform, CryptoStreamMode.Write))
+                using (CryptoStream cryptoStream = new CryptoStream(output, transform, CryptoStreamMode.Write))
                 {
-                    using (FileStream source = new FileStream(sourceFilename, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    using (StreamWriter writer = new StreamWriter(cryptoStream))
                     {
-                        source.CopyTo(cryptoStream);
-                        cryptoStream.FlushFinalBlock();
+                        writer.Write(source);
+                    }
+                }
+
+                return Convert.ToBase64String(output.ToArray());
+            }
+        }
+
+        public string Decrypt(string source, string password)
+        {
+            Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(password, Salt, Iterations);
+
+            var aes = new RijndaelManaged();
+            aes.KeySize = aes.LegalKeySizes[0].MaxSize;
+            aes.BlockSize = aes.LegalBlockSizes[0].MaxSize;
+            aes.Key = key.GetBytes(aes.KeySize / 8);
+            aes.IV = key.GetBytes(aes.BlockSize / 8);
+            aes.Mode = CipherMode.CBC;
+            aes.Padding = PaddingMode.ISO10126;
+
+            ICryptoTransform transform = aes.CreateDecryptor(aes.Key, aes.IV);
+
+            using (MemoryStream input = new MemoryStream(Convert.FromBase64String(source)))
+            {
+                using (CryptoStream cryptoStream = new CryptoStream(input, transform, CryptoStreamMode.Read))
+                {
+                    using (StreamReader reader = new StreamReader(cryptoStream))
+                    {
+                        return reader.ReadToEnd();
                     }
                 }
             }
