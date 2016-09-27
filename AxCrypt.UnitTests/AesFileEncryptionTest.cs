@@ -4,6 +4,7 @@ using NUnit.Framework;
 
 namespace AxCrypt.UnitTests
 {
+
     public class AesFileEncryptionUnitTests : ArrangeActAssert
     {
         protected string OriginalFile = "LoremIpsum.txt";
