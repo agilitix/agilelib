@@ -25,9 +25,10 @@ namespace AxUtils
 
         static EnumUtils()
         {
-            if (!IsEnum())
+            Type type = typeof(T);
+            if (!type.IsEnum)
             {
-                throw new InvalidEnumArgumentException();
+                throw new Exception();
             }
 
             IList<EnumInfos<T>> enumInfos = Initialize().ToList();
@@ -53,20 +54,6 @@ namespace AxUtils
                                     accu[item.Description] = item;
                                     return accu;
                                 });
-        }
-
-        public static bool IsNullableEnum()
-        {
-            Type type = typeof (T);
-            return type.IsGenericType
-                   && type.GetGenericTypeDefinition() == typeof (Nullable<>)
-                   && type.GetGenericArguments()[0].IsEnum;
-        }
-
-        public static bool IsEnum()
-        {
-            Type type = typeof (T);
-            return type.IsEnum;
         }
 
         public static IEnumerable<T> GetValues()
