@@ -26,32 +26,11 @@ namespace AxUtils
                 throw new NotSupportedException();
             }
 
-            _valueToInfos = new Dictionary<T, EnumInfos<T>>();
-            _nameToInfos = new Dictionary<string, EnumInfos<T>>();
-            _descriptionToInfos = new Dictionary<string, EnumInfos<T>>();
-
             IList<EnumInfos<T>> enumInfos = Initialize().ToList();
 
-            enumInfos.Aggregate(_valueToInfos,
-                                (accu, item) =>
-                                {
-                                    accu[item.Value] = item;
-                                    return accu;
-                                });
-
-            enumInfos.Aggregate(_nameToInfos,
-                                (accu, item) =>
-                                {
-                                    accu[item.Name] = item;
-                                    return accu;
-                                });
-
-            enumInfos.Aggregate(_descriptionToInfos,
-                                (accu, item) =>
-                                {
-                                    accu[item.Description] = item;
-                                    return accu;
-                                });
+            _valueToInfos = enumInfos.ToDictionary(x => x.Value);
+            _nameToInfos = enumInfos.ToDictionary(x => x.Name);
+            _descriptionToInfos = enumInfos.ToDictionary(x => x.Description);
         }
 
         public static IEnumerable<T> GetValues()
