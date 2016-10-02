@@ -46,7 +46,7 @@ namespace AxUtils.UnitTests
 
         protected string[] GetAllDescriptions()
         {
-            return new[] {"DescA", "DescC", "DescD"};
+            return new[] {"DescA", "B", "DescC", "DescD"};
         }
 
         protected EnumUnderTest[] GetAllValues()
@@ -56,7 +56,7 @@ namespace AxUtils.UnitTests
 
         protected EnumUnderTest[] GetValuesHavingDescriptions()
         {
-            return GetAllValues().Except(new[] {EnumUnderTest.B}).ToArray();
+            return GetAllValues().ToArray();
         }
 
         protected EnumInfos<EnumUnderTest>[] GetInfos()
@@ -64,7 +64,7 @@ namespace AxUtils.UnitTests
             return new[]
                    {
                        new EnumInfos<EnumUnderTest> {Value = EnumUnderTest.A, Name = "A", Description = "DescA"},
-                       new EnumInfos<EnumUnderTest> {Value = EnumUnderTest.B, Name = "B", Description = null},
+                       new EnumInfos<EnumUnderTest> {Value = EnumUnderTest.B, Name = "B", Description = "B"},
                        new EnumInfos<EnumUnderTest> {Value = EnumUnderTest.C, Name = "C", Description = "DescC"},
                        new EnumInfos<EnumUnderTest> {Value = EnumUnderTest.D, Name = "D", Description = "DescD"},
                    };

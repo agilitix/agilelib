@@ -14,41 +14,39 @@ namespace AxUtils
 
     public static class EnumUtils<T> where T : struct
     {
-        private static readonly Lazy<IDictionary<T, EnumInfos<T>>> _valueToInfos =
-            new Lazy<IDictionary<T, EnumInfos<T>>>(() => new Dictionary<T, EnumInfos<T>>());
-
-        private static readonly Lazy<IDictionary<string, EnumInfos<T>>> _nameToInfos =
-            new Lazy<IDictionary<string, EnumInfos<T>>>(() => new Dictionary<string, EnumInfos<T>>());
-
-        private static readonly Lazy<IDictionary<string, EnumInfos<T>>> _descriptionToInfos =
-            new Lazy<IDictionary<string, EnumInfos<T>>>(() => new Dictionary<string, EnumInfos<T>>());
+        private static readonly IDictionary<T, EnumInfos<T>> _valueToInfos;
+        private static readonly IDictionary<string, EnumInfos<T>> _nameToInfos;
+        private static readonly IDictionary<string, EnumInfos<T>> _descriptionToInfos;
 
         static EnumUtils()
         {
             Type type = typeof(T);
             if (!type.IsEnum)
             {
-                throw new Exception();
+                throw new NotSupportedException();
             }
+
+            _valueToInfos = new Dictionary<T, EnumInfos<T>>();
+            _nameToInfos = new Dictionary<string, EnumInfos<T>>();
+            _descriptionToInfos = new Dictionary<string, EnumInfos<T>>();
 
             IList<EnumInfos<T>> enumInfos = Initialize().ToList();
 
-            enumInfos.Aggregate(_valueToInfos.Value,
+            enumInfos.Aggregate(_valueToInfos,
                                 (accu, item) =>
                                 {
                                     accu[item.Value] = item;
                                     return accu;
                                 });
 
-            enumInfos.Aggregate(_nameToInfos.Value,
+            enumInfos.Aggregate(_nameToInfos,
                                 (accu, item) =>
                                 {
                                     accu[item.Name] = item;
                                     return accu;
                                 });
 
-            enumInfos.Where(x => !string.IsNullOrWhiteSpace(x.Description))
-                     .Aggregate(_descriptionToInfos.Value,
+            enumInfos.Aggregate(_descriptionToInfos,
                                 (accu, item) =>
                                 {
                                     accu[item.Description] = item;
@@ -58,29 +56,29 @@ namespace AxUtils
 
         public static IEnumerable<T> GetValues()
         {
-            return _valueToInfos.Value.Keys;
+            return _valueToInfos.Keys;
         }
 
         public static string GetName(T value)
         {
             EnumInfos<T> info;
-            return _valueToInfos.Value.TryGetValue(value, out info) ? info.Name : null;
+            return _valueToInfos.TryGetValue(value, out info) ? info.Name : null;
         }
 
         public static IEnumerable<string> GetNames()
         {
-            return _nameToInfos.Value.Keys;
+            return _nameToInfos.Keys;
         }
 
         public static string GetDescription(T value)
         {
             EnumInfos<T> info;
-            return _valueToInfos.Value.TryGetValue(value, out info) ? info.Description : null;
+            return _valueToInfos.TryGetValue(value, out info) ? info.Description : null;
         }
 
         public static IEnumerable<string> GetDescriptions()
         {
-            return _descriptionToInfos.Value.Keys;
+            return _descriptionToInfos.Keys;
         }
 
         public static T ParseDescription(string description)
@@ -96,7 +94,7 @@ namespace AxUtils
         public static bool TryParseDescription(string description, out T result)
         {
             EnumInfos<T> info;
-            if (!string.IsNullOrWhiteSpace(description) && _descriptionToInfos.Value.TryGetValue(description, out info))
+            if (!string.IsNullOrWhiteSpace(description) && _descriptionToInfos.TryGetValue(description, out info))
             {
                 result = info.Value;
                 return true;
@@ -118,7 +116,7 @@ namespace AxUtils
         public static bool TryParseName(string name, out T result)
         {
             EnumInfos<T> info;
-            if (!string.IsNullOrWhiteSpace(name) && _nameToInfos.Value.TryGetValue(name, out info))
+            if (!string.IsNullOrWhiteSpace(name) && _nameToInfos.TryGetValue(name, out info))
             {
                 result = info.Value;
                 return true;
@@ -143,7 +141,7 @@ namespace AxUtils
             {
                 Type type = typeof (T);
                 EnumInfos<T> info;
-                if (_valueToInfos.Value.TryGetValue((T) Enum.ToObject(type, input), out info))
+                if (_valueToInfos.TryGetValue((T) Enum.ToObject(type, input), out info))
                 {
                     result = info.Value;
                     return true;
@@ -165,18 +163,18 @@ namespace AxUtils
         public static bool IsNameDefined(string name)
         {
             EnumInfos<T> info;
-            return !string.IsNullOrWhiteSpace(name) && _nameToInfos.Value.TryGetValue(name, out info);
+            return !string.IsNullOrWhiteSpace(name) && _nameToInfos.TryGetValue(name, out info);
         }
 
         public static bool IsDescriptionDefined(string description)
         {
             EnumInfos<T> info;
-            return !string.IsNullOrWhiteSpace(description) && _descriptionToInfos.Value.TryGetValue(description, out info);
+            return !string.IsNullOrWhiteSpace(description) && _descriptionToInfos.TryGetValue(description, out info);
         }
 
         public static IEnumerable<EnumInfos<T>> GetEnumInfos()
         {
-            return _valueToInfos.Value.Values;
+            return _valueToInfos.Values;
         }
 
         private static IEnumerable<EnumInfos<T>> Initialize()
@@ -191,7 +189,7 @@ namespace AxUtils
                                                                   .GetCustomAttributes(typeof (DescriptionAttribute), false)
                                                                   .Cast<DescriptionAttribute>()
                                                                   .Select(attribute => attribute.Description)
-                                                                  .FirstOrDefault(),
+                                                                  .FirstOrDefault() ?? enumValue.ToString(),
                                                 Name = Enum.GetName(typeof (T), enumValue)
                                             });
         }
