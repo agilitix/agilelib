@@ -13,19 +13,19 @@ namespace AxUtils
             return GetAllProperties(typeof(T));
         }
 
-        public static IEnumerable<PropertyInfo> GetAllProperties(Type t)
+        public static IEnumerable<PropertyInfo> GetAllProperties(Type type)
         {
-            if (t == null)
+            if (type == null)
             {
                 return Enumerable.Empty<PropertyInfo>();
             }
 
-            return t.GetProperties(BindingFlags.Public
+            return type.GetProperties(BindingFlags.Public
                                    | BindingFlags.NonPublic
                                    | BindingFlags.Static
                                    | BindingFlags.Instance
                                    | BindingFlags.DeclaredOnly)
-                .Union(GetAllProperties(t.BaseType));
+                .Union(GetAllProperties(type.BaseType));
         }
 
         public static IEnumerable<Tuple<PropertyInfo, TAttribute>> GetAllAttributes<T, TAttribute>()
