@@ -28,14 +28,14 @@ namespace AxUtils
                 .Union(GetAllProperties(type.BaseType));
         }
 
-        public static IEnumerable<Tuple<PropertyInfo, TAttribute>> GetAllAttributes<T, TAttribute>()
+        public static IEnumerable<Tuple<PropertyInfo, TAttribute>> GetAllPropertiesAttributes<T, TAttribute>()
             where T : class
             where TAttribute : Attribute
         {
-            return GetAllAttributes<TAttribute>(typeof(T));
+            return GetAllPropertiesAttributes<TAttribute>(typeof(T));
         }
 
-        public static IEnumerable<Tuple<PropertyInfo, TAttribute>> GetAllAttributes<TAttribute>(Type type)
+        public static IEnumerable<Tuple<PropertyInfo, TAttribute>> GetAllPropertiesAttributes<TAttribute>(Type type)
             where TAttribute : Attribute
         {
             if (type == null)
@@ -48,11 +48,10 @@ namespace AxUtils
                                       | BindingFlags.Static
                                       | BindingFlags.Instance
                                       | BindingFlags.DeclaredOnly)
-                .Select(propInfo => new { PropInfo = propInfo, Attributes = propInfo.GetCustomAttributes(false) })
+                .Select(propInfo => new { PropInfo = propInfo, Attributes = propInfo.GetCustomAttributes(typeof(TAttribute), false) })
                 .SelectMany(t => t.Attributes, (t, a) => new { Type = t, a })
-                .Where(t => t.a.GetType() == typeof(TAttribute))
                 .Select(t => new Tuple<PropertyInfo, TAttribute>(t.Type.PropInfo, (TAttribute)t.a))
-                .Union(GetAllAttributes<TAttribute>(type.BaseType));
+                .Union(GetAllPropertiesAttributes<TAttribute>(type.BaseType));
         }
     }
 }
