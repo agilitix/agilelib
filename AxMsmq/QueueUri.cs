@@ -29,10 +29,13 @@ namespace AxMsmq
             Path = split[1];
             Uri = Host + "\\" + Path;
 
-            IPHostEntry hostEntry = Dns.GetHostEntry(Host);
-            if (hostEntry == null)
+            try
             {
-                throw new ArgumentException(string.Format("Host {0} does not exists", Host));
+                IPHostEntry hostEntry = Dns.GetHostEntry(Host);
+            }
+            catch(Exception e)
+            {
+                throw new ArgumentException(string.Format("Host {0} does not exists", Host), e);
             }
         }
     }
