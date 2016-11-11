@@ -1,42 +1,46 @@
-﻿using System;
-using System.Net;
+﻿using System.Text;
 using AxMsmq.Interfaces;
 
 namespace AxMsmq
 {
     public class QueueUri : IQueueUri
     {
-        public string Host { get; }
-        public string Path { get; }
-        public string Uri { get; }
+        public string HostName { get; }
+        public string QueueName { get; }
+        public string ConnectionString { get; }
 
         /// <summary>
-        /// host = "host_name"
-        /// path = "private$\\queue_name"
+        /// hostName = "host_name"
+        /// queueName = "private$\\queue_name"
         /// </summary>
-        public QueueUri(string host, string path)
-            : this(host + ":" + path)
+        public QueueUri(string hostName, string queueName)
         {
+            HostName = hostName;
+            QueueName = queueName;
+            ConnectionString = hostName + @"\" + queueName;
         }
 
-        /// <summary>
-        /// "host_name:private$\\queue_name"
-        /// </summary>
-        public QueueUri(string uri)
-        {
-            string[] split = uri.Split(':');
-            Host = split[0];
-            Path = split[1];
-            Uri = Host + "\\" + Path;
+        #region ToString
 
-            try
-            {
-                IPHostEntry hostEntry = Dns.GetHostEntry(Host);
-            }
-            catch(Exception e)
-            {
-                throw new ArgumentException(string.Format("Host {0} does not exists", Host), e);
-            }
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("{");
+            sb.Append(nameof(HostName));
+            sb.Append("=");
+            sb.Append(HostName);
+            sb.Append(",");
+            sb.Append(nameof(QueueName));
+            sb.Append("=");
+            sb.Append(QueueName);
+            sb.Append(",");
+            sb.Append(nameof(ConnectionString));
+            sb.Append("=");
+            sb.Append(ConnectionString);
+            sb.Append("}");
+            return sb.ToString();
         }
+
+        #endregion
     }
 }

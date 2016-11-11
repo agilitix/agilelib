@@ -2,9 +2,8 @@
 {
     public interface IQueueUri
     {
-        string Host { get; }
-        string Path { get; }
-
-        string Uri { get; }
+        string HostName { get; }
+        string QueueName { get; }
+        string ConnectionString { get; }
     }
 }

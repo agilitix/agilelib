@@ -2,12 +2,13 @@
 
 namespace AxMsmq.Interfaces
 {
-    public interface IQueuesManager
+    public interface IQueuesManager<T>
+        where T : class
     {
-        IList<IQueueUri> GetExisitingQueues(string host);
+        IList<IQueueUri> GetExistingQueues(string hostName);
 
-        IQueueReceiver GetOrCreateReceiver(IQueueUri uri);
-        IQueueSender GetOrCreateSender(IQueueUri uri);
-        IQueueListener GetOrCreateListener(IQueueUri uri);
+        IQueueReceiver<T> GetOrCreateReceiver(IQueueUri uri);
+        IQueueSender<T> GetOrCreateSender(IQueueUri uri);
+        IQueueListener<T> GetOrCreateListener(IQueueUri uri);
     }
 }

@@ -3,22 +3,31 @@ using AxMsmq.Interfaces;
 
 namespace AxMsmq
 {
-    public class QueueReceiver : IQueueReceiver
+    public class QueueReceiver<T> : IQueueReceiver<IQueueMessageContent<T>>
+        where T : class
     {
         private readonly MessageQueue _messageQueue;
+        private readonly IQueueMessageConverter<Message, IQueueMessageContent<T>> _converter;
 
         public IQueueUri Uri { get; }
 
-        public QueueReceiver(IQueueUri uri, MessageQueue messageQueue)
+        public QueueReceiver(MessageQueue messageQueue, IQueueMessageConverter<Message, IQueueMessageContent<T>> converter)
         {
-            Uri = uri;
             _messageQueue = messageQueue;
+            _converter = converter;
+            Uri = new QueueUri(messageQueue.MachineName, messageQueue.QueueName);
         }
 
-        public IQueueMessage Receive()
+        public IQueueMessageContent<T> Receive()
         {
-            Message m = _messageQueue.Receive();
-            return m?.Body as IQueueMessage;
+            Message message = _messageQueue.Receive();
+            return _converter.Convert(message);
+        }
+
+        public IQueueMessageContent<T> Peek()
+        {
+            Message message = _messageQueue.Peek();
+            return _converter.Convert(message);
         }
     }
 }

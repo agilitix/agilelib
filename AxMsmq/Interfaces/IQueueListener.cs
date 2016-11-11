@@ -2,10 +2,13 @@
 
 namespace AxMsmq.Interfaces
 {
-    public interface IQueueListener : IQueue
+    public interface IQueueListener<out T> : IQueue
+        where T : class
     {
-        event Action<object, IQueueMessage> OnMessage;
+        event Action<object, T> OnReceiveMessage;
+        event Action<object, T> OnPeekMessage;
 
-        void Listen();
+        void Receive();
+        void Peek();
     }
 }

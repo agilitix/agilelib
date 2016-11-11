@@ -6,49 +6,53 @@ using AxMsmq.Interfaces;
 
 namespace AxMsmq
 {
-    internal class PrivateQueuesManager : IQueuesManager
+    internal class PrivateQueuesManager<T> : IQueuesManager<IQueueMessageContent<T>>
+        where T : class
     {
         private readonly IMessageFormatter _messageFormatter;
+        private readonly IQueueMessageConverter<IQueueMessageContent<T>, Message> _envelopConverter;
+        private readonly IQueueMessageConverter<Message, IQueueMessageContent<T>> _messageConverter;
 
-        public PrivateQueuesManager()
-            : this(new XmlMessageFormatter(new[] {typeof (string)}))
-        {
-        }
-
-        public PrivateQueuesManager(IMessageFormatter messageFormatter)
+        public PrivateQueuesManager(IMessageFormatter messageFormatter,
+            IQueueMessageConverter<IQueueMessageContent<T>, Message> envelopConverter,
+            IQueueMessageConverter<Message, IQueueMessageContent<T>> messageConverter)
         {
             _messageFormatter = messageFormatter;
+            _envelopConverter = envelopConverter;
+            _messageConverter = messageConverter;
         }
 
-        public IList<IQueueUri> GetExisitingQueues(string host)
+        public IList<IQueueUri> GetExistingQueues(string hostName)
         {
-            IEnumerable<IQueueUri> privateQueues = MessageQueue.GetPrivateQueuesByMachine(host)
-                                                               .Select(x => new QueueUri(host, x.QueueName));
+            IEnumerable<IQueueUri> privateQueues = MessageQueue.GetPrivateQueuesByMachine(hostName)
+                                                               .Select(x => new QueueUri(hostName, x.QueueName));
             return privateQueues.ToList();
         }
 
-        public IQueueReceiver GetOrCreateReceiver(IQueueUri uri)
+        public IQueueReceiver<IQueueMessageContent<T>> GetOrCreateReceiver(IQueueUri uri)
         {
-            return GetOrCreate(uri, (u, q) => new QueueReceiver(u, q));
+            return GetOrCreate(uri, q => new QueueReceiver<T>(q, _messageConverter));
         }
 
-        public IQueueSender GetOrCreateSender(IQueueUri uri)
+        public IQueueSender<IQueueMessageContent<T>> GetOrCreateSender(IQueueUri uri)
         {
-            return GetOrCreate(uri, (u, q) => new QueueSender(u, q));
+            return GetOrCreate(uri, q => new QueueSender<T>(q, _envelopConverter));
         }
 
-        public IQueueListener GetOrCreateListener(IQueueUri uri)
+        public IQueueListener<IQueueMessageContent<T>> GetOrCreateListener(IQueueUri uri)
         {
-            return GetOrCreate(uri, (u, q) => new QueueListener(u, q));
+            return GetOrCreate(uri, q => new QueueListener<T>(q, _messageConverter));
         }
 
-        private T GetOrCreate<T>(IQueueUri uri, Func<IQueueUri, MessageQueue, T> builder)
+        private TQueue GetOrCreate<TQueue>(IQueueUri uri, Func<MessageQueue, TQueue> builder)
         {
-            MessageQueue queue = MessageQueue.GetPrivateQueuesByMachine(uri.Host)
-                                             .FirstOrDefault(x => x.QueueName.Equals(uri.Path))
-                                 ?? MessageQueue.Create(uri.Uri);
-            queue.Formatter = _messageFormatter;
-            return builder(uri, queue);
+            MessageQueue queue = MessageQueue.GetPrivateQueuesByMachine(uri.HostName)
+                                             .FirstOrDefault(x => x.QueueName.Equals(uri.QueueName))
+                                 ?? MessageQueue.Create(uri.ConnectionString);
+
+            queue.Formatter = _messageFormatter.Clone() as IMessageFormatter;
+
+            return builder(queue);
         }
     }
 }
