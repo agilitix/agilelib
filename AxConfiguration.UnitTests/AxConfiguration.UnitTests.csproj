@@ -93,7 +93,7 @@
     <None Include="Configuration\unity.dev.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Configuration\unity.main.config">
+    <None Include="Configuration\unity.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

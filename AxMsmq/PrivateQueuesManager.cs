@@ -14,8 +14,8 @@ namespace AxMsmq
         private readonly IQueueMessageConverter<Message, IQueueMessageContent<T>> _messageTransportConverter;
 
         public PrivateQueuesManager(IMessageFormatter messageFormatter,
-            IQueueMessageConverter<IQueueMessageContent<T>, Message> messageContentConverter,
-            IQueueMessageConverter<Message, IQueueMessageContent<T>> messageTransportConverter)
+                                    IQueueMessageConverter<IQueueMessageContent<T>, Message> messageContentConverter,
+                                    IQueueMessageConverter<Message, IQueueMessageContent<T>> messageTransportConverter)
         {
             _messageFormatter = messageFormatter;
             _messageContentConverter = messageContentConverter;
@@ -46,11 +46,24 @@ namespace AxMsmq
 
         private TQueue GetOrCreate<TQueue>(IQueueUri uri, Func<MessageQueue, TQueue> builder)
         {
-            MessageQueue queue = MessageQueue.GetPrivateQueuesByMachine(uri.HostName)
-                                             .FirstOrDefault(x => x.QueueName.Equals(uri.QueueName))
-                                 ?? MessageQueue.Create(uri.ConnectionString);
+            MessageQueue queue = null;
 
-            queue.Formatter = _messageFormatter.Clone() as IMessageFormatter;
+            try
+            {
+                queue = MessageQueue.GetPrivateQueuesByMachine(uri.HostName)
+                                    .FirstOrDefault(x => x.QueueName.Equals(uri.QueueName))
+                        ?? MessageQueue.Create(uri.ConnectionString);
+
+                queue.Formatter = _messageFormatter.Clone() as IMessageFormatter;
+            }
+            catch (MessageQueueException ex)
+            {
+                if (ex.MessageQueueErrorCode == MessageQueueErrorCode.QueueExists)
+                {
+                    queue = MessageQueue.GetPrivateQueuesByMachine(uri.HostName)
+                                        .FirstOrDefault(x => x.QueueName.Equals(uri.QueueName));
+                }
+            }
 
             return builder(queue);
         }

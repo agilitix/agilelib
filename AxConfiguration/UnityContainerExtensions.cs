@@ -86,10 +86,10 @@ namespace AxConfiguration
         /// Load Unity configuration file.
         /// </summary>
         public static void LoadUnityConfiguration(this IUnityContainer self,
-                                                  IConfigFileProvider configFileProvider,
+                                                  IConfigurationProvider configurationProvider,
                                                   string unityContainerName = null)
         {
-            string mainConfigFile = configFileProvider.GetMainConfigFile();
+            string mainConfigFile = configurationProvider.ConfigurationFile;
             if (!string.IsNullOrWhiteSpace(mainConfigFile))
             {
                 bool result = LoadConfigurationFromFile(self, mainConfigFile, unityContainerName);
