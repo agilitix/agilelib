@@ -8,11 +8,11 @@ namespace AxConfiguration.UnitTests
     {
         protected IConfigurationProvider ConfigurationProviderUnderTest;
         protected string ActualKeyValue;
-        protected string ExpectedKey;
+        protected string ExpectedKeyValue;
 
         public override void Arrange()
         {
-            ExpectedKey = "keyValue";
+            ExpectedKeyValue = "keyValue";
             ConfigurationProviderUnderTest = new ConfigurationProvider(@".\MainConfiguration");
         }
 
@@ -24,7 +24,7 @@ namespace AxConfiguration.UnitTests
         [Test]
         public void Assert_expected_keyvalue()
         {
-            Assert.AreEqual(ActualKeyValue, ExpectedKey);
+            Assert.AreEqual(ActualKeyValue, ExpectedKeyValue);
         }
     }
 }
