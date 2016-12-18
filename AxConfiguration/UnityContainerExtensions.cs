@@ -9,24 +9,10 @@ using Microsoft.Practices.Unity.Configuration;
 namespace AxConfiguration
 {
     /// <summary>
-    /// Allow a Unity container to load several files and merge them together through kind of
-    /// inheritance tree files. A child file can inherit from several parent files, the parent
-    /// files will be processed first before the child file (like base class/child class
-    /// when constructed).
-    ///
-    /// Example of usage in a "child" file called "unity.main.config" :
-    /// ....
-    /// <appSettings>
-    ///    <add key="base" value="unity.dev-instances.config, unity.dev-database.config" />
-    /// </appSettings>
-    /// ....
-    /// The child file depends on two base files, the initialization sequence will be :
-    ///     1) unity.dev-instances.config
-    ///     2) unity.dev-database.config
-    ///     3) unity.main.config
+    /// Load hierarchical configuration files.
     /// 
-    /// This sequence allow you to declare the most generic/common initializations in the base files,
-    /// and more specific initializations in the children files.
+    /// Please look at the "unity.config" file and the [add key="base" value="unity.dev.config"]
+    /// parameter as an example on how to make hierarchical configurations.
     /// </summary>
     public static class UnityContainerExtensions
     {
@@ -34,15 +20,14 @@ namespace AxConfiguration
                                                       string configurationFileName,
                                                       string containerName)
         {
-            // Indicates if we have load something or not.
+            // Indicates if we have loaded something so far.
             bool result = false;
 
-            // Open the given configuration file.
+            // Open the configurationFileName file.
             var fileMap = new ExeConfigurationFileMap {ExeConfigFilename = configurationFileName};
-            Configuration configuration = ConfigurationManager.OpenMappedExeConfiguration(fileMap,
-                                                                                          ConfigurationUserLevel.None);
+            Configuration configuration = ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
 
-            // Load first the "base/parents" files (if "base" is declared in the current configuration file).
+            // First lookup to the "base" files to load.
             KeyValueConfigurationElement baseFiles = configuration.AppSettings.Settings["base"];
             if (baseFiles != null)
             {
@@ -52,15 +37,15 @@ namespace AxConfiguration
                     string baseFile = Path.GetDirectoryName(configurationFileName) + "\\" + file.Trim();
                     if (!File.Exists(baseFile))
                     {
-                        throw new FileNotFoundException(string.Format("Unity configuration file '{0}' not found",
-                                                                      baseFile));
+                        throw new FileNotFoundException(string.Format("Configuration file '{0}' not found", baseFile));
                     }
 
+                    // We found "base" files, load them.
                     result = self.LoadConfigurationFromFile(baseFile, containerName);
                 }
             }
 
-            // No more base/parents files, start loading the configurations.
+            // No more "base" files to lookup, start reading the configurations.
             UnityConfigurationSection unitySection = (UnityConfigurationSection) configuration.GetSection("unity");
             if (!string.IsNullOrWhiteSpace(containerName))
             {
@@ -83,13 +68,13 @@ namespace AxConfiguration
         }
 
         /// <summary>
-        /// Load Unity configuration file.
+        /// Load an Unity configuration file.
         /// </summary>
         public static void LoadUnityConfiguration(this IUnityContainer self,
-                                                  IConfigFileProvider configFileProvider,
+                                                  IConfigurationProvider configurationProvider,
                                                   string unityContainerName = null)
         {
-            string mainConfigFile = configFileProvider.GetMainConfigFile();
+            string mainConfigFile = configurationProvider.ConfigurationFile;
             if (!string.IsNullOrWhiteSpace(mainConfigFile))
             {
                 bool result = LoadConfigurationFromFile(self, mainConfigFile, unityContainerName);
@@ -97,10 +82,11 @@ namespace AxConfiguration
                 {
                     return;
                 }
-                throw new ArgumentException("The requested container does not exist in the unity configuration files");
+
+                throw new ArgumentException();
             }
 
-            throw new FileLoadException("Cannot load the Unity configuration file");
+            throw new FileLoadException();
         }
     }
 }
