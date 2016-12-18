@@ -25,7 +25,8 @@ namespace AxMsmq
         public IList<IQueueUri> GetExistingQueues(string hostName)
         {
             IEnumerable<IQueueUri> privateQueues = MessageQueue.GetPrivateQueuesByMachine(hostName)
-                                                               .Select(x => new QueueUri(hostName, x.QueueName));
+                                                               .Select(x => new QueueUri(x.MachineName, x.QueueName))
+                                                               .OrderBy(x => x.QueueName);
             return privateQueues.ToList();
         }
 
