@@ -69,6 +69,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -80,10 +81,14 @@
     <Compile Include="Test.Logger.Interfaces\ILogger.cs" />
     <Compile Include="Test.Logger.Implementations\ConsoleLogger.cs" />
     <Compile Include="Test.Logger.Implementations\FileLogger.cs" />
+    <Compile Include="ConfigurationProviderTests.cs" />
     <Compile Include="UnityContainerExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="MainConfiguration\main.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Configuration\unity.base.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
