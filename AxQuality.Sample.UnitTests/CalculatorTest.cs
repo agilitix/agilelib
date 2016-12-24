@@ -80,7 +80,7 @@ namespace AxQuality.Sample.UnitTests
         public void Assert_calculator_should_check_the_validity_of_all_the_added_numbers()
         {
             // The calculator must call the validator to check the validity of each number we have added.
-            Numbers.ForEach(number => ValidatorMock.Received().IsValid(number));
+            Numbers.ForEach(number => ValidatorMock.Received(1).IsValid(number));
         }
 
         [Test]
@@ -143,7 +143,7 @@ namespace AxQuality.Sample.UnitTests
         public void Assert_calculator_should_check_the_numbers_validity()
         {
             // The calculator must call the validator to check the validity of the added numbers.
-            Numbers.ForEach(number => ValidatorMock.Received().IsValid(number));
+            Numbers.ForEach(number => ValidatorMock.Received(1).IsValid(number));
         }
     }
 
@@ -214,7 +214,7 @@ namespace AxQuality.Sample.UnitTests
         public void Assert_calculator_should_check_the_numbers_validity()
         {
             // The calculator must call the validator to check the validity of the added numbers.
-            Numbers.ForEach(number => ValidatorMock.Received().IsValid(number));
+            Numbers.ForEach(number => ValidatorMock.Received(1).IsValid(number));
         }
     }
 }

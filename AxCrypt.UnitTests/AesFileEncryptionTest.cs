@@ -12,7 +12,7 @@ namespace AxCrypt.UnitTests
 
         protected AesFileEncryption ObjectUnderTest;
 
-        public override void Startup()
+        public override void OneTimeSetUp()
         {
             RemoveTestFiles();
         }
@@ -31,7 +31,7 @@ namespace AxCrypt.UnitTests
             ObjectUnderTest.DecryptFile(EncryptedFile, DecryptedFile, "p@ssw0rd");
         }
 
-        public override void Cleanup()
+        public override void OneTimeTearDown()
         {
             RemoveTestFiles();
         }
