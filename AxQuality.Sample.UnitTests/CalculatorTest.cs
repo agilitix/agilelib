@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AxExtensions;
 using AxQuality.Sample.Interfaces;
-using FluentAssertions;
+using NFluent;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -73,7 +73,7 @@ namespace AxQuality.Sample.UnitTests
         public void Assert_accumulator_must_be_equal_to_the_sum_of_all_numbers()
         {
             // The accumulator must be equal to the expected result.
-            ObjectUnderTest.Value.Should().Be(ExpectedResult);
+            Check.That(ObjectUnderTest.Value).IsEqualTo(ExpectedResult);
         }
 
         [Test]
@@ -87,7 +87,7 @@ namespace AxQuality.Sample.UnitTests
         public void Assert_calculator_should_not_raise_any_exception()
         {
             // The calculator must not raise any exceptions in our test case.
-            ResultException.Should().BeNull();
+            Check.That(ResultException).IsNull();
         }
     }
 
@@ -136,7 +136,7 @@ namespace AxQuality.Sample.UnitTests
         public void Assert_calculator_should_raise_argument_exception_for_all_the_inavalid_numbers()
         {
             // Check the calculator exceptions are matching the expected exception.
-            ResultExceptions.ForEach(x => x.GetType().Should().Be(ExpectedException.GetType()));
+            ResultExceptions.ForEach(x => Check.That(x.GetType()).IsEqualTo(ExpectedException.GetType()));
         }
 
         [Test]
@@ -168,9 +168,9 @@ namespace AxQuality.Sample.UnitTests
 
             // Setup the validator mock.
             ValidatorMock.IsValid(Arg.Any<double>())
-                         .Returns(arg => !double.IsNaN((double) arg[0])
-                                         && !double.IsNegativeInfinity((double) arg[0])
-                                         && !double.IsNegativeInfinity((double) arg[0]));
+                         .Returns(arg =>  !double.IsNaN(arg.Arg<double>())
+                                         && !double.IsNegativeInfinity(arg.Arg<double>())
+                                         && !double.IsNegativeInfinity(arg.Arg<double>()));
 
             // The expected exceptions sequence when we add the numbers.
             ExpectedExceptions = new List<Type>
@@ -207,7 +207,7 @@ namespace AxQuality.Sample.UnitTests
         public void Assert_calculator_should_raise_expected_exceptions()
         {
             // Check the calculator has raised the expected exceptions.
-            ResultExceptions.Should().Equal(ExpectedExceptions);
+            Check.That(ResultExceptions).ContainsExactly(ExpectedExceptions);
         }
 
         [Test]
