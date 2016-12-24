@@ -17,10 +17,11 @@ namespace AxConfiguration.UnitTests
         protected IUnityContainer UnityContainerUnderTest;
         protected IConfigurationProvider ConfigurationProvider;
         protected ILogger ResolvedLogger;
+        private readonly string TestDirectory = TestContext.CurrentContext.TestDirectory;
 
         public override void Arrange()
         {
-            ConfigurationProvider = new ConfigurationProvider(@".\Configuration");
+            ConfigurationProvider = new ConfigurationProvider(TestDirectory + @"\Configuration");
 
             UnityContainerUnderTest = new UnityContainer();
             UnityContainerUnderTest.LoadUnityConfiguration(ConfigurationProvider);
@@ -52,10 +53,11 @@ namespace AxConfiguration.UnitTests
     {
         protected IUnityContainer UnityContainerUnderTest;
         protected IConfigurationProvider ConfigurationProvider;
+        private readonly string TestDirectory = TestContext.CurrentContext.TestDirectory;
 
         public override void Arrange()
         {
-            ConfigurationProvider = new ConfigurationProvider(@".\Configuration");
+            ConfigurationProvider = new ConfigurationProvider(TestDirectory + @"\Configuration");
 
             UnityContainerUnderTest = new UnityContainer();
             UnityContainerUnderTest.LoadUnityConfiguration(ConfigurationProvider);
@@ -139,10 +141,11 @@ namespace AxConfiguration.UnitTests
         protected IUnityContainer UnityContainerUnderTest;
         protected IConfigurationProvider ConfigurationProvider;
         protected ILogger ResolvedLogger;
+        private readonly string TestDirectory = TestContext.CurrentContext.TestDirectory;
 
         public override void Arrange()
         {
-            ConfigurationProvider = new ConfigurationProvider(@".\Configuration");
+            ConfigurationProvider = new ConfigurationProvider(TestDirectory + @"\Configuration");
 
             UnityContainerUnderTest = new UnityContainer();
             UnityContainerUnderTest.LoadUnityConfiguration(ConfigurationProvider, "Loggers");
@@ -173,10 +176,11 @@ namespace AxConfiguration.UnitTests
         protected IConfigurationProvider ConfigurationProvider;
         protected Exception ExceptionWhileResolving;
         protected ILogger ResolvedLogger;
+        private readonly string TestDirectory = TestContext.CurrentContext.TestDirectory;
 
         public override void Arrange()
         {
-            ConfigurationProvider = new ConfigurationProvider(@".\Configuration");
+            ConfigurationProvider = new ConfigurationProvider(TestDirectory + @"\Configuration");
 
             UnityContainerUnderTest = new UnityContainer();
             UnityContainerUnderTest.LoadUnityConfiguration(ConfigurationProvider, "Loggers");
@@ -209,10 +213,11 @@ namespace AxConfiguration.UnitTests
     {
         protected IUnityContainer UnityContainerUnderTest;
         protected IConfigurationProvider ConfigurationProvider;
+        private readonly string TestDirectory = TestContext.CurrentContext.TestDirectory;
 
         public override void Arrange()
         {
-            ConfigurationProvider = new ConfigurationProvider(@".\Configuration");
+            ConfigurationProvider = new ConfigurationProvider(TestDirectory + @"\Configuration");
 
             UnityContainerUnderTest = new UnityContainer();
             UnityContainerUnderTest.LoadUnityConfiguration(ConfigurationProvider, "Loggers");
@@ -279,18 +284,18 @@ namespace AxConfiguration.UnitTests
         protected IUnityContainer UnityContainerUnderTest;
         protected IConfigurationProvider ConfigurationProvider;
         protected Exception LoadContainerException;
+        private readonly string TestDirectory = TestContext.CurrentContext.TestDirectory;
 
         public override void Arrange()
         {
-            ConfigurationProvider = new ConfigurationProvider(@".\Configuration");
+            ConfigurationProvider = new ConfigurationProvider(TestDirectory + @"\Configuration");
             UnityContainerUnderTest = new UnityContainer();
         }
 
         public override void Act()
         {
             LoadContainerException =
-                base.Trying(() => UnityContainerUnderTest.LoadUnityConfiguration(ConfigurationProvider,
-                                                                                 "UnknownContainerName"));
+                base.Trying(() => UnityContainerUnderTest.LoadUnityConfiguration(ConfigurationProvider, "UnknownContainerName"));
         }
 
         [Test]
@@ -307,14 +312,14 @@ namespace AxConfiguration.UnitTests
         protected IConfigurationProvider ConfigurationProvider;
         protected Exception ExceptionWhileResolving;
         protected ILogger ResolvedLogger;
+        private readonly string TestDirectory = TestContext.CurrentContext.TestDirectory;
 
         public override void Arrange()
         {
-            ConfigurationProvider = new ConfigurationProvider(@".\Configuration");
+            ConfigurationProvider = new ConfigurationProvider(TestDirectory + @"\Configuration");
 
             UnityContainerUnderTest = new UnityContainer();
-            base.Trying(() => UnityContainerUnderTest.LoadUnityConfiguration(ConfigurationProvider,
-                                                                             "UnknownContainerName"));
+            base.Trying(() => UnityContainerUnderTest.LoadUnityConfiguration(ConfigurationProvider, "UnknownContainerName"));
         }
 
         public override void Act()

@@ -9,11 +9,12 @@ namespace AxConfiguration.UnitTests
         protected IConfigurationProvider ConfigurationProviderUnderTest;
         protected string ActualKeyValue;
         protected string ExpectedKeyValue;
+        private readonly string TestDirectory = TestContext.CurrentContext.TestDirectory;
 
         public override void Arrange()
         {
             ExpectedKeyValue = "keyValue";
-            ConfigurationProviderUnderTest = new ConfigurationProvider(@".\MainConfiguration");
+            ConfigurationProviderUnderTest = new ConfigurationProvider(TestDirectory + @"\MainConfiguration");
         }
 
         public override void Act()

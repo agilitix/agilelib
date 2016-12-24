@@ -10,7 +10,7 @@ namespace AxQuality
     /// </summary>
     public class ArrangeActAssert
     {
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
             Startup();
@@ -18,7 +18,7 @@ namespace AxQuality
             Act();
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TearDown()
         {
             Cleanup();
