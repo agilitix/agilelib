@@ -4,6 +4,7 @@ using AxConfiguration.UnitTests.Test.Logger.Implementations;
 using AxConfiguration.UnitTests.Test.Logger.Interfaces;
 using AxQuality;
 using Microsoft.Practices.Unity;
+using NFluent;
 using NUnit.Framework;
 
 namespace AxConfiguration.UnitTests
@@ -35,13 +36,13 @@ namespace AxConfiguration.UnitTests
         [Test]
         public void Assert_resolved_logger_is_instance_of_file_logger()
         {
-            Assert.IsInstanceOf<FileLogger>(ResolvedLogger);
+            Check.That(ResolvedLogger).IsInstanceOf<FileLogger>();
         }
 
         [Test]
         public void Assert_resolved_logger_name_is_def_logger()
         {
-            Assert.AreEqual(ResolvedLogger.LoggerName, "def_logger");
+            Check.That(ResolvedLogger.LoggerName).IsEqualTo("def_logger");
         }
     }
 
@@ -77,7 +78,7 @@ namespace AxConfiguration.UnitTests
         [Test]
         public void Assert_resolved_base_value_is_high()
         {
-            Assert.AreEqual(BaseValue, "High");
+            Check.That(BaseValue).IsEqualTo("High");
         }
     }
 
@@ -94,7 +95,7 @@ namespace AxConfiguration.UnitTests
         [Test]
         public void Assert_resolved_logger_name_is_def_logger()
         {
-            Assert.AreEqual(DefaultLoggerName, "def_logger");
+            Check.That(DefaultLoggerName).IsEqualTo("def_logger");
         }
     }
 
@@ -111,7 +112,7 @@ namespace AxConfiguration.UnitTests
         [Test]
         public void Assert_resolved_log_file_name_is_FakeLogFile_log()
         {
-            Assert.AreEqual(DefaultLoggerFileName, "FakeDefLogFile.log");
+            Check.That(DefaultLoggerFileName).IsEqualTo("FakeDefLogFile.log");
         }
     }
 
@@ -128,7 +129,7 @@ namespace AxConfiguration.UnitTests
         [Test]
         public void Assert_resolved_time_stamp_is_yyyy_MM_dd_HH_mm_ss()
         {
-            Assert.AreEqual(DefaultTimeStampFormat, "yyyy-MM-dd HH:mm:ss");
+            Check.That(DefaultTimeStampFormat).IsEqualTo("yyyy-MM-dd HH:mm:ss");
         }
     }
 
@@ -159,13 +160,13 @@ namespace AxConfiguration.UnitTests
         [Test]
         public void Assert_resolved_logger_is_instance_of_console_logger()
         {
-            Assert.IsInstanceOf<ConsoleLogger>(ResolvedLogger);
+            Check.That(ResolvedLogger).IsInstanceOf<ConsoleLogger>();
         }
 
         [Test]
         public void Assert_resolved_logger_name_is_my_logger()
         {
-            Assert.AreEqual(ResolvedLogger.LoggerName, "my_logger");
+            Check.That(ResolvedLogger.LoggerName).IsEqualTo("my_logger");
         }
     }
 
@@ -195,13 +196,13 @@ namespace AxConfiguration.UnitTests
         [Test]
         public void Assert_resolution_failed_exception_has_been_raised()
         {
-            Assert.IsInstanceOf<ResolutionFailedException>(ExceptionWhileResolving);
+            Check.That(ExceptionWhileResolving).IsInstanceOf<ResolutionFailedException>();
         }
 
         [Test]
         public void Assert_the_instance_has_not_been_resolved()
         {
-            Assert.IsNull(ResolvedLogger);
+            Check.That(ResolvedLogger).IsNull();
         }
     }
 
@@ -237,7 +238,7 @@ namespace AxConfiguration.UnitTests
         [Test]
         public void Assert_resolved_logger_name_is_def_logger()
         {
-            Assert.AreEqual(LoggerName, "my_logger");
+            Check.That(LoggerName).IsEqualTo("my_logger");
         }
     }
 
@@ -254,7 +255,7 @@ namespace AxConfiguration.UnitTests
         [Test]
         public void Assert_resolved_log_file_name_is_FakeLogFile_log()
         {
-            Assert.AreEqual(LoggerFileName, "FakeLogFile.log");
+            Check.That(LoggerFileName).IsEqualTo("FakeLogFile.log");
         }
     }
 
@@ -271,7 +272,7 @@ namespace AxConfiguration.UnitTests
         [Test]
         public void Assert_resolved_time_stamp_is_yyyy_MM_dd_HH_mm_ss()
         {
-            Assert.AreEqual(TimeStampFormat, "yyyy-MM-dd HH:mm:ss");
+            Check.That(TimeStampFormat).IsEqualTo("yyyy-MM-dd HH:mm:ss");
         }
     }
 
@@ -301,7 +302,7 @@ namespace AxConfiguration.UnitTests
         [Test]
         public void Assert_should_raise_argument_exception()
         {
-            Assert.IsInstanceOf<ArgumentException>(LoadContainerException);
+            Check.That(LoadContainerException).IsInstanceOf<ArgumentException>();
         }
     }
 
@@ -330,13 +331,13 @@ namespace AxConfiguration.UnitTests
         [Test]
         public void Assert_resolution_failed_exception_has_been_raised()
         {
-            Assert.IsInstanceOf<ResolutionFailedException>(ExceptionWhileResolving);
+            Check.That(ExceptionWhileResolving).IsInstanceOf<ResolutionFailedException>();
         }
 
         [Test]
         public void Assert_the_instance_has_not_been_resolved()
         {
-            Assert.IsNull(ResolvedLogger);
+            Check.That(ResolvedLogger).IsNull();
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AxQuality;
+using NFluent;
 using NUnit.Framework;
 
 namespace AxExtensions.UnitTests
@@ -49,7 +50,7 @@ namespace AxExtensions.UnitTests
         [Test]
         public void Assert_expected_ages_are_meet()
         {
-            Assert.IsTrue(ResultAges.SequenceEqual(ExpectedAges));
+            Check.That(ResultAges).ContainsExactly(ExpectedAges);
         }
     }
 }

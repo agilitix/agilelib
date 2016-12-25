@@ -1,5 +1,6 @@
 ﻿using AxConfiguration.Interfaces;
 using AxQuality;
+using NFluent;
 using NUnit.Framework;
 
 namespace AxConfiguration.UnitTests
@@ -25,7 +26,7 @@ namespace AxConfiguration.UnitTests
         [Test]
         public void Assert_expected_keyvalue()
         {
-            Assert.AreEqual(ActualKeyValue, ExpectedKeyValue);
+            Check.That(ActualKeyValue).IsEqualTo(ExpectedKeyValue);
         }
     }
 }

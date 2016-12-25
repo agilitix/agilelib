@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using AxQuality;
+using NFluent;
 using NUnit.Framework;
 
 namespace AxCrypt.UnitTests
@@ -39,13 +40,13 @@ namespace AxCrypt.UnitTests
         [Test]
         public void Assert_decrypted_file_is_same_as_original_file()
         {
-            Assert.IsTrue(FilesAreEqual(DecryptedFile, OriginalFile));
+            Check.That(FilesAreEqual(DecryptedFile, OriginalFile)).IsTrue();
         }
 
         [Test]
         public void Assert_encrypted_file_is_not_same_as_original_file()
         {
-            Assert.IsFalse(FilesAreEqual(EncryptedFile, OriginalFile));
+            Check.That(FilesAreEqual(EncryptedFile, OriginalFile)).IsFalse();
         }
 
         public void RemoveTestFiles()

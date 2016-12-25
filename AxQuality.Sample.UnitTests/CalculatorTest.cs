@@ -136,7 +136,8 @@ namespace AxQuality.Sample.UnitTests
         public void Assert_calculator_should_raise_argument_exception_for_all_the_inavalid_numbers()
         {
             // Check the calculator exceptions are matching the expected exception.
-            ResultExceptions.ForEach(x => Check.That(x.GetType()).IsEqualTo(ExpectedException.GetType()));
+            Check.That(ResultExceptions.Select(x => x.GetType()))
+                 .ContainsExactly(Enumerable.Repeat(ExpectedException.GetType(), Numbers.Length));
         }
 
         [Test]

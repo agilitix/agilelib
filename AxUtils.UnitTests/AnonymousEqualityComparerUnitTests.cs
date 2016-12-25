@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AxQuality;
+using NFluent;
 using NUnit.Framework;
 
 namespace AxUtils.UnitTests
@@ -62,7 +63,7 @@ namespace AxUtils.UnitTests
         [Test]
         public void Assert_comparing_equality_based_on_same_key_is_working()
         {
-            Assert.IsTrue(ActualResults.SequenceEqual(ExpectedResults));
+            Check.That(ActualResults).ContainsExactly(ExpectedResults);
         }
     }
 }

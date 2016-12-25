@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using AxQuality;
+using NFluent;
 using NUnit.Framework;
 
 namespace AxUtils.UnitTests
 {
     public class EnumUtilsUnitTests : ArrangeActAssert
     {
-        protected AnonymousEqualityComparer<EnumInfos<EnumUnderTest>> _comparer = new AnonymousEqualityComparer<EnumInfos<EnumUnderTest>>((x, y) =>
-                                                                                                                                          x.Value == y.Value
-                                                                                                                                          && x.Description
-                                                                                                                                          == y.Description
-                                                                                                                                          && x.Name == y.Name);
+        protected AnonymousEqualityComparer<EnumInfos<EnumUnderTest>> _comparer =
+            new AnonymousEqualityComparer<EnumInfos<EnumUnderTest>>((x, y) =>
+                                                                        x.Value == y.Value
+                                                                        && x.Description
+                                                                        == y.Description
+                                                                        && x.Name == y.Name);
 
         protected enum EnumUnderTest
         {
@@ -33,9 +35,10 @@ namespace AxUtils.UnitTests
         {
             if (stringEnumValues.Length == enumValues.Length)
             {
-                EnumUnderTest[] parsed = stringEnumValues.Select(x => (EnumUnderTest) Enum.Parse(typeof (EnumUnderTest), x)).ToArray();
+                EnumUnderTest[] parsed = stringEnumValues.Select(x => (EnumUnderTest) Enum.Parse(typeof(EnumUnderTest), x)).ToArray();
                 return parsed.SequenceEqual(enumValues);
             }
+
             return false;
         }
 
@@ -89,7 +92,7 @@ namespace AxUtils.UnitTests
         [Test]
         public void Assert_all_descriptions_were_retrieved_as_expected()
         {
-            Assert.IsTrue(ExpectedDescriptions.SequenceEqual(Result));
+            Check.That(Result).ContainsExactly(ExpectedDescriptions);
         }
     }
 
@@ -121,7 +124,7 @@ namespace AxUtils.UnitTests
         [Test]
         public void Assert_all_descriptions_pairs_were_retrieved_as_expected()
         {
-            Assert.IsTrue(ExpectedPairs.SequenceEqual(Result, _comparer));
+            Check.That(ExpectedPairs.SequenceEqual(Result, _comparer)).IsTrue();
         }
     }
 
@@ -147,7 +150,7 @@ namespace AxUtils.UnitTests
         [Test]
         public void Assert_all_descriptions_pairs_are_expected()
         {
-            Assert.IsTrue(ExpectedValues.SequenceEqual(Result));
+            Check.That(Result).ContainsExactly(ExpectedValues);
         }
     }
 
@@ -173,7 +176,7 @@ namespace AxUtils.UnitTests
         {
             foreach (Exception ex in Result)
             {
-                Assert.IsInstanceOf<InvalidEnumArgumentException>(ex);
+                Check.That(ex).IsInstanceOf<InvalidEnumArgumentException>();
             }
         }
     }
@@ -199,7 +202,7 @@ namespace AxUtils.UnitTests
         [Test]
         public void Assert_all_the_attempts_returned_false_for_unknown_descriptions()
         {
-            Assert.IsTrue(!Result.All(x => x));
+            Check.That(!Result.All(x => x)).IsTrue();
         }
     }
 
@@ -224,7 +227,7 @@ namespace AxUtils.UnitTests
         [Test]
         public void Assert_all_the_attempts_returned_true_for_existing_descriptions()
         {
-            Assert.IsTrue(Result.All(x => x));
+            Check.That(Result.All(x => x)).IsTrue();
         }
     }
 
@@ -253,7 +256,7 @@ namespace AxUtils.UnitTests
         [Test]
         public void Assert_the_strings_and_the_enum_values_are_matching_together()
         {
-            Assert.IsTrue(AreMatching(InputStringEnumValues, Results.ToArray()));
+            Check.That(AreMatching(InputStringEnumValues, Results.ToArray())).IsTrue();
         }
     }
 
@@ -282,7 +285,7 @@ namespace AxUtils.UnitTests
         [Test]
         public void Assert_all_try_parse_calls_succeeded()
         {
-            Assert.IsTrue(Result.All(x => x));
+            Check.That(Result.All(x => x)).IsTrue();
         }
     }
 }
