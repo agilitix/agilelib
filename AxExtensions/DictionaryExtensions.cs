@@ -16,12 +16,12 @@ namespace AxExtensions
             return result;
         }
 
-        public static TValue GetOrFallback<TKey, TValue>(this IDictionary<TKey, TValue> self, TKey key, TValue fallback = default(TValue))
+        public static TValue GetOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> self, TKey key, TValue @default = default(TValue))
         {
             TValue result;
             if (!self.TryGetValue(key, out result))
             {
-                return fallback;
+                return @default;
             }
             return result;
         }

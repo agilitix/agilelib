@@ -11,8 +11,8 @@ namespace AxConfiguration
     /// <summary>
     /// Load hierarchical configuration files.
     /// 
-    /// Please look at the "unity.config" file and the [add key="base" value="unity.dev.config"]
-    /// parameter as an example on how to make hierarchical configurations.
+    /// Please look at the unit tests and the "unity.config" file parameter [add key="base" value="unity.dev.config"]
+    /// as an example on how to make hierarchical configurations.
     /// </summary>
     public static class UnityContainerExtensions
     {
@@ -27,7 +27,7 @@ namespace AxConfiguration
             var fileMap = new ExeConfigurationFileMap {ExeConfigFilename = configurationFileName};
             Configuration configuration = ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
 
-            // First lookup to the "base" files to load.
+            // Firstly we lookup to the "base" files to load.
             KeyValueConfigurationElement baseFiles = configuration.AppSettings.Settings["base"];
             if (baseFiles != null)
             {
@@ -40,7 +40,7 @@ namespace AxConfiguration
                         throw new FileNotFoundException(string.Format("Configuration file '{0}' not found", baseFile));
                     }
 
-                    // We found "base" files, load them.
+                    // We found "base" files to load.
                     result = self.LoadConfigurationFromFile(baseFile, containerName);
                 }
             }

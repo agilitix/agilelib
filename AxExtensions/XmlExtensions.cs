@@ -13,7 +13,7 @@ namespace AxExtensions
                 throw new ArgumentNullException();
             }
 
-            // This constructor is thread safe and does not leak the memory.
+            // This constructor is thread safe and does not leak memory.
             var serializer = new XmlSerializer(typeof(T));
             using (var writer = new StringWriter())
             {
@@ -29,7 +29,7 @@ namespace AxExtensions
                 throw new ArgumentNullException();
             }
 
-            // This constructor is thread safe and does not leak the memory.
+            // This constructor is thread safe and does not leak memory.
             var serializer = new XmlSerializer(typeof(T));
             using (var reader = new StringReader(self))
             {

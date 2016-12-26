@@ -19,7 +19,7 @@ namespace AxConfiguration
             string.Format("main.{0}.config", Environment.UserName),
             string.Format("main.{0}.config", Environment.MachineName),
             "main.config",
-            Path.GetFileName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile)    // application.exe.config
+            Path.GetFileName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile) // application.exe.config
         };
 
         public string ConfigurationFile { get; }

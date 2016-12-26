@@ -67,6 +67,7 @@ namespace AxUtils
             {
                 throw new InvalidEnumArgumentException();
             }
+
             return result;
         }
 
@@ -78,6 +79,7 @@ namespace AxUtils
                 result = info.Value;
                 return true;
             }
+
             result = default(T);
             return false;
         }
@@ -89,6 +91,7 @@ namespace AxUtils
             {
                 throw new InvalidEnumArgumentException();
             }
+
             return result;
         }
 
@@ -100,6 +103,7 @@ namespace AxUtils
                 result = info.Value;
                 return true;
             }
+
             result = default(T);
             return false;
         }
@@ -111,6 +115,7 @@ namespace AxUtils
             {
                 throw new InvalidEnumArgumentException();
             }
+
             return result;
         }
 
@@ -118,7 +123,7 @@ namespace AxUtils
         {
             try
             {
-                Type type = typeof (T);
+                Type type = typeof(T);
                 EnumInfos<T> info;
                 if (_valueToInfos.TryGetValue((T) Enum.ToObject(type, input), out info))
                 {
@@ -129,6 +134,7 @@ namespace AxUtils
             catch
             {
             }
+
             result = default(T);
             return false;
         }
@@ -158,18 +164,18 @@ namespace AxUtils
 
         private static IEnumerable<EnumInfos<T>> Initialize()
         {
-            Type type = typeof (T);
+            Type type = typeof(T);
             return Enum.GetValues(type)
                        .Cast<T>()
                        .Select(enumValue => new EnumInfos<T>
                                             {
                                                 Value = enumValue,
                                                 Description = type.GetField(enumValue.ToString())
-                                                                  .GetCustomAttributes(typeof (DescriptionAttribute), false)
+                                                                  .GetCustomAttributes(typeof(DescriptionAttribute), false)
                                                                   .Cast<DescriptionAttribute>()
                                                                   .Select(attribute => attribute.Description)
                                                                   .FirstOrDefault() ?? enumValue.ToString(),
-                                                Name = Enum.GetName(typeof (T), enumValue)
+                                                Name = Enum.GetName(typeof(T), enumValue)
                                             });
         }
     }

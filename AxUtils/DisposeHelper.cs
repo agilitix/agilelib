@@ -20,6 +20,7 @@ namespace AxUtils
             {
                 throw new ArgumentNullException();
             }
+
             _disposee = disposee;
             _disposeManagedResources = disposeManagedResources;
             _disposeUnmanagedResources = disposeUnmanagedResources;

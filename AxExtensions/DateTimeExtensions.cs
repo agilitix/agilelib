@@ -43,54 +43,43 @@ namespace AxExtensions
         public static int MonthsTo(this DateTime self, DateTime end)
         {
             DateTimeAge age = self.AgeTo(end);
-            return age.Years*12 + age.Months;
+            return age.Years * 12 + age.Months;
         }
 
         public static int DaysTo(this DateTime self, DateTime end)
         {
-            DateTime first, last;
-            if (self < end)
+            if (self > end)
             {
-                first = self;
-                last = end;
-            }
-            else
-            {
-                first = end;
-                last = self;
+                throw new ArgumentException();
             }
 
-            return (int) last.Subtract(first).TotalDays;
+            return (int) end.Subtract(self).TotalDays;
         }
 
         public static int HoursTo(this DateTime self, DateTime end)
         {
-            return DaysTo(self, end)*24;
+            return DaysTo(self, end) * 24;
         }
 
         public static int MinutesTo(this DateTime self, DateTime end)
         {
-            return HoursTo(self, end)*60;
+            return HoursTo(self, end) * 60;
         }
 
         public static int SecondsTo(this DateTime self, DateTime end)
         {
-            return HoursTo(self, end)*3600;
+            return HoursTo(self, end) * 3600;
         }
 
         public static DateTimeAge AgeTo(this DateTime self, DateTime end)
         {
-            DateTime first, last;
-            if (self < end)
+            if (self > end)
             {
-                first = self;
-                last = end;
+                throw new ArgumentException();
             }
-            else
-            {
-                first = end;
-                last = self;
-            }
+
+            DateTime first = self;
+            DateTime last = end;
 
             int seconds = last.Second - first.Second;
             if (seconds < 0)

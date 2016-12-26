@@ -14,10 +14,10 @@ namespace AxExtensions
         public static string GetDescription(this Enum self)
         {
             Type type = self.GetType();
-            return type.GetField(self.ToString())
-                       .GetCustomAttributes(typeof (DescriptionAttribute), false)
+            return type.GetField(Enum.GetName(type, self))
+                       .GetCustomAttributes(typeof(DescriptionAttribute), false)
                        .Cast<DescriptionAttribute>()
-                       .Select(attribute => attribute.Description)
+                       .Select(attribute => attribute.Description ?? string.Empty)
                        .FirstOrDefault();
         }
     }
