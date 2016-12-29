@@ -1,4 +1,6 @@
 ﻿using System;
+using AxCommandLine;
+using AxCommandLine.Interfaces;
 using AxConfiguration;
 using AxConfiguration.Interfaces;
 using log4net;
@@ -11,6 +13,15 @@ namespace AxHosting
 
         static void Main(string[] args)
         {
+            ICommandLineArguments commandLineArguments = new CommandLineArguments(args);
+
+            ICommandLineValidator commandLineValidator = new CommandLineValidator(commandLineArguments);
+            if (!commandLineValidator.Validate())
+            {
+                Console.WriteLine(commandLineValidator.Usage);
+                return;
+            }
+
             IConfigurationProvider configurationProvider = new ConfigurationProvider();
             string fileName = configurationProvider.Configuration.AppSettings.Settings["app.log4net.config"].Value;
             log4net.Config.XmlConfigurator.ConfigureAndWatch(new System.IO.FileInfo(fileName));
