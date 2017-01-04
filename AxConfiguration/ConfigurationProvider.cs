@@ -22,29 +22,39 @@ namespace AxConfiguration
             Path.GetFileName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile) // application.exe.config
         };
 
-        public string ConfigurationFile { get; }
-        public Configuration Configuration { get; }
-
-        public ConfigurationProvider()
-            : this(".")
+        public string[] DefaultConfigurationFiles
         {
+            get { return _defaultConfigurationFiles; }
         }
 
-        public ConfigurationProvider(string configurationFolder)
+        public string ConfigurationFile { get; private set; }
+        public Configuration Configuration { get; private set; }
+
+        public void LoadConfigurationFile(string configurationFile)
+        {
+            if (string.IsNullOrWhiteSpace(configurationFile))
+            {
+                throw new ArgumentException();
+            }
+            if (!File.Exists(configurationFile))
+            {
+                throw new FileNotFoundException();
+            }
+
+            ConfigurationFile = configurationFile;
+            ExeConfigurationFileMap exeConfigurationFileMap = new ExeConfigurationFileMap {ExeConfigFilename = ConfigurationFile};
+            Configuration = ConfigurationManager.OpenMappedExeConfiguration(exeConfigurationFileMap, ConfigurationUserLevel.None);
+        }
+
+        public void LoadDefaultConfigurationFile(string configurationFolder)
         {
             if (!Directory.Exists(configurationFolder))
             {
                 throw new ArgumentException();
             }
 
-            ConfigurationFile = GetDefaultConfigurationFile(configurationFolder);
-            if (string.IsNullOrWhiteSpace(ConfigurationFile))
-            {
-                throw new FileNotFoundException();
-            }
-
-            ExeConfigurationFileMap exeConfigurationFileMap = new ExeConfigurationFileMap {ExeConfigFilename = ConfigurationFile};
-            Configuration = ConfigurationManager.OpenMappedExeConfiguration(exeConfigurationFileMap, ConfigurationUserLevel.None);
+            string defaultConfigurationFile = GetDefaultConfigurationFile(configurationFolder);
+            LoadConfigurationFile(defaultConfigurationFile);
         }
 
         protected string GetDefaultConfigurationFile(string configurationFolder)

@@ -4,7 +4,12 @@ namespace AxConfiguration.Interfaces
 {
     public interface IConfigurationProvider
     {
-        string ConfigurationFile { get; }
         Configuration Configuration { get; }
+
+        string ConfigurationFile { get; }
+        void LoadConfigurationFile(string configurationFile);
+
+        string[] DefaultConfigurationFiles { get; }
+        void LoadDefaultConfigurationFile(string configurationFolder);
     }
 }
