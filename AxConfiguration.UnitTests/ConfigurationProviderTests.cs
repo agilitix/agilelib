@@ -15,11 +15,12 @@ namespace AxConfiguration.UnitTests
         public override void Arrange()
         {
             ExpectedKeyValue = "keyValue";
-            ConfigurationProviderUnderTest = new ConfigurationProvider(TestDirectory + @"\MainConfiguration");
+            ConfigurationProviderUnderTest = new ConfigurationProvider();
         }
 
         public override void Act()
         {
+            ConfigurationProviderUnderTest.LoadDefaultConfigurationFile(TestDirectory + @"\MainConfiguration");
             ActualKeyValue = ConfigurationProviderUnderTest.Configuration.AppSettings.Settings["keyName"].Value;
         }
 

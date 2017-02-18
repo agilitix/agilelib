@@ -20,8 +20,6 @@ namespace AxMsmq
             ConnectionString = hostName + @"\" + queueName;
         }
 
-        #region ToString
-
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -40,7 +38,5 @@ namespace AxMsmq
             sb.Append("}");
             return sb.ToString();
         }
-
-        #endregion
     }
 }

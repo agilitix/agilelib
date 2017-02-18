@@ -22,7 +22,8 @@ namespace AxConfiguration.UnitTests
 
         public override void Arrange()
         {
-            ConfigurationProvider = new ConfigurationProvider(TestDirectory + @"\Configuration");
+            ConfigurationProvider = new ConfigurationProvider();
+            ConfigurationProvider.LoadDefaultConfigurationFile(TestDirectory + @"\Configuration");
 
             UnityContainerUnderTest = new UnityContainer();
             UnityContainerUnderTest.LoadUnityConfiguration(ConfigurationProvider);
@@ -58,7 +59,8 @@ namespace AxConfiguration.UnitTests
 
         public override void Arrange()
         {
-            ConfigurationProvider = new ConfigurationProvider(TestDirectory + @"\Configuration");
+            ConfigurationProvider = new ConfigurationProvider();
+            ConfigurationProvider.LoadDefaultConfigurationFile(TestDirectory + @"\Configuration");
 
             UnityContainerUnderTest = new UnityContainer();
             UnityContainerUnderTest.LoadUnityConfiguration(ConfigurationProvider);
@@ -146,7 +148,8 @@ namespace AxConfiguration.UnitTests
 
         public override void Arrange()
         {
-            ConfigurationProvider = new ConfigurationProvider(TestDirectory + @"\Configuration");
+            ConfigurationProvider = new ConfigurationProvider();
+            ConfigurationProvider.LoadDefaultConfigurationFile(TestDirectory + @"\Configuration");
 
             UnityContainerUnderTest = new UnityContainer();
             UnityContainerUnderTest.LoadUnityConfiguration(ConfigurationProvider, "Loggers");
@@ -181,7 +184,8 @@ namespace AxConfiguration.UnitTests
 
         public override void Arrange()
         {
-            ConfigurationProvider = new ConfigurationProvider(TestDirectory + @"\Configuration");
+            ConfigurationProvider = new ConfigurationProvider();
+            ConfigurationProvider.LoadDefaultConfigurationFile(TestDirectory + @"\Configuration");
 
             UnityContainerUnderTest = new UnityContainer();
             UnityContainerUnderTest.LoadUnityConfiguration(ConfigurationProvider, "Loggers");
@@ -218,7 +222,8 @@ namespace AxConfiguration.UnitTests
 
         public override void Arrange()
         {
-            ConfigurationProvider = new ConfigurationProvider(TestDirectory + @"\Configuration");
+            ConfigurationProvider = new ConfigurationProvider();
+            ConfigurationProvider.LoadDefaultConfigurationFile(TestDirectory + @"\Configuration");
 
             UnityContainerUnderTest = new UnityContainer();
             UnityContainerUnderTest.LoadUnityConfiguration(ConfigurationProvider, "Loggers");
@@ -289,7 +294,9 @@ namespace AxConfiguration.UnitTests
 
         public override void Arrange()
         {
-            ConfigurationProvider = new ConfigurationProvider(TestDirectory + @"\Configuration");
+            ConfigurationProvider = new ConfigurationProvider();
+            ConfigurationProvider.LoadDefaultConfigurationFile(TestDirectory + @"\Configuration");
+
             UnityContainerUnderTest = new UnityContainer();
         }
 
@@ -317,7 +324,8 @@ namespace AxConfiguration.UnitTests
 
         public override void Arrange()
         {
-            ConfigurationProvider = new ConfigurationProvider(TestDirectory + @"\Configuration");
+            ConfigurationProvider = new ConfigurationProvider();
+            ConfigurationProvider.LoadDefaultConfigurationFile(TestDirectory + @"\Configuration");
 
             UnityContainerUnderTest = new UnityContainer();
             base.Trying(() => UnityContainerUnderTest.LoadUnityConfiguration(ConfigurationProvider, "UnknownContainerName"));

@@ -7,10 +7,7 @@ namespace AxUtils
     {
         private readonly Func<T, T, int> _comparer;
 
-        public static IComparer<T> DefaultComparer
-        {
-            get { return Comparer<T>.Default; }
-        }
+        public static IComparer<T> DefaultComparer => Comparer<T>.Default;
 
         public AnonymousComparer(Func<T, T, int> comparer)
         {

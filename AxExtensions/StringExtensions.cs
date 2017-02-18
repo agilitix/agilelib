@@ -46,12 +46,12 @@ namespace AxExtensions
             return new string(result);
         }
 
-        public static string JoinValues<T>(this string self, string separator, T[] values)
+        public static string AppendValues<T>(this string self, string separator, T[] values)
         {
-            return JoinValues(self, separator, values, val => val.ToString());
+            return AppendValues(self, separator, values, val => val.ToString());
         }
 
-        public static string JoinValues<T>(this string self,
+        public static string AppendValues<T>(this string self,
                                            string separator,
                                            T[] values,
                                            Converter<T, string> valueToStringConverter)
@@ -64,7 +64,7 @@ namespace AxExtensions
             {
                 separator = string.Empty;
             }
-            return string.Join(separator, Array.ConvertAll(values, valueToStringConverter));
+            return self + string.Join(separator, Array.ConvertAll(values, valueToStringConverter));
         }
     }
 }

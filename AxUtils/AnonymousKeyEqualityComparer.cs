@@ -8,10 +8,7 @@ namespace AxUtils
         private readonly Func<T, TKey> _ketGetter;
         private readonly IEqualityComparer<TKey> _keyComparer;
 
-        public static IEqualityComparer<TKey> DefaultKeyEqualityComparer
-        {
-            get { return EqualityComparer<TKey>.Default; }
-        }
+        public static IEqualityComparer<TKey> DefaultKeyEqualityComparer => EqualityComparer<TKey>.Default;
 
         public AnonymousKeyEqualityComparer(Func<T, TKey> keyGetter, IEqualityComparer<TKey> keyComparer)
         {

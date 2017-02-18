@@ -15,8 +15,8 @@ namespace AxData
 
         public string Serialize(DataTable table)
         {
-            using (var sw = new StringWriter())
-            using (var xw = XmlWriter.Create(sw, _writerSettings))
+            using (StringWriter sw = new StringWriter())
+            using (XmlWriter xw = XmlWriter.Create(sw, _writerSettings))
             {
                 table.WriteXml(xw, XmlWriteMode.IgnoreSchema, true);
                 return sw.ToString();
@@ -26,7 +26,7 @@ namespace AxData
         public DataTable Deserialize(string serialized)
         {
             DataSet dataset = new DataSet();
-            using (var sr = new StringReader(serialized))
+            using (StringReader sr = new StringReader(serialized))
             {
                 dataset.ReadXml(sr);
             }

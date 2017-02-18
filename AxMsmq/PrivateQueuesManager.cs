@@ -25,7 +25,7 @@ namespace AxMsmq
         public IList<IQueueUri> GetExistingQueues(string hostName)
         {
             IEnumerable<IQueueUri> privateQueues = MessageQueue.GetPrivateQueuesByMachine(hostName)
-                                                               .Select(x => new QueueUri(hostName, x.QueueName));
+                                                               .Select(x => new QueueUri(x.MachineName, x.QueueName));
             return privateQueues.ToList();
         }
 
@@ -47,21 +47,19 @@ namespace AxMsmq
         private TQueue GetOrCreate<TQueue>(IQueueUri uri, Func<MessageQueue, TQueue> builder)
         {
             MessageQueue queue = null;
+            Func<MessageQueue> queueGetter = () => MessageQueue.GetPrivateQueuesByMachine(uri.HostName)
+                                                               .FirstOrDefault(x => x.QueueName.Equals(uri.QueueName));
 
             try
             {
-                queue = MessageQueue.GetPrivateQueuesByMachine(uri.HostName)
-                                    .FirstOrDefault(x => x.QueueName.Equals(uri.QueueName))
-                        ?? MessageQueue.Create(uri.ConnectionString);
-
+                queue = queueGetter() ?? MessageQueue.Create(uri.ConnectionString);
                 queue.Formatter = _messageFormatter.Clone() as IMessageFormatter;
             }
             catch (MessageQueueException ex)
             {
                 if (ex.MessageQueueErrorCode == MessageQueueErrorCode.QueueExists)
                 {
-                    queue = MessageQueue.GetPrivateQueuesByMachine(uri.HostName)
-                                        .FirstOrDefault(x => x.QueueName.Equals(uri.QueueName));
+                    queue = queueGetter();
                 }
             }
 

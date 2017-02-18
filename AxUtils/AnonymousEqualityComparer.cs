@@ -7,10 +7,7 @@ namespace AxUtils
     {
         private readonly Func<T, T, bool> _comparer;
 
-        public static IEqualityComparer<T> DefaultEqualityComparer
-        {
-            get { return EqualityComparer<T>.Default; }
-        }
+        public static IEqualityComparer<T> DefaultEqualityComparer => EqualityComparer<T>.Default;
 
         public AnonymousEqualityComparer(Func<T, T, bool> comparer)
         {

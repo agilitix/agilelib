@@ -2,7 +2,8 @@
 
 namespace AxUtils
 {
-    public class DisposeHelper<T> where T : IDisposable
+    public class DisposeHelper<T>
+        where T : IDisposable
     {
         private bool _disposed;
         private readonly T _disposee;
@@ -33,9 +34,9 @@ namespace AxUtils
                 return;
             }
 
-            if (disposing && _disposeManagedResources != null)
+            if (disposing)
             {
-                _disposeManagedResources();
+                _disposeManagedResources?.Invoke();
             }
 
             bool hasUnmanaged = _disposeUnmanagedResources != null;
@@ -48,7 +49,10 @@ namespace AxUtils
 
             if (disposing && hasUnmanaged)
             {
-                GC.SuppressFinalize((object) _disposee);
+                if (_disposee != null)
+                {
+                    GC.SuppressFinalize(_disposee);
+                }
             }
         }
     }

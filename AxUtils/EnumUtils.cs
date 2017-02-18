@@ -133,6 +133,7 @@ namespace AxUtils
             }
             catch
             {
+                // ignored
             }
 
             result = default(T);

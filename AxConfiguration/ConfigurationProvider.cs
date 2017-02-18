@@ -22,10 +22,7 @@ namespace AxConfiguration
             Path.GetFileName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile) // application.exe.config
         };
 
-        public string[] DefaultConfigurationFiles
-        {
-            get { return _defaultConfigurationFiles; }
-        }
+        public string[] DefaultConfigurationFiles => _defaultConfigurationFiles;
 
         public string ConfigurationFile { get; private set; }
         public Configuration Configuration { get; private set; }
