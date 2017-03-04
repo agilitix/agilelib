@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6227A554-CB7F-4E3D-B9A2-CE36AFE69B5E}</ProjectGuid>
+    <ProjectGuid>{58131DD8-A53F-4A81-B84D-B35B930CECC9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AxCommandLine.UnitTests</RootNamespace>
-    <AssemblyName>AxCommandLine.UnitTests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <RootNamespace>AxQuickFix.UnitTests</RootNamespace>
+    <AssemblyName>AxQuickFix.UnitTests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -35,7 +35,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework, Version=3.6.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.6.1\lib\net40\nunit.framework.dll</HintPath>
+      <HintPath>..\packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="QuickFix, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\QuickFix.Net.1.7.0\lib\QuickFix.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -44,24 +48,30 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandLineArgumentsTests.cs" />
+    <Compile Include="MessageExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AxCommandLine\AxCommandLine.csproj">
-      <Project>{66255424-f482-43e7-b23d-77945739b854}</Project>
-      <Name>AxCommandLine</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\AxQuality\AxQuality.csproj">
-      <Project>{ebf4de7b-53cb-4f6a-8a86-bd7e0190e469}</Project>
+      <Project>{EBF4DE7B-53CB-4F6A-8A86-BD7E0190E469}</Project>
       <Name>AxQuality</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AxQuickFix\AxQuickFix.csproj">
+      <Project>{D16A69F9-94D1-40DA-98BA-C4ADB946BF0F}</Project>
+      <Name>AxQuickFix</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <Content Include="Spec\FIX44.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
