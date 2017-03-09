@@ -9,7 +9,7 @@ namespace AxConfiguration
     public class ConfigurationProvider : IConfigurationProvider
     {
         /// <summary>
-        /// The first file found in the config folder will be used as startup config file.
+        /// The first file found in the config folder will be used as default config file.
         /// </summary>
         protected static string[] _defaultConfigurationFiles =
         {

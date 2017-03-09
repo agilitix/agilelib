@@ -46,19 +46,22 @@ namespace AxCommandLine
 
         public T Get<T>(string argument)
         {
-            return (T) Convert.ChangeType(_arguments[argument.ToLower()], typeof(T));
+            T result;
+            TryGet(argument, out result);
+            return result;
         }
 
         public bool TryGet<T>(string argument, out T output)
         {
-            if (!Contains(argument))
+            argument = argument.ToLower();
+            if (_arguments.ContainsKey(argument))
             {
-                output = default(T);
-                return false;
+                output = (T) Convert.ChangeType(_arguments[argument], typeof(T));
+                return true;
             }
 
-            output = Get<T>(argument);
-            return true;
+            output = default(T);
+            return false;
         }
     }
 }
