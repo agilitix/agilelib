@@ -1,16 +1,20 @@
-﻿using System;
+﻿using System.Reflection;
 using AxFixEngine.Interfaces;
+using log4net;
 using QuickFix;
 
 namespace AxFixEngine
 {
-    class FixApplication : IFixApplication
+    public class FixApplication : IFixApplication
     {
-        private readonly MessageCracker _cracker;
+        protected static readonly log4net.ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly IFixMessageHandler _messageHandler;
+        private readonly IFixMessageHistory _messageHistory;
 
-        public FixApplication(MessageCracker cracker)
+        public FixApplication(IFixMessageHandler messageHandler, IFixMessageHistory messageHistory)
         {
-            _cracker = cracker;
+            _messageHandler = messageHandler;
+            _messageHistory = messageHistory;
         }
 
         /// <summary>
@@ -22,7 +26,8 @@ namespace AxFixEngine
         /// </summary>
         public void ToAdmin(Message message, SessionID sessionID)
         {
-            throw new NotImplementedException();
+            _messageHandler.SendingToAdmin(message, sessionID);
+            _messageHistory.Historize(message);
         }
 
         /// <summary>
@@ -33,7 +38,8 @@ namespace AxFixEngine
         /// </summary>
         public void FromAdmin(Message message, SessionID sessionID)
         {
-            throw new NotImplementedException();
+            _messageHistory.Historize(message);
+            _messageHandler.ReceivingFromAdmin(message, sessionID);
         }
 
         /// <summary>
@@ -48,9 +54,10 @@ namespace AxFixEngine
         /// simply not be sent. You may add fields before an application message
         /// before it is sent out.
         /// </summary>
-        public void ToApp(Message message, SessionID sessionId)
+        public void ToApp(Message message, SessionID sessionID)
         {
-            throw new NotImplementedException();
+            _messageHandler.SendingToApp(message, sessionID);
+            _messageHistory.Historize(message);
         }
 
         /// <summary>
@@ -70,7 +77,8 @@ namespace AxFixEngine
         /// </summary>
         public void FromApp(Message message, SessionID sessionID)
         {
-            throw new NotImplementedException();
+            _messageHistory.Historize(message);
+            _messageHandler.ReceivingFromApp(message, sessionID);
         }
 
         /// <summary>
@@ -83,7 +91,6 @@ namespace AxFixEngine
         /// </summary>
         public void OnCreate(SessionID sessionID)
         {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -93,7 +100,7 @@ namespace AxFixEngine
         /// </summary>
         public void OnLogout(SessionID sessionID)
         {
-            throw new NotImplementedException();
+            _messageHandler.OnLogout(sessionID);
         }
 
         /// <summary>
@@ -104,7 +111,7 @@ namespace AxFixEngine
         /// </summary>
         public void OnLogon(SessionID sessionID)
         {
-            throw new NotImplementedException();
+            _messageHandler.OnLogon(sessionID);
         }
     }
 }

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using AxFixEngine.Interfaces;
+﻿using AxFixEngine;
 using QuickFix;
 
-namespace AxFixEngine
+namespace AxFixServer
 {
-    public class FixMessageCracker : MessageCracker, IFixMessageCracker
+    public class FixMessageHandler : FixMessageHandlerBase
     {
         public void OnMessage(QuickFix.FIX44.Logon message, SessionID sessionId)
         {
