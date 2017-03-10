@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using AxCommandLine.Interfaces;
 
@@ -9,7 +11,7 @@ namespace AxCommandLine
     public class CommandLineArguments : ICommandLineArguments
     {
         private static readonly Regex _matcher = new Regex(@"^(-{1,2}|\/)(?<option>\w+)[=:]*(?<value>.*)$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        private readonly StringDictionary _arguments = new StringDictionary();
+        private readonly IDictionary<string, string> _arguments = new Dictionary<string, string>();
 
         public CommandLineArguments(params string[] args)
         {
@@ -62,6 +64,11 @@ namespace AxCommandLine
 
             output = default(T);
             return false;
+        }
+
+        public override string ToString()
+        {
+            return string.Join(" ", _arguments.Select(x => x.Key + "=\"" + x.Value + "\""));
         }
     }
 }

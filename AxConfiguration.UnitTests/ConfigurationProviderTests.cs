@@ -7,7 +7,7 @@ namespace AxConfiguration.UnitTests
 {
     public class ConfigurationProviderTests : ArrangeActAssert
     {
-        protected IConfigurationProvider ConfigurationProviderUnderTest;
+        protected IAppConfiguration AppConfigurationUnderTest;
         protected string ActualKeyValue;
         protected string ExpectedKeyValue;
         private readonly string TestDirectory = TestContext.CurrentContext.TestDirectory;
@@ -15,13 +15,13 @@ namespace AxConfiguration.UnitTests
         public override void Arrange()
         {
             ExpectedKeyValue = "keyValue";
-            ConfigurationProviderUnderTest = new ConfigurationProvider();
+            AppConfigurationUnderTest = new AppConfiguration();
         }
 
         public override void Act()
         {
-            ConfigurationProviderUnderTest.LoadDefaultConfigurationFile(TestDirectory + @"\MainConfiguration");
-            ActualKeyValue = ConfigurationProviderUnderTest.Configuration.AppSettings.Settings["keyName"].Value;
+            AppConfigurationUnderTest.LoadDefaultConfigurationFile(TestDirectory + @"\MainConfiguration");
+            ActualKeyValue = AppConfigurationUnderTest.Configuration.AppSettings.Settings["keyName"].Value;
         }
 
         [Test]

@@ -67,26 +67,23 @@ namespace AxConfiguration
             return result;
         }
 
-        /// <summary>
-        /// Load an Unity configuration file.
-        /// </summary>
-        public static void LoadUnityConfiguration(this IUnityContainer self,
-                                                  IConfigurationProvider configurationProvider,
-                                                  string unityContainerName = null)
+        public static void Load(this IUnityContainer self,
+                                string unityConfigurationFile,
+                                string unityContainerName = null)
         {
-            string mainConfigFile = configurationProvider.ConfigurationFile;
-            if (!string.IsNullOrWhiteSpace(mainConfigFile))
+            if (string.IsNullOrWhiteSpace(unityConfigurationFile)
+                || File.Exists(unityConfigurationFile) == false
+                || LoadConfigurationFromFile(self, unityConfigurationFile, unityContainerName) == false)
             {
-                bool result = LoadConfigurationFromFile(self, mainConfigFile, unityContainerName);
-                if (result)
-                {
-                    return;
-                }
-
-                throw new ArgumentException();
+                throw new FileLoadException();
             }
+        }
 
-            throw new FileLoadException();
+        public static void Load(this IUnityContainer self,
+                                IAppConfiguration appConfiguration,
+                                string unityContainerName = null)
+        {
+            Load(self, appConfiguration.ConfigurationFile, unityContainerName);
         }
     }
 }

@@ -54,8 +54,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigurationProvider.cs" />
-    <Compile Include="Interfaces\IConfigurationProvider.cs" />
+    <Compile Include="AppConfiguration.cs" />
+    <Compile Include="Interfaces\IAppConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnityContainerExtensions.cs" />
   </ItemGroup>

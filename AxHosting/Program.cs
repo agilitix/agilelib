@@ -22,10 +22,10 @@ namespace AxHosting
                 return;
             }
 
-            IConfigurationProvider configurationProvider = new ConfigurationProvider();
-            configurationProvider.LoadDefaultConfigurationFile(".");
+            IAppConfiguration appConfiguration = new AppConfiguration();
+            appConfiguration.LoadDefaultConfigurationFile(".");
 
-            string log4netConfigFile = configurationProvider.Configuration.AppSettings.Settings["log4net.config"].Value;
+            string log4netConfigFile = appConfiguration.Configuration.AppSettings.Settings["log4net.config"].Value;
             log4net.Config.XmlConfigurator.ConfigureAndWatch(new System.IO.FileInfo(log4netConfigFile));
 
             Log.Info("test2");

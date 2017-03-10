@@ -46,6 +46,7 @@
     <Compile Include="DisposableAction.cs" />
     <Compile Include="DisposeHelper.cs" />
     <Compile Include="EnumUtils.cs" />
+    <Compile Include="IniFileReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyUtils.cs" />
   </ItemGroup>

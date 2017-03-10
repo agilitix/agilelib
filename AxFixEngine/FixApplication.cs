@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections;
 using QuickFix;
 
 namespace AxFixEngine
 {
-    class Application : IApplication
+    class FixApplication : IApplication
     {
+        private IAcceptor _acceptor;
+        private IInitiator _initiator;
+
         /// <summary>
         /// This callback provides you with a peek at the administrative messages
         /// that are being sent from your FIX engine to the counter party. This is
