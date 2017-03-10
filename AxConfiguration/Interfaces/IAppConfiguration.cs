@@ -6,8 +6,8 @@ namespace AxConfiguration.Interfaces
     {
         Configuration Configuration { get; }
 
-        string GetSetting(string key);
-        bool TryGetSetting(string key, out string value);
+        T GetSetting<T>(string key);
+        bool TryGetSetting<T>(string key, out T value);
 
         string ConfigurationFile { get; }
         void Load(string configurationFile);

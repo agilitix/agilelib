@@ -59,8 +59,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FixAcceptor.cs" />
     <Compile Include="FixApplication.cs" />
+    <Compile Include="FixConnectionFactory.cs" />
+    <Compile Include="FixInitiator.cs" />
     <Compile Include="FixMessageHandler.cs" />
+    <Compile Include="Interfaces\IFixApplication.cs" />
+    <Compile Include="Interfaces\IFixConnection.cs" />
+    <Compile Include="Interfaces\IFixConnectionFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

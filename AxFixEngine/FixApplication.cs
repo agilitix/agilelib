@@ -1,13 +1,17 @@
 ﻿using System;
-using System.Collections;
+using AxFixEngine.Interfaces;
 using QuickFix;
 
 namespace AxFixEngine
 {
-    class FixApplication : IApplication
+    class FixApplication : IFixApplication
     {
-        private IAcceptor _acceptor;
-        private IInitiator _initiator;
+        private readonly MessageCracker _cracker;
+
+        public FixApplication(MessageCracker cracker)
+        {
+            _cracker = cracker;
+        }
 
         /// <summary>
         /// This callback provides you with a peek at the administrative messages

@@ -1,13 +1,15 @@
-﻿using System.Collections.Generic;
+﻿
+using System.Collections.Generic;
 using System.Linq;
+using AxUtils.Interfaces;
 
 namespace AxUtils
 {
-    public class IniFileReader
+    public class IniFileReader : IIniFileReader
     {
         private readonly IList<IniSection> _sections = new List<IniSection>();
 
-        public class IniSection
+        private class IniSection
         {
             public string Name;
             public IDictionary<string, string> Entries;

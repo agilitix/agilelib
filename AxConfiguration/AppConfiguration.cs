@@ -28,27 +28,27 @@ namespace AxConfiguration
         public string ConfigurationFile { get; private set; }
         public Configuration Configuration { get; private set; }
 
-        public string GetSetting(string key)
+        public T GetSetting<T>(string key)
         {
-            string value;
+            T value;
             TryGetSetting(key, out value);
             return value;
         }
 
-        public bool TryGetSetting(string key, out string value)
+        public bool TryGetSetting<T>(string key, out T value)
         {
             IEnumerator enumerator = Configuration.AppSettings.Settings.GetEnumerator();
-            while(enumerator.MoveNext())
+            while (enumerator.MoveNext())
             {
                 KeyValueConfigurationElement elt = enumerator.Current as KeyValueConfigurationElement;
                 if (elt != null && elt.Key == key)
                 {
-                    value = elt.Value;
+                    value = (T) Convert.ChangeType(elt.Value, typeof(T));
                     return true;
                 }
             }
 
-            value = string.Empty;
+            value = default(T);
             return false;
         }
 
