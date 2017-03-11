@@ -1,21 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using AxFixEngine.Interfaces;
-using AxUtils;
-using AxUtils.Interfaces;
 using QuickFix;
 
 namespace AxFixEngine
 {
     public class FixSettings : IFixSettings
     {
-        protected IIniFile _iniFile;
         protected SessionSettings _sessionSettings;
+        protected IDictionary<Type, Func<Dictionary, string, Type, object>> _converters;
+
+        public const string MESSAGE_HISTORIZATION_FILE = "MessageHistorizationFile";
 
         public FixSettings(string configFileName)
         {
-            _iniFile = new IniFile(configFileName);
             _sessionSettings = new SessionSettings(configFileName);
+
+            _converters = new Dictionary<Type, Func<Dictionary, string, Type, object>>
+            {
+                { typeof(string), (dictionary, key, type) => Convert.ChangeType(dictionary.GetString(key), type) },
+                { typeof(bool), (dictionary, key, type) => Convert.ChangeType(dictionary.GetBool(key), type) },
+                { typeof(double), (dictionary, key, type) => Convert.ChangeType(dictionary.GetDouble(key), type) },
+                { typeof(DayOfWeek), (dictionary, key, type) => Convert.ChangeType(dictionary.GetDay(key), type) },
+                { typeof(int), (dictionary, key, type) => Convert.ChangeType(dictionary.GetInt(key), type) },
+                { typeof(long), (dictionary, key, type) => Convert.ChangeType(dictionary.GetLong(key), type) }
+            };
         }
 
         public SessionSettings GetSessionSettings()
@@ -35,13 +44,25 @@ namespace AxFixEngine
 
         public T GetSessionSettingValue<T>(SessionID sessionID, string settingName)
         {
-            Dictionary dictionary = GetSessionSettings(sessionID);
-            return (T) Convert.ChangeType(dictionary.GetString(settingName), typeof(T));
+            Dictionary settings = _sessionSettings.Get(sessionID);
+            return GetSettingValue<T>(settings, settingName);
         }
 
-        public T GetSettingValue<T>(string sectionName, string settingName)
+        public T GetDefaultSettingValue<T>(string settingName)
         {
-            return _iniFile.GetSetting<T>(sectionName, settingName);
+            Dictionary defaultSettings = _sessionSettings.Get();
+            return GetSettingValue<T>(defaultSettings, settingName);
+        }
+
+        protected T GetSettingValue<T>(Dictionary settings, string settingName)
+        {
+            Func<Dictionary, string, Type, object> converter;
+            if (_converters.TryGetValue(typeof(T), out converter))
+            {
+                return (T)converter(settings, settingName, typeof(T));
+            }
+
+            return (T)Convert.ChangeType(settings.GetString(settingName), typeof(T));
         }
     }
 }

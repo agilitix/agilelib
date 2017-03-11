@@ -8,6 +8,7 @@ using AxFixEngine;
 using AxFixEngine.Interfaces;
 using log4net;
 using Microsoft.Practices.Unity;
+using QuickFix;
 using ILog = log4net.ILog;
 
 namespace AxFixServer
@@ -83,7 +84,7 @@ namespace AxFixServer
         private static IFixConnector BuildFixConnector(IFixSettings fixSettings,
                                                        Func<IFixApplication, IFixSettings, IFixConnector> builder)
         {
-            string historizerOutputFileName = fixSettings.GetSettingValue<string>("APPLICATION", "MessageFileHistorization");
+            string historizerOutputFileName = fixSettings.GetDefaultSettingValue<string>(FixSettings.MESSAGE_HISTORIZATION_FILE);
 
             IFixMessageHistorizer messageHistorizer = new FixMessageFileHistorizer(historizerOutputFileName);
             IFixMessageHandler messageHandler = new FixMessageHandler();
