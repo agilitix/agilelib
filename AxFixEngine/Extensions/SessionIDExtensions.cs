@@ -1,9 +1,9 @@
 ﻿
 using QuickFix;
 
-namespace AxQuickFix
+namespace AxFixEngine.Extensions
 {
-    public static class SessionIDExtensions
+    public static class SessionIdExtensions
     {
         public static SessionID ToReverse(this SessionID self)
         {

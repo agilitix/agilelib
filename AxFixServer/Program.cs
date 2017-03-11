@@ -24,15 +24,15 @@ namespace AxFixServer
             IAppConfiguration appConfiguration = new AppConfiguration();
             appConfiguration.Load(configfile);
 
-            string log4netConfigFile;
-            if (!appConfiguration.TryGetSetting("log4net", out log4netConfigFile))
+            string log4NetConfigFile;
+            if (!appConfiguration.TryGetSetting("log4net", out log4NetConfigFile))
             {
                 Console.WriteLine("Cannot get key 'log4net' from config file=" + configfile);
                 Console.ReadLine();
                 return;
             }
 
-            log4net.Config.XmlConfigurator.ConfigureAndWatch(new System.IO.FileInfo(log4netConfigFile));
+            log4net.Config.XmlConfigurator.ConfigureAndWatch(new System.IO.FileInfo(log4NetConfigFile));
 
             Log.Info("Starting FIX engine version=" + Assembly.GetEntryAssembly().GetName().Version);
 

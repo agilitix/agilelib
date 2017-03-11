@@ -1,19 +1,29 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace AxUtils.Interfaces
 {
+    public interface IIniFileSection
+    {
+        string Name { get; }
+        IDictionary<string, string> Settings { get; }
+    }
+
     public interface IIniFileReader
     {
         /// <summary>
-        /// Get all the sections for given section name, a section is a dictionary of key/value pairs.
+        /// Get all the sections.
         /// </summary>
-        IEnumerable<IDictionary<string, string>> GetAllSections(string sectionName);
+        IEnumerable<IIniFileSection> GetAllSections();
+
+        /// <summary>
+        /// Get all sections having given section name.
+        /// </summary>
+        IEnumerable<IIniFileSection> GetAllSections(string sectionName);
 
         /// <summary>
         /// Get first section with given name.
         /// </summary>
-        IDictionary<string, string> GetSection(string sectionName);
+        IIniFileSection GetSection(string sectionName);
 
         /// <summary>
         /// Get first section param with given name.

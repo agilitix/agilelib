@@ -1,8 +1,7 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using QuickFix.DataDictionary;
 
-namespace AxQuickFix
+namespace AxFixEngine.Extensions
 {
     public static class DataDictionaryExtensions
     {

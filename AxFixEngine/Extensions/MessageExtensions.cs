@@ -4,7 +4,7 @@ using QuickFix;
 using QuickFix.DataDictionary;
 using QuickFix.Fields;
 
-namespace AxQuickFix
+namespace AxFixEngine.Extensions
 {
     public static class MessageExtensions
     {

@@ -1,11 +1,12 @@
 ﻿using System.Xml.Linq;
+using AxFixEngine.Extensions;
 using AxQuality;
-using QuickFix.DataDictionary;
-using Message = QuickFix.Message;
 using NFluent;
 using NUnit.Framework;
+using QuickFix.DataDictionary;
+using Message = QuickFix.Message;
 
-namespace AxQuickFix.UnitTests
+namespace AxFixEngine.UnitTests
 {
     internal class MessageExtensionsTests : ArrangeActAssert
     {
