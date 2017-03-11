@@ -35,7 +35,7 @@ namespace AxUtils
                                      };
                         _sections.Add(iniSection);
                     }
-                    else if (trimLine.IndexOf('=') != -1 && iniSection?.Entries != null)
+                    else if (trimLine.IndexOf('=') != -1 && iniSection != null)
                     {
                         string[] keyValue = trimLine.Split(new[] {'='}, 2);
                         iniSection.Entries.Add(keyValue[0].Trim(), keyValue[1].Trim());
