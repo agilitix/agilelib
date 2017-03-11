@@ -83,7 +83,7 @@ namespace AxFixServer
         private static IFixConnector BuildFixConnector(IFixSettings fixSettings,
                                                        Func<IFixApplication, IFixSettings, IFixConnector> builder)
         {
-            string historizerOutputFileName = fixSettings.GetSetting<string>("APPLICATION", "MessageFileHistorization");
+            string historizerOutputFileName = fixSettings.GetSettingValue<string>("APPLICATION", "MessageFileHistorization");
 
             IFixMessageHistorizer messageHistorizer = new FixMessageFileHistorizer(historizerOutputFileName);
             IFixMessageHandler messageHandler = new FixMessageHandler();

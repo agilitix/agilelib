@@ -10,7 +10,7 @@ namespace AxFixEngine.Interfaces
         IEnumerable<SessionID> GetAllSessions();
         Dictionary GetSessionSettings(SessionID sessionID);
 
-        T GetSetting<T>(SessionID sessionID, string settingName);
-        T GetSetting<T>(string sectionName, string settingName);
+        T GetSessionSettingValue<T>(SessionID sessionID, string settingName);
+        T GetSettingValue<T>(string sectionName, string settingName);
     }
 }
