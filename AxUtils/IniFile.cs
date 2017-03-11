@@ -17,11 +17,11 @@ namespace AxUtils
         }
     }
 
-    public class IniFileReader : IIniFileReader
+    public class IniFile : IIniFile
     {
         private readonly IList<IIniFileSection> _sections = new List<IIniFileSection>();
 
-        public IniFileReader(string inifile)
+        public IniFile(string inifile)
         {
             const string commentsMarker = ";#'";
             IIniFileSection iniFileSection = null;

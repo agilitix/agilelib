@@ -9,12 +9,12 @@ namespace AxFixEngine
     {
         protected static readonly log4net.ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly IFixMessageHandler _messageHandler;
-        private readonly IFixMessageHistory _messageHistory;
+        private readonly IFixMessageHistorizer _messageHistorizer;
 
-        public FixApplication(IFixMessageHandler messageHandler, IFixMessageHistory messageHistory)
+        public FixApplication(IFixMessageHandler messageHandler, IFixMessageHistorizer messageHistorizer)
         {
             _messageHandler = messageHandler;
-            _messageHistory = messageHistory;
+            _messageHistorizer = messageHistorizer;
         }
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace AxFixEngine
         public void ToAdmin(Message message, SessionID sessionID)
         {
             _messageHandler.SendingToAdmin(message, sessionID);
-            _messageHistory.Historize(message);
+            _messageHistorizer.Historize(message);
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace AxFixEngine
         /// </summary>
         public void FromAdmin(Message message, SessionID sessionID)
         {
-            _messageHistory.Historize(message);
+            _messageHistorizer.Historize(message);
             _messageHandler.ReceivingFromAdmin(message, sessionID);
         }
 
@@ -57,7 +57,7 @@ namespace AxFixEngine
         public void ToApp(Message message, SessionID sessionID)
         {
             _messageHandler.SendingToApp(message, sessionID);
-            _messageHistory.Historize(message);
+            _messageHistorizer.Historize(message);
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace AxFixEngine
         /// </summary>
         public void FromApp(Message message, SessionID sessionID)
         {
-            _messageHistory.Historize(message);
+            _messageHistorizer.Historize(message);
             _messageHandler.ReceivingFromApp(message, sessionID);
         }
 

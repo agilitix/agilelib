@@ -6,7 +6,7 @@ using QuickFix.Transport;
 
 namespace AxFixEngine
 {
-    class FixInitiator : IFixConnection
+    class FixInitiator : IFixConnector
     {
         protected static readonly log4net.ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly IInitiator _initiator;

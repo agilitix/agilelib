@@ -2,7 +2,7 @@
 
 namespace AxFixEngine.Interfaces
 {
-    public interface IFixMessageHistory
+    public interface IFixMessageHistorizer
     {
         bool Historize(Message message);
     }

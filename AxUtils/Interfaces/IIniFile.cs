@@ -8,7 +8,7 @@ namespace AxUtils.Interfaces
         IDictionary<string, string> Settings { get; }
     }
 
-    public interface IIniFileReader
+    public interface IIniFile
     {
         /// <summary>
         /// Get all the sections.

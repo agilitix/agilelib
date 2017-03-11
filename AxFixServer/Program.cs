@@ -6,7 +6,6 @@ using AxConfiguration;
 using AxConfiguration.Interfaces;
 using AxFixEngine;
 using AxFixEngine.Interfaces;
-using AxUtils;
 using log4net;
 using Microsoft.Practices.Unity;
 using ILog = log4net.ILog;
@@ -43,24 +42,32 @@ namespace AxFixServer
             IUnityContainer unity = new UnityContainer();
             unity.Load(appConfiguration);
 
-            IFixConnectionFactory fixConnectionFactory = new FixConnectionFactory();
-            IFixConnection acceptor = null;
-            IFixConnection initiator = null;
+            IFixConnectorFactory fixConnectorFactory = new FixConnectorFactory();
+            IFixConnector acceptor = null;
+            IFixConnector initiator = null;
 
             bool acceptorEnabled = appConfiguration.GetSetting<bool>("acceptor_enabled");
             Log.Info("Acceptor enabled=" + acceptorEnabled);
             if (acceptorEnabled)
             {
-                string connectorConfigFile = appConfiguration.GetSetting<string>("acceptor_settings");
-                acceptor = BuildFixConnector(connectorConfigFile, (fixapp, cfgfile) => fixConnectionFactory.CreateAcceptor(fixapp, cfgfile));
+                string acceptorConfigFile = appConfiguration.GetSetting<string>("acceptor_settings");
+
+                IFixSettings fixSettings = new FixSettings(acceptorConfigFile);
+                IFixDataDictionaries dataDictionaries = new FixDataDictionaries(fixSettings);
+
+                acceptor = BuildFixConnector(fixSettings, (fixapp, settings) => fixConnectorFactory.CreateAcceptor(fixapp, settings));
             }
 
             bool initiatorEnabled = appConfiguration.GetSetting<bool>("initiator_enabled");
             Log.Info("Initiator enabled=" + initiatorEnabled);
             if (initiatorEnabled)
             {
-                string connectorConfigFile = appConfiguration.GetSetting<string>("initiator_settings");
-                initiator = BuildFixConnector(connectorConfigFile, (fixapp, cfgfile) => fixConnectionFactory.CreateInitiator(fixapp, cfgfile));
+                string initiatorConfigFile = appConfiguration.GetSetting<string>("initiator_settings");
+
+                IFixSettings fixSettings = new FixSettings(initiatorConfigFile);
+                IFixDataDictionaries dataDictionaries = new FixDataDictionaries(fixSettings);
+
+                initiator = BuildFixConnector(fixSettings, (fixapp, settings) => fixConnectorFactory.CreateInitiator(fixapp, settings));
             }
 
             acceptor?.Start();
@@ -73,16 +80,16 @@ namespace AxFixServer
             initiator?.Stop();
         }
 
-        private static IFixConnection BuildFixConnector(string connectorConfigFile, Func<IFixApplication, string, IFixConnection> builder)
+        private static IFixConnector BuildFixConnector(IFixSettings fixSettings,
+                                                       Func<IFixApplication, IFixSettings, IFixConnector> builder)
         {
-            IniFileReader inifile = new IniFileReader(connectorConfigFile);
-            string messageHistoryFile = inifile.GetSetting<string>("APPLICATION", "MessagesHistoryFile");
+            string historizerOutputFileName = fixSettings.GetSetting<string>("APPLICATION", "MessageFileHistorization");
 
-            IFixMessageHistory messageHistory = new FixMessageFileHistory(messageHistoryFile);
+            IFixMessageHistorizer messageHistorizer = new FixMessageFileHistorizer(historizerOutputFileName);
             IFixMessageHandler messageHandler = new FixMessageHandler();
-            IFixApplication fixApp = new FixApplication(messageHandler, messageHistory);
+            IFixApplication fixApp = new FixApplication(messageHandler, messageHistorizer);
 
-            return builder(fixApp, connectorConfigFile);
+            return builder(fixApp, fixSettings);
         }
     }
 }
