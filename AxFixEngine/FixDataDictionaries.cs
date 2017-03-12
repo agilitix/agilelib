@@ -11,12 +11,12 @@ namespace AxFixEngine
         protected readonly IDictionary<SessionID, DataDictionary> _dataDictionaries = new Dictionary<SessionID, DataDictionary>();
         protected readonly IDictionary<string, DataDictionary> _dataDictionariesBySpecFile = new Dictionary<string, DataDictionary>();
 
-        public FixDataDictionaries(IFixSettings fixSettings)
+        public FixDataDictionaries(SessionSettings fixSettings)
         {
-            IEnumerable<SessionID> sessions = fixSettings.GetAllSessions();
+            Dictionary sessions = fixSettings.Get();
             foreach (SessionID sessionId in sessions)
             {
-                Dictionary settings = fixSettings.GetSessionSettings(sessionId);
+                Dictionary settings = fixSettings.Get(sessionId);
                 string specFile = settings.GetString(SessionSettings.DATA_DICTIONARY);
                 DataDictionary dataDictionary;
                 if (_dataDictionariesBySpecFile.TryGetValue(specFile, out dataDictionary))

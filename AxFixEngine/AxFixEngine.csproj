@@ -52,7 +52,7 @@
   <ItemGroup>
     <Compile Include="Extensions\DataDictionaryExtensions.cs" />
     <Compile Include="Extensions\MessageExtensions.cs" />
-    <Compile Include="Extensions\SessionIDExtensions.cs" />
+    <Compile Include="Extensions\SessionSettingsExtensions.cs" />
     <Compile Include="FixAcceptor.cs" />
     <Compile Include="FixApplication.cs" />
     <Compile Include="FixConnectorFactory.cs" />
@@ -60,14 +60,12 @@
     <Compile Include="FixMessageFileHistorizer.cs" />
     <Compile Include="FixMessageHandlerBase.cs" />
     <Compile Include="FixDataDictionaries.cs" />
-    <Compile Include="FixSettings.cs" />
     <Compile Include="Interfaces\IFixApplication.cs" />
     <Compile Include="Interfaces\IFixConnector.cs" />
     <Compile Include="Interfaces\IFixConnectorFactory.cs" />
     <Compile Include="Interfaces\IFixDataDictionaries.cs" />
     <Compile Include="Interfaces\IFixMessageHistorizer.cs" />
     <Compile Include="Interfaces\IFixMessageHandler.cs" />
-    <Compile Include="Interfaces\IFixSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -5,6 +5,7 @@ using AxCommandLine.Interfaces;
 using AxConfiguration;
 using AxConfiguration.Interfaces;
 using AxFixEngine;
+using AxFixEngine.Extensions;
 using AxFixEngine.Interfaces;
 using log4net;
 using Microsoft.Practices.Unity;
@@ -53,7 +54,7 @@ namespace AxFixServer
             {
                 string acceptorConfigFile = appConfiguration.GetSetting<string>("acceptor_settings");
 
-                IFixSettings fixSettings = new FixSettings(acceptorConfigFile);
+                SessionSettings fixSettings = new SessionSettings(acceptorConfigFile);
                 IFixDataDictionaries dataDictionaries = new FixDataDictionaries(fixSettings);
 
                 acceptor = BuildFixConnector(fixSettings, (fixapp, settings) => fixConnectorFactory.CreateAcceptor(fixapp, settings));
@@ -65,7 +66,7 @@ namespace AxFixServer
             {
                 string initiatorConfigFile = appConfiguration.GetSetting<string>("initiator_settings");
 
-                IFixSettings fixSettings = new FixSettings(initiatorConfigFile);
+                SessionSettings fixSettings = new SessionSettings(initiatorConfigFile);
                 IFixDataDictionaries dataDictionaries = new FixDataDictionaries(fixSettings);
 
                 initiator = BuildFixConnector(fixSettings, (fixapp, settings) => fixConnectorFactory.CreateInitiator(fixapp, settings));
@@ -81,10 +82,10 @@ namespace AxFixServer
             initiator?.Stop();
         }
 
-        private static IFixConnector BuildFixConnector(IFixSettings fixSettings,
-                                                       Func<IFixApplication, IFixSettings, IFixConnector> builder)
+        private static IFixConnector BuildFixConnector(SessionSettings fixSettings,
+                                                       Func<IFixApplication, SessionSettings, IFixConnector> builder)
         {
-            string historizerOutputFileName = fixSettings.GetDefaultSettingValue<string>(FixSettings.MESSAGE_HISTORIZATION_FILE);
+            string historizerOutputFileName = fixSettings.GetDefaultSettingValue<string>("MessageHistorizationFile");
 
             IFixMessageHistorizer messageHistorizer = new FixMessageFileHistorizer(historizerOutputFileName);
             IFixMessageHandler messageHandler = new FixMessageHandler();
