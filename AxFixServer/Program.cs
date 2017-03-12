@@ -18,6 +18,16 @@ namespace AxFixServer
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        static Program()
+        {
+            Console.TreatControlCAsInput = false;
+            Console.CancelKeyPress += (snd, evt) =>
+                                      {
+                                          Console.WriteLine("Ctrl+C pressed");
+                                          evt.Cancel = true;
+                                      };
+        }
+
         static void Main(string[] args)
         {
             const string configfile = @".\Configuration\fixengine.config";
@@ -75,8 +85,12 @@ namespace AxFixServer
             acceptor?.Start();
             initiator?.Start();
 
-            Console.WriteLine();
-            Console.ReadLine();
+            do
+            {
+                Console.WriteLine();
+                Console.WriteLine("Press X to quit");
+            }
+            while (Console.ReadKey().Key != ConsoleKey.X);
 
             acceptor?.Stop();
             initiator?.Stop();
