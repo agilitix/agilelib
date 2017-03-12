@@ -13,7 +13,7 @@ namespace AxFixEngine
 
         public FixDataDictionaries(SessionSettings fixSettings)
         {
-            Dictionary sessions = fixSettings.Get();
+            HashSet<SessionID> sessions = fixSettings.GetSessions();
             foreach (SessionID sessionId in sessions)
             {
                 Dictionary settings = fixSettings.Get(sessionId);
