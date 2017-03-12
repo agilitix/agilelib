@@ -23,7 +23,7 @@ namespace AxUtils
 
         public IniFile(string inifile)
         {
-            const string commentsMarker = ";#'";
+            const string commentsMarker = ";#";
             IIniFileSection iniFileSection = null;
 
             string[] lines = System.IO.File.ReadAllLines(inifile);

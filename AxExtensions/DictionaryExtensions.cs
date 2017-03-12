@@ -16,14 +16,12 @@ namespace AxExtensions
             return result;
         }
 
-        public static TValue GetOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> self, TKey key, TValue @default = default(TValue))
+        public static TValue GetOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> self, TKey key, TValue defaultValue = default(TValue))
         {
             TValue result;
-            if (!self.TryGetValue(key, out result))
-            {
-                return @default;
-            }
-            return result;
+            return self.TryGetValue(key, out result)
+                ? result
+                : defaultValue;
         }
     }
 }

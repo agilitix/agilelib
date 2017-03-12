@@ -2,6 +2,7 @@
 using System.IO;
 using AxFixEngine.Interfaces;
 using AxUtils;
+using AxUtils.Interfaces;
 using QuickFix;
 
 namespace AxFixEngine
@@ -9,7 +10,7 @@ namespace AxFixEngine
     public class FixMessageFileHistorizer : IFixMessageHistorizer
     {
         protected readonly string _historyOutputFileName;
-        protected readonly FifoWorkerQueue _workerQueue = new FifoWorkerQueue();
+        protected readonly IWorkerQueue<Action> _workerQueue = new FifoWorkerQueue();
 
         public FixMessageFileHistorizer(string historyOutputFileName)
         {
@@ -18,7 +19,7 @@ namespace AxFixEngine
 
         public bool Historize(Message message)
         {
-            return _workerQueue.Enqueue(() => { File.AppendAllText(_historyOutputFileName, message + Environment.NewLine); });
+            return _workerQueue.TryEnqueue(() => { File.AppendAllText(_historyOutputFileName, message + Environment.NewLine); });
         }
     }
 }

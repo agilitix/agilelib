@@ -30,7 +30,7 @@ namespace AxFixEngine.Extensions
         public static XDocument ToXDocument(this Message self, DataDictionary dictionary)
         {
             string msgName = GetName(self, dictionary);
-            XDocument doc = new XDocument(new XDeclaration("1.0", "UTF-8", null));
+            XDocument doc = new XDocument(new XDeclaration("1.0", "utf-8", null));
 
             XElement root = new XElement("message");
             root.Add(new XAttribute("name", msgName));
