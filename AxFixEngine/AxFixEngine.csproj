@@ -60,7 +60,6 @@
     <Compile Include="FixMessageFileHistorizer.cs" />
     <Compile Include="FixMessageHandlerBase.cs" />
     <Compile Include="FixDataDictionaries.cs" />
-    <Compile Include="Interfaces\IFixApplication.cs" />
     <Compile Include="Interfaces\IFixConnector.cs" />
     <Compile Include="Interfaces\IFixConnectorFactory.cs" />
     <Compile Include="Interfaces\IFixDataDictionaries.cs" />

@@ -4,7 +4,7 @@ namespace AxFixEngine.Interfaces
 {
     public interface IFixConnectorFactory
     {
-        IFixConnector CreateAcceptor(IFixApplication fixApplication, SessionSettings fixSettings);
-        IFixConnector CreateInitiator(IFixApplication fixApplication, SessionSettings fixSettings);
+        IFixConnector CreateAcceptor(IApplication fixApplication, SessionSettings fixSettings);
+        IFixConnector CreateInitiator(IApplication fixApplication, SessionSettings fixSettings);
     }
 }

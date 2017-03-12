@@ -5,7 +5,7 @@ using QuickFix;
 
 namespace AxFixEngine
 {
-    public class FixApplication : IFixApplication
+    public class FixApplication : IApplication
     {
         protected static readonly log4net.ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly IFixMessageHandler _messageHandler;

@@ -83,13 +83,13 @@ namespace AxFixServer
         }
 
         private static IFixConnector BuildFixConnector(SessionSettings fixSettings,
-                                                       Func<IFixApplication, SessionSettings, IFixConnector> builder)
+                                                       Func<IApplication, SessionSettings, IFixConnector> builder)
         {
             string historizerOutputFileName = fixSettings.GetDefaultSettingValue<string>("MessageHistorizationFile");
 
             IFixMessageHistorizer messageHistorizer = new FixMessageFileHistorizer(historizerOutputFileName);
             IFixMessageHandler messageHandler = new FixMessageHandler();
-            IFixApplication fixApp = new FixApplication(messageHandler, messageHistorizer);
+            IApplication fixApp = new FixApplication(messageHandler, messageHistorizer);
 
             return builder(fixApp, fixSettings);
         }
