@@ -84,4 +84,20 @@ namespace AxFixEngine.UnitTests
             Check.That(ActualDateTimeUpperCase).IsEqualTo(ExpectedDateTime);
         }
     }
+
+    internal class DictionaryExtensionsTests_dictionary_get_unknown_setting : DictionaryExtensionsTests
+    {
+        protected Exception ActualException;
+
+        public override void Act()
+        {
+            ActualException = Trying(() => ObjectUnderTest.GetString("N/A"));
+        }
+
+        [Test]
+        public void Assert_config_error_exception()
+        {
+            Check.That(ActualException).IsInstanceOf<ConfigError>();
+        }
+    }
 }
