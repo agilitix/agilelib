@@ -40,6 +40,9 @@
       <HintPath>..\packages\QuickFix.Net.1.7.0\lib\QuickFix.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="ServiceStack.Text, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ServiceStack.Text.3.9.71\lib\net35\ServiceStack.Text.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -51,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\DataDictionaryExtensions.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\MessageExtensions.cs" />
     <Compile Include="Extensions\SessionSettingsExtensions.cs" />
     <Compile Include="FixAcceptor.cs" />
@@ -78,6 +82,10 @@
     <ProjectReference Include="..\AxConfiguration\AxConfiguration.csproj">
       <Project>{38c34733-3c7d-484d-9bd1-39c9f1744371}</Project>
       <Name>AxConfiguration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AxExtensions\AxExtensions.csproj">
+      <Project>{F3EEFDB9-EE62-4962-B8FE-6D709F0C63F8}</Project>
+      <Name>AxExtensions</Name>
     </ProjectReference>
     <ProjectReference Include="..\AxUtils\AxUtils.csproj">
       <Project>{0772C612-7C30-4CBE-8499-186B62970671}</Project>

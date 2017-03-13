@@ -11,6 +11,7 @@ using AxUtils;
 using log4net;
 using Microsoft.Practices.Unity;
 using QuickFix;
+using ServiceStack.Text;
 using ILog = log4net.ILog;
 
 namespace AxFixServer
