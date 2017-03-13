@@ -9,22 +9,10 @@ namespace AxFixEngine.Extensions
 {
     public static class MessageExtensions
     {
-        public static string GetName(this Message self, IFixDataDictionaries dataDictionaries)
-        {
-            DataDictionary dataDictionary = dataDictionaries.GetDataDictionary(self.GetSessionID(self));
-            return GetName(self, dataDictionary);
-        }
-
         public static string GetName(this Message self, DataDictionary dictionary)
         {
             string msgType = self.Header.GetField(Tags.MsgType);    // "D"
             return dictionary.GetEnumLabel(Tags.MsgType, msgType);  // "ORDER_SINGLE"
-        }
-
-        public static XDocument ToXDocument(this Message self, IFixDataDictionaries dataDictionaries)
-        {
-            DataDictionary dataDictionary = dataDictionaries.GetDataDictionary(self.GetSessionID(self));
-            return ToXDocument(self, dataDictionary);
         }
 
         public static XDocument ToXDocument(this Message self, DataDictionary dictionary)
