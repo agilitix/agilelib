@@ -2,22 +2,22 @@
 using System.Reflection;
 using AxCommandLine;
 using AxCommandLine.Interfaces;
+using AxCommonLogger;
+using AxCommonLogger.Interfaces;
 using AxConfiguration;
 using AxConfiguration.Interfaces;
 using AxFixEngine;
 using AxFixEngine.Extensions;
 using AxFixEngine.Interfaces;
 using AxUtils;
-using log4net;
 using Microsoft.Practices.Unity;
 using QuickFix;
-using ILog = log4net.ILog;
 
 namespace AxFixServer
 {
     class Program
     {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        protected static ILoggerFacade Log = new Log4netFacade<Program>();
         private static ConsoleExitHandler _consoleExit;
 
         static Program()
@@ -40,7 +40,7 @@ namespace AxFixServer
                 return;
             }
 
-            log4net.Config.XmlConfigurator.ConfigureAndWatch(new System.IO.FileInfo(log4NetConfigFile));
+            Log.Configure(log4NetConfigFile);
 
             Log.Info("Starting FIX engine version=" + Assembly.GetEntryAssembly().GetName().Version);
 

@@ -1,6 +1,6 @@
-﻿using System.Reflection;
+﻿using AxCommonLogger;
+using AxCommonLogger.Interfaces;
 using AxFixEngine.Interfaces;
-using log4net;
 using QuickFix;
 using QuickFix.Transport;
 
@@ -8,7 +8,7 @@ namespace AxFixEngine
 {
     class FixInitiator : IFixConnector
     {
-        protected static readonly log4net.ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        protected static ILoggerFacade Log = new Log4netFacade<FixInitiator>();
         private readonly IInitiator _initiator;
 
         public FixInitiator(IApplication application,

@@ -1,24 +1,24 @@
 ﻿using System;
-using System.Reflection;
+using AxCommonLogger;
+using AxCommonLogger.Interfaces;
 using AxFixEngine.Interfaces;
-using log4net;
 using QuickFix;
 
 namespace AxFixEngine
 {
     public class FixConnectorFactory : IFixConnectorFactory
     {
-        protected static readonly log4net.ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        protected static ILoggerFacade Log = new Log4netFacade<FixConnectorFactory>();
 
         public IFixConnector CreateAcceptor(IApplication fixApplication, SessionSettings fixSettings)
         {
-            Log.InfoFormat("Building acceptor");
+            Log.Info("Building acceptor");
             return Create(fixApplication, fixSettings, (app, store, log, settings) => new FixAcceptor(app, store, log, settings));
         }
 
         public IFixConnector CreateInitiator(IApplication fixApplication, SessionSettings fixSettings)
         {
-            Log.InfoFormat("Building initiator");
+            Log.Info("Building initiator");
             return Create(fixApplication, fixSettings, (app, store, log, settings) => new FixInitiator(app, store, log, settings));
         }
 

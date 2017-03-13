@@ -79,6 +79,10 @@
       <Project>{66255424-F482-43E7-B23D-77945739B854}</Project>
       <Name>AxCommandLine</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AxCommonLogger\AxCommonLogger.csproj">
+      <Project>{3DBD2AE8-2E2A-4A07-AF80-8991C8B833CC}</Project>
+      <Name>AxCommonLogger</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AxConfiguration\AxConfiguration.csproj">
       <Project>{38C34733-3C7D-484D-9BD1-39C9F1744371}</Project>
       <Name>AxConfiguration</Name>

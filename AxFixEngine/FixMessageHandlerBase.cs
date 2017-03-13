@@ -1,4 +1,6 @@
 ﻿using System.Reflection;
+using AxCommonLogger;
+using AxCommonLogger.Interfaces;
 using AxFixEngine.Interfaces;
 using log4net;
 using QuickFix;
@@ -7,7 +9,7 @@ namespace AxFixEngine
 {
     public abstract class FixMessageHandlerBase : MessageCracker, IFixMessageHandler
     {
-        protected static readonly log4net.ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        protected static ILoggerFacade Log = new Log4netFacade<FixMessageHandlerBase>();
 
         public virtual void OnLogon(SessionID sessionId)
         {
