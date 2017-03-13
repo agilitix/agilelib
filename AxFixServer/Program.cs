@@ -7,6 +7,7 @@ using AxConfiguration.Interfaces;
 using AxFixEngine;
 using AxFixEngine.Extensions;
 using AxFixEngine.Interfaces;
+using AxUtils;
 using log4net;
 using Microsoft.Practices.Unity;
 using QuickFix;
@@ -17,15 +18,11 @@ namespace AxFixServer
     class Program
     {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static ConsoleExitHandler _consoleExit;
 
         static Program()
         {
-            Console.TreatControlCAsInput = false;
-            Console.CancelKeyPress += (snd, evt) =>
-                                      {
-                                          Console.WriteLine("Ctrl+C pressed");
-                                          evt.Cancel = true;
-                                      };
+            _consoleExit = new ConsoleExitHandler();
         }
 
         static void Main(string[] args)
