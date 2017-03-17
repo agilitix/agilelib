@@ -37,7 +37,7 @@ namespace AxFixEngine.UnitTests
 
         public static SessionSettings GetSessionSettings2()
         {
-            string configuration = new System.Text.StringBuilder()
+            string configuration = new StringBuilder()
                 .AppendLine("[DEFAULT]")
                 .AppendLine("CONNECTIONTYPE=initiator")
                 .AppendLine("BEGINSTRING=FIX.4.0")
@@ -62,7 +62,7 @@ namespace AxFixEngine.UnitTests
 
         public static SessionSettings GetSessionSettings3()
         {
-            string configuration = new System.Text.StringBuilder()
+            string configuration = new StringBuilder()
                 .AppendLine("[DEFAULT]")
                 .AppendLine("CONNECTIONTYPE=initiator")
                 .AppendLine("BEGINSTRING=FIX.4.2")

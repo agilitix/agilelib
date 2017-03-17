@@ -41,7 +41,9 @@ namespace AxUtils
         public static string GetName(T value)
         {
             EnumInfos<T> info;
-            return _valueToInfos.TryGetValue(value, out info) ? info.Name : null;
+            return _valueToInfos.TryGetValue(value, out info)
+                       ? info.Name
+                       : null;
         }
 
         public static IEnumerable<string> GetNames()
@@ -52,7 +54,9 @@ namespace AxUtils
         public static string GetDescription(T value)
         {
             EnumInfos<T> info;
-            return _valueToInfos.TryGetValue(value, out info) ? info.Description : null;
+            return _valueToInfos.TryGetValue(value, out info)
+                       ? info.Description
+                       : null;
         }
 
         public static IEnumerable<string> GetDescriptions()
