@@ -23,7 +23,7 @@ namespace AxHosting
             }
 
             IAppConfiguration appConfiguration = new AppConfiguration();
-            appConfiguration.LoadDefaultConfigurationFile(".");
+            appConfiguration.LoadDefaultFile(".");
 
             string log4netConfigFile = appConfiguration.Configuration.AppSettings.Settings["log4net.config"].Value;
             log4net.Config.XmlConfigurator.ConfigureAndWatch(new System.IO.FileInfo(log4netConfigFile));

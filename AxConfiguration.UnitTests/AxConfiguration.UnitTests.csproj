@@ -65,8 +65,8 @@
     <Compile Include="Test.Logger.Interfaces\ILogger.cs" />
     <Compile Include="Test.Logger.Implementations\ConsoleLogger.cs" />
     <Compile Include="Test.Logger.Implementations\FileLogger.cs" />
-    <Compile Include="ConfigurationProviderTests.cs" />
-    <Compile Include="UnityContainerExtensionsTests.cs" />
+    <Compile Include="AppConfigurationTests.cs" />
+    <Compile Include="UnityConfigurationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

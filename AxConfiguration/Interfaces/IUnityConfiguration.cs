@@ -1,10 +1,10 @@
-﻿using System.Configuration;
+﻿using Microsoft.Practices.Unity;
 
 namespace AxConfiguration.Interfaces
 {
-    public interface IAppConfiguration
+    public interface IUnityConfiguration
     {
-        Configuration Configuration { get; }
+        IUnityContainer Container { get; }
 
         void LoadDefaultFile(string configurationFolder);
         void LoadFile(string configurationFile);

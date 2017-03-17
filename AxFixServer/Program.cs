@@ -10,7 +10,6 @@ using AxFixEngine;
 using AxFixEngine.Extensions;
 using AxFixEngine.Interfaces;
 using AxUtils;
-using Microsoft.Practices.Unity;
 using QuickFix;
 
 namespace AxFixServer
@@ -27,15 +26,15 @@ namespace AxFixServer
 
         static void Main(string[] args)
         {
-            const string configfile = @".\Configuration\fixengine.config";
+            const string configFile = @".\Configuration\fixengine.config";
 
             IAppConfiguration appConfiguration = new AppConfiguration();
-            appConfiguration.Load(configfile);
+            appConfiguration.LoadFile(configFile);
 
-            string log4NetConfigFile;
-            if (!appConfiguration.TryGetSetting("log4net", out log4NetConfigFile))
+            string log4NetConfigFile = appConfiguration.Configuration.AppSettings.Settings["log4net"].Value;
+            if (string.IsNullOrWhiteSpace(log4NetConfigFile))
             {
-                Console.WriteLine("Cannot get key 'log4net' from config file=" + configfile);
+                Console.WriteLine("Cannot get key 'log4net' from config file=" + configFile);
                 Console.ReadLine();
                 return;
             }
@@ -47,19 +46,19 @@ namespace AxFixServer
             ICommandLineArguments commandLineArguments = new CommandLineArguments(args);
             Log.Info("Command line arguments: " + commandLineArguments);
 
-            Log.Info("Loading unity container");
-            IUnityContainer unity = new UnityContainer();
-            unity.Load(appConfiguration);
+            Log.Info("Loading unity configuration from file=" + configFile);
+            IUnityConfiguration unity = new UnityConfiguration();
+            unity.LoadFile(configFile);
 
             IFixConnectorFactory fixConnectorFactory = new FixConnectorFactory();
             IFixConnector acceptor = null;
             IFixConnector initiator = null;
 
-            bool acceptorEnabled = appConfiguration.GetSetting<bool>("acceptor_enabled");
+            string acceptorEnabled = appConfiguration.Configuration.AppSettings.Settings["acceptor_enabled"].Value;
             Log.Info("Acceptor enabled=" + acceptorEnabled);
-            if (acceptorEnabled)
+            if (acceptorEnabled.Equals("true"))
             {
-                string acceptorConfigFile = appConfiguration.GetSetting<string>("acceptor_settings");
+                string acceptorConfigFile = appConfiguration.Configuration.AppSettings.Settings["acceptor_settings"].Value;
 
                 SessionSettings fixSettings = new SessionSettings(acceptorConfigFile);
                 IFixDataDictionaries dataDictionaries = new FixDataDictionaries(fixSettings);
@@ -67,11 +66,11 @@ namespace AxFixServer
                 acceptor = BuildFixConnector(fixSettings, (fixapp, settings) => fixConnectorFactory.CreateAcceptor(fixapp, settings));
             }
 
-            bool initiatorEnabled = appConfiguration.GetSetting<bool>("initiator_enabled");
+            string initiatorEnabled = appConfiguration.Configuration.AppSettings.Settings["initiator_enabled"].Value;
             Log.Info("Initiator enabled=" + initiatorEnabled);
-            if (initiatorEnabled)
+            if (initiatorEnabled.Equals("true"))
             {
-                string initiatorConfigFile = appConfiguration.GetSetting<string>("initiator_settings");
+                string initiatorConfigFile = appConfiguration.Configuration.AppSettings.Settings["initiator_settings"].Value;
 
                 SessionSettings fixSettings = new SessionSettings(initiatorConfigFile);
                 IFixDataDictionaries dataDictionaries = new FixDataDictionaries(fixSettings);
