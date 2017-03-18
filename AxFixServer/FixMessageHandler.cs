@@ -5,6 +5,18 @@ namespace AxFixServer
 {
     public class FixMessageHandler : FixMessageHandlerBase
     {
+        public string Name { get; private set; }
+
+        public FixMessageHandler()
+            : this(nameof(FixMessageHandler))
+        {
+        }
+
+        public FixMessageHandler(string name)
+        {
+            Name = name;
+        }
+
         public void OnMessage(QuickFix.FIX44.Logon message, SessionID sessionId)
         {
         }

@@ -10,6 +10,7 @@ using AxFixEngine;
 using AxFixEngine.Extensions;
 using AxFixEngine.Interfaces;
 using AxUtils;
+using Microsoft.Practices.Unity;
 using QuickFix;
 
 namespace AxFixServer
@@ -61,7 +62,7 @@ namespace AxFixServer
                 SessionSettings fixSettings = new SessionSettings(acceptorConfigFile);
                 IFixDataDictionaries dataDictionaries = new FixDataDictionaries(fixSettings);
 
-                acceptor = BuildFixConnector(fixSettings, (fixapp, settings) => fixConnectorFactory.CreateAcceptor(fixapp, settings));
+                acceptor = BuildFixConnector(unity, fixSettings, (fixapp, settings) => fixConnectorFactory.CreateAcceptor(fixapp, settings));
             }
 
             bool initiatorEnabled = appConfiguration.Configuration.GetSetting<bool>("initiator_enabled");
@@ -73,7 +74,7 @@ namespace AxFixServer
                 SessionSettings fixSettings = new SessionSettings(initiatorConfigFile);
                 IFixDataDictionaries dataDictionaries = new FixDataDictionaries(fixSettings);
 
-                initiator = BuildFixConnector(fixSettings, (fixapp, settings) => fixConnectorFactory.CreateInitiator(fixapp, settings));
+                initiator = BuildFixConnector(unity, fixSettings, (fixapp, settings) => fixConnectorFactory.CreateInitiator(fixapp, settings));
             }
 
             acceptor?.Start();
@@ -90,13 +91,14 @@ namespace AxFixServer
             initiator?.Stop();
         }
 
-        private static IFixConnector BuildFixConnector(SessionSettings fixSettings,
+        private static IFixConnector BuildFixConnector(IUnityConfiguration unityConfiguration,
+                                                       SessionSettings fixSettings,
                                                        Func<IApplication, SessionSettings, IFixConnector> builder)
         {
             string historizerOutputFileName = fixSettings.GetDefaultSettingValue<string>("MessageHistorizationFile");
 
             IFixMessageHistorizer messageHistorizer = new FixMessageFileHistorizer(historizerOutputFileName);
-            IFixMessageHandler messageHandler = new FixMessageHandler();
+            IFixMessageHandler messageHandler = unityConfiguration.Container.Resolve<IFixMessageHandler>();
             IApplication fixApp = new FixApplication(messageHandler, messageHistorizer);
 
             return builder(fixApp, fixSettings);
