@@ -49,7 +49,9 @@ namespace AxFixServer
             unity.LoadDefaultFile(@".\Configuration");
             Log.Info("Loaded unity configuration from file=" + unity.ConfigurationFile);
 
-            IFixConnectorFactory fixConnectorFactory = new FixConnectorFactory();
+            IFixConnectorFactory fixConnectorFactory = unity.Container.Resolve<IFixConnectorFactory>();
+            Log.Info("Resolved FIX connection factory type=" + fixConnectorFactory.GetType());
+
             IFixConnector acceptor = null;
             IFixConnector initiator = null;
 

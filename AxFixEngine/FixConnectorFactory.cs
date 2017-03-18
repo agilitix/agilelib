@@ -22,9 +22,9 @@ namespace AxFixEngine
             return Create(fixApplication, fixSettings, (app, store, log, settings) => new FixInitiator(app, store, log, settings));
         }
 
-        private static IFixConnector Create(IApplication fixApplication,
-                                            SessionSettings fixSettings,
-                                            Func<IApplication, IMessageStoreFactory, ILogFactory, SessionSettings, IFixConnector> builder)
+        private IFixConnector Create(IApplication fixApplication,
+                                     SessionSettings fixSettings,
+                                     Func<IApplication, IMessageStoreFactory, ILogFactory, SessionSettings, IFixConnector> builder)
         {
             IMessageStoreFactory messageStoreFactory = new FileStoreFactory(fixSettings);
             ILogFactory logFactory = new FileLogFactory(fixSettings);
