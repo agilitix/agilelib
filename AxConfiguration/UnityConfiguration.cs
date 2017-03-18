@@ -23,6 +23,7 @@ namespace AxConfiguration
         protected readonly string _containerName;
 
         public IUnityContainer Container { get; private set; }
+        public string ConfigurationFile { get; private set; }
 
         public UnityConfiguration()
         {
@@ -47,6 +48,7 @@ namespace AxConfiguration
                 throw new FileNotFoundException();
             }
 
+            ConfigurationFile = configurationFile;
             Container = new UnityContainer();
 
             if (!LoadUnityContainer(Container, configurationFile, _containerName))

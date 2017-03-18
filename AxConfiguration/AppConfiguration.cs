@@ -19,6 +19,7 @@ namespace AxConfiguration
         };
 
         public Configuration Configuration { get; private set; }
+        public string ConfigurationFile { get; private set; }
 
         public void LoadDefaultFile(string configurationFolder)
         {
@@ -34,7 +35,8 @@ namespace AxConfiguration
                 throw new FileNotFoundException();
             }
 
-            ExeConfigurationFileMap exeConfigurationFileMap = new ExeConfigurationFileMap { ExeConfigFilename = configurationFile };
+            ConfigurationFile = configurationFile;
+            ExeConfigurationFileMap exeConfigurationFileMap = new ExeConfigurationFileMap {ExeConfigFilename = configurationFile};
             Configuration = ConfigurationManager.OpenMappedExeConfiguration(exeConfigurationFileMap, ConfigurationUserLevel.None);
         }
     }

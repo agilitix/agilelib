@@ -26,15 +26,16 @@ namespace AxFixServer
 
         static void Main(string[] args)
         {
-            const string configFile = @".\Configuration\fixengine.config";
+            const string mainConfig = @".\Configuration\main.config";
+            const string unityConfig = @".\Configuration\unity.config";
 
             IAppConfiguration appConfiguration = new AppConfiguration();
-            appConfiguration.LoadFile(configFile);
+            appConfiguration.LoadFile(mainConfig);
 
             string log4NetConfigFile = appConfiguration.Configuration.AppSettings.Settings["log4net"].Value;
             if (string.IsNullOrWhiteSpace(log4NetConfigFile))
             {
-                Console.WriteLine("Cannot get key 'log4net' from config file=" + configFile);
+                Console.WriteLine("Cannot get key 'log4net' from config file=" + mainConfig);
                 Console.ReadLine();
                 return;
             }
@@ -46,9 +47,9 @@ namespace AxFixServer
             ICommandLineArguments commandLineArguments = new CommandLineArguments(args);
             Log.Info("Command line arguments: " + commandLineArguments);
 
-            Log.Info("Loading unity configuration from file=" + configFile);
+            Log.Info("Loading unity configuration from file=" + unityConfig);
             IUnityConfiguration unity = new UnityConfiguration();
-            unity.LoadFile(configFile);
+            unity.LoadFile(unityConfig);
 
             IFixConnectorFactory fixConnectorFactory = new FixConnectorFactory();
             IFixConnector acceptor = null;
