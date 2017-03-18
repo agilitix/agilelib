@@ -29,7 +29,7 @@ namespace AxFixServer
             IAppConfiguration appConfiguration = new AppConfiguration();
             appConfiguration.LoadFile(@".\Configuration\main.config");
 
-            string log4NetConfigFile = appConfiguration.Configuration.AppSettings.Settings["log4net"].Value;
+            string log4NetConfigFile = appConfiguration.Configuration.GetSetting<string>("log4net");
             if (string.IsNullOrWhiteSpace(log4NetConfigFile))
             {
                 Console.WriteLine("Cannot get key 'log4net' from config file=" + appConfiguration.ConfigurationFile);
@@ -52,9 +52,9 @@ namespace AxFixServer
             IFixConnector acceptor = null;
             IFixConnector initiator = null;
 
-            string acceptorEnabled = appConfiguration.Configuration.AppSettings.Settings["acceptor_enabled"].Value;
+            bool acceptorEnabled = appConfiguration.Configuration.GetSetting<bool>("acceptor_enabled");
             Log.Info("Acceptor enabled=" + acceptorEnabled);
-            if (acceptorEnabled.Equals("true"))
+            if (acceptorEnabled)
             {
                 string acceptorConfigFile = appConfiguration.Configuration.AppSettings.Settings["acceptor_settings"].Value;
 
@@ -64,9 +64,9 @@ namespace AxFixServer
                 acceptor = BuildFixConnector(fixSettings, (fixapp, settings) => fixConnectorFactory.CreateAcceptor(fixapp, settings));
             }
 
-            string initiatorEnabled = appConfiguration.Configuration.AppSettings.Settings["initiator_enabled"].Value;
+            bool initiatorEnabled = appConfiguration.Configuration.GetSetting<bool>("initiator_enabled");
             Log.Info("Initiator enabled=" + initiatorEnabled);
-            if (initiatorEnabled.Equals("true"))
+            if (initiatorEnabled)
             {
                 string initiatorConfigFile = appConfiguration.Configuration.AppSettings.Settings["initiator_settings"].Value;
 

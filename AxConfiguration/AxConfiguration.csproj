@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppConfiguration.cs" />
+    <Compile Include="ConfigurationExtensions.cs" />
     <Compile Include="Interfaces\IUnityConfiguration.cs" />
     <Compile Include="Interfaces\IAppConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
