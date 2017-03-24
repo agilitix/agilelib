@@ -189,7 +189,7 @@ namespace AxConfiguration.UnitTests
         [Test]
         public void Assert_should_raise_argument_exception()
         {
-            Check.That(LoadContainerException).IsInstanceOf<FileLoadException>();
+            Check.That(LoadContainerException).IsInstanceOf<ArgumentException>();
         }
     }
 

@@ -28,12 +28,13 @@ namespace AxConfiguration
         public string ConfigurationFile { get; private set; }
 
         public UnityConfiguration()
+            : this("")
         {
         }
 
         public UnityConfiguration(string containerName)
         {
-            _containerName = containerName;
+            _containerName = containerName ?? "";
         }
 
         public void LoadDefaultFile(string configurationFolder)
@@ -53,46 +54,39 @@ namespace AxConfiguration
             ConfigurationFile = configurationFile;
             Container = new UnityContainer();
 
-            if (!LoadUnityContainer(Container, configurationFile, _containerName))
-            {
-                _baseAliases = null;
-                throw new FileLoadException();
-            }
+            LoadUnityContainer(Container, configurationFile, _containerName);
 
             _baseAliases = null;
         }
 
-        protected bool LoadUnityContainer(IUnityContainer unityContainer, string configurationFileName, string containerName)
+        protected void LoadUnityContainer(IUnityContainer unityContainer, string configurationFileName, string containerName)
         {
-            // Indicates if we have loaded something so far.
-            bool result = false;
-
             // Open the configurationFileName file.
             var fileMap = new ExeConfigurationFileMap {ExeConfigFilename = configurationFileName};
             Configuration configuration = ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
 
-            // Firstly we lookup to the "base" files to load.
+            // Walk to the most top base file and start loading unity from there.
             KeyValueConfigurationElement baseFiles = configuration.AppSettings.Settings["base"];
             if (baseFiles != null)
             {
                 string[] files = baseFiles.Value.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string file in files)
                 {
-                    string baseFile = Path.GetDirectoryName(configurationFileName) + "\\" + file.Trim();
+                    string baseFile = Path.Combine(Path.GetDirectoryName(configurationFileName), file.Trim());
                     if (!File.Exists(baseFile))
                     {
                         throw new FileNotFoundException(string.Format("Configuration file '{0}' not found", baseFile));
                     }
 
-                    // Found "base" files to load.
-                    result = LoadUnityContainer(unityContainer, baseFile, containerName);
+                    // Go to base file.
+                    LoadUnityContainer(unityContainer, baseFile, containerName);
                 }
             }
 
-            // No more "base" files to lookup, start reading the configurations.
+            // We are at the top, start reading the unity from top/base to bottom files.
             UnityConfigurationSection unitySection = (UnityConfigurationSection) configuration.GetSection("unity");
 
-            // Propagate base aliases to children when not overriden.
+            // Propagate base aliases to children. Other declarations are not inherited.
             if (_baseAliases != null)
             {
                 foreach (AliasElement baseAlias in _baseAliases)
@@ -101,30 +95,14 @@ namespace AxConfiguration
                     {
                         continue;
                     }
+
                     unitySection.TypeAliases[baseAlias.Alias] = baseAlias.TypeName;
                 }
             }
 
             _baseAliases = unitySection.TypeAliases;
 
-            if (!string.IsNullOrWhiteSpace(containerName))
-            {
-                if (unitySection.Containers.Any(container => container.Name.Equals(containerName)))
-                {
-                    unityContainer.LoadConfiguration(unitySection, containerName);
-                    result = true;
-                }
-            }
-            else
-            {
-                if (unitySection.Containers.Any(container => string.IsNullOrWhiteSpace(container.Name)))
-                {
-                    unityContainer.LoadConfiguration(unitySection);
-                    result = true;
-                }
-            }
-
-            return result;
+            unityContainer.LoadConfiguration(unitySection, containerName);
         }
     }
 }
