@@ -10,6 +10,8 @@ namespace AxConfiguration
 {
     public class UnityConfiguration : IUnityConfiguration
     {
+        protected AliasElementCollection _baseAliases;
+
         /// <summary>
         /// The first file found in the config folder will be used as config file.
         /// </summary>
@@ -53,8 +55,11 @@ namespace AxConfiguration
 
             if (!LoadUnityContainer(Container, configurationFile, _containerName))
             {
+                _baseAliases = null;
                 throw new FileLoadException();
             }
+
+            _baseAliases = null;
         }
 
         protected bool LoadUnityContainer(IUnityContainer unityContainer, string configurationFileName, string containerName)
@@ -86,6 +91,22 @@ namespace AxConfiguration
 
             // No more "base" files to lookup, start reading the configurations.
             UnityConfigurationSection unitySection = (UnityConfigurationSection) configuration.GetSection("unity");
+
+            // Propagate base aliases to children when not overriden.
+            if (_baseAliases != null)
+            {
+                foreach (AliasElement baseAlias in _baseAliases)
+                {
+                    if (unitySection.TypeAliases.Any(x => x.Alias == baseAlias.Alias))
+                    {
+                        continue;
+                    }
+                    unitySection.TypeAliases[baseAlias.Alias] = baseAlias.TypeName;
+                }
+            }
+
+            _baseAliases = unitySection.TypeAliases;
+
             if (!string.IsNullOrWhiteSpace(containerName))
             {
                 if (unitySection.Containers.Any(container => container.Name.Equals(containerName)))

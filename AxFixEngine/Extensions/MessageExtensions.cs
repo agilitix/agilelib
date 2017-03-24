@@ -77,7 +77,7 @@ namespace AxFixEngine.Extensions
             else
             {
                 element.Add(new XAttribute("value", tagValue));
-                string enumLabel = dictionary.GetEnumLabel(tagNumber, tagValue); // "AUTOMATED_EXECUTION_ORDER_PRIVATE"
+                string enumLabel = dictionary.GetEnumLabel(tagNumber, tagValue); // "HandlInst=1" => "AUTOMATED_EXECUTION_ORDER_PRIVATE"
                 if (!string.IsNullOrWhiteSpace(enumLabel))
                 {
                     element.Add(new XAttribute("desc", enumLabel));
