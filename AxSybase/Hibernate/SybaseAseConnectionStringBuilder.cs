@@ -7,10 +7,10 @@ namespace AxSybase.Hibernate
     {
         private string _server;
         private int _port;
+        private string _database;
         private string _username;
         private string _password;
-        private string _database;
-        private string _charset;
+        private string _charset; // "iso_1", "utf8", etc...
 
         public SybaseAseConnectionStringBuilder Server(string server)
         {
@@ -57,21 +57,26 @@ namespace AxSybase.Hibernate
         protected override string Create()
         {
             string str = base.Create();
-
             if (!string.IsNullOrEmpty(str))
             {
                 return str;
             }
 
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder connectionString = new StringBuilder();
 
-            stringBuilder.AppendFormat("Uid='{0}';Pwd='{1}';Data Source='{2}';Port='{3}';Database='{4}'", _username, _password, _server, _port, _database);
+            connectionString.AppendFormat("Data Source={0};Port={1};Database={2};Uid={3};Pwd={4}",
+                                          _server,
+                                          _port,
+                                          _database,
+                                          _username,
+                                          _password);
+
             if (!string.IsNullOrWhiteSpace(_charset))
             {
-                stringBuilder.AppendFormat(";Charset='{0}'", _charset);
+                connectionString.AppendFormat(";Charset={0}", _charset);
             }
 
-            return stringBuilder.ToString();
+            return connectionString.ToString();
         }
     }
 }

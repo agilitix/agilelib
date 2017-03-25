@@ -24,10 +24,10 @@ ISessionFactory sf = Fluently.Configure()
                              .Database(SybaseAseConfiguration.SybaseAse15.ConnectionString(x =>
                                                                                             {
                                                                                                 x.Server(host)
-                                                                                                .Port(int.Parse(port))
-                                                                                                .Username(user)
-                                                                                                .Password(pass)
-                                                                                                .Database("my_database");
+                                                                                                 .Port(int.Parse(port))
+                                                                                                 .Username(user)
+                                                                                                 .Password(pass)
+                                                                                                 .Database("my_database");
                                                                                             }).ShowSql())
                              .Mappings(m => m.FluentMappings.AddFromAssemblyOf<Program>())
                              //.ExposeConfiguration(cfg => new SchemaExport(cfg).Create(true, true))

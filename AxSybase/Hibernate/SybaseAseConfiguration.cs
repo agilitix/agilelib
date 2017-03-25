@@ -7,10 +7,7 @@ namespace AxSybase.Hibernate
     {
         public static SybaseAseConfiguration SybaseAse15
         {
-            get
-            {
-                return new SybaseAseConfiguration().Dialect<SybaseASE15Dialect>();
-            }
+            get { return new SybaseAseConfiguration().Dialect<SybaseASE15Dialect>(); }
         }
 
         protected SybaseAseConfiguration()
