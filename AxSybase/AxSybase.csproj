@@ -62,11 +62,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="samples.txt" />
-    <Content Include="hibernate.cfg.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Dapper\samples.txt" />
+    <Content Include="Hibernate\hibernate.cfg.xml" />
+    <Content Include="Hibernate\samples.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(ProjectDir)Sybase.AdoNet4.AseClient\sbgse2.dll" "$(TargetDir)"
