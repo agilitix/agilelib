@@ -31,6 +31,18 @@ namespace DapperSample
                 var contact = new Contact {Id = 63, Name="Joe"};
                 connection.Execute("insert into contacts(Id, Name) values(@Id, @Name)", contact);
             }
+
+            using (var connection = new AseConnection("Data Source=myserver;Port=5000;Uid=myuser;Pwd=mypasswd;Database=mydatabase"))
+            {
+                connection.Open();
+
+                var parameters = new AseCommandParameters
+                {
+                    new AseParameter("@table_name", "dbo.sysusers")
+                };
+
+                IEnumerable<Foo> results = connection.Query<Foo>("sp_columns", parameters, commandType: CommandType.StoredProcedure);
+            }
         }
     }
 }
