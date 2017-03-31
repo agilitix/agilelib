@@ -10,7 +10,7 @@ namespace AxFixEngine
     public class FixMessageFileHistorizer : IFixMessageHistorizer
     {
         protected readonly string _historyOutputFileName;
-        protected readonly IWorkerQueue<Action> _workerQueue = new FifoWorkerQueue();
+        protected readonly IWorkerQueue<Action> _workerQueue = new WorkerQueue();
 
         public FixMessageFileHistorizer(string historyOutputFileName)
         {
@@ -19,7 +19,7 @@ namespace AxFixEngine
 
         public bool Historize(Message message)
         {
-            return _workerQueue.TryEnqueue(() => { File.AppendAllText(_historyOutputFileName, message + Environment.NewLine); });
+            return _workerQueue.TryAdd(() => { File.AppendAllText(_historyOutputFileName, message + Environment.NewLine); });
         }
     }
 }

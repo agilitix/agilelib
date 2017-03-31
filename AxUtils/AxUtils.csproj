@@ -47,12 +47,13 @@
     <Compile Include="DisposableAction.cs" />
     <Compile Include="DisposeHelper.cs" />
     <Compile Include="EnumUtils.cs" />
-    <Compile Include="FifoWorkerQueue.cs" />
+    <Compile Include="WorkerQueue.cs" />
     <Compile Include="IniFile.cs" />
     <Compile Include="Interfaces\IIniFile.cs" />
     <Compile Include="Interfaces\IWorkerQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyUtils.cs" />
+    <Compile Include="Interfaces\WorkerQueueException.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

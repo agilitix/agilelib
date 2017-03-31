@@ -2,9 +2,16 @@
 
 namespace AxUtils.Interfaces
 {
-    public interface IWorkerQueue<in T> : IDisposable
+    public interface IWorkerQueue<in T>
     {
-        bool TryEnqueue(T job);
-        void Enqueue(T job);
+        event EventHandler<WorkerQueueExceptionEventArgs> OnWorkerQueueException;
+
+        bool TryAdd(T job);
+        bool TryAdd(Action job, TimeSpan timeout);
+
+        void Add(T job);
+
+        void Cancel();
+        void Cancel(TimeSpan timeouts);
     }
 }
