@@ -67,7 +67,7 @@
     </ProjectReference>
     <ProjectReference Include="..\AxQuality.Sample\AxQuality.Sample\AxQuality.Sample.csproj">
       <Project>{87bbf49d-94cf-499f-825f-5643cb841b08}</Project>
-      <Name>AxQuality.Sample %28AxQuality.Sample\AxQuality.Sample%29</Name>
+      <Name>AxQuality.Sample</Name>
     </ProjectReference>
     <ProjectReference Include="..\AxQuality\AxQuality.csproj">
       <Project>{EBF4DE7B-53CB-4F6A-8A86-BD7E0190E469}</Project>
