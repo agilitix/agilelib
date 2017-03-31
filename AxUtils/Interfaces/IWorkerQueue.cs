@@ -6,12 +6,12 @@ namespace AxUtils.Interfaces
     {
         event EventHandler<WorkerQueueExceptionEventArgs> OnWorkerQueueException;
 
-        bool TryAdd(T job);
-        bool TryAdd(Action job, TimeSpan timeout);
+        bool TryAdd(T item);
+        bool TryAdd(T item, TimeSpan timeout);
 
-        void Add(T job);
+        void Add(T item);
 
         void Cancel();
-        void Cancel(TimeSpan timeouts);
+        void Cancel(TimeSpan timeout);
     }
 }
