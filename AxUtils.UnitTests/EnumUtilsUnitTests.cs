@@ -60,7 +60,7 @@ namespace AxUtils.UnitTests
             return new[]
                    {
                        new EnumInfos<EnumUnderTest> {Value = EnumUnderTest.A, Name = "A", Description = "DescA"},
-                       new EnumInfos<EnumUnderTest> {Value = EnumUnderTest.B, Name = "B", Description = ""},
+                       new EnumInfos<EnumUnderTest> {Value = EnumUnderTest.B, Name = "B", Description = null},
                        new EnumInfos<EnumUnderTest> {Value = EnumUnderTest.C, Name = "C", Description = "DescC"},
                        new EnumInfos<EnumUnderTest> {Value = EnumUnderTest.D, Name = "D", Description = "DescD"},
                    };
@@ -117,7 +117,7 @@ namespace AxUtils.UnitTests
         [Test]
         public void Assert_all_descriptions_pairs_were_retrieved_as_expected()
         {
-            ExpectedPairs.ShouldAllBeEquivalentTo(Result);
+            Result.ShouldAllBeEquivalentTo(ExpectedPairs);
         }
     }
 

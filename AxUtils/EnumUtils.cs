@@ -180,7 +180,7 @@ namespace AxUtils
                                                                   .GetCustomAttributes(typeof(DescriptionAttribute), false)
                                                                   .Cast<DescriptionAttribute>()
                                                                   .Select(attribute => attribute.Description)
-                                                                  .FirstOrDefault() ?? "",
+                                                                  .FirstOrDefault(),
                                                 Name = Enum.GetName(typeof(T), enumValue)
                                             });
         }
