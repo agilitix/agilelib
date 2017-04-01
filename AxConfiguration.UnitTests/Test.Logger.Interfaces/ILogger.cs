@@ -1,6 +1,6 @@
 ﻿namespace AxConfiguration.UnitTests.Test.Logger.Interfaces
 {
-    public interface ILogger
+    internal interface ILogger
     {
         string LoggerName { get; }
 

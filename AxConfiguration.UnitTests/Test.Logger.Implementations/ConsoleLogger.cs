@@ -3,7 +3,7 @@ using AxConfiguration.UnitTests.Test.Logger.Interfaces;
 
 namespace AxConfiguration.UnitTests.Test.Logger.Implementations
 {
-    public class ConsoleLogger : ILogger
+    internal class ConsoleLogger : ILogger
     {
         public string LoggerName { get; private set; }
 

@@ -3,20 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using AxQuality;
-using NFluent;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace AxUtils.UnitTests
 {
-    public class EnumUtilsUnitTests : ArrangeActAssert
+    internal class EnumUtilsUnitTests : ArrangeActAssert
     {
-        protected AnonymousEqualityComparer<EnumInfos<EnumUnderTest>> _comparer =
-            new AnonymousEqualityComparer<EnumInfos<EnumUnderTest>>((x, y) =>
-                                                                        x.Value == y.Value
-                                                                        && x.Description
-                                                                        == y.Description
-                                                                        && x.Name == y.Name);
-
         protected enum EnumUnderTest
         {
             [System.ComponentModel.Description("DescA")]
@@ -74,7 +67,7 @@ namespace AxUtils.UnitTests
         }
     }
 
-    public class EnumUtilsUnitTestsRetrieveAllTheDescriptions : EnumUtilsUnitTests
+    internal class EnumUtilsUnitTestsRetrieveAllTheDescriptions : EnumUtilsUnitTests
     {
         protected IList<string> ExpectedDescriptions;
         protected IList<string> Result;
@@ -92,11 +85,11 @@ namespace AxUtils.UnitTests
         [Test]
         public void Assert_all_descriptions_were_retrieved_as_expected()
         {
-            Check.That(Result).ContainsExactly(ExpectedDescriptions);
+            Result.Should().ContainInOrder(ExpectedDescriptions);
         }
     }
 
-    public class EnumUtilsUnitTestsRetrieveDescriptionsOneByOne : EnumUtilsUnitTestsRetrieveAllTheDescriptions
+    internal class EnumUtilsUnitTestsRetrieveDescriptionsOneByOne : EnumUtilsUnitTestsRetrieveAllTheDescriptions
     {
         public override void Act()
         {
@@ -106,7 +99,7 @@ namespace AxUtils.UnitTests
         }
     }
 
-    public class EnumUtilsUnitTestsRetrieveValuesAndDescriptionsPairs : EnumUtilsUnitTests
+    internal class EnumUtilsUnitTestsRetrieveValuesAndDescriptionsPairs : EnumUtilsUnitTests
     {
         protected IList<EnumInfos<EnumUnderTest>> ExpectedPairs;
         protected IList<EnumInfos<EnumUnderTest>> Result;
@@ -124,11 +117,11 @@ namespace AxUtils.UnitTests
         [Test]
         public void Assert_all_descriptions_pairs_were_retrieved_as_expected()
         {
-            Check.That(ExpectedPairs.SequenceEqual(Result, _comparer)).IsTrue();
+            ExpectedPairs.ShouldAllBeEquivalentTo(Result);
         }
     }
 
-    public class EnumUtilsUnitTestsParsingOnlyExistingDescriptionsToRetrieveEnumValues : EnumUtilsUnitTests
+    internal class EnumUtilsUnitTestsParsingOnlyExistingDescriptionsToRetrieveEnumValues : EnumUtilsUnitTests
     {
         protected EnumUnderTest[] ExpectedValues;
         protected IList<EnumUnderTest> Result;
@@ -150,11 +143,11 @@ namespace AxUtils.UnitTests
         [Test]
         public void Assert_all_descriptions_pairs_are_expected()
         {
-            Check.That(Result).ContainsExactly(ExpectedValues);
+            Result.Should().ContainInOrder(ExpectedValues);
         }
     }
 
-    public class EnumUtilsUnitTestsParsingUndefinedDescriptionsShouldRaiseExceptions : EnumUtilsUnitTests
+    internal class EnumUtilsUnitTestsParsingUndefinedDescriptionsShouldRaiseExceptions : EnumUtilsUnitTests
     {
         protected IList<Exception> Result;
 
@@ -176,12 +169,12 @@ namespace AxUtils.UnitTests
         {
             foreach (Exception ex in Result)
             {
-                Check.That(ex).IsInstanceOf<InvalidEnumArgumentException>();
+                ex.Should().BeOfType<InvalidEnumArgumentException>();
             }
         }
     }
 
-    public class EnumUtilsUnitTestsTryingToParseUndefinedDescriptionAlwaysReturnFalse : EnumUtilsUnitTests
+    internal class EnumUtilsUnitTestsTryingToParseUndefinedDescriptionAlwaysReturnFalse : EnumUtilsUnitTests
     {
         protected IList<bool> Result;
 
@@ -202,11 +195,11 @@ namespace AxUtils.UnitTests
         [Test]
         public void Assert_all_the_attempts_returned_false_for_unknown_descriptions()
         {
-            Check.That(!Result.All(x => x)).IsTrue();
+            Result.All(x => x).Should().BeFalse();
         }
     }
 
-    public class EnumUtilsUnitTestsTryingToParseExistingDescriptionsAlwaysReturnTrue : EnumUtilsUnitTests
+    internal class EnumUtilsUnitTestsTryingToParseExistingDescriptionsAlwaysReturnTrue : EnumUtilsUnitTests
     {
         protected IList<bool> Result;
 
@@ -227,11 +220,11 @@ namespace AxUtils.UnitTests
         [Test]
         public void Assert_all_the_attempts_returned_true_for_existing_descriptions()
         {
-            Check.That(Result.All(x => x)).IsTrue();
+            Result.All(x => x).Should().BeTrue();
         }
     }
 
-    public class EnumUtilsUnitTestsParsingNameFromStringsBase : EnumUtilsUnitTests
+    internal class EnumUtilsUnitTestsParsingNameFromStringsBase : EnumUtilsUnitTests
     {
         protected string[] InputStringEnumValues;
         protected EnumUnderTest[] ExpectedEnumValuesFromStringValues;
@@ -256,11 +249,11 @@ namespace AxUtils.UnitTests
         [Test]
         public void Assert_the_strings_and_the_enum_values_are_matching_together()
         {
-            Check.That(AreMatching(InputStringEnumValues, Results.ToArray())).IsTrue();
+            AreMatching(InputStringEnumValues, Results.ToArray()).Should().BeTrue();
         }
     }
 
-    public class EnumUtilsUnitTestsTryparsenameFromStrings : EnumUtilsUnitTests
+    internal class EnumUtilsUnitTestsTryparsenameFromStrings : EnumUtilsUnitTests
     {
         protected string[] InputStringEnumValues;
         protected EnumUnderTest[] ExpectedEnumValuesFromStringValues;
@@ -285,7 +278,7 @@ namespace AxUtils.UnitTests
         [Test]
         public void Assert_all_try_parse_calls_succeeded()
         {
-            Check.That(Result.All(x => x)).IsTrue();
+            Result.All(x => x).Should().BeTrue();
         }
     }
 }

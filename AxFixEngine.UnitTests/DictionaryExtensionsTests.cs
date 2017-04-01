@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AxFixEngine.Extensions;
 using AxQuality;
-using NFluent;
+using FluentAssertions;
 using NUnit.Framework;
 using QuickFix;
 
@@ -50,11 +50,11 @@ namespace AxFixEngine.UnitTests
         public void Assert_dictionary_content_as_enumarable()
         {
             var merge = ExpectedDictionaryContent.Zip(ActualDictionaryContent, (a, e) => new {Actual = a, Expected = e}).ToList();
-            Check.That(merge.Count()).Equals(ExpectedDictionaryContent.Count);
+            merge.Count.Should().Be(ExpectedDictionaryContent.Count);
             foreach (var m in merge)
             {
-                Check.That(m.Actual.Key).Equals(m.Expected.Key);
-                Check.That(m.Actual.Value).Equals(m.Expected.Value);
+                m.Actual.Key.Should().Be(m.Expected.Key);
+                m.Actual.Value.Should().Be(m.Expected.Value);
             }
         }
     }
@@ -80,8 +80,8 @@ namespace AxFixEngine.UnitTests
         [Test]
         public void Assert_get_time_from_dictionary()
         {
-            Check.That(ActualDateTimeLowerCase).IsEqualTo(ExpectedDateTime);
-            Check.That(ActualDateTimeUpperCase).IsEqualTo(ExpectedDateTime);
+            ActualDateTimeLowerCase.Should().Be(ExpectedDateTime);
+            ActualDateTimeUpperCase.Should().Be(ExpectedDateTime);
         }
     }
 
@@ -97,7 +97,7 @@ namespace AxFixEngine.UnitTests
         [Test]
         public void Assert_config_error_exception()
         {
-            Check.That(ActualException).IsInstanceOf<ConfigError>();
+            ActualException.Should().BeOfType<ConfigError>();
         }
     }
 }

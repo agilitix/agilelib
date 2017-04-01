@@ -1,7 +1,7 @@
 ﻿using System.Xml.Linq;
 using AxFixEngine.Extensions;
 using AxQuality;
-using NFluent;
+using FluentAssertions;
 using NUnit.Framework;
 using QuickFix.DataDictionary;
 using Message = QuickFix.Message;
@@ -46,7 +46,7 @@ namespace AxFixEngine.UnitTests
         [Test]
         public void Assert_xdocument_is_generated_from_fix_message()
         {
-            Check.That(ActualXDocument).IsEqualTo(ExpectedXDocument);
+            ActualXDocument.Should().Be(ExpectedXDocument);
         }
     }
 
@@ -69,7 +69,7 @@ namespace AxFixEngine.UnitTests
         [Test]
         public void Assert_message_name_is_working()
         {
-            Check.That(ActualMessageName).IsEqualTo(ExpectedMessageName);
+            ActualMessageName.Should().Be(ExpectedMessageName);
         }
     }
 }

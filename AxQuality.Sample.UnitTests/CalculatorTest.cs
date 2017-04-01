@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using AxExtensions;
 using AxQuality.Sample.Interfaces;
-using NFluent;
+using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
 
 namespace AxQuality.Sample.UnitTests
 {
-    public class CalculatorTest : ArrangeActAssert
+    internal class CalculatorTest : ArrangeActAssert
     {
         protected Accumulator ObjectUnderTest;
         protected IValidator ValidatorMock;
@@ -24,7 +24,7 @@ namespace AxQuality.Sample.UnitTests
         }
     }
 
-    public class CalculatorTest_adding_sequence_of_valid_numbers : CalculatorTest
+    internal class CalculatorTest_adding_sequence_of_valid_numbers : CalculatorTest
     {
         protected Exception ResultException;
         protected double[] Numbers;
@@ -73,7 +73,7 @@ namespace AxQuality.Sample.UnitTests
         public void Assert_accumulator_must_be_equal_to_the_sum_of_all_numbers()
         {
             // The accumulator must be equal to the expected result.
-            Check.That(ObjectUnderTest.Value).IsEqualTo(ExpectedResult);
+            ObjectUnderTest.Value.Should().Be(ExpectedResult);
         }
 
         [Test]
@@ -87,11 +87,11 @@ namespace AxQuality.Sample.UnitTests
         public void Assert_calculator_should_not_raise_any_exception()
         {
             // The calculator must not raise any exceptions in our test case.
-            Check.That(ResultException).IsNull();
+            ResultException.Should().BeNull();
         }
     }
 
-    public class CalculatorTest_adding_sequence_of_invalid_numbers : CalculatorTest
+    internal class CalculatorTest_adding_sequence_of_invalid_numbers : CalculatorTest
     {
         protected IList<Exception> ResultExceptions;
         protected double[] Numbers;
@@ -136,8 +136,7 @@ namespace AxQuality.Sample.UnitTests
         public void Assert_calculator_should_raise_argument_exception_for_all_the_inavalid_numbers()
         {
             // Check the calculator exceptions are matching the expected exception.
-            Check.That(ResultExceptions.Select(x => x.GetType()))
-                 .ContainsExactly(Enumerable.Repeat(ExpectedException.GetType(), Numbers.Length));
+            ResultExceptions.Select(x => x.GetType()).Should().ContainInOrder(Enumerable.Repeat(ExpectedException.GetType(), Numbers.Length));
         }
 
         [Test]
@@ -148,7 +147,7 @@ namespace AxQuality.Sample.UnitTests
         }
     }
 
-    public class CalculatorTest_adding_sequence_of_valid_and_invalid_numbers : CalculatorTest
+    internal class CalculatorTest_adding_sequence_of_valid_and_invalid_numbers : CalculatorTest
     {
         protected IList<Type> ResultExceptions;
         protected double[] Numbers;
@@ -208,7 +207,7 @@ namespace AxQuality.Sample.UnitTests
         public void Assert_calculator_should_raise_expected_exceptions()
         {
             // Check the calculator has raised the expected exceptions.
-            Check.That(ResultExceptions).ContainsExactly(ExpectedExceptions);
+            ResultExceptions.Should().ContainInOrder(ExpectedExceptions);
         }
 
         [Test]

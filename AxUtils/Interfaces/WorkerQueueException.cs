@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AxUtils
+namespace AxUtils.Interfaces
 {
     public sealed class WorkerQueueExceptionEventArgs : EventArgs
     {

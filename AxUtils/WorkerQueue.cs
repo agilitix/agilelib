@@ -21,15 +21,18 @@ namespace AxUtils
 
         public WorkerQueue(int concurrencyLevel, int capacity = -1)
         {
+            Ensure.That(concurrencyLevel > 0, nameof(concurrencyLevel));
+            Ensure.That(capacity == -1 || capacity > 0, nameof(capacity));
+
             _items = capacity > 0
-                        ? new BlockingCollection<Action>(capacity)
-                        : new BlockingCollection<Action>();
+                        ? new BlockingCollection<Action>(capacity)  // Bounded queue, new additions will block if the queue is filled.
+                        : new BlockingCollection<Action>();         // Unbounded queue.
 
             _cancellationTokenSource = new CancellationTokenSource();
             CancellationToken token = _cancellationTokenSource.Token;
 
             _consumers = new Task[concurrencyLevel];
-            for (int i = 0; i < concurrencyLevel; ++i)
+            for (int i = 0; i < concurrencyLevel; ++i) // Consume items concurrently if concurrencyLevel>0.
             {
                 _consumers[i] = Task.Factory.StartNew(() =>
                                                       {
@@ -37,11 +40,13 @@ namespace AxUtils
                                                           {
                                                               foreach (Action item in _items.GetConsumingEnumerable(token))
                                                               {
+                                                                  // Will throw if the token has been canceled.
                                                                   token.ThrowIfCancellationRequested();
 
                                                                   try
                                                                   {
-                                                                      item();
+                                                                      // Run the current item action.
+                                                                      item?.Invoke();
                                                                   }
                                                                   catch (Exception e)
                                                                   {
@@ -95,10 +100,17 @@ namespace AxUtils
         {
             CompleteAdding();
 
+            // Wait till outstanding items are consumed. If the timeout
+            // is too low some items will not be consumed.
             Task.WaitAll(_consumers, timeout);
+
+            // Cancel the consuming task loop.
             _cancellationTokenSource.Cancel();
+
+            // Wait the task loop to exit.
             Task.WaitAll(_consumers);
 
+            // Cleaup everything.
             _cancellationTokenSource.Dispose();
             _items.Dispose();
 
@@ -119,6 +131,7 @@ namespace AxUtils
             {
                 if (!_items.IsAddingCompleted)
                 {
+                    // Do not accept new items additions.
                     _items.CompleteAdding();
                 }
             }

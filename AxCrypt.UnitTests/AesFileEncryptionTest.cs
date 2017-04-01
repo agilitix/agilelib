@@ -1,11 +1,11 @@
 ﻿using System.IO;
 using AxQuality;
-using NFluent;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace AxCrypt.UnitTests
 {
-    public class AesFileEncryptionUnitTests : ArrangeActAssert
+    internal class AesFileEncryptionUnitTests : ArrangeActAssert
     {
         protected string OriginalFile = "LoremIpsum.txt";
         protected string EncryptedFile = "LoremIpsum.encrypted.txt";
@@ -40,13 +40,13 @@ namespace AxCrypt.UnitTests
         [Test]
         public void Assert_decrypted_file_is_same_as_original_file()
         {
-            Check.That(FilesAreEqual(DecryptedFile, OriginalFile)).IsTrue();
+            FilesAreEqual(DecryptedFile, OriginalFile).Should().BeTrue();
         }
 
         [Test]
         public void Assert_encrypted_file_is_not_same_as_original_file()
         {
-            Check.That(FilesAreEqual(EncryptedFile, OriginalFile)).IsFalse();
+            FilesAreEqual(EncryptedFile, OriginalFile).Should().BeFalse();
         }
 
         public void RemoveTestFiles()

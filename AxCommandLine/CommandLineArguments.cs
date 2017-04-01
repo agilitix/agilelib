@@ -33,7 +33,7 @@ namespace AxCommandLine
 
         public void Set(string argument, string value)
         {
-            _arguments.Add(argument.ToLower(), value);
+            _arguments.Add(argument.ToLower(), value.Trim());
         }
 
         public bool Contains(string argument)

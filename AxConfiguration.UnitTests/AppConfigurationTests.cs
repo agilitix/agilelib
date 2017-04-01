@@ -1,11 +1,11 @@
 ﻿using AxConfiguration.Interfaces;
 using AxQuality;
-using NFluent;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace AxConfiguration.UnitTests
 {
-    public class AppConfigurationTests : ArrangeActAssert
+    internal class AppConfigurationTests : ArrangeActAssert
     {
         protected IAppConfiguration AppConfigurationUnderTest;
         protected string ActualKeyValue;
@@ -28,7 +28,7 @@ namespace AxConfiguration.UnitTests
         [Test]
         public void Assert_expected_keyvalue()
         {
-            Check.That(ActualKeyValue).IsEqualTo(ExpectedKeyValue);
+            ActualKeyValue.Should().Be(ExpectedKeyValue);
         }
     }
 }

@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AxQuality;
-using NFluent;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace AxUtils.UnitTests
 {
-    public class AnonymousEqualityComparerUnitTests : ArrangeActAssert
+    internal class AnonymousEqualityComparerUnitTests : ArrangeActAssert
     {
         public class ItemToCompare
         {
@@ -22,7 +22,7 @@ namespace AxUtils.UnitTests
         protected IList<bool> ActualResults;
     }
 
-    public class AnonymousEqualityComparer_test_objects_are_equal : AnonymousEqualityComparerUnitTests
+    internal class AnonymousEqualityComparer_test_objects_are_equal : AnonymousEqualityComparerUnitTests
     {
         public override void Arrange()
         {
@@ -63,7 +63,7 @@ namespace AxUtils.UnitTests
         [Test]
         public void Assert_comparing_equality_based_on_same_key_is_working()
         {
-            Check.That(ActualResults).ContainsExactly(ExpectedResults);
+            ActualResults.Should().ContainInOrder(ExpectedResults);
         }
     }
 }

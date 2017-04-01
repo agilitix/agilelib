@@ -1,7 +1,7 @@
 ﻿using System;
 using AxFixEngine.Extensions;
 using AxQuality;
-using NFluent;
+using FluentAssertions;
 using NUnit.Framework;
 using QuickFix;
 
@@ -130,49 +130,49 @@ namespace AxFixEngine.UnitTests
         [Test]
         public void Assert_string_value()
         {
-            Check.That(ActualValueString).IsEqualTo(ExpectedValueString);
+            ActualValueString.Should().Be(ExpectedValueString);
         }
 
         [Test]
         public void Assert_default_string_value()
         {
-            Check.That(ActualDefaultValueString).IsEqualTo(ExpectedDefaultValueString);
+            ActualDefaultValueString.Should().Be(ExpectedDefaultValueString);
         }
 
         [Test]
         public void Assert_int_value()
         {
-            Check.That(ActualValueInt).IsEqualTo(ExpectedValueInt);
+            ActualValueInt.Should().Be(ExpectedValueInt);
         }
 
         [Test]
         public void Assert_long_value()
         {
-            Check.That(ActualValueLong).IsEqualTo(ExpectedValueLong);
+            ActualValueLong.Should().Be(ExpectedValueLong);
         }
 
         [Test]
         public void Assert_double_value()
         {
-            Check.That(ActualValueDouble).IsEqualTo(ExpectedValueDouble);
+            ActualValueDouble.Should().Be(ExpectedValueDouble);
         }
 
         [Test]
         public void Assert_date_time_value()
         {
-            Check.That(ActualValueDateTime).IsEqualTo(ExpectedValueDateTime);
+            ActualValueDateTime.Should().Be(ExpectedValueDateTime);
         }
 
         [Test]
         public void Assert_bool_value()
         {
-            Check.That(ActualValueBool).IsEqualTo(ExpectedValueBool);
+            ActualValueBool.Should().Be(ExpectedValueBool);
         }
 
         [Test]
         public void Assert_day_of_week_value()
         {
-            Check.That(ActualValueDayOfWeek).IsEqualTo(ExpectedValueDayOfWeek);
+            ActualValueDayOfWeek.Should().Be(ExpectedValueDayOfWeek);
         }
     }
 }

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using AxQuality;
-using NFluent;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace AxExtensions.UnitTests
 {
-    public class DateTimeExtensionsTests : ArrangeActAssert
+    internal class DateTimeExtensionsTests : ArrangeActAssert
     {
         protected IList<DateTime> StartDatesUnderTests;
         protected IList<DateTime> EndDates;
@@ -50,7 +50,7 @@ namespace AxExtensions.UnitTests
         [Test]
         public void Assert_expected_ages_are_meet()
         {
-            Check.That(ResultAges).ContainsExactly(ExpectedAges);
+            ResultAges.Should().ContainInOrder(ExpectedAges);
         }
     }
 }

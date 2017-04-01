@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace AxCrypt.UnitTests
 {
-    public class AesStringEncryptionUnitTests : ArrangeActAssert
+    internal class AesStringEncryptionUnitTests : ArrangeActAssert
     {
         protected string OriginalString;
         protected string EncryptedString;

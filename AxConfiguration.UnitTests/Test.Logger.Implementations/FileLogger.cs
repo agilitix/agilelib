@@ -3,7 +3,7 @@ using AxConfiguration.UnitTests.Test.Logger.Interfaces;
 
 namespace AxConfiguration.UnitTests.Test.Logger.Implementations
 {
-    public class FileLogger : ILogger
+    internal class FileLogger : ILogger
     {
         private readonly string _logFileName;
         private readonly string _timeStampFormat;

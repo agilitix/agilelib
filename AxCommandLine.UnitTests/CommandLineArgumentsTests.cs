@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Linq;
 using AxQuality;
-using NFluent;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace AxCommandLine.UnitTests
 {
-    public class CommandLineArgumentsTests_argument_without_value
-        : ArrangeActAssert
+    internal class CommandLineArgumentsTests_argument_without_value : ArrangeActAssert
     {
         protected CommandLineArguments ObjectUnderTest;
         protected string[] Arguments;
@@ -33,27 +32,26 @@ namespace AxCommandLine.UnitTests
         [Test]
         public void Assert_argument_without_value_is_boolean_true()
         {
-            Check.That(GetValueResult).IsEqualTo(ExpectedValue);
+            GetValueResult.Should().Be(ExpectedValue);
 
-            Check.That(TryGetValueCall).IsTrue();
-            Check.That(TryGetValueOutput).IsEqualTo(ExpectedValue);
+            TryGetValueCall.Should().BeTrue();
+            TryGetValueOutput.Should().Be(ExpectedValue);
         }
 
         [Test]
         public void Assert_command_line_arguments_has_only_one_entry()
         {
-            Check.That(ObjectUnderTest.Count()).IsEqualTo(1);
+            ObjectUnderTest.Count().Should().Be(1);
         }
 
         [Test]
         public void Assert_command_line_arguments_contains_requested_name()
         {
-            Check.That(ObjectUnderTest.Contains("testBool"));
+            ObjectUnderTest.Contains("testBool").Should().BeTrue();
         }
     }
 
-    public class CommandLineArgumentsTests_argument_with_integer_value
-        : ArrangeActAssert
+    internal class CommandLineArgumentsTests_argument_with_integer_value : ArrangeActAssert
     {
         protected CommandLineArguments[] ObjectsUnderTest;
         protected string[] Arguments;
@@ -103,31 +101,30 @@ namespace AxCommandLine.UnitTests
         [Test]
         public void Assert_getting_integer_value_has_succeeded()
         {
-            Check.That(GetValueResult.All(x => x == ExpectedValue)).IsTrue();
+            GetValueResult.All(x => x == ExpectedValue).Should().BeTrue();
         }
 
         [Test]
         public void Assert_argument_has_only_one_entry()
         {
-            Check.That(ObjectsUnderTest.All(x => x.Count() == 1)).IsTrue();
+            ObjectsUnderTest.All(x => x.Count() == 1).Should().BeTrue();
         }
 
         [Test]
         public void Assert_trying_to_get_integer_value_has_succeeded()
         {
-            Check.That(TryGetValueCall.All(x => x)).IsTrue();
-            Check.That(TryGetValueOutput.All(x => x == ExpectedValue)).IsTrue();
+            TryGetValueCall.All(x => x).Should().BeTrue();
+            TryGetValueOutput.All(x => x == ExpectedValue).Should().BeTrue();
         }
 
         [Test]
         public void Assert_command_line_arguments_contains_requested_name()
         {
-            Check.That(ObjectsUnderTest.All(x => x.Contains("testInt")));
+            ObjectsUnderTest.All(x => x.Contains("testInt")).Should().BeTrue();
         }
     }
 
-    public class CommandLineArgumentsTests_argument_with_string_value
-        : ArrangeActAssert
+    internal class CommandLineArgumentsTests_argument_with_string_value : ArrangeActAssert
     {
         protected CommandLineArguments[] ObjectsUnderTest;
         protected string[] Arguments;
@@ -177,31 +174,30 @@ namespace AxCommandLine.UnitTests
         [Test]
         public void Assert_getting_string_value_has_succeeded()
         {
-            Check.That(GetValueResult.All(x => x.Equals(ExpectedValue)));
+            GetValueResult.All(x => x.Equals(ExpectedValue)).Should().BeTrue();
         }
 
         [Test]
         public void Assert_argument_has_only_one_entry()
         {
-            Check.That(ObjectsUnderTest.All(x => x.Count() == 1)).IsTrue();
+            ObjectsUnderTest.All(x => x.Count() == 1).Should().BeTrue();
         }
 
         [Test]
         public void Assert_trying_to_get_string_value_has_succeeded()
         {
-            Check.That(TryGetValueCall.All(x => x)).IsTrue();
-            Check.That(TryGetValueOutput.All(x => x.Equals(ExpectedValue)));
+            TryGetValueCall.All(x => x).Should().BeTrue();
+            TryGetValueOutput.All(x => x.Equals(ExpectedValue)).Should().BeTrue();
         }
 
         [Test]
         public void Assert_command_line_arguments_contains_requested_name()
         {
-            Check.That(ObjectsUnderTest.All(x => x.Contains("testStr")));
+            ObjectsUnderTest.All(x => x.Contains("testStr")).Should().BeTrue();
         }
     }
 
-    public class CommandLineArgumentsTests_argument_with_filename_value
-        : ArrangeActAssert
+    internal class CommandLineArgumentsTests_argument_with_filename_value : ArrangeActAssert
     {
         protected CommandLineArguments[] ObjectsUnderTest;
         protected string[] Arguments;
@@ -251,31 +247,30 @@ namespace AxCommandLine.UnitTests
         [Test]
         public void Assert_getting_string_value_has_succeeded()
         {
-            Check.That(GetValueResult.All(x => x.Equals(ExpectedValue)));
+            GetValueResult.All(x => x.Equals(ExpectedValue)).Should().BeTrue();
         }
 
         [Test]
         public void Assert_argument_has_only_one_entry()
         {
-            Check.That(ObjectsUnderTest.All(x => x.Count() == 1)).IsTrue();
+            ObjectsUnderTest.All(x => x.Count() == 1).Should().BeTrue();
         }
 
         [Test]
         public void Assert_trying_to_get_string_value_has_succeeded()
         {
-            Check.That(TryGetValueCall.All(x => x)).IsTrue();
-            Check.That(TryGetValueOutput.All(x => x.Equals(ExpectedValue)));
+            TryGetValueCall.All(x => x).Should().BeTrue();
+            TryGetValueOutput.All(x => x.Equals(ExpectedValue)).Should().BeTrue();
         }
 
         [Test]
         public void Assert_command_line_arguments_contains_requested_name()
         {
-            Check.That(ObjectsUnderTest.All(x => x.Contains("testFile")));
+            ObjectsUnderTest.All(x => x.Contains("testFile")).Should().BeTrue();
         }
     }
 
-    public class CommandLineArgumentsTests_argument_does_not_exists
-        : ArrangeActAssert
+    internal class CommandLineArgumentsTests_argument_does_not_exists : ArrangeActAssert
     {
         protected CommandLineArguments ObjectUnderTest;
         protected string[] Arguments;
@@ -299,20 +294,20 @@ namespace AxCommandLine.UnitTests
         [Test]
         public void Assert_argument_does_not_exists()
         {
-            Check.That(TryGetValueCall).IsFalse();
-            Check.That(TryGetValueOutput).IsEqualTo(ExpectedValue);
+            TryGetValueCall.Should().BeFalse();
+            TryGetValueOutput.Should().Be(ExpectedValue);
         }
 
         [Test]
         public void Assert_command_line_arguments_has_no_entries()
         {
-            Check.That(ObjectUnderTest.Count()).IsEqualTo(0);
+            ObjectUnderTest.Count().Should().Be(0);
         }
 
         [Test]
         public void Assert_command_line_arguments_does_not_contains_requesting_name()
         {
-            Check.That(ObjectUnderTest.Contains("doesNotExists")).IsFalse();
+            ObjectUnderTest.Contains("doesNotExists").Should().BeFalse();
         }
     }
 }
