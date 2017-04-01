@@ -4,21 +4,20 @@ using AxMsmq.Interfaces;
 
 namespace AxMsmq
 {
-    internal class QueueListener<T> : IQueueListener<IQueueMessageContent<T>>
-        where T : class
+    public class QueueListener<T> : IQueueListener<IQueuePayload<T>> where T : class
     {
         private readonly MessageQueue _messageQueue;
-        private readonly IQueueMessageConverter<Message, IQueueMessageContent<T>> _converter;
+        private readonly IQueueMessageTransformer<Message, IQueuePayload<T>> _transformer;
 
         public IQueueUri Uri { get; }
 
-        public event Action<object, IQueueMessageContent<T>> OnReceiveMessage;
-        public event Action<object, IQueueMessageContent<T>> OnPeekMessage;
+        public event Action<object, IQueuePayload<T>> OnReceiveMessage;
+        public event Action<object, IQueuePayload<T>> OnPeekMessage;
 
-        public QueueListener(MessageQueue messageQueue, IQueueMessageConverter<Message, IQueueMessageContent<T>> converter)
+        public QueueListener(MessageQueue messageQueue, IQueueMessageTransformer<Message, IQueuePayload<T>> transformer)
         {
             _messageQueue = messageQueue;
-            _converter = converter;
+            _transformer = transformer;
             Uri = new QueueUri(messageQueue.MachineName, messageQueue.QueueName);
         }
 
@@ -38,10 +37,10 @@ namespace AxMsmq
         {
             MessageQueue messageQueue = (MessageQueue)sender;
             Message message = messageQueue.EndPeek(e.AsyncResult);
-            IQueueMessageContent<T> content = _converter.Convert(message);
+            IQueuePayload<T> payload = _transformer.Transform(message);
             try
             {
-                OnPeekMessage?.Invoke(this, content);
+                OnPeekMessage?.Invoke(this, payload);
             }
             finally
             {
@@ -53,10 +52,10 @@ namespace AxMsmq
         {
             MessageQueue messageQueue = (MessageQueue) sender;
             Message message = messageQueue.EndReceive(e.AsyncResult);
-            IQueueMessageContent<T> content = _converter.Convert(message);
+            IQueuePayload<T> payload = _transformer.Transform(message);
             try
             {
-                OnReceiveMessage?.Invoke(this, content);
+                OnReceiveMessage?.Invoke(this, payload);
             }
             finally
             {

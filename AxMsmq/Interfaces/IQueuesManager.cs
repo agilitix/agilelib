@@ -2,8 +2,7 @@
 
 namespace AxMsmq.Interfaces
 {
-    public interface IQueuesManager<T>
-        where T : class
+    public interface IQueuesManager<T> where T : class
     {
         IList<IQueueUri> GetExistingQueues(string hostName);
 

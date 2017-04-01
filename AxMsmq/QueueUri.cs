@@ -1,32 +1,44 @@
-﻿using System.Text;
+﻿using System.Net;
+using System.Text;
 using AxMsmq.Interfaces;
 
 namespace AxMsmq
 {
     public class QueueUri : IQueueUri
     {
-        public string HostName { get; }
+        public string Host { get; }
         public string QueueName { get; }
         public string ConnectionString { get; }
 
         /// <summary>
-        /// hostName = "host_name"
-        /// queueName = "private$\\queue_name"
+        /// Host = "host_name"
+        /// QueueName = "queue_name"
+        /// ConnectionString = "FormatName:DIRECT=OS:host_name\private$\queue_name"
+        /// 
+        /// Host = "192.168.10.150"
+        /// QueueName = "queue_name"
+        /// ConnectionString = "FormatName:DIRECT=TCP:192.168.10.150\private$\queue_name"
         /// </summary>
-        public QueueUri(string hostName, string queueName)
+        public QueueUri(string host, string queueName)
         {
-            HostName = hostName;
+            Host = host;
             QueueName = queueName;
-            ConnectionString = hostName + @"\" + queueName;
+
+            IPAddress ip;
+            ConnectionString = IPAddress.TryParse(host, out ip)
+                                   ? "FormatName:DIRECT=TCP:"
+                                   : "FormatName:DIRECT=OS:";
+
+            ConnectionString += host + @"\private$\" + queueName;
         }
 
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("{");
-            sb.Append(nameof(HostName));
+            sb.Append(nameof(Host));
             sb.Append("=");
-            sb.Append(HostName);
+            sb.Append(Host);
             sb.Append(",");
             sb.Append(nameof(QueueName));
             sb.Append("=");
