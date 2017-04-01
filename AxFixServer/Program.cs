@@ -18,11 +18,10 @@ namespace AxFixServer
     class Program
     {
         protected static ILoggerFacade Log = new Log4netFacade<Program>();
-        private static ConsoleExitHandler _consoleExit;
 
         static Program()
         {
-            _consoleExit = new ConsoleExitHandler();
+            ConsoleExitHandler.Setup();
         }
 
         static void Main(string[] args)

@@ -30,7 +30,8 @@ namespace AxUtils
 
             _valueToInfos = enumInfos.ToDictionary(x => x.Value);
             _nameToInfos = enumInfos.ToDictionary(x => x.Name);
-            _descriptionToInfos = enumInfos.ToDictionary(x => x.Description);
+            _descriptionToInfos = enumInfos.Where(x => !string.IsNullOrWhiteSpace(x.Description))
+                                           .ToDictionary(x => x.Description);
         }
 
         public static IEnumerable<T> GetValues()
@@ -179,7 +180,7 @@ namespace AxUtils
                                                                   .GetCustomAttributes(typeof(DescriptionAttribute), false)
                                                                   .Cast<DescriptionAttribute>()
                                                                   .Select(attribute => attribute.Description)
-                                                                  .FirstOrDefault() ?? enumValue.ToString(),
+                                                                  .FirstOrDefault() ?? "",
                                                 Name = Enum.GetName(typeof(T), enumValue)
                                             });
         }

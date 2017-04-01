@@ -4,7 +4,11 @@ namespace AxUtils
 {
     public class ConsoleExitHandler
     {
-        public ConsoleExitHandler()
+        protected ConsoleExitHandler()
+        {
+        }
+
+        public static void Setup()
         {
             Console.TreatControlCAsInput = false;
             Console.CancelKeyPress += (snd, evt) =>
