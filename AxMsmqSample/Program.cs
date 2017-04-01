@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Messaging;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Serialization;
 using AxMsmq;
 using AxMsmq.Interfaces;
 
@@ -25,30 +18,31 @@ namespace AxMsmqSample
         static void Main(string[] args)
         {
             IMessageFormatter formatter = new XmlMessageFormatter(new[] {typeof(MyMessage)});
-            IQueueMessageTransformer<IQueuePayload<MyMessage>, Message> payloadTransformer = new QueueMessageTransformer<MyMessage>();
-            IQueueMessageTransformer<Message, IQueuePayload<MyMessage>> messageTransformer = new QueueMessageTransformer<MyMessage>();
+            IQueueMessageTransformer<MyMessage, Message> transformer = new QueueMessageTransformer<MyMessage>();
 
-            IQueuesManager<IQueuePayload<MyMessage>> pqm = new PrivateQueuesManager<MyMessage>(formatter, payloadTransformer, messageTransformer);
+            IQueuesFactory<IQueueMessage<MyMessage>> pqm = new PrivateQueuesFactory<MyMessage>(formatter, transformer);
 
-            IList<IQueueUri> queues = pqm.GetExistingQueues("virgo");
+            IList<IQueueUri> queues = pqm.GetExistingQueues("localhost");
 
             IQueueUri first = queues.First();
 
-            IQueueSender<IQueuePayload<MyMessage>> sender = pqm.GetOrCreateSender(first);
+            IQueueSender<IQueueMessage<MyMessage>> sender = pqm.GetOrCreateSender(first);
 
-            IQueuePayload<MyMessage> payload = new QueuePayload<MyMessage>();
-            payload.Label = "Hello world!";
-            payload.Body = new MyMessage
+            IQueueMessage<MyMessage> message = new QueueMessage<MyMessage>();
+            message.Label = "Hello world!";
+            message.Content = new MyMessage
                            {
                                Content = "My first message payload."
                            };
 
-            sender.Send(payload);
+            sender.Send(message);
 
             Thread.Sleep(1000);
 
-            IQueueReceiver<IQueuePayload<MyMessage>> receiver = pqm.GetOrCreateReceiver(first);
-            IQueuePayload<MyMessage> msgRecv = receiver.Receive();
+            IQueueReceiver<IQueueMessage<MyMessage>> receiver = pqm.GetOrCreateReceiver(first);
+            IQueueMessage<MyMessage> messageReceived = receiver.Receive();
+
+            Console.ReadLine();
         }
     }
 }

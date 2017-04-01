@@ -12,12 +12,12 @@ namespace AxMsmq
 
         /// <summary>
         /// Host = "host_name"
-        /// QueueName = "queue_name"
-        /// ConnectionString = "FormatName:DIRECT=OS:host_name\private$\queue_name"
+        /// QueueName = "private$\name"
+        /// ConnectionString = "FormatName:DIRECT=OS:host_name\private$\name"
         /// 
         /// Host = "192.168.10.150"
-        /// QueueName = "queue_name"
-        /// ConnectionString = "FormatName:DIRECT=TCP:192.168.10.150\private$\queue_name"
+        /// QueueName = "private$\name"
+        /// ConnectionString = "FormatName:DIRECT=TCP:192.168.10.150\private$\name"
         /// </summary>
         public QueueUri(string host, string queueName)
         {
@@ -29,7 +29,7 @@ namespace AxMsmq
                                    ? "FormatName:DIRECT=TCP:"
                                    : "FormatName:DIRECT=OS:";
 
-            ConnectionString += host + @"\private$\" + queueName;
+            ConnectionString += host + @"\" + queueName;
         }
 
         public override string ToString()
@@ -39,11 +39,11 @@ namespace AxMsmq
             sb.Append(nameof(Host));
             sb.Append("=");
             sb.Append(Host);
-            sb.Append(",");
+            sb.Append(", ");
             sb.Append(nameof(QueueName));
             sb.Append("=");
             sb.Append(QueueName);
-            sb.Append(",");
+            sb.Append(", ");
             sb.Append(nameof(ConnectionString));
             sb.Append("=");
             sb.Append(ConnectionString);

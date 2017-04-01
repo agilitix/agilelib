@@ -1,7 +1,8 @@
 ﻿namespace AxMsmq.Interfaces
 {
-    public interface IQueueMessageTransformer<in TSource, out TTarget> where TSource : class where TTarget : class
+    public interface IQueueMessageTransformer<TContent, TTransportMessage> where TContent : class where TTransportMessage : class
     {
-        TTarget Transform(TSource message);
+        IQueueMessage<TContent> Transform(TTransportMessage transportMessage);
+        TTransportMessage Transform(IQueueMessage<TContent> messageContent);
     }
 }
