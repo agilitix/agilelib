@@ -1,8 +1,8 @@
 ﻿namespace AxMsmq.Interfaces
 {
-    public interface IQueueReceiver<out T> : IQueue where T : class
+    public interface IQueueReceiver<out TQueueMessage> : IQueue where TQueueMessage : class
     {
-        T Receive();
-        T Peek();
+        TQueueMessage Receive();
+        TQueueMessage Peek();
     }
 }

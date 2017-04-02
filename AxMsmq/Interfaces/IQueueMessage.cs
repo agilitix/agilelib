@@ -1,8 +1,8 @@
 ﻿namespace AxMsmq.Interfaces
 {
-    public interface IQueueMessage<T> where T : class
+    public interface IQueueMessage<TContent> where TContent : class
     {
         string Label { get; set; }
-        T Content { get; set; }
+        TContent Content { get; set; }
     }
 }

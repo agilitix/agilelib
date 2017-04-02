@@ -6,12 +6,17 @@ using AxMsmq.Interfaces;
 
 namespace AxMsmq
 {
-    public class PrivateQueuesFactory<TContent> : IQueuesFactory<IQueueMessage<TContent>> where TContent : class
+    public class PrivateQueueFactory<TContent, TTransportMessage> : IQueueFactory<IQueueMessage<TContent>> where TContent : class where TTransportMessage : Message
     {
         private readonly IMessageFormatter _messageFormatter;
-        private readonly IQueueMessageTransformer<TContent, Message> _messageTransformer;
+        private readonly IQueueMessageTransformer<TContent, TTransportMessage> _messageTransformer;
 
-        public PrivateQueuesFactory(IMessageFormatter messageFormatter, IQueueMessageTransformer<TContent, Message> messageTransformer)
+        public PrivateQueueFactory(IQueueMessageTransformer<TContent, TTransportMessage> messageTransformer)
+            : this(new XmlMessageFormatter(new[] {typeof(TContent)}), messageTransformer)
+        {
+        }
+
+        public PrivateQueueFactory(IMessageFormatter messageFormatter, IQueueMessageTransformer<TContent, TTransportMessage> messageTransformer)
         {
             _messageFormatter = messageFormatter;
             _messageTransformer = messageTransformer;
@@ -26,17 +31,17 @@ namespace AxMsmq
 
         public IQueueReceiver<IQueueMessage<TContent>> GetOrCreateReceiver(IQueueUri uri)
         {
-            return GetOrCreate(uri, q => new QueueReceiver<TContent>(q, _messageTransformer));
+            return GetOrCreate(uri, q => new QueueReceiver<TContent, TTransportMessage>(q, _messageTransformer));
         }
 
         public IQueueSender<IQueueMessage<TContent>> GetOrCreateSender(IQueueUri uri)
         {
-            return GetOrCreate(uri, q => new QueueSender<TContent>(q, _messageTransformer));
+            return GetOrCreate(uri, q => new QueueSender<TContent, TTransportMessage>(q, _messageTransformer));
         }
 
         public IQueueListener<IQueueMessage<TContent>> GetOrCreateListener(IQueueUri uri)
         {
-            return GetOrCreate(uri, q => new QueueListener<TContent>(q, _messageTransformer));
+            return GetOrCreate(uri, q => new QueueListener<TContent, TTransportMessage>(q, _messageTransformer));
         }
 
         private TQueue GetOrCreate<TQueue>(IQueueUri uri, Func<MessageQueue, TQueue> builder)

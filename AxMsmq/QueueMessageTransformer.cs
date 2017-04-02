@@ -3,19 +3,19 @@ using AxMsmq.Interfaces;
 
 namespace AxMsmq
 {
-    public class QueueMessageTransformer<TContent> : IQueueMessageTransformer<TContent, Message> where TContent : class
+    public class QueueMessageTransformer<TContent, TTransportMessage> : IQueueMessageTransformer<TContent, TTransportMessage> where TContent : class where TTransportMessage : Message
     {
-        public Message Transform(IQueueMessage<TContent> messageContent)
+        public TTransportMessage Transform(IQueueMessage<TContent> queueMessage)
         {
             Message transportMessage = new Message
             {
-                Label = messageContent.Label,
-                Body = messageContent.Content
+                Label = queueMessage.Label,
+                Body = queueMessage.Content
             };
-            return transportMessage;
+            return (TTransportMessage) transportMessage;
         }
 
-        public IQueueMessage<TContent> Transform(Message transportMessage)
+        public IQueueMessage<TContent> Transform(TTransportMessage transportMessage)
         {
             IQueueMessage<TContent> messageContent = new QueueMessage<TContent>
             {

@@ -3,9 +3,9 @@ using AxMsmq.Interfaces;
 
 namespace AxMsmq
 {
-    public class QueueMessage<T> : IQueueMessage<T> where T : class
+    public class QueueMessage<TContent> : IQueueMessage<TContent> where TContent : class
     {
         public string Label { get; set; }
-        public T Content { get; set; }
+        public TContent Content { get; set; }
     }
 }

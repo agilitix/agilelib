@@ -4,17 +4,17 @@ using AxMsmq.Interfaces;
 
 namespace AxMsmq
 {
-    public class QueueListener<TContent> : IQueueListener<IQueueMessage<TContent>> where TContent : class
+    public class QueueListener<TContent, TTransportMessage> : IQueueListener<IQueueMessage<TContent>> where TContent : class where TTransportMessage : Message
     {
         private readonly MessageQueue _messageQueue;
-        private readonly IQueueMessageTransformer<TContent, Message> _transformer;
+        private readonly IQueueMessageTransformer<TContent, TTransportMessage> _transformer;
 
         public IQueueUri Uri { get; }
 
         public event Action<object, IQueueMessage<TContent>> OnReceiveMessage;
         public event Action<object, IQueueMessage<TContent>> OnPeekMessage;
 
-        public QueueListener(MessageQueue messageQueue, IQueueMessageTransformer<TContent, Message> transformer)
+        public QueueListener(MessageQueue messageQueue, IQueueMessageTransformer<TContent, TTransportMessage> transformer)
         {
             _messageQueue = messageQueue;
             _transformer = transformer;
@@ -35,8 +35,8 @@ namespace AxMsmq
 
         private void PeekHandler(object sender, PeekCompletedEventArgs e)
         {
-            MessageQueue messageQueue = (MessageQueue)sender;
-            Message transportMessage = messageQueue.EndPeek(e.AsyncResult);
+            MessageQueue messageQueue = (MessageQueue) sender;
+            TTransportMessage transportMessage = (TTransportMessage) messageQueue.EndPeek(e.AsyncResult);
             IQueueMessage<TContent> content = _transformer.Transform(transportMessage);
             try
             {
@@ -51,7 +51,7 @@ namespace AxMsmq
         private void ReceiveHandler(object sender, ReceiveCompletedEventArgs e)
         {
             MessageQueue messageQueue = (MessageQueue) sender;
-            Message transportMessage = messageQueue.EndReceive(e.AsyncResult);
+            TTransportMessage transportMessage = (TTransportMessage) messageQueue.EndReceive(e.AsyncResult);
             IQueueMessage<TContent> content = _transformer.Transform(transportMessage);
             try
             {

@@ -1,7 +1,7 @@
 ﻿namespace AxMsmq.Interfaces
 {
-    public interface IQueueSender<in T> : IQueue where T : class
+    public interface IQueueSender<in TQueueMessage> : IQueue where TQueueMessage : class
     {
-        void Send(T content);
+        void Send(TQueueMessage content);
     }
 }

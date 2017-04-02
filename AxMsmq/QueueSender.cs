@@ -3,14 +3,14 @@ using AxMsmq.Interfaces;
 
 namespace AxMsmq
 {
-    public class QueueSender<TContent> : IQueueSender<IQueueMessage<TContent>> where TContent : class
+    public class QueueSender<TContent, TTransportMessage> : IQueueSender<IQueueMessage<TContent>> where TContent : class where TTransportMessage : Message
     {
         private readonly MessageQueue _messageQueue;
-        private readonly IQueueMessageTransformer<TContent, Message> _transformer;
+        private readonly IQueueMessageTransformer<TContent, TTransportMessage> _transformer;
 
         public IQueueUri Uri { get; }
 
-        public QueueSender(MessageQueue messageQueue, IQueueMessageTransformer<TContent, Message> transformer)
+        public QueueSender(MessageQueue messageQueue, IQueueMessageTransformer<TContent, TTransportMessage> transformer)
         {
             _messageQueue = messageQueue;
             _transformer = transformer;
@@ -19,7 +19,7 @@ namespace AxMsmq
 
         public void Send(IQueueMessage<TContent> content)
         {
-            Message transportMessage = _transformer.Transform(content);
+            TTransportMessage transportMessage = _transformer.Transform(content);
             _messageQueue.Send(transportMessage);
         }
     }
