@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Log4netAsyncAppender.cs" />
     <Compile Include="Interfaces\ILoggerFacade.cs" />
     <Compile Include="Log4netFacade.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -54,6 +55,11 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\AxUtils\AxUtils.csproj">
+      <Project>{0772C612-7C30-4CBE-8499-186B62970671}</Project>
+      <Name>AxUtils</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

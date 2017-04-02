@@ -9,12 +9,12 @@ namespace AxUtils.UnitTests
 {
     internal class WorkerQueueTests : ArrangeActAssert
     {
-        protected WorkerQueue ObjectUnderTest;
+        protected WorkerQueue<Action> ObjectUnderTest;
         protected Exception RaisedException;
 
         public override void Arrange()
         {
-            ObjectUnderTest = new WorkerQueue();
+            ObjectUnderTest = new WorkerQueue<Action>(action => action());
             ObjectUnderTest.OnWorkerQueueException += OnWorkerQueueException;
         }
 

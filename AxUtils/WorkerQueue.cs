@@ -6,47 +6,50 @@ using AxUtils.Interfaces;
 
 namespace AxUtils
 {
-    public class WorkerQueue : IWorkerQueue<Action>
+    public class WorkerQueue<T> : IWorkerQueue<T>
     {
+        protected readonly Action<T> _consumer;
         protected readonly CancellationTokenSource _cancellationTokenSource;
-        protected readonly BlockingCollection<Action> _items;
-        protected readonly Task[] _consumers;
+        protected readonly BlockingCollection<T> _items;
+        protected readonly Task[] _tasks;
 
         public event EventHandler<WorkerQueueExceptionEventArgs> OnWorkerQueueException;
 
-        public WorkerQueue()
-            : this(1)
+        public WorkerQueue(Action<T> consumer)
+            : this(consumer, 1)
         {
         }
 
-        public WorkerQueue(int concurrencyLevel, int capacity = -1)
+        public WorkerQueue(Action<T> consumer, int concurrencyLevel, int capacity = -1)
         {
             Ensure.That(concurrencyLevel > 0, nameof(concurrencyLevel));
             Ensure.That(capacity == -1 || capacity > 0, nameof(capacity));
 
+            _consumer = consumer;
+
             _items = capacity > 0
-                        ? new BlockingCollection<Action>(capacity)  // Bounded queue, new additions will block if the queue is filled.
-                        : new BlockingCollection<Action>();         // Unbounded queue.
+                        ? new BlockingCollection<T>(capacity)  // Bounded queue, new additions will block if the queue is filled.
+                        : new BlockingCollection<T>();         // Unbounded queue.
 
             _cancellationTokenSource = new CancellationTokenSource();
             CancellationToken token = _cancellationTokenSource.Token;
 
-            _consumers = new Task[concurrencyLevel];
-            for (int i = 0; i < concurrencyLevel; ++i) // Consume items concurrently if concurrencyLevel>0.
+            _tasks = new Task[concurrencyLevel];
+            for (int i = 0; i < concurrencyLevel; ++i) // Consume items concurrently if concurrencyLevel>1.
             {
-                _consumers[i] = Task.Factory.StartNew(() =>
+                _tasks[i] = Task.Factory.StartNew(() =>
                                                       {
                                                           try
                                                           {
-                                                              foreach (Action item in _items.GetConsumingEnumerable(token))
+                                                              foreach (T item in _items.GetConsumingEnumerable(token))
                                                               {
                                                                   // Will throw if the token has been canceled.
                                                                   token.ThrowIfCancellationRequested();
 
                                                                   try
                                                                   {
-                                                                      // Run the current item action.
-                                                                      item?.Invoke();
+                                                                      // Call the consumer with current item.
+                                                                      _consumer(item);
                                                                   }
                                                                   catch (Exception e)
                                                                   {
@@ -66,12 +69,12 @@ namespace AxUtils
             }
         }
 
-        public bool TryAdd(Action item)
+        public bool TryAdd(T item)
         {
             return TryAdd(item, TimeSpan.Zero);
         }
 
-        public bool TryAdd(Action item, TimeSpan timeout)
+        public bool TryAdd(T item, TimeSpan timeout)
         {
             try
             {
@@ -84,7 +87,7 @@ namespace AxUtils
             }
         }
 
-        public void Add(Action item)
+        public void Add(T item)
         {
             try
             {
@@ -102,20 +105,20 @@ namespace AxUtils
 
             // Wait and give time to consume outstanding items.
             // If the timeout is too low, several items may be ignored.
-            Task.WaitAll(_consumers, timeout);
+            Task.WaitAll(_tasks, timeout);
 
             // Now cancel the consuming task loop.
             _cancellationTokenSource.Cancel();
 
             // Wait the task loop to exit.
-            Task.WaitAll(_consumers);
+            Task.WaitAll(_tasks);
 
             // Now cleaup everything. The WorkerQueue can not be used anymore.
             _cancellationTokenSource.Dispose();
             _items.Dispose();
-            foreach (Task consumer in _consumers)
+            foreach (Task task in _tasks)
             {
-                consumer.Dispose();
+                task.Dispose();
             }
         }
 

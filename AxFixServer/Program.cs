@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
+using System.Threading;
 using AxCommandLine;
 using AxCommandLine.Interfaces;
 using AxCommonLogger;
@@ -40,6 +42,7 @@ namespace AxFixServer
             Log.Configure(log4NetConfigFile);
 
             Log.Info("Starting FIX engine version=" + Assembly.GetEntryAssembly().GetName().Version);
+            Log.Info("Main => PID=" + Process.GetCurrentProcess().Id + " / ThreadID=" + Thread.CurrentThread.ManagedThreadId);
 
             ICommandLineArguments commandLineArguments = new CommandLineArguments(args);
             Log.Info("Command line arguments: " + commandLineArguments);

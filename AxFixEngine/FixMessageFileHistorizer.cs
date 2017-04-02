@@ -10,7 +10,7 @@ namespace AxFixEngine
     public class FixMessageFileHistorizer : IFixMessageHistorizer
     {
         protected readonly string _historyOutputFileName;
-        protected readonly IWorkerQueue<Action> _workerQueue = new WorkerQueue();
+        protected readonly IWorkerQueue<Action> _workerQueue = new WorkerQueue<Action>(action => action());
 
         public FixMessageFileHistorizer(string historyOutputFileName)
         {
