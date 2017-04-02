@@ -11,8 +11,8 @@ namespace AxMsmq
 
         public IQueueUri Uri { get; }
 
-        public event Action<object, IQueueMessage<TContent>> OnReceiveMessage;
-        public event Action<object, IQueueMessage<TContent>> OnPeekMessage;
+        public event Action<object /*sender*/, IQueueMessage<TContent>> OnReceiveMessage;
+        public event Action<object /*sender*/, IQueueMessage<TContent>> OnPeekMessage;
 
         public QueueListener(MessageQueue messageQueue, IQueueMessageTransformer<TContent, TTransportMessage> transformer)
         {

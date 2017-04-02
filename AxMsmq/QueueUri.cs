@@ -25,11 +25,7 @@ namespace AxMsmq
             QueueName = queueName;
 
             IPAddress ip;
-            ConnectionString = IPAddress.TryParse(host, out ip)
-                                   ? "FormatName:DIRECT=TCP:"
-                                   : "FormatName:DIRECT=OS:";
-
-            ConnectionString += host + @"\" + queueName;
+            ConnectionString = "FormatName:DIRECT=" + (IPAddress.TryParse(host, out ip) ? "TCP:" : "OS:") + host + @"\" + queueName;
         }
 
         public override string ToString()

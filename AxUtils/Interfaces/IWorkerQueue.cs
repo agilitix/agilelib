@@ -2,7 +2,7 @@
 
 namespace AxUtils.Interfaces
 {
-    public interface IWorkerQueue<T>
+    public interface IWorkerQueue<in T>
     {
         event EventHandler<WorkerQueueExceptionEventArgs> OnWorkerQueueException;
 

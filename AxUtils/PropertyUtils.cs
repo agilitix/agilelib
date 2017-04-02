@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace AxUtils
 {
-    static class PropertyUtils
+    public static class PropertyUtils
     {
         public static IEnumerable<PropertyInfo> GetAllProperties<T>()
             where T : class

@@ -100,20 +100,19 @@ namespace AxUtils
         {
             CompleteAdding();
 
-            // Wait till outstanding items are consumed. If the timeout
-            // is too low some items will not be consumed.
+            // Wait and give time to consume outstanding items.
+            // If the timeout is too low, several items may be ignored.
             Task.WaitAll(_consumers, timeout);
 
-            // Cancel the consuming task loop.
+            // Now cancel the consuming task loop.
             _cancellationTokenSource.Cancel();
 
             // Wait the task loop to exit.
             Task.WaitAll(_consumers);
 
-            // Cleaup everything.
+            // Now cleaup everything. The WorkerQueue can not be used anymore.
             _cancellationTokenSource.Dispose();
             _items.Dispose();
-
             foreach (Task consumer in _consumers)
             {
                 consumer.Dispose();
