@@ -21,11 +21,11 @@ namespace AxMsmq
         /// </summary>
         public QueueUri(string host, string queueName)
         {
-            Host = host;
-            QueueName = queueName;
+            Host = host.ToLower();
+            QueueName = queueName.ToLower();
 
             IPAddress ip;
-            ConnectionString = "FormatName:DIRECT=" + (IPAddress.TryParse(host, out ip) ? "TCP:" : "OS:") + host + @"\" + queueName;
+            ConnectionString = "FormatName:DIRECT=" + (IPAddress.TryParse(host, out ip) ? "TCP:" : "OS:") + host + @"\" + QueueName;
         }
 
         public override string ToString()

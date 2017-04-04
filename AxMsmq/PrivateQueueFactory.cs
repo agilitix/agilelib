@@ -48,7 +48,8 @@ namespace AxMsmq
         {
             MessageQueue queue = null;
             Func<MessageQueue> queueGetter = () => MessageQueue.GetPrivateQueuesByMachine(uri.Host)
-                                                               .FirstOrDefault(x => x.QueueName.Equals(uri.QueueName));
+                                                               .FirstOrDefault(x => x.QueueName.Equals(uri.QueueName,
+                                                                                                       StringComparison.InvariantCultureIgnoreCase));
 
             try
             {
