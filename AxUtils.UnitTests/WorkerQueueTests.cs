@@ -11,9 +11,12 @@ namespace AxUtils.UnitTests
     {
         protected WorkerQueue<Action> ObjectUnderTest;
         protected Exception RaisedException;
+        protected AutoResetEvent WaitEvent;
 
         public override void Arrange()
         {
+            WaitEvent = new AutoResetEvent(false);
+
             ObjectUnderTest = new WorkerQueue<Action>(action => action());
             ObjectUnderTest.OnWorkerQueueException += OnWorkerQueueException;
         }
@@ -26,36 +29,16 @@ namespace AxUtils.UnitTests
 
     internal class WorkerQueueTests_add_on_canceled_queue : WorkerQueueTests
     {
-        protected int Value;
-
         public override void Act()
         {
-            ObjectUnderTest.Add(() =>
-                                {
-                                    Thread.Sleep(100);
-                                    Value = 100;
-                                });
-            Thread.Sleep(5);
             ObjectUnderTest.Cancel();
-            ObjectUnderTest.Add(() => Thread.Sleep(100));
-        }
-
-        [Test]
-        public void Assert_canceled_queue_but_currently_running_job_is_working()
-        {
-            Value.Should().Be(100);
+            ObjectUnderTest.Add(() => { });
         }
 
         [Test]
         public void Assert_canceled_queue_raises_WorkerQueueException_when_adding_items()
         {
             RaisedException.Should().BeOfType<WorkerQueueException>();
-        }
-
-        [Test]
-        public void Assert_cancelled_queue_raises_innerexception_ObjectDisposedException()
-        {
-            RaisedException.InnerException.Should().BeOfType<ObjectDisposedException>();
         }
     }
 
@@ -65,17 +48,20 @@ namespace AxUtils.UnitTests
 
         public override void Act()
         {
-            ObjectUnderTest.Add(() =>
+            for (int i = 0; i < 10; ++i)
             {
-                Value++;
-                Thread.Sleep(1000);
-            });
-            ObjectUnderTest.Add(() =>
-            {
-                Value++;
-                Thread.Sleep(1000);
-            });
-            Thread.Sleep(5);
+                ObjectUnderTest.Add(() =>
+                                    {
+                                        Value++;
+                                        if (Value == 5)
+                                        {
+                                            WaitEvent.Set();
+                                        }
+                                        Thread.Sleep(10);
+                                    });
+            }
+
+            WaitEvent.WaitOne();
             ObjectUnderTest.Cancel();
         }
 
@@ -92,9 +78,9 @@ namespace AxUtils.UnitTests
         }
 
         [Test]
-        public void Assert_canceled_consuming_queue_has_run_only_one_item()
+        public void Assert_canceled_consuming_queue_has_run_some_items()
         {
-            Value.Should().Be(1);
+            Value.Should().BeGreaterThan(0);
         }
     }
 }
