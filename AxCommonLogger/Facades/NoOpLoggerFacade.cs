@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using AxCommonLogger.Interfaces;
 
-namespace AxCommonLogger
+namespace AxCommonLogger.Facades
 {
     public class NoOpLoggerFacade : ILoggerFacade
     {
@@ -11,10 +11,6 @@ namespace AxCommonLogger
         public bool IsWarnEnabled => false;
         public bool IsErrorEnabled => false;
         public bool IsFatalEnabled => false;
-
-        public void Configure(string loggerConfigurationFile)
-        {
-        }
 
         [DebuggerStepThrough]
         public void Debug(string message)

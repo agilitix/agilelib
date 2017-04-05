@@ -49,8 +49,8 @@
   <ItemGroup>
     <Compile Include="AsyncForwardingAppender.cs" />
     <Compile Include="Interfaces\ILoggerFacade.cs" />
-    <Compile Include="NoOpLoggerFacade.cs" />
-    <Compile Include="Log4netLoggerFacade.cs" />
+    <Compile Include="Facades\NoOpLoggerFacade.cs" />
+    <Compile Include="Facades\Log4netLoggerFacade.cs" />
     <Compile Include="LoggerFacadeProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

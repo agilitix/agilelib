@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using AxCommonLogger.Interfaces;
 
-namespace AxCommonLogger
+namespace AxCommonLogger.Facades
 {
     public class Log4netLoggerFacade<T> : ILoggerFacade
     {
