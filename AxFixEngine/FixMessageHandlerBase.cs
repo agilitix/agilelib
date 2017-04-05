@@ -9,7 +9,7 @@ namespace AxFixEngine
 {
     public abstract class FixMessageHandlerBase : MessageCracker, IFixMessageHandler
     {
-        protected static ILoggerFacade Log = new Log4netFacade<FixMessageHandlerBase>();
+        protected static ILoggerFacade Log = LoggerFacadeProvider.GetLogger<FixMessageHandlerBase>();
 
         public virtual void OnLogon(SessionID sessionId)
         {

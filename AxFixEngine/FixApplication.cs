@@ -7,7 +7,7 @@ namespace AxFixEngine
 {
     public class FixApplication : IApplication
     {
-        protected static ILoggerFacade Log = new Log4netFacade<FixApplication>();
+        protected static ILoggerFacade Log = LoggerFacadeProvider.GetLogger<FixApplication>();
         private readonly IFixMessageHandler _messageHandler;
         private readonly IFixMessageHistorizer _messageHistorizer;
 

@@ -4,7 +4,7 @@ using AxCommonLogger.Interfaces;
 
 namespace AxCommonLogger
 {
-    public class Log4netFacade<T> : ILoggerFacade
+    public class Log4netLoggerFacade<T> : ILoggerFacade
     {
         private readonly log4net.ILog _logger = log4net.LogManager.GetLogger(typeof(T));
 
@@ -13,11 +13,6 @@ namespace AxCommonLogger
         public bool IsWarnEnabled => _logger.IsWarnEnabled;
         public bool IsErrorEnabled => _logger.IsErrorEnabled;
         public bool IsFatalEnabled => _logger.IsFatalEnabled;
-
-        public void Configure(string loggerConfigurationFile)
-        {
-            log4net.Config.XmlConfigurator.ConfigureAndWatch(new System.IO.FileInfo(loggerConfigurationFile));
-        }
 
         [DebuggerStepThrough]
         public void Debug(string message)

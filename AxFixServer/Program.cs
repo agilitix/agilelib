@@ -19,7 +19,7 @@ namespace AxFixServer
 {
     class Program
     {
-        protected static ILoggerFacade Log = new Log4netFacade<Program>();
+        protected static ILoggerFacade Log;
 
         static Program()
         {
@@ -41,7 +41,8 @@ namespace AxFixServer
                 return;
             }
 
-            Log.Configure(log4NetConfigFile);
+            LoggerFacadeProvider.Initialize(LoggerFacadeProvider.LoggerType.Log4net, log4NetConfigFile);
+            Log = LoggerFacadeProvider.GetLogger<Program>();
 
             Log.Info("Starting FIX engine version=" + Assembly.GetEntryAssembly().GetName().Version);
             Log.Info("Main => PID=" + Process.GetCurrentProcess().Id + " / ThreadID=" + Thread.CurrentThread.ManagedThreadId);

@@ -8,7 +8,7 @@ namespace AxFixEngine
 {
     class FixInitiator : IFixConnector
     {
-        protected static ILoggerFacade Log = new Log4netFacade<FixInitiator>();
+        protected static ILoggerFacade Log = LoggerFacadeProvider.GetLogger<FixInitiator>();
         private readonly IInitiator _initiator;
 
         public FixInitiator(IApplication application,

@@ -7,7 +7,7 @@ namespace AxFixEngine
 {
     public class FixAcceptor : IFixConnector
     {
-        protected static ILoggerFacade Log = new Log4netFacade<FixAcceptor>();
+        protected static ILoggerFacade Log = LoggerFacadeProvider.GetLogger<FixAcceptor>();
         private readonly IAcceptor _acceptor;
 
         public FixAcceptor(IApplication application,

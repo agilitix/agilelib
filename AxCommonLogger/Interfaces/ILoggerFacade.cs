@@ -33,7 +33,5 @@ namespace AxCommonLogger.Interfaces
         void Warn(string message, Exception exception);
         void Error(string message, Exception exception);
         void Fatal(string message, Exception exception);
-
-        void Configure(string loggerConfigurationFile);
     }
 }
