@@ -7,11 +7,11 @@ namespace AxCommonLogger
 {
     public static class LoggerFacadeProvider
     {
+        private static readonly NoOpLoggerFacade _noOpLogger = new NoOpLoggerFacade();
         private static LoggerType _loggerType;
 
         public enum LoggerType
         {
-            NoOp,
             Log4net,
         }
 
@@ -40,7 +40,7 @@ namespace AxCommonLogger
                 case LoggerType.Log4net:
                     return new Log4netLoggerFacade<T>();
                 default:
-                    return new NoOpLoggerFacade();
+                    return _noOpLogger;
             }
         }
     }
