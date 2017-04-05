@@ -28,8 +28,10 @@ namespace AxFixServer
 
         static void Main(string[] args)
         {
+            IConfigurationFileProvider configurationFileProvider = new ConfigurationFileProvider(@".\Configuration");
+
             IAppConfiguration appConfiguration = new AppConfiguration();
-            appConfiguration.LoadFile(@".\Configuration\main.config");
+            appConfiguration.LoadFile(configurationFileProvider.AppConfigFile);
 
             string log4NetConfigFile = appConfiguration.Configuration.GetSetting<string>("log4net");
             if (string.IsNullOrWhiteSpace(log4NetConfigFile))
@@ -48,7 +50,7 @@ namespace AxFixServer
             Log.Info("Command line arguments: " + commandLineArguments);
 
             IUnityConfiguration unity = new UnityConfiguration();
-            unity.LoadDefaultFile(@".\Configuration");
+            unity.LoadFile(configurationFileProvider.UnityConfigFile);
             Log.Info("Loaded unity configuration from file=" + unity.ConfigurationFile);
 
             IFixConnectorFactory fixConnectorFactory = unity.Container.Resolve<IFixConnectorFactory>();
