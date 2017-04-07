@@ -47,10 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AsyncForwardingAppender.cs" />
+    <Compile Include="Appenders\AsyncForwardingAppender.cs" />
     <Compile Include="Interfaces\ILoggerFacade.cs" />
     <Compile Include="Facades\NoOpLoggerFacade.cs" />
     <Compile Include="Facades\Log4netLoggerFacade.cs" />
+    <Compile Include="Interfaces\ILoggerFacadeFactory.cs" />
+    <Compile Include="Factories\Log4netLoggerFacadeFactory.cs" />
     <Compile Include="LoggerFacadeProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

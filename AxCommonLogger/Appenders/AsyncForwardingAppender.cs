@@ -6,7 +6,7 @@ using log4net.Appender;
 using log4net.Core;
 using log4net.Util;
 
-namespace AxCommonLogger
+namespace AxCommonLogger.Appenders
 {
     public class AsyncForwardingAppender : ForwardingAppender
     {

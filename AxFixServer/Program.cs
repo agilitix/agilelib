@@ -5,6 +5,7 @@ using System.Threading;
 using AxCommandLine;
 using AxCommandLine.Interfaces;
 using AxCommonLogger;
+using AxCommonLogger.Factories;
 using AxCommonLogger.Interfaces;
 using AxConfiguration;
 using AxConfiguration.Interfaces;
@@ -41,7 +42,13 @@ namespace AxFixServer
                 return;
             }
 
-            LoggerFacadeProvider.Initialize(LoggerFacadeProvider.LoggerType.Log4net, log4NetConfigFile);
+            IUnityConfiguration unity = new UnityConfiguration();
+            unity.LoadFile(configurationFileProvider.UnityConfigFile);
+
+            ILoggerFacadeFactory loggerFacadeFactory = unity.Container.Resolve<ILoggerFacadeFactory>();
+            loggerFacadeFactory.Initialize(log4NetConfigFile);
+
+            LoggerFacadeProvider.Initialize(loggerFacadeFactory);
             Log = LoggerFacadeProvider.GetLogger<Program>();
 
             Log.Info("Starting FIX engine version=" + Assembly.GetEntryAssembly().GetName().Version);
@@ -49,10 +56,6 @@ namespace AxFixServer
 
             ICommandLineArguments commandLineArguments = new CommandLineArguments(args);
             Log.Info("Command line arguments: " + commandLineArguments);
-
-            IUnityConfiguration unity = new UnityConfiguration();
-            unity.LoadFile(configurationFileProvider.UnityConfigFile);
-            Log.Info("Loaded unity configuration from file=" + unity.ConfigurationFile);
 
             IFixConnectorFactory fixConnectorFactory = unity.Container.Resolve<IFixConnectorFactory>();
             Log.Info("Resolved FIX connection factory type=" + fixConnectorFactory.GetType());
