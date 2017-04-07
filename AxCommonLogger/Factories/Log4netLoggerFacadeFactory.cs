@@ -17,17 +17,15 @@ namespace AxCommonLogger.Factories
             }
 
             log4net.Config.XmlConfigurator.ConfigureAndWatch(new FileInfo(loggerConfigurationFile));
+
             _initialized = true;
         }
 
         public ILoggerFacade GetLogger<T>()
         {
-            if (_initialized)
-            {
-                return new Log4netLoggerFacade<T>(log4net.LogManager.GetLogger(typeof(T)));
-            }
-
-            return _noOpLogger;
+            return _initialized
+                       ? (ILoggerFacade) new Log4netLoggerFacade<T>(log4net.LogManager.GetLogger(typeof(T)))
+                       : _noOpLogger;
         }
     }
 }
