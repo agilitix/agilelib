@@ -6,13 +6,18 @@ namespace AxCommonLogger.Facades
 {
     public class Log4netLoggerFacade<T> : ILoggerFacade
     {
-        private readonly log4net.ILog _logger = log4net.LogManager.GetLogger(typeof(T));
+        protected readonly log4net.ILog _logger;
 
         public bool IsDebugEnabled => _logger.IsDebugEnabled;
         public bool IsInfoEnabled => _logger.IsInfoEnabled;
         public bool IsWarnEnabled => _logger.IsWarnEnabled;
         public bool IsErrorEnabled => _logger.IsErrorEnabled;
         public bool IsFatalEnabled => _logger.IsFatalEnabled;
+
+        public Log4netLoggerFacade(log4net.ILog logger)
+        {
+            _logger = logger;
+        }
 
         [DebuggerStepThrough]
         public void Debug(string message)

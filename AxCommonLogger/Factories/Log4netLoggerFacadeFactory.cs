@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using AxCommonLogger.Facades;
 using AxCommonLogger.Interfaces;
 
@@ -25,7 +24,7 @@ namespace AxCommonLogger.Factories
         {
             if (_initialized)
             {
-                return new Log4netLoggerFacade<T>();
+                return new Log4netLoggerFacade<T>(log4net.LogManager.GetLogger(typeof(T)));
             }
 
             return _noOpLogger;
