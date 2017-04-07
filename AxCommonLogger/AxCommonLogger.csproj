@@ -47,7 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Appenders\AsyncForwardingAppender.cs" />
+    <Compile Include="Appenders\Log4netAsyncForwardingAppender.cs" />
     <Compile Include="Interfaces\ILoggerFacade.cs" />
     <Compile Include="Facades\NoOpLoggerFacade.cs" />
     <Compile Include="Facades\Log4netLoggerFacade.cs" />

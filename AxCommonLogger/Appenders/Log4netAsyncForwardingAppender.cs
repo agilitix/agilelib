@@ -8,16 +8,16 @@ using log4net.Util;
 
 namespace AxCommonLogger.Appenders
 {
-    public class AsyncForwardingAppender : ForwardingAppender
+    public class Log4netAsyncForwardingAppender : ForwardingAppender
     {
         protected IWorkerQueue<Action> _workerQueue;
 
-        public AsyncForwardingAppender()
+        public Log4netAsyncForwardingAppender()
         {
             _workerQueue = new WorkerQueue<Action>(appendLog => appendLog());
             _workerQueue.OnWorkerQueueException += (s, e) =>
                                                    {
-                                                       LogLog.Error(typeof(AsyncForwardingAppender),
+                                                       LogLog.Error(typeof(Log4netAsyncForwardingAppender),
                                                                     "WorkerQueue has raised an exception in the log4net async appender",
                                                                     e.Exception);
                                                    };
