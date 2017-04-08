@@ -16,7 +16,7 @@ namespace AxConfiguration
         {
             ConfigFolder = configurationFolder;
 
-            AppConfigFile = GetDefaultConfigFile("main");
+            AppConfigFile = GetDefaultConfigFile("app");
             UnityConfigFile = GetDefaultConfigFile("unity");
         }
 
@@ -24,9 +24,9 @@ namespace AxConfiguration
         {
             string[] defaultUnityConfigFiles =
             {
-                string.Format("{0}.{1}.config", baseName, Environment.UserName),
-                string.Format("{0}.{1}.config", baseName, Environment.MachineName),
-                string.Format("{0}.config", baseName)
+                string.Format("{0}.user.{1}.config", baseName, Environment.UserName),
+                string.Format("{0}.host.{1}.config", baseName, Environment.MachineName),
+                string.Format("{0}.main.config", baseName)
             };
 
             string defaultconfigFile = defaultUnityConfigFiles.Select(fileName => Path.Combine(ConfigFolder, fileName))
