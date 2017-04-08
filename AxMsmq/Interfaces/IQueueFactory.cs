@@ -4,9 +4,11 @@ namespace AxMsmq.Interfaces
 {
     public interface IQueueFactory<TQueueMessage> where TQueueMessage : class
     {
-        IList<IQueueAddress> GetExistingQueues(string hostName);
+        bool CreateQueue(IQueuePath queuePath);
 
-        IQueueReceiver<TQueueMessage> GetOrCreateReceiver(IQueueAddress address);
-        IQueueSender<TQueueMessage> GetOrCreateSender(IQueueAddress address);
+        IList<IQueuePath> GetExistingQueues(string hostName);
+
+        IQueueReceiver<TQueueMessage> GetOrCreateReceiver(IQueuePath path);
+        IQueueSender<TQueueMessage> GetOrCreateSender(IQueuePath path);
     }
 }

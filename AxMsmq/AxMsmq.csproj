@@ -48,14 +48,14 @@
     <Compile Include="Interfaces\IQueueReceiver.cs" />
     <Compile Include="Interfaces\IQueueSender.cs" />
     <Compile Include="Interfaces\IQueueFactory.cs" />
-    <Compile Include="Interfaces\IQueueAddress.cs" />
+    <Compile Include="Interfaces\IQueuePath.cs" />
     <Compile Include="PrivateQueueFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueueMessageTransformer.cs" />
     <Compile Include="QueueMessage.cs" />
     <Compile Include="QueueReceiver.cs" />
     <Compile Include="QueueSender.cs" />
-    <Compile Include="QueueAddress.cs" />
+    <Compile Include="QueuePath.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

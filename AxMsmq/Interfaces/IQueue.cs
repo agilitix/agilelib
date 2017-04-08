@@ -2,6 +2,6 @@
 {
     public interface IQueue
     {
-        IQueueAddress Address { get; }
+        IQueuePath Path { get; }
     }
 }

@@ -1,9 +1,9 @@
 ﻿namespace AxMsmq.Interfaces
 {
-    public interface IQueueAddress
+    public interface IQueuePath
     {
         string Host { get; }
         string QueueName { get; }
-        string Address { get; }
+        string Path { get; }
     }
 }

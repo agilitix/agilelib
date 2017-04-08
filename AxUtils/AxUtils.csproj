@@ -48,6 +48,7 @@
     <Compile Include="DisposeHelper.cs" />
     <Compile Include="Ensure.cs" />
     <Compile Include="EnumUtils.cs" />
+    <Compile Include="NetworkUtils.cs" />
     <Compile Include="WorkerQueue.cs" />
     <Compile Include="IniFile.cs" />
     <Compile Include="Interfaces\IIniFile.cs" />
