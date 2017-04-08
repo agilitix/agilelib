@@ -5,7 +5,7 @@ namespace AxUtils
 {
     public static class NetworkUtils
     {
-        public static bool IsLocalHost(string hostNameOrAddress)
+        public static bool IsLocalhost(string hostNameOrAddress)
         {
             if (string.IsNullOrEmpty(hostNameOrAddress))
             {
