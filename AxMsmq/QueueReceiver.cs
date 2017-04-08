@@ -29,7 +29,7 @@ namespace AxMsmq
 
         public IQueueMessage<TContent> Receive(TimeSpan timeout)
         {
-            IQueueMessage<TContent> messageContent = NextMessage(timeout, t => (TTransportMessage) _messageQueue.Receive(t));
+            IQueueMessage<TContent> messageContent = TryGetMessage(() => (TTransportMessage) _messageQueue.Receive(timeout));
             return messageContent;
         }
 
@@ -41,7 +41,7 @@ namespace AxMsmq
 
         public IQueueMessage<TContent> Peek(TimeSpan timeout)
         {
-            IQueueMessage<TContent> messageContent = NextMessage(timeout, t => (TTransportMessage) _messageQueue.Peek(t));
+            IQueueMessage<TContent> messageContent = TryGetMessage(() => (TTransportMessage) _messageQueue.Peek(timeout));
             return messageContent;
         }
 
@@ -87,11 +87,11 @@ namespace AxMsmq
             }
         }
 
-        public IQueueMessage<TContent> NextMessage(TimeSpan timeout, Func<TimeSpan, TTransportMessage> getter)
+        public IQueueMessage<TContent> TryGetMessage(Func<TTransportMessage> getWithTimeout)
         {
             try
             {
-                TTransportMessage transportMessage = getter(timeout);
+                TTransportMessage transportMessage = getWithTimeout();
                 return _transformer.Transform(transportMessage);
             }
             catch (MessageQueueException e)

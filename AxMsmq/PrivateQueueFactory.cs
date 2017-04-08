@@ -45,7 +45,7 @@ namespace AxMsmq
 
             try
             {
-                queue = GetQueue(address) ?? MessageQueue.Create(address.ConnectionString);
+                queue = GetQueue(address) ?? MessageQueue.Create(address.Address);
                 queue.Formatter = _messageFormatter.Clone() as IMessageFormatter;
             }
             catch (MessageQueueException ex)

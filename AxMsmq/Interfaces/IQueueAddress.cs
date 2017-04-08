@@ -4,6 +4,6 @@
     {
         string Host { get; }
         string QueueName { get; }
-        string ConnectionString { get; }
+        string Address { get; }
     }
 }
