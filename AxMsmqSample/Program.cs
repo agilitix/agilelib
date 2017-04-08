@@ -17,10 +17,10 @@ namespace AxMsmqSample
     {
         static void Main(string[] args)
         {
-            IQueueMessageTransformer<MessageContent, Message> transformer = new QueueMessageTransformer<MessageContent, Message>();
-            IQueueFactory<IQueueMessage<MessageContent>> privateQueuesFactory = new PrivateQueueFactory<MessageContent, Message>(transformer);
+            IQueueMessageTransformer<MessageContent, Message> messageTransformer = new QueueMessageTransformer<MessageContent, Message>();
+            IQueueFactory<IQueueMessage<MessageContent>> privateQueueFactory = new PrivateQueueFactory<MessageContent, Message>(messageTransformer);
 
-            IList<IQueueAddress> queues = privateQueuesFactory.GetExistingQueues("localhost");
+            IList<IQueueAddress> queues = privateQueueFactory.GetExistingQueues("localhost");
             IQueueAddress queueAddress = queues.First();
 
             IQueueMessage<MessageContent> message = new QueueMessage<MessageContent>()
@@ -32,12 +32,12 @@ namespace AxMsmqSample
                 }
             };
 
-            IQueueSender<IQueueMessage<MessageContent>> sender = privateQueuesFactory.GetOrCreateSender(queueAddress);
+            IQueueSender<IQueueMessage<MessageContent>> sender = privateQueueFactory.GetOrCreateSender(queueAddress);
             sender.Send(message);
 
             Thread.Sleep(1000);
 
-            IQueueReceiver<IQueueMessage<MessageContent>> receiver = privateQueuesFactory.GetOrCreateReceiver(queueAddress);
+            IQueueReceiver<IQueueMessage<MessageContent>> receiver = privateQueueFactory.GetOrCreateReceiver(queueAddress);
             IQueueMessage<MessageContent> messageReceived1 = receiver.Peek(TimeSpan.Zero);
             IQueueMessage<MessageContent> messageReceived2 = receiver.Receive(TimeSpan.Zero);
 
