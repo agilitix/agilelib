@@ -11,8 +11,8 @@ namespace AxMsmq
 
         public IQueueAddress Address { get; }
 
-        public event Action<object /*sender*/, IQueueMessage<TContent>> OnReceiveMessage;
-        public event Action<object /*sender*/, IQueueMessage<TContent>> OnPeekMessage;
+        public event Action<object /*sender*/, IQueueMessage<TContent>> OnReceiveCompleted;
+        public event Action<object /*sender*/, IQueueMessage<TContent>> OnPeekCompleted;
 
         public QueueReceiver(MessageQueue messageQueue, IQueueMessageTransformer<TContent, TTransportMessage> transformer)
         {
@@ -27,32 +27,44 @@ namespace AxMsmq
             return _transformer.Transform(transportMessage);
         }
 
+        public IQueueMessage<TContent> Receive(TimeSpan timeout)
+        {
+            IQueueMessage<TContent> messageContent = NextMessage(timeout, t => (TTransportMessage) _messageQueue.Receive(t));
+            return messageContent;
+        }
+
         public IQueueMessage<TContent> Peek()
         {
             TTransportMessage transportMessage = (TTransportMessage) _messageQueue.Peek();
             return _transformer.Transform(transportMessage);
         }
 
-        public void AsyncReceive()
+        public IQueueMessage<TContent> Peek(TimeSpan timeout)
         {
-            _messageQueue.ReceiveCompleted += ReceiveHandler;
+            IQueueMessage<TContent> messageContent = NextMessage(timeout, t => (TTransportMessage) _messageQueue.Peek(t));
+            return messageContent;
+        }
+
+        public void BeginReceive()
+        {
+            _messageQueue.ReceiveCompleted += ReceiveCompleted;
             _messageQueue.BeginReceive();
         }
 
-        public void AsyncPeek()
+        public void BeginPeek()
         {
-            _messageQueue.PeekCompleted += PeekHandler;
+            _messageQueue.PeekCompleted += PeekCompleted;
             _messageQueue.BeginPeek();
         }
 
-        private void PeekHandler(object sender, PeekCompletedEventArgs e)
+        private void PeekCompleted(object sender, PeekCompletedEventArgs e)
         {
-            MessageQueue messageQueue = (MessageQueue)sender;
-            TTransportMessage transportMessage = (TTransportMessage)messageQueue.EndPeek(e.AsyncResult);
+            MessageQueue messageQueue = (MessageQueue) sender;
+            TTransportMessage transportMessage = (TTransportMessage) messageQueue.EndPeek(e.AsyncResult);
             IQueueMessage<TContent> content = _transformer.Transform(transportMessage);
             try
             {
-                OnPeekMessage?.Invoke(this, content);
+                OnPeekCompleted?.Invoke(this, content);
             }
             finally
             {
@@ -60,18 +72,36 @@ namespace AxMsmq
             }
         }
 
-        private void ReceiveHandler(object sender, ReceiveCompletedEventArgs e)
+        private void ReceiveCompleted(object sender, ReceiveCompletedEventArgs e)
         {
-            MessageQueue messageQueue = (MessageQueue)sender;
-            TTransportMessage transportMessage = (TTransportMessage)messageQueue.EndReceive(e.AsyncResult);
+            MessageQueue messageQueue = (MessageQueue) sender;
+            TTransportMessage transportMessage = (TTransportMessage) messageQueue.EndReceive(e.AsyncResult);
             IQueueMessage<TContent> content = _transformer.Transform(transportMessage);
             try
             {
-                OnReceiveMessage?.Invoke(this, content);
+                OnReceiveCompleted?.Invoke(this, content);
             }
             finally
             {
                 messageQueue.BeginReceive();
+            }
+        }
+
+        public IQueueMessage<TContent> NextMessage(TimeSpan timeout, Func<TimeSpan, TTransportMessage> getter)
+        {
+            try
+            {
+                TTransportMessage transportMessage = getter(timeout);
+                return _transformer.Transform(transportMessage);
+            }
+            catch (MessageQueueException e)
+            {
+                if (e.MessageQueueErrorCode == MessageQueueErrorCode.IOTimeout)
+                {
+                    return default(IQueueMessage<TContent>);
+                }
+
+                throw;
             }
         }
     }

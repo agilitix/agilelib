@@ -38,7 +38,8 @@ namespace AxMsmqSample
             Thread.Sleep(1000);
 
             IQueueReceiver<IQueueMessage<MessageContent>> receiver = privateQueuesFactory.GetOrCreateReceiver(queueAddress);
-            IQueueMessage<MessageContent> messageReceived = receiver.Receive();
+            IQueueMessage<MessageContent> messageReceived1 = receiver.Peek(TimeSpan.Zero);
+            IQueueMessage<MessageContent> messageReceived2 = receiver.Receive(TimeSpan.Zero);
 
             Console.ReadLine();
         }
