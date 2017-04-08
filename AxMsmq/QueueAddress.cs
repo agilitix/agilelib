@@ -4,7 +4,7 @@ using AxMsmq.Interfaces;
 
 namespace AxMsmq
 {
-    public class QueueUri : IQueueUri
+    public class QueueAddress : IQueueAddress
     {
         public string Host { get; }
         public string QueueName { get; }
@@ -19,7 +19,7 @@ namespace AxMsmq
         /// QueueName = "private$\name"
         /// ConnectionString = "FormatName:DIRECT=TCP:192.168.10.150\private$\name"
         /// </summary>
-        public QueueUri(string host, string queueName)
+        public QueueAddress(string host, string queueName)
         {
             Host = host.ToLower();
             QueueName = queueName.ToLower();

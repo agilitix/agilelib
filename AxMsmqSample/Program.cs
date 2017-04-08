@@ -20,8 +20,8 @@ namespace AxMsmqSample
             IQueueMessageTransformer<MessageContent, Message> transformer = new QueueMessageTransformer<MessageContent, Message>();
             IQueueFactory<IQueueMessage<MessageContent>> privateQueuesFactory = new PrivateQueueFactory<MessageContent, Message>(transformer);
 
-            IList<IQueueUri> queues = privateQueuesFactory.GetExistingQueues("localhost");
-            IQueueUri queueUri = queues.First();
+            IList<IQueueAddress> queues = privateQueuesFactory.GetExistingQueues("localhost");
+            IQueueAddress queueAddress = queues.First();
 
             IQueueMessage<MessageContent> message = new QueueMessage<MessageContent>()
             {
@@ -32,12 +32,12 @@ namespace AxMsmqSample
                 }
             };
 
-            IQueueSender<IQueueMessage<MessageContent>> sender = privateQueuesFactory.GetOrCreateSender(queueUri);
+            IQueueSender<IQueueMessage<MessageContent>> sender = privateQueuesFactory.GetOrCreateSender(queueAddress);
             sender.Send(message);
 
             Thread.Sleep(1000);
 
-            IQueueReceiver<IQueueMessage<MessageContent>> receiver = privateQueuesFactory.GetOrCreateReceiver(queueUri);
+            IQueueReceiver<IQueueMessage<MessageContent>> receiver = privateQueuesFactory.GetOrCreateReceiver(queueAddress);
             IQueueMessage<MessageContent> messageReceived = receiver.Receive();
 
             Console.ReadLine();

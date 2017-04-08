@@ -8,13 +8,13 @@ namespace AxMsmq
         private readonly MessageQueue _messageQueue;
         private readonly IQueueMessageTransformer<TContent, TTransportMessage> _transformer;
 
-        public IQueueUri Uri { get; }
+        public IQueueAddress Address { get; }
 
         public QueueSender(MessageQueue messageQueue, IQueueMessageTransformer<TContent, TTransportMessage> transformer)
         {
             _messageQueue = messageQueue;
             _transformer = transformer;
-            Uri = new QueueUri(messageQueue.MachineName, messageQueue.QueueName);
+            Address = new QueueAddress(messageQueue.MachineName, messageQueue.QueueName);
         }
 
         public void Send(IQueueMessage<TContent> content)

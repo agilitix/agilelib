@@ -22,49 +22,47 @@ namespace AxMsmq
             _messageTransformer = messageTransformer;
         }
 
-        public IList<IQueueUri> GetExistingQueues(string hostName)
+        public IList<IQueueAddress> GetExistingQueues(string hostName)
         {
-            IEnumerable<IQueueUri> privateQueues = MessageQueue.GetPrivateQueuesByMachine(hostName)
-                                                               .Select(x => new QueueUri(x.MachineName, x.QueueName));
+            IEnumerable<IQueueAddress> privateQueues = MessageQueue.GetPrivateQueuesByMachine(hostName)
+                                                                   .Select(x => new QueueAddress(x.MachineName, x.QueueName));
             return privateQueues.ToList();
         }
 
-        public IQueueReceiver<IQueueMessage<TContent>> GetOrCreateReceiver(IQueueUri uri)
+        public IQueueReceiver<IQueueMessage<TContent>> GetOrCreateReceiver(IQueueAddress address)
         {
-            return GetOrCreate(uri, q => new QueueReceiver<TContent, TTransportMessage>(q, _messageTransformer));
+            return GetOrCreate(address, q => new QueueReceiver<TContent, TTransportMessage>(q, _messageTransformer));
         }
 
-        public IQueueSender<IQueueMessage<TContent>> GetOrCreateSender(IQueueUri uri)
+        public IQueueSender<IQueueMessage<TContent>> GetOrCreateSender(IQueueAddress address)
         {
-            return GetOrCreate(uri, q => new QueueSender<TContent, TTransportMessage>(q, _messageTransformer));
+            return GetOrCreate(address, q => new QueueSender<TContent, TTransportMessage>(q, _messageTransformer));
         }
 
-        public IQueueListener<IQueueMessage<TContent>> GetOrCreateListener(IQueueUri uri)
-        {
-            return GetOrCreate(uri, q => new QueueListener<TContent, TTransportMessage>(q, _messageTransformer));
-        }
-
-        private TQueue GetOrCreate<TQueue>(IQueueUri uri, Func<MessageQueue, TQueue> builder)
+        private TQueue GetOrCreate<TQueue>(IQueueAddress address, Func<MessageQueue, TQueue> builder)
         {
             MessageQueue queue = null;
-            Func<MessageQueue> queueGetter = () => MessageQueue.GetPrivateQueuesByMachine(uri.Host)
-                                                               .FirstOrDefault(x => x.QueueName.Equals(uri.QueueName,
-                                                                                                       StringComparison.InvariantCultureIgnoreCase));
 
             try
             {
-                queue = queueGetter() ?? MessageQueue.Create(uri.ConnectionString);
+                queue = GetQueue(address) ?? MessageQueue.Create(address.ConnectionString);
                 queue.Formatter = _messageFormatter.Clone() as IMessageFormatter;
             }
             catch (MessageQueueException ex)
             {
                 if (ex.MessageQueueErrorCode == MessageQueueErrorCode.QueueExists)
                 {
-                    queue = queueGetter();
+                    queue = GetQueue(address);
                 }
             }
 
             return builder(queue);
+        }
+
+        private static MessageQueue GetQueue(IQueueAddress address)
+        {
+            return MessageQueue.GetPrivateQueuesByMachine(address.Host)
+                               .FirstOrDefault(x => x.QueueName.Equals(address.QueueName, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }
