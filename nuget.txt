@@ -1,0 +1,4 @@
+
+-- Update all packages in the entire solution to the right version and platform
+get-package | % { update-package $_.Id -reinstall -ProjectName $_.ProjectName -ignoreDependencies }
+
