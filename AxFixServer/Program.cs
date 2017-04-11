@@ -46,10 +46,10 @@ namespace AxFixServer
             unity.LoadFile(configurationFileProvider.UnityConfigFile);
 
             ILoggerFacadeFactory loggerFacadeFactory = unity.Container.Resolve<ILoggerFacadeFactory>();
-            loggerFacadeFactory.Initialize(log4NetConfigFile);
+            loggerFacadeFactory.Configure(log4NetConfigFile);
 
             LoggerFacadeProvider.Initialize(loggerFacadeFactory);
-            Log = LoggerFacadeProvider.GetLogger<Program>();
+            Log = LoggerFacadeProvider.GetDeclaringClassLogger();
 
             Log.Info("Starting FIX engine version=" + Assembly.GetEntryAssembly().GetName().Version);
             Log.Info("Main => PID=" + Process.GetCurrentProcess().Id + " / ThreadID=" + Thread.CurrentThread.ManagedThreadId);

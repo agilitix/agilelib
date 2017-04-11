@@ -4,7 +4,7 @@ using AxCommonLogger.Interfaces;
 
 namespace AxCommonLogger.Facades
 {
-    public class Log4netLoggerFacade<T> : ILoggerFacade
+    public class Log4netLoggerFacade : ILoggerFacade
     {
         protected readonly log4net.ILog _logger;
 

@@ -9,7 +9,7 @@ namespace AxCommonLogger.Factories
         private static bool _initialized;
         private static readonly NoOpLoggerFacade _noOpLogger = new NoOpLoggerFacade();
 
-        public void Initialize(string loggerConfigurationFile)
+        public void Configure(string loggerConfigurationFile)
         {
             if (!File.Exists(loggerConfigurationFile))
             {
@@ -21,10 +21,18 @@ namespace AxCommonLogger.Factories
             _initialized = true;
         }
 
+
+        public ILoggerFacade GetLogger(string loggerName)
+        {
+            return _initialized
+                       ? (ILoggerFacade)new Log4netLoggerFacade(log4net.LogManager.GetLogger(loggerName))
+                       : _noOpLogger;
+        }
+
         public ILoggerFacade GetLogger<T>()
         {
             return _initialized
-                       ? (ILoggerFacade) new Log4netLoggerFacade<T>(log4net.LogManager.GetLogger(typeof(T)))
+                       ? (ILoggerFacade) new Log4netLoggerFacade(log4net.LogManager.GetLogger(typeof(T)))
                        : _noOpLogger;
         }
     }

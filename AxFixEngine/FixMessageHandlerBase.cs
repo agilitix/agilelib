@@ -1,8 +1,6 @@
-﻿using System.Reflection;
-using AxCommonLogger;
+﻿using AxCommonLogger;
 using AxCommonLogger.Interfaces;
 using AxFixEngine.Interfaces;
-using log4net;
 using QuickFix;
 
 namespace AxFixEngine

@@ -2,7 +2,9 @@
 {
     public interface ILoggerFacadeFactory
     {
-        void Initialize(string loggerConfigurationFile);
+        void Configure(string loggerConfigurationFile);
+
         ILoggerFacade GetLogger<T>();
+        ILoggerFacade GetLogger(string loggerName);
     }
 }
