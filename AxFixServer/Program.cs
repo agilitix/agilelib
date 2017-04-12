@@ -49,7 +49,7 @@ namespace AxFixServer
             loggerFacadeFactory.Configure(log4NetConfigFile);
 
             LoggerFacadeProvider.Initialize(loggerFacadeFactory);
-            Log = LoggerFacadeProvider.GetDeclaringClassLogger();
+            Log = LoggerFacadeProvider.GetDeclaringTypeLogger();
 
             Log.Info("Starting FIX engine version=" + Assembly.GetEntryAssembly().GetName().Version);
             Log.Info("Main => PID=" + Process.GetCurrentProcess().Id + " / ThreadID=" + Thread.CurrentThread.ManagedThreadId);

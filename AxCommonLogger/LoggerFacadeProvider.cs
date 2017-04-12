@@ -14,31 +14,9 @@ namespace AxCommonLogger
             _LoggerFacadeFactory = loggerFacadeFactory;
         }
 
-        public static ILoggerFacade GetDeclaringClassLogger()
+        public static ILoggerFacade GetDeclaringTypeLogger()
         {
-            int skipFrames = 1;
-            string declaringClassName;
-
-            while (true)
-            {
-                StackFrame stackFrame = new StackFrame(skipFrames++, false);
-
-                MethodBase method = stackFrame.GetMethod();
-                Type declaringType = method.DeclaringType;
-                if (declaringType == null)
-                {
-                    declaringClassName = method.Name;
-                    break;
-                }
-
-                declaringClassName = declaringType.FullName;
-                if (!declaringType.Module.Name.Equals("mscorlib.dll", StringComparison.OrdinalIgnoreCase))
-                {
-                    break;
-                }
-            }
-
-            return _LoggerFacadeFactory.GetLogger(declaringClassName);
+            return _LoggerFacadeFactory.GetDeclaringTypeLogger();
         }
 
 

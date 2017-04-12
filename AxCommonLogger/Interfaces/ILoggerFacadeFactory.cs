@@ -6,5 +6,6 @@
 
         ILoggerFacade GetLogger<T>();
         ILoggerFacade GetLogger(string loggerName);
+        ILoggerFacade GetDeclaringTypeLogger();
     }
 }
