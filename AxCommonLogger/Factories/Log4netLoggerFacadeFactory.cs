@@ -57,7 +57,7 @@ namespace AxCommonLogger.Factories
             Type declaringType = null;
 
             StackTrace stackTrace = new StackTrace();
-            for (int i = 0; i < stackTrace.FrameCount; ++i)
+            for (int i = 2; i < stackTrace.FrameCount; ++i)
             {
                 StackFrame frame = new StackFrame(i, false);
                 MethodBase method = frame.GetMethod();
