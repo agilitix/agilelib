@@ -10,14 +10,14 @@ namespace AxConfiguration
         public string ConfigFolder { get; }
 
         public string AppConfigFile { get; }
-        public string UnityConfigFile { get; }
+        public string IocConfigFile { get; }
 
         public ConfigurationFileProvider(string configurationFolder)
         {
             ConfigFolder = configurationFolder;
 
             AppConfigFile = GetDefaultConfigFile("app");
-            UnityConfigFile = GetDefaultConfigFile("unity");
+            IocConfigFile = GetDefaultConfigFile("unity");
         }
 
         protected string GetDefaultConfigFile(string baseName)

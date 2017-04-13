@@ -11,7 +11,7 @@ namespace AxConfiguration
         public Configuration Configuration { get; private set; }
         public string ConfigurationFile { get; private set; }
 
-        public void LoadFile(string configurationFile)
+        public void LoadConfiguration(string configurationFile)
         {
             if (!File.Exists(configurationFile))
             {

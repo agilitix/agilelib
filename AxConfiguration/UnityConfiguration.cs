@@ -26,7 +26,7 @@ namespace AxConfiguration
             _containerName = containerName ?? "";
         }
 
-        public void LoadFile(string configurationFile)
+        public void LoadConfiguration(string configurationFile)
         {
             if (!File.Exists(configurationFile))
             {

@@ -25,7 +25,7 @@ namespace AxConfiguration.UnitTests
         {
             ConfigurationFileProvider = new ConfigurationFileProvider(TestDirectory + @"\Configuration");
             UnityContainerUnderTest = new UnityConfiguration();
-            UnityContainerUnderTest.LoadFile(ConfigurationFileProvider.UnityConfigFile);
+            UnityContainerUnderTest.LoadConfiguration(ConfigurationFileProvider.IocConfigFile);
         }
 
         public override void Act()
@@ -60,7 +60,7 @@ namespace AxConfiguration.UnitTests
         {
             ConfigurationFileProvider = new ConfigurationFileProvider(TestDirectory + @"\Configuration");
             UnityContainerUnderTest = new UnityConfiguration();
-            UnityContainerUnderTest.LoadFile(ConfigurationFileProvider.UnityConfigFile);
+            UnityContainerUnderTest.LoadConfiguration(ConfigurationFileProvider.IocConfigFile);
         }
     }
 
@@ -144,7 +144,7 @@ namespace AxConfiguration.UnitTests
         {
             ConfigurationFileProvider = new ConfigurationFileProvider(TestDirectory + @"\Configuration");
             UnityContainerUnderTest = new UnityConfiguration();
-            UnityContainerUnderTest.LoadFile(ConfigurationFileProvider.UnityConfigFile);
+            UnityContainerUnderTest.LoadConfiguration(ConfigurationFileProvider.IocConfigFile);
         }
 
         public override void Act()
@@ -186,7 +186,7 @@ namespace AxConfiguration.UnitTests
         public override void Act()
         {
             LoadContainerException =
-                base.Trying(() => UnityContainerUnderTest.LoadFile(ConfigurationFileProvider.UnityConfigFile));
+                base.Trying(() => UnityContainerUnderTest.LoadConfiguration(ConfigurationFileProvider.IocConfigFile));
         }
 
         [Test]
@@ -209,7 +209,7 @@ namespace AxConfiguration.UnitTests
             ConfigurationFileProvider = new ConfigurationFileProvider(TestDirectory + @"\Configuration");
 
             UnityContainerUnderTest = new UnityConfiguration("UnknownContainerName");
-            base.Trying(() => UnityContainerUnderTest.LoadFile(ConfigurationFileProvider.UnityConfigFile));
+            base.Trying(() => UnityContainerUnderTest.LoadConfiguration(ConfigurationFileProvider.IocConfigFile));
         }
 
         public override void Act()

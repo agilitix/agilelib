@@ -43,7 +43,6 @@
     <Compile Include="AnonymousKeyComparer.cs" />
     <Compile Include="AnonymousEqualityComparer.cs" />
     <Compile Include="AnonymousKeyEqualityComparer.cs" />
-    <Compile Include="ConsoleExitHandler.cs" />
     <Compile Include="DisposableAction.cs" />
     <Compile Include="DisposeHelper.cs" />
     <Compile Include="Ensure.cs" />

@@ -10,7 +10,7 @@ namespace AxCommonLogger.Factories
     public class Log4netLoggerFacadeFactory : ILoggerFacadeFactory
     {
         private static bool _initialized;
-        private static readonly NoOpLoggerFacade _noOpLogger = new NoOpLoggerFacade();
+        private static ILoggerFacade _defaultLogger;
 
         public void Configure(string loggerConfigurationFile)
         {
@@ -21,6 +21,9 @@ namespace AxCommonLogger.Factories
 
             log4net.Config.XmlConfigurator.ConfigureAndWatch(new FileInfo(loggerConfigurationFile));
 
+            Type declaringType = GetDeclaringType();
+            _defaultLogger = new Log4netLoggerFacade(log4net.LogManager.GetLogger(declaringType));
+
             _initialized = true;
         }
 
@@ -29,8 +32,8 @@ namespace AxCommonLogger.Factories
             Type declaringType = GetDeclaringType();
 
             return _initialized && declaringType != null
-                       ? (ILoggerFacade) new Log4netLoggerFacade(log4net.LogManager.GetLogger(declaringType.Assembly, loggerName))
-                       : _noOpLogger;
+                       ? new Log4netLoggerFacade(log4net.LogManager.GetLogger(declaringType.Assembly, loggerName))
+                       : _defaultLogger;
         }
 
         public ILoggerFacade GetLogger<T>()
@@ -38,8 +41,8 @@ namespace AxCommonLogger.Factories
             Type type = typeof(T);
 
             return _initialized
-                       ? (ILoggerFacade) new Log4netLoggerFacade(log4net.LogManager.GetLogger(type.Assembly, type))
-                       : _noOpLogger;
+                       ? new Log4netLoggerFacade(log4net.LogManager.GetLogger(type.Assembly, type))
+                       : _defaultLogger;
         }
 
         public ILoggerFacade GetDeclaringTypeLogger()
@@ -47,28 +50,27 @@ namespace AxCommonLogger.Factories
             Type declaringType = GetDeclaringType();
 
             return _initialized && declaringType != null
-                       ? (ILoggerFacade) new Log4netLoggerFacade(log4net.LogManager.GetLogger(declaringType.Assembly, declaringType))
-                       : _noOpLogger;
+                       ? new Log4netLoggerFacade(log4net.LogManager.GetLogger(declaringType.Assembly, declaringType))
+                       : _defaultLogger;
         }
 
         protected Type GetDeclaringType()
         {
-            Assembly executingAssembly = Assembly.GetExecutingAssembly();
+            Assembly thisAssembly = Assembly.GetExecutingAssembly();
             Type declaringType = null;
 
             StackTrace stackTrace = new StackTrace();
             for (int i = 2; i < stackTrace.FrameCount; ++i)
             {
-                StackFrame frame = new StackFrame(i, false);
-                MethodBase method = frame.GetMethod();
-                declaringType = method.DeclaringType;
-                if (declaringType?.Assembly != executingAssembly)
+                var frame = new StackFrame(i, false);
+                declaringType = frame.GetMethod().DeclaringType;
+                if (declaringType?.Assembly != thisAssembly)
                 {
                     break;
                 }
             }
 
-            return declaringType;
+            return declaringType ?? GetType();
         }
     }
 }

@@ -7,6 +7,6 @@ namespace AxConfiguration.Interfaces
         Configuration Configuration { get; }
         string ConfigurationFile { get; }
 
-        void LoadFile(string configurationFile);
+        void LoadConfiguration(string configurationFile);
     }
 }

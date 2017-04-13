@@ -5,6 +5,6 @@
         string ConfigFolder { get; }
 
         string AppConfigFile { get; }
-        string UnityConfigFile { get; }
+        string IocConfigFile { get; }
     }
 }

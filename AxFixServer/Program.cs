@@ -20,19 +20,26 @@ namespace AxFixServer
 {
     class Program
     {
-        protected static ILoggerFacade Log;
+        protected static ILoggerFacade Logger;
 
         static Program()
         {
-            ConsoleExitHandler.Setup();
+            Console.TreatControlCAsInput = false;
+            Console.CancelKeyPress += (snd, evt) =>
+                                      {
+                                          Console.WriteLine("Ctrl+C pressed");
+                                          evt.Cancel = true;
+                                      };
         }
 
         static void Main(string[] args)
         {
+            // Lookup configuration files in config folder.
             IConfigurationFileProvider configurationFileProvider = new ConfigurationFileProvider(@".\Configuration");
 
+            // Read app configuration.
             IAppConfiguration appConfiguration = new AppConfiguration();
-            appConfiguration.LoadFile(configurationFileProvider.AppConfigFile);
+            appConfiguration.LoadConfiguration(configurationFileProvider.AppConfigFile);
 
             string log4NetConfigFile = appConfiguration.Configuration.GetSetting<string>("log4net");
             if (string.IsNullOrWhiteSpace(log4NetConfigFile))
@@ -42,50 +49,29 @@ namespace AxFixServer
                 return;
             }
 
-            IUnityConfiguration unity = new UnityConfiguration();
-            unity.LoadFile(configurationFileProvider.UnityConfigFile);
-
-            ILoggerFacadeFactory loggerFacadeFactory = unity.Container.Resolve<ILoggerFacadeFactory>();
+            // Init logger.
+            ILoggerFacadeFactory loggerFacadeFactory = new Log4netLoggerFacadeFactory();
             loggerFacadeFactory.Configure(log4NetConfigFile);
-
             LoggerFacadeProvider.Initialize(loggerFacadeFactory);
-            Log = LoggerFacadeProvider.GetDeclaringTypeLogger();
+            Logger = LoggerFacadeProvider.GetDeclaringTypeLogger();
 
-            Log.Info("Starting FIX engine version=" + Assembly.GetEntryAssembly().GetName().Version);
-            Log.Info("Main => PID=" + Process.GetCurrentProcess().Id + " / ThreadID=" + Thread.CurrentThread.ManagedThreadId);
+            // Log some useful infos.
+            Logger.Info("Starting FIX engine version=" + Assembly.GetEntryAssembly().GetName().Version);
+            Logger.Info("Main => PID=" + Process.GetCurrentProcess().Id + " / ThreadID=" + Thread.CurrentThread.ManagedThreadId);
+
+            // Read Unity configuration.
+            Logger.Info("Reading Unity container config");
+            IUnityConfiguration unityConfiguration = new UnityConfiguration();
+            unityConfiguration.LoadConfiguration(configurationFileProvider.IocConfigFile);
 
             ICommandLineArguments commandLineArguments = new CommandLineArguments(args);
-            Log.Info("Command line arguments: " + commandLineArguments);
+            Logger.Info("Command line arguments: " + commandLineArguments);
 
-            IFixConnectorFactory fixConnectorFactory = unity.Container.Resolve<IFixConnectorFactory>();
-            Log.Info("Resolved FIX connection factory type=" + fixConnectorFactory.GetType());
+            IFixConnectorFactory connectorFactory = unityConfiguration.Container.Resolve<IFixConnectorFactory>();
+            Logger.Info("Resolved FIX connection factory type=" + connectorFactory.GetType());
 
-            IFixConnector acceptor = null;
-            IFixConnector initiator = null;
-
-            bool acceptorEnabled = appConfiguration.Configuration.GetSetting<bool>("acceptor_enabled");
-            Log.Info("Acceptor enabled=" + acceptorEnabled);
-            if (acceptorEnabled)
-            {
-                string acceptorConfigFile = appConfiguration.Configuration.AppSettings.Settings["acceptor_settings"].Value;
-
-                SessionSettings fixSettings = new SessionSettings(acceptorConfigFile);
-                IFixDataDictionaries dataDictionaries = new FixDataDictionaries(fixSettings);
-
-                acceptor = BuildFixConnector(unity, fixSettings, (fixapp, settings) => fixConnectorFactory.CreateAcceptor(fixapp, settings));
-            }
-
-            bool initiatorEnabled = appConfiguration.Configuration.GetSetting<bool>("initiator_enabled");
-            Log.Info("Initiator enabled=" + initiatorEnabled);
-            if (initiatorEnabled)
-            {
-                string initiatorConfigFile = appConfiguration.Configuration.AppSettings.Settings["initiator_settings"].Value;
-
-                SessionSettings fixSettings = new SessionSettings(initiatorConfigFile);
-                IFixDataDictionaries dataDictionaries = new FixDataDictionaries(fixSettings);
-
-                initiator = BuildFixConnector(unity, fixSettings, (fixapp, settings) => fixConnectorFactory.CreateInitiator(fixapp, settings));
-            }
+            IFixConnector acceptor = CreateConnector("acceptor", appConfiguration, unityConfiguration, connectorFactory);
+            IFixConnector initiator = CreateConnector("initiator", appConfiguration, unityConfiguration, connectorFactory);
 
             acceptor?.Start();
             initiator?.Start();
@@ -101,17 +87,39 @@ namespace AxFixServer
             initiator?.Stop();
         }
 
-        private static IFixConnector BuildFixConnector(IUnityConfiguration unityConfiguration,
-                                                       SessionSettings fixSettings,
-                                                       Func<IApplication, SessionSettings, IFixConnector> builder)
+        private static IFixConnector CreateConnector(string connectorType,
+                                                     IAppConfiguration appConfiguration,
+                                                     IUnityConfiguration unity,
+                                                     IFixConnectorFactory fixConnectorFactory)
         {
+            bool connectorEnabled = appConfiguration.Configuration.GetSetting<bool>(connectorType + "_enabled");
+            Logger.Info(connectorType + " enabled=" + connectorEnabled);
+            if (!connectorEnabled)
+            {
+                return null;
+            }
+
+            string initiatorConfigFile = appConfiguration.Configuration.GetSetting<string>(connectorType + "_settings");
+
+            SessionSettings fixSettings = new SessionSettings(initiatorConfigFile);
+            IFixDataDictionaries dataDictionaries = new FixDataDictionaries(fixSettings);
+
             string historizerOutputFileName = fixSettings.GetDefaultSettingValue<string>("MessageHistorizationFile");
 
             IFixMessageHistorizer messageHistorizer = new FixMessageFileHistorizer(historizerOutputFileName);
-            IFixMessageHandler messageHandler = unityConfiguration.Container.Resolve<IFixMessageHandler>();
+            IFixMessageHandler messageHandler = unity.Container.Resolve<IFixMessageHandler>();
             IApplication fixApp = new FixApplication(messageHandler, messageHistorizer);
 
-            return builder(fixApp, fixSettings);
+            if (connectorType.Equals("initiator"))
+            {
+                return fixConnectorFactory.CreateInitiator(fixApp, fixSettings);
+            }
+            if (connectorType.Equals("acceptor"))
+            {
+                return fixConnectorFactory.CreateAcceptor(fixApp, fixSettings);
+            }
+
+            return null;
         }
     }
 }

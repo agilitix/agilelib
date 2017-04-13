@@ -19,7 +19,7 @@ namespace AxConfiguration.UnitTests
 
             ConfigurationFileProvider = new ConfigurationFileProvider(TestDirectory + @"\MainConfiguration");
             AppConfigurationUnderTest = new AppConfiguration();
-            AppConfigurationUnderTest.LoadFile(ConfigurationFileProvider.AppConfigFile);
+            AppConfigurationUnderTest.LoadConfiguration(ConfigurationFileProvider.AppConfigFile);
         }
 
         public override void Act()

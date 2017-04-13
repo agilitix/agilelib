@@ -15,12 +15,7 @@ namespace AxCommonLogger.Appenders
         public Log4netAsyncForwardingAppender()
         {
             _workerQueue = new WorkerQueue<Action>(appendLog => appendLog());
-            _workerQueue.OnWorkerQueueException += (s, e) =>
-                                                   {
-                                                       LogLog.Error(typeof(Log4netAsyncForwardingAppender),
-                                                                    "WorkerQueue has raised an exception in the log4net async appender",
-                                                                    e.Exception);
-                                                   };
+            _workerQueue.OnWorkerQueueException += (s, e) => { };
         }
 
         [DebuggerStepThrough]
