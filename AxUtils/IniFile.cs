@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using AxUtils.Interfaces;
 
@@ -21,12 +22,17 @@ namespace AxUtils
     {
         private readonly IList<IIniFileSection> _sections = new List<IIniFileSection>();
 
-        public IniFile(string inifile)
+        public void LoadFile(string iniFileName)
         {
+            if (!File.Exists(iniFileName))
+            {
+                throw new FileNotFoundException(nameof(iniFileName), iniFileName);
+            }
+
             const string commentsMarker = ";#";
             IIniFileSection iniFileSection = null;
 
-            string[] lines = System.IO.File.ReadAllLines(inifile);
+            string[] lines = System.IO.File.ReadAllLines(iniFileName);
             foreach (string line in lines)
             {
                 string trimLine = line.Trim();
@@ -47,30 +53,9 @@ namespace AxUtils
             }
         }
 
-        public T GetSetting<T>(string sectionName, string keyName)
-        {
-            string keyValue;
-            IIniFileSection section = GetSection(sectionName);
-            if (section != null && section.Settings.TryGetValue(keyName, out keyValue))
-            {
-                return (T) Convert.ChangeType(keyValue, typeof(T));
-            }
-            throw new ArgumentException();
-        }
-
-        public IEnumerable<IIniFileSection> GetAllSections()
+        public IEnumerable<IIniFileSection> GetSections()
         {
             return _sections;
-        }
-
-        public IEnumerable<IIniFileSection> GetAllSections(string sectionName)
-        {
-            return _sections.Where(s => s.Name == sectionName);
-        }
-
-        public IIniFileSection GetSection(string sectionName)
-        {
-            return _sections.FirstOrDefault(s => s.Name == sectionName);
         }
     }
 }

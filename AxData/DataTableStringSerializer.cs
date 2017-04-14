@@ -1,11 +1,12 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.IO;
 using System.Xml;
 using AxData.Interfaces;
 
 namespace AxData
 {
-    public class DataTableStringSerializer : IDataStringSerializer<DataTable>
+    public class DataTableStringSerializer : IDataSerializer<DataTable, string>
     {
         protected readonly XmlWriterSettings _writerSettings = new XmlWriterSettings
                                                                {
@@ -30,13 +31,14 @@ namespace AxData
             {
                 dataset.ReadXml(sr);
             }
-            if (dataset.Tables.Count == 1)
+            if (dataset.Tables.Count != 1)
             {
-                DataTable result = dataset.Tables[0];
-                dataset.Tables.Remove(result);
-                return result;
+                throw new InvalidOperationException();
             }
-            return null;
+
+            DataTable result = dataset.Tables[0];
+            dataset.Tables.Remove(result);
+            return result;
         }
     }
 }

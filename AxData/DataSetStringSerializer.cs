@@ -5,7 +5,7 @@ using AxData.Interfaces;
 
 namespace AxData
 {
-    public class DataSetStringSerializer : IDataStringSerializer<DataSet>
+    public class DataSetStringSerializer : IDataSerializer<DataSet, string>
     {
         protected readonly XmlWriterSettings _writerSettings = new XmlWriterSettings
                                                                {

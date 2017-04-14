@@ -43,7 +43,6 @@
     <Compile Include="DataRowStringSerializer.cs" />
     <Compile Include="DataTableStringSerializer.cs" />
     <Compile Include="Interfaces\IDataSerializer.cs" />
-    <Compile Include="Interfaces\IDataStringSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

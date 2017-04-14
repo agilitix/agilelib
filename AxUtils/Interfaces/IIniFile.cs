@@ -11,23 +11,13 @@ namespace AxUtils.Interfaces
     public interface IIniFile
     {
         /// <summary>
-        /// Get all the sections.
+        /// Load ini file.
         /// </summary>
-        IEnumerable<IIniFileSection> GetAllSections();
+        void LoadFile(string iniFileName);
 
         /// <summary>
-        /// Get all sections having given section name.
+        /// Get all sections.
         /// </summary>
-        IEnumerable<IIniFileSection> GetAllSections(string sectionName);
-
-        /// <summary>
-        /// Get first section with given name.
-        /// </summary>
-        IIniFileSection GetSection(string sectionName);
-
-        /// <summary>
-        /// Get first section param with given name.
-        /// </summary>
-        T GetSetting<T>(string sectionName, string keyName);
+        IEnumerable<IIniFileSection> GetSections();
     }
 }

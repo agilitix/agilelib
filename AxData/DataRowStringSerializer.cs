@@ -1,13 +1,14 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.IO;
 using System.Xml;
 using AxData.Interfaces;
 
 namespace AxData
 {
-    public class DataRowStringSerializer : IDataStringSerializer<DataRow>
+    public class DataRowStringSerializer : IDataSerializer<DataRow, string>
     {
-        protected readonly IDataStringSerializer<DataTable> _tableStringSerializer = new DataTableStringSerializer();
+        protected readonly IDataSerializer<DataTable, string> _tableStringSerializer = new DataTableStringSerializer();
 
         public string Serialize(DataRow row)
         {
@@ -19,13 +20,14 @@ namespace AxData
         public DataRow Deserialize(string serialized)
         {
             DataTable table = _tableStringSerializer.Deserialize(serialized);
-            if (table.Rows.Count == 1)
+            if (table.Rows.Count != 1)
             {
-                DataRow row = table.Rows[0];
-                table.Rows.Remove(row);
-                return row;
+                throw new InvalidOperationException();
             }
-            return null;
+
+            DataRow row = table.Rows[0];
+            table.Rows.Remove(row);
+            return row;
         }
     }
 }

@@ -6,11 +6,9 @@ using System.Text;
 
 namespace AxData.Interfaces
 {
-    public interface IDataSerializer<TData, TSerialized>
-        where TData : class
-        where TSerialized : class
+    public interface IDataSerializer<TData, TOut> where TData : class where TOut : class
     {
-        TSerialized Serialize(TData data);
-        TData Deserialize(TSerialized serialized);
+        TOut Serialize(TData data);
+        TData Deserialize(TOut serialized);
     }
 }
