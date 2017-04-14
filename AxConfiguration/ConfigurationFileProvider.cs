@@ -17,22 +17,20 @@ namespace AxConfiguration
             ConfigFolder = configurationFolder;
 
             AppConfigFile = GetDefaultConfigFile("app");
-            IocConfigFile = GetDefaultConfigFile("unity");
+            IocConfigFile = GetDefaultConfigFile("ioc");
         }
 
         protected string GetDefaultConfigFile(string baseName)
         {
-            string[] defaultUnityConfigFiles =
+            string[] defaultConfigFiles =
             {
                 string.Format("{0}.user.{1}.config", baseName, Environment.UserName),
                 string.Format("{0}.host.{1}.config", baseName, Environment.MachineName),
                 string.Format("{0}.main.config", baseName)
             };
 
-            string defaultconfigFile = defaultUnityConfigFiles.Select(fileName => Path.Combine(ConfigFolder, fileName))
-                                                              .FirstOrDefault(File.Exists);
-
-            return defaultconfigFile;
+            return defaultConfigFiles.Select(fileName => Path.Combine(ConfigFolder, fileName))
+                                     .FirstOrDefault(File.Exists);
         }
     }
 }

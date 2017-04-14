@@ -22,7 +22,7 @@ namespace AxCommonLogger.Factories
             log4net.Config.XmlConfigurator.ConfigureAndWatch(new FileInfo(loggerConfigurationFile));
 
             Type declaringType = GetDeclaringType();
-            _defaultLogger = new Log4netLoggerFacade(log4net.LogManager.GetLogger(declaringType));
+            _defaultLogger = new Log4netLoggerFacade(log4net.LogManager.GetLogger(declaringType.Assembly, declaringType));
 
             _initialized = true;
         }
@@ -30,8 +30,7 @@ namespace AxCommonLogger.Factories
         public ILoggerFacade GetLogger(string loggerName)
         {
             Type declaringType = GetDeclaringType();
-
-            return _initialized && declaringType != null
+            return _initialized
                        ? new Log4netLoggerFacade(log4net.LogManager.GetLogger(declaringType.Assembly, loggerName))
                        : _defaultLogger;
         }
@@ -39,7 +38,6 @@ namespace AxCommonLogger.Factories
         public ILoggerFacade GetLogger<T>()
         {
             Type type = typeof(T);
-
             return _initialized
                        ? new Log4netLoggerFacade(log4net.LogManager.GetLogger(type.Assembly, type))
                        : _defaultLogger;
@@ -48,8 +46,7 @@ namespace AxCommonLogger.Factories
         public ILoggerFacade GetDeclaringTypeLogger()
         {
             Type declaringType = GetDeclaringType();
-
-            return _initialized && declaringType != null
+            return _initialized
                        ? new Log4netLoggerFacade(log4net.LogManager.GetLogger(declaringType.Assembly, declaringType))
                        : _defaultLogger;
         }

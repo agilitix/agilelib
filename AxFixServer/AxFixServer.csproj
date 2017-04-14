@@ -73,16 +73,16 @@
     <None Include="Configuration\log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Configuration\unity.base.config">
+    <None Include="Configuration\ioc.base.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Configuration\unity.common.config">
+    <None Include="Configuration\ioc.common.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Configuration\unity.main.config">
+    <None Include="Configuration\ioc.main.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Configuration\unity.dev.config">
+    <None Include="Configuration\ioc.dev.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
