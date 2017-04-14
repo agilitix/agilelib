@@ -4,7 +4,7 @@ namespace AxConfiguration.Interfaces
 {
     public interface IUnityConfiguration
     {
-        IUnityContainer Container { get; }
+        IUnityContainer Configuration { get; }
         string ConfigurationFile { get; }
 
         void LoadConfiguration(string configurationFile);

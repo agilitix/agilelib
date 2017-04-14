@@ -1,38 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using AxUtils.Interfaces;
+using AxConfiguration.Interfaces;
 
-namespace AxUtils
+namespace AxConfiguration
 {
-    public class IniFileSection : IIniFileSection
+    public class IniSection : IIniSection
     {
         public string Name { get; }
         public IDictionary<string, string> Settings { get; }
 
-        public IniFileSection(string name)
+        public IniSection(string name)
         {
             Name = name;
             Settings = new Dictionary<string, string>();
         }
     }
 
-    public class IniFile : IIniFile
+    public class IniConfiguration : IIniConfiguration
     {
-        private readonly IList<IIniFileSection> _sections = new List<IIniFileSection>();
+        private readonly IList<IIniSection> _sections = new List<IIniSection>();
 
-        public void LoadFile(string iniFileName)
+        public IEnumerable<IIniSection> Configuration => _sections;
+        public string ConfigurationFile { get; private set; }
+
+        public void LoadConfiguration(string iniFileName)
         {
             if (!File.Exists(iniFileName))
             {
                 throw new FileNotFoundException(nameof(iniFileName), iniFileName);
             }
 
-            const string commentsMarker = ";#";
-            IIniFileSection iniFileSection = null;
+            ConfigurationFile = iniFileName;
 
-            string[] lines = System.IO.File.ReadAllLines(iniFileName);
+            const string commentsMarker = ";#";
+            IIniSection iniSection = null;
+
+            string[] lines = File.ReadAllLines(iniFileName);
             foreach (string line in lines)
             {
                 string trimLine = line.Trim();
@@ -41,21 +45,16 @@ namespace AxUtils
                     if (trimLine.StartsWith("[") && trimLine.EndsWith("]"))
                     {
                         string sectionName = trimLine.Trim('[', ']').Trim();
-                        iniFileSection = new IniFileSection(sectionName);
-                        _sections.Add(iniFileSection);
+                        iniSection = new IniSection(sectionName);
+                        _sections.Add(iniSection);
                     }
-                    else if (trimLine.IndexOf('=') != -1 && iniFileSection != null)
+                    else if (trimLine.IndexOf('=') != -1 && iniSection != null)
                     {
                         string[] keyValue = trimLine.Split(new[] {'='}, 2);
-                        iniFileSection.Settings.Add(keyValue[0].Trim(), keyValue[1].Trim());
+                        iniSection.Settings.Add(keyValue[0].Trim(), keyValue[1].Trim());
                     }
                 }
             }
-        }
-
-        public IEnumerable<IIniFileSection> GetSections()
-        {
-            return _sections;
         }
     }
 }

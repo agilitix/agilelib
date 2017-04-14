@@ -67,7 +67,7 @@ namespace AxFixServer
             ICommandLineArguments commandLineArguments = new CommandLineArguments(args);
             Logger.Info("Command line arguments: " + commandLineArguments);
 
-            IFixConnectorFactory connectorFactory = unityConfiguration.Container.Resolve<IFixConnectorFactory>();
+            IFixConnectorFactory connectorFactory = unityConfiguration.Configuration.Resolve<IFixConnectorFactory>();
             Logger.Info("Resolved FIX connection factory type=" + connectorFactory.GetType());
 
             IFixConnector acceptor = CreateConnector("acceptor", appConfiguration, unityConfiguration, connectorFactory);
@@ -107,7 +107,7 @@ namespace AxFixServer
             string historizerOutputFileName = fixSettings.GetDefaultSettingValue<string>("MessageHistorizationFile");
 
             IFixMessageHistorizer messageHistorizer = new FixMessageFileHistorizer(historizerOutputFileName);
-            IFixMessageHandler messageHandler = unity.Container.Resolve<IFixMessageHandler>();
+            IFixMessageHandler messageHandler = unity.Configuration.Resolve<IFixMessageHandler>();
             IApplication fixApp = new FixApplication(messageHandler, messageHistorizer);
 
             if (connectorType.Equals("initiator"))

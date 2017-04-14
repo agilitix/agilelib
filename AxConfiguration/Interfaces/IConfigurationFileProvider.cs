@@ -6,5 +6,6 @@
 
         string AppConfigFile { get; }
         string IocConfigFile { get; }
+        string IniConfigFile { get; }
     }
 }

@@ -13,7 +13,7 @@ namespace AxConfiguration
         protected AliasElementCollection _baseAliases;
         protected readonly string _containerName;
 
-        public IUnityContainer Container { get; private set; }
+        public IUnityContainer Configuration { get; private set; }
         public string ConfigurationFile { get; private set; }
 
         public UnityConfiguration()
@@ -34,9 +34,9 @@ namespace AxConfiguration
             }
 
             ConfigurationFile = configurationFile;
-            Container = new UnityContainer();
+            Configuration = new UnityContainer();
 
-            LoadUnityContainer(Container, configurationFile, _containerName);
+            LoadUnityContainer(Configuration, configurationFile, _containerName);
 
             _baseAliases = null;
         }

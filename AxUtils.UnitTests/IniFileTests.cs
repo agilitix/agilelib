@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using AxConfiguration;
+using AxConfiguration.Interfaces;
 using AxQuality;
-using AxUtils.Interfaces;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -12,18 +11,18 @@ namespace AxUtils.UnitTests
     internal class IniFileTests : ArrangeActAssert
     {
         protected readonly string TestDirectory = TestContext.CurrentContext.TestDirectory;
-        protected IniFile ObjectUnderTests;
+        protected IniConfiguration ObjectUnderTests;
 
         public override void Arrange()
         {
-            ObjectUnderTests = new IniFile();
-            ObjectUnderTests.LoadFile(TestDirectory + @"\initiator.ini");
+            ObjectUnderTests = new IniConfiguration();
+            ObjectUnderTests.LoadConfiguration(TestDirectory + @"\initiator.ini");
         }
     }
 
     internal class IniFileTests_sections : IniFileTests
     {
-        protected IEnumerable<IIniFileSection> ActualSections;
+        protected IEnumerable<IIniSection> ActualSections;
         protected IDictionary<string, string> ExpectedDefaultSessionDictionary;
         protected IDictionary<string, string> Expected1stSessionDictionary;
         protected IDictionary<string, string> Expected2ndSessionDictionary;
@@ -67,7 +66,7 @@ namespace AxUtils.UnitTests
 
         public override void Act()
         {
-            ActualSections = ObjectUnderTests.GetSections();
+            ActualSections = ObjectUnderTests.Configuration;
         }
 
         [Test]

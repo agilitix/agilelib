@@ -57,6 +57,10 @@
     <Compile Include="WorkerQueueTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AxConfiguration\AxConfiguration.csproj">
+      <Project>{38C34733-3C7D-484D-9BD1-39C9F1744371}</Project>
+      <Name>AxConfiguration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AxQuality\AxQuality.csproj">
       <Project>{EBF4DE7B-53CB-4F6A-8A86-BD7E0190E469}</Project>
       <Name>AxQuality</Name>

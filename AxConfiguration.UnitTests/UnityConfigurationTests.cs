@@ -30,7 +30,7 @@ namespace AxConfiguration.UnitTests
 
         public override void Act()
         {
-            ResolvedLogger = UnityContainerUnderTest.Container.Resolve<ILogger>("Logger");
+            ResolvedLogger = UnityContainerUnderTest.Configuration.Resolve<ILogger>("Logger");
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace AxConfiguration.UnitTests
 
         public override void Act()
         {
-            BaseValue = UnityContainerUnderTest.Container.Resolve<string>("BaseValue");
+            BaseValue = UnityContainerUnderTest.Configuration.Resolve<string>("BaseValue");
         }
 
         [Test]
@@ -86,7 +86,7 @@ namespace AxConfiguration.UnitTests
 
         public override void Act()
         {
-            DefaultLoggerName = UnityContainerUnderTest.Container.Resolve<string>("DefaultLoggerName");
+            DefaultLoggerName = UnityContainerUnderTest.Configuration.Resolve<string>("DefaultLoggerName");
         }
 
         [Test]
@@ -102,7 +102,7 @@ namespace AxConfiguration.UnitTests
 
         public override void Act()
         {
-            DefaultLoggerFileName = UnityContainerUnderTest.Container.Resolve<string>("DefaultLoggerFileName");
+            DefaultLoggerFileName = UnityContainerUnderTest.Configuration.Resolve<string>("DefaultLoggerFileName");
         }
 
         [Test]
@@ -118,7 +118,7 @@ namespace AxConfiguration.UnitTests
 
         public override void Act()
         {
-            DefaultTimeStampFormat = UnityContainerUnderTest.Container.Resolve<string>("DefaultTimeStampFormat");
+            DefaultTimeStampFormat = UnityContainerUnderTest.Configuration.Resolve<string>("DefaultTimeStampFormat");
         }
 
         [Test]
@@ -150,7 +150,7 @@ namespace AxConfiguration.UnitTests
         public override void Act()
         {
             ExceptionWhileResolving =
-                base.Trying(() => ResolvedLogger = UnityContainerUnderTest.Container.Resolve<ILogger>("UnknownLogger"));
+                base.Trying(() => ResolvedLogger = UnityContainerUnderTest.Configuration.Resolve<ILogger>("UnknownLogger"));
         }
 
         [Test]
@@ -214,7 +214,7 @@ namespace AxConfiguration.UnitTests
 
         public override void Act()
         {
-            ExceptionWhileResolving = base.Trying(() => ResolvedLogger = UnityContainerUnderTest.Container.Resolve<ILogger>("Logger"));
+            ExceptionWhileResolving = base.Trying(() => ResolvedLogger = UnityContainerUnderTest.Configuration.Resolve<ILogger>("Logger"));
         }
 
         [Test]
