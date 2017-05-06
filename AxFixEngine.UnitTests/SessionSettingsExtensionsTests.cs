@@ -54,7 +54,7 @@ namespace AxFixEngine.UnitTests
 
         public override void Act()
         {
-            ActualValueString = ObjectUnderTest.GetSessionSettingValue<string>(new SessionID("FIX.4.2",
+            ActualValueString = ObjectUnderTest.GetSetting<string>(new SessionID("FIX.4.2",
                                                                                              "Company",
                                                                                              "FixedIncome",
                                                                                              "HongKong",
@@ -63,7 +63,7 @@ namespace AxFixEngine.UnitTests
                                                                                              "NYC"),
                                                                                "MaxMessagesInResendRequest");
 
-            ActualValueInt = ObjectUnderTest.GetSessionSettingValue<int>(new SessionID("FIX.4.2",
+            ActualValueInt = ObjectUnderTest.GetSetting<int>(new SessionID("FIX.4.2",
                                                                                        "Company",
                                                                                        "FixedIncome",
                                                                                        "HongKong",
@@ -72,7 +72,7 @@ namespace AxFixEngine.UnitTests
                                                                                        "NYC"),
                                                                          "MaxMessagesInResendRequest");
 
-            ActualValueLong = ObjectUnderTest.GetSessionSettingValue<long>(new SessionID("FIX.4.2",
+            ActualValueLong = ObjectUnderTest.GetSetting<long>(new SessionID("FIX.4.2",
                                                                                          "Company",
                                                                                          "FixedIncome",
                                                                                          "HongKong",
@@ -81,7 +81,7 @@ namespace AxFixEngine.UnitTests
                                                                                          "NYC"),
                                                                            "MaxMessagesInResendRequest");
 
-            ActualValueDouble = ObjectUnderTest.GetSessionSettingValue<double>(new SessionID("FIX.4.2",
+            ActualValueDouble = ObjectUnderTest.GetSetting<double>(new SessionID("FIX.4.2",
                                                                                              "Company",
                                                                                              "FixedIncome",
                                                                                              "HongKong",
@@ -90,7 +90,7 @@ namespace AxFixEngine.UnitTests
                                                                                              "NYC"),
                                                                                "MaxMessagesInResendRequest");
 
-            ActualValueDateTime = ObjectUnderTest.GetSessionSettingValue<DateTime>(new SessionID("FIX.4.2",
+            ActualValueDateTime = ObjectUnderTest.GetSetting<DateTime>(new SessionID("FIX.4.2",
                                                                                                  "Company",
                                                                                                  "FixedIncome",
                                                                                                  "HongKong",
@@ -99,7 +99,7 @@ namespace AxFixEngine.UnitTests
                                                                                                  "NYC"),
                                                                                    "EndTime");
 
-            ActualValueBool = ObjectUnderTest.GetSessionSettingValue<bool>(new SessionID("FIX.4.2",
+            ActualValueBool = ObjectUnderTest.GetSetting<bool>(new SessionID("FIX.4.2",
                                                                                          "Company",
                                                                                          "FixedIncome",
                                                                                          "HongKong",
@@ -108,7 +108,7 @@ namespace AxFixEngine.UnitTests
                                                                                          "NYC"),
                                                                            "MillisecondsInTimeStamp");
 
-            ActualValueDayOfWeek = ObjectUnderTest.GetSessionSettingValue<DayOfWeek>(new SessionID("FIX.4.2",
+            ActualValueDayOfWeek = ObjectUnderTest.GetSetting<DayOfWeek>(new SessionID("FIX.4.2",
                                                                                                    "Company",
                                                                                                    "FixedIncome",
                                                                                                    "HongKong",
@@ -117,7 +117,7 @@ namespace AxFixEngine.UnitTests
                                                                                                    "NYC"),
                                                                                      "EndDay");
 
-            ActualDefaultValueString = ObjectUnderTest.GetSessionSettingValue<string>(new SessionID("FIX.4.2",
+            ActualDefaultValueString = ObjectUnderTest.GetSetting<string>(new SessionID("FIX.4.2",
                                                                                                     "Company",
                                                                                                     "FixedIncome",
                                                                                                     "HongKong",

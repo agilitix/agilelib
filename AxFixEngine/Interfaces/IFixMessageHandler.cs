@@ -12,7 +12,5 @@ namespace AxFixEngine.Interfaces
 
         void SendingToApp(Message message, SessionID sourceSessionId);
         void ReceivingFromApp(Message message, SessionID sourceSessionId);
-
-        void SendToTarget(Message message, SessionID targetSessionId);
     }
 }

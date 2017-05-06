@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataDictionaryExtensionsTests.cs" />
     <Compile Include="DictionaryExtensionsTests.cs" />
     <Compile Include="MessageExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

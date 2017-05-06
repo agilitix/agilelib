@@ -9,17 +9,22 @@ namespace AxFixEngine
 {
     public class FixMessageFileHistorizer : IFixMessageHistorizer
     {
-        protected readonly string _historyOutputFileName;
+        protected readonly string _historyFolder;
         protected readonly IWorkerQueue<Action> _workerQueue = new WorkerQueue<Action>(action => action());
 
-        public FixMessageFileHistorizer(string historyOutputFileName)
+        public FixMessageFileHistorizer(string historyFolder)
         {
-            _historyOutputFileName = historyOutputFileName;
+            _historyFolder = historyFolder;
         }
 
         public bool Historize(Message message)
         {
-            return _workerQueue.TryAdd(() => { File.AppendAllText(_historyOutputFileName, message + Environment.NewLine); });
+            return _workerQueue.TryAdd(() => { File.AppendAllText(GetFileName(), message + Environment.NewLine); });
+        }
+
+        protected string GetFileName()
+        {
+            return _historyFolder + @"\" + DateTime.Now.ToString("yyyyMMdd") + "-messages.log";
         }
     }
 }

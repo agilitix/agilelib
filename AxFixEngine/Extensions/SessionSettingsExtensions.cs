@@ -58,13 +58,13 @@ namespace AxFixEngine.Extensions
             return false;
         }
 
-        public static T GetSessionSettingValue<T>(this SessionSettings self, SessionID sessionId, string settingName)
+        public static T GetSetting<T>(this SessionSettings self, SessionID sessionId, string settingName)
         {
             Dictionary settings = self.Get(sessionId);
             return GetSettingValue<T>(settings, settingName);
         }
 
-        public static T GetDefaultSettingValue<T>(this SessionSettings self, string settingName)
+        public static T GetSetting<T>(this SessionSettings self, string settingName)
         {
             Dictionary defaultSettings = self.Get();
             return GetSettingValue<T>(defaultSettings, settingName);

@@ -52,7 +52,9 @@ namespace AxFixServer
             // Init logger.
             ILoggerFacadeFactory loggerFacadeFactory = new Log4netLoggerFacadeFactory();
             loggerFacadeFactory.Configure(log4NetConfigFile);
+
             LoggerFacadeProvider.Initialize(loggerFacadeFactory);
+
             Logger = LoggerFacadeProvider.GetDeclaringTypeLogger();
 
             // Log some useful infos.
@@ -67,11 +69,43 @@ namespace AxFixServer
             ICommandLineArguments commandLineArguments = new CommandLineArguments(args);
             Logger.Info("Command line arguments: " + commandLineArguments);
 
-            IFixConnectorFactory connectorFactory = unityConfiguration.Configuration.Resolve<IFixConnectorFactory>();
-            Logger.Info("Resolved FIX connection factory type=" + connectorFactory.GetType());
+            IFixConnectorFactory connectorFactory = new FixConnectorFactory();
 
-            IFixConnector acceptor = CreateConnector("acceptor", appConfiguration, unityConfiguration, connectorFactory);
-            IFixConnector initiator = CreateConnector("initiator", appConfiguration, unityConfiguration, connectorFactory);
+            IFixConnector acceptor = null;
+            bool acceptorEnabled = appConfiguration.Configuration.GetSetting<bool>("acceptor_enabled");
+            if (acceptorEnabled)
+            {
+                string configFile = appConfiguration.Configuration.GetSetting<string>("acceptor_settings");
+
+                SessionSettings fixSettings = new SessionSettings(configFile);
+                IFixDataDictionaries dataDictionaries = new FixDataDictionaries(fixSettings);
+
+                string historyFolder = fixSettings.GetSetting<string>("FileHistoryPath");
+
+                IFixMessageHistorizer messageHistorizer = new FixMessageFileHistorizer(historyFolder);
+                IFixMessageHandler messageHandler = unityConfiguration.Configuration.Resolve<IFixMessageHandler>();
+                IApplication fixApp = new FixApplication(messageHandler, messageHistorizer, dataDictionaries);
+
+                acceptor = connectorFactory.CreateAcceptor(fixApp, fixSettings);
+            }
+
+            IFixConnector initiator = null;
+            bool initiatorEnabled = appConfiguration.Configuration.GetSetting<bool>("initiator_enabled");
+            if (initiatorEnabled)
+            {
+                string configFile = appConfiguration.Configuration.GetSetting<string>("initiator_settings");
+
+                SessionSettings fixSettings = new SessionSettings(configFile);
+                IFixDataDictionaries dataDictionaries = new FixDataDictionaries(fixSettings);
+
+                string historyFolder = fixSettings.GetSetting<string>("FileHistoryPath");
+
+                IFixMessageHistorizer messageHistorizer = new FixMessageFileHistorizer(historyFolder);
+                IFixMessageHandler messageHandler = unityConfiguration.Configuration.Resolve<IFixMessageHandler>();
+                IApplication fixApp = new FixApplication(messageHandler, messageHistorizer, dataDictionaries);
+
+                initiator = connectorFactory.CreateInitiator(fixApp, fixSettings);
+            }
 
             acceptor?.Start();
             initiator?.Start();
@@ -85,41 +119,6 @@ namespace AxFixServer
 
             acceptor?.Stop();
             initiator?.Stop();
-        }
-
-        private static IFixConnector CreateConnector(string connectorType,
-                                                     IAppConfiguration appConfiguration,
-                                                     IUnityConfiguration unity,
-                                                     IFixConnectorFactory fixConnectorFactory)
-        {
-            bool connectorEnabled = appConfiguration.Configuration.GetSetting<bool>(connectorType + "_enabled");
-            Logger.Info(connectorType + " enabled=" + connectorEnabled);
-            if (!connectorEnabled)
-            {
-                return null;
-            }
-
-            string initiatorConfigFile = appConfiguration.Configuration.GetSetting<string>(connectorType + "_settings");
-
-            SessionSettings fixSettings = new SessionSettings(initiatorConfigFile);
-            IFixDataDictionaries dataDictionaries = new FixDataDictionaries(fixSettings);
-
-            string historizerOutputFileName = fixSettings.GetDefaultSettingValue<string>("MessageHistorizationFile");
-
-            IFixMessageHistorizer messageHistorizer = new FixMessageFileHistorizer(historizerOutputFileName);
-            IFixMessageHandler messageHandler = unity.Configuration.Resolve<IFixMessageHandler>();
-            IApplication fixApp = new FixApplication(messageHandler, messageHistorizer);
-
-            if (connectorType.Equals("initiator"))
-            {
-                return fixConnectorFactory.CreateInitiator(fixApp, fixSettings);
-            }
-            if (connectorType.Equals("acceptor"))
-            {
-                return fixConnectorFactory.CreateAcceptor(fixApp, fixSettings);
-            }
-
-            return null;
         }
     }
 }

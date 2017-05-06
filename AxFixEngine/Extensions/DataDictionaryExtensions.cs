@@ -1,10 +1,25 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using QuickFix.DataDictionary;
 
 namespace AxFixEngine.Extensions
 {
     public static class DataDictionaryExtensions
     {
+        public static string GetDescription(this DataDictionary self)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("Version=" + self.Version);
+            sb.Append(", MajorVersion=" + self.MajorVersion);
+            sb.Append(", MinorVersion=" + self.MinorVersion);
+            sb.Append(", MessagesCount=" + self.Messages.Count);
+            sb.Append(", TagsCount=" + self.FieldsByTag.Count);
+            sb.Append(", CheckFieldsHaveValues=" + self.CheckFieldsHaveValues);
+            sb.Append(", CheckFieldsOutOfOrder=" + self.CheckFieldsOutOfOrder);
+            sb.Append(", CheckUserDefinedFields=" + self.CheckUserDefinedFields);
+            return sb.ToString();
+        }
+
         /// <summary>
         /// Get tag name from tag number: 35 => "MsgType"
         /// </summary>
