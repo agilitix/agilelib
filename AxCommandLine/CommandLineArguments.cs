@@ -31,9 +31,9 @@ namespace AxCommandLine
             }
         }
 
-        public void Set(string argument, string value)
+        public void Set<T>(string argument, T value)
         {
-            _arguments.Add(argument.ToLower(), value.Trim());
+            _arguments.Add(argument.ToLower(), value.ToString().Trim());
         }
 
         public bool Contains(string argument)

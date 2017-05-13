@@ -281,7 +281,7 @@ namespace AxCommandLine.UnitTests
 
         public override void Arrange()
         {
-            Arguments = new string[] {};
+            Arguments = new string[] { };
             ExpectedValue = default(string);
         }
 
@@ -308,6 +308,49 @@ namespace AxCommandLine.UnitTests
         public void Assert_command_line_arguments_does_not_contains_requesting_name()
         {
             ObjectUnderTest.Contains("doesNotExists").Should().BeFalse();
+        }
+    }
+
+    internal class CommandLineArgumentsTests_setting_arguments : ArrangeActAssert
+    {
+        protected CommandLineArguments ObjectUnderTest;
+        protected object[] InputArguments;
+
+        public override void Arrange()
+        {
+            InputArguments = new object[] {100, true, "test"};
+            ObjectUnderTest = new CommandLineArguments();
+        }
+
+        public override void Act()
+        {
+            ObjectUnderTest.Set("a", (int) InputArguments[0]);
+            ObjectUnderTest.Set("b", (bool) InputArguments[1]);
+            ObjectUnderTest.Set("c", (string) InputArguments[2]);
+        }
+
+        [Test]
+        public void Assert_arguments_count()
+        {
+            ObjectUnderTest.Count().Should().Be(InputArguments.Length);
+        }
+
+        [Test]
+        public void Assert_argument1_is_integer()
+        {
+            ObjectUnderTest.Get<int>("a").Should().Be((int) InputArguments[0]);
+        }
+
+        [Test]
+        public void Assert_argument2_is_boolean()
+        {
+            ObjectUnderTest.Get<bool>("b").Should().Be((bool) InputArguments[1]);
+        }
+
+        [Test]
+        public void Assert_argument3_is_string()
+        {
+            ObjectUnderTest.Get<string>("c").Should().Be((string) InputArguments[2]);
         }
     }
 }
