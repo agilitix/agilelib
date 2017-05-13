@@ -18,11 +18,13 @@ namespace AxFixEngine.UnitTests
 
         public override void Arrange()
         {
-            FixMessage = "8=FIX.4.19=10335=D34=449=BANZAI52=20121105-23:24:5556=EXEC11=135215789503221=138=1000040=154=155=ORCL59=0354=127355=<Allocations><Allocation><BookingEntity>TEST</BookingEntity><BookingQuantity>50000</BookingQuantity></Allocation></Allocations>10=047";
+            FixMessage = "8=FIX.4.1^9=103^35=D^34=4^49=BANZAI^52=20121105-23:24:55^56=EXEC^11=1352157895032^21=1^38=10000^40=1^54=1^55=ORCL^59=0^354=127^355=<Allocations><Allocation><BookingEntity>TEST</BookingEntity><BookingQuantity>50000</BookingQuantity></Allocation></Allocations>^10=047^"
+                .Replace("^", Message.SOH);
+
             FixDictionary = new DataDictionary();
             FixDictionary.Load(TestDirectory + ".\\Spec\\FIX44.xml");
 
-            ObjectUnderTest = new Message(FixMessage, FixDictionary, false );
+            ObjectUnderTest = new Message(FixMessage, FixDictionary, false);
         }
     }
 
