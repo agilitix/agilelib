@@ -26,24 +26,24 @@ namespace AxCommandLine
                     {
                         value = "true";
                     }
-                    Set(option, value);
+                    Set(option, value.Trim());
                 }
             }
         }
 
-        public void Set<T>(string argument, T value)
-        {
-            _arguments.Add(argument.ToLower(), value.ToString().Trim());
-        }
-
         public bool Contains(string argument)
         {
-            return _arguments.ContainsKey(argument.ToLower());
+            return _arguments.ContainsKey(argument);
         }
 
         public int Count()
         {
             return _arguments.Count;
+        }
+
+        public void Set<T>(string argument, T value)
+        {
+            _arguments.Add(argument, value.ToString());
         }
 
         public T Get<T>(string argument)
@@ -55,7 +55,6 @@ namespace AxCommandLine
 
         public bool TryGet<T>(string argument, out T output)
         {
-            argument = argument.ToLower();
             if (_arguments.ContainsKey(argument))
             {
                 output = (T) Convert.ChangeType(_arguments[argument], typeof(T));

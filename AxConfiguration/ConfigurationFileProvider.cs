@@ -18,8 +18,8 @@ namespace AxConfiguration
             ConfigFolder = configurationFolder;
 
             AppConfigFile = GetDefaultConfigFile("app", "config");
-            IocConfigFile = GetDefaultConfigFile("ioc", "config");
-            IniConfigFile = GetDefaultConfigFile("cfg", "ini");
+            IocConfigFile = GetDefaultConfigFile("unity", "config");
+            IniConfigFile = GetDefaultConfigFile("app", "ini");
         }
 
         protected string GetDefaultConfigFile(string baseName, string extension)
