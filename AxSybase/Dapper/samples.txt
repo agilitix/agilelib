@@ -1,48 +1,37 @@
 
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dapper;
-using Sybase.Data.AseClient;
-
-namespace DapperSample
+class Contact
 {
-    class Contact
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
+    public int Id { get; set; }
+    public string Name { get; set; }
+}
 
-    class Program
+class Program
+{
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
+        using (var connection = new AseConnection("Data Source=myserver;Port=5000;Uid=myuser;Pwd=mypasswd;Database=mydatabase"))
         {
-            using (var connection = new AseConnection("Data Source=myserver;Port=5000;Uid=myuser;Pwd=mypasswd;Database=mydatabase"))
+            connection.Open();
+
+            // Querying database
+            IEnumerable<Contact> contacts = connection.Query<Contact>("select * from contacts where Id < @searchingId", new {searchingId = 100});
+
+            // Inserting database
+            var contact = new Contact {Id = 63, Name="Joe"};
+            connection.Execute("insert into contacts(Id, Name) values(@Id, @Name)", contact);
+        }
+
+        using (var connection = new AseConnection("Data Source=myserver;Port=5000;Uid=myuser;Pwd=mypasswd;Database=mydatabase"))
+        {
+            connection.Open();
+
+            var parameters = new AseCommandParameters
             {
-                connection.Open();
+                new AseParameter("@table_name", "dbo.sysusers")
+            };
 
-                // Querying database
-                IEnumerable<Contact> contacts = connection.Query<Contact>("select * from contacts where Id < @searchingId", new {searchingId = 100});
-
-                // Inserting database
-                var contact = new Contact {Id = 63, Name="Joe"};
-                connection.Execute("insert into contacts(Id, Name) values(@Id, @Name)", contact);
-            }
-
-            using (var connection = new AseConnection("Data Source=myserver;Port=5000;Uid=myuser;Pwd=mypasswd;Database=mydatabase"))
-            {
-                connection.Open();
-
-                var parameters = new AseCommandParameters
-                {
-                    new AseParameter("@table_name", "dbo.sysusers")
-                };
-
-                IEnumerable<Foo> results = connection.Query<Foo>("sp_columns", parameters, commandType: CommandType.StoredProcedure);
-            }
+            IEnumerable<Foo> results = connection.Query<Foo>("sp_columns", parameters, commandType: CommandType.StoredProcedure);
         }
     }
 }

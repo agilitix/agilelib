@@ -1,6 +1,6 @@
 ﻿using NHibernate.Driver;
 
-namespace AxSybase.Hibernate
+namespace AxSybase.NHibernate
 {
     public class SybaseAdoNet4Driver : ReflectionBasedDriver
     {

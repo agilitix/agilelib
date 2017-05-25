@@ -1,0 +1,64 @@
+﻿
+public class Person
+{
+    public virtual long Id { get; set; }
+    public virtual string Name { get; set; }
+    public virtual int CustomId { get; set; }
+}
+
+public class PersonMap : ClassMapping<Person>
+{
+    public PersonMap()
+    {
+        Table("ta_people");
+
+        Id(p => p.Id, t => t.Column("id"));
+        Property(p => p.Name, t => t.Column("name"));
+        Property(p => p.CustomId, t => t.Column("custom_id"));
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        var config = new Configuration();
+
+        // Can be done by file...
+        //config.Configure("hibernate.cfg.xml");
+
+        // ...or by code
+        config.DataBaseIntegration(db =>
+                                {
+                                    db.ConnectionString = SybaseAseConnectionStringBuilder.ConnectionString
+                                                                                            .Server("host")
+                                                                                            .Port(5000)
+                                                                                            .Database("xxxx")
+                                                                                            .Username("xxxx")
+                                                                                            .Password("xxxx")
+                                                                                            .Build();
+                                    db.Dialect<SybaseASE15Dialect>();
+                                    db.Driver<SybaseAdoNet4Driver>();
+                                });
+
+        var mapper = new ModelMapper();
+        mapper.AddMappings(Assembly.GetAssembly(typeof(Program)).GetExportedTypes());
+        HbmMapping mappings = mapper.CompileMappingForAllExplicitlyAddedEntities();
+        config.AddMapping(mappings);
+
+        using (ISessionFactory sessionFactory = config.BuildSessionFactory())
+        using (ISession session = sessionFactory.OpenSession())
+        using (ITransaction trans = session.BeginTransaction()) // No need here, just to illustrate.
+        {
+            IList<Person> entities = session.CreateCriteria(typeof(Person)).List<Person>();
+            foreach (Person p in entities)
+            {
+                Console.WriteLine(p.Id + " / " + p.Name);
+            }
+
+            trans.Commit();
+        }
+
+        Console.ReadLine();
+    }
+}

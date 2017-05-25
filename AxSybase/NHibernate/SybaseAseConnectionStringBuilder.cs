@@ -1,9 +1,8 @@
 ﻿using System.Text;
-using FluentNHibernate.Cfg.Db;
 
-namespace AxSybase.Hibernate
+namespace AxSybase.NHibernate
 {
-    public class SybaseAseConnectionStringBuilder : ConnectionStringBuilder
+    public class SybaseAseConnectionStringBuilder
     {
         // Please look there for several connection string samples.
         // Feel free to customise this class with new parameters.
@@ -21,56 +20,49 @@ namespace AxSybase.Hibernate
         private string _password;
         private string _charset; // "iso_1", "utf8", etc...
 
+        public static SybaseAseConnectionStringBuilder ConnectionString
+        {
+            get { return new SybaseAseConnectionStringBuilder(); }
+        }
+
         public SybaseAseConnectionStringBuilder Server(string server)
         {
             _server = server;
-            IsDirty = true;
             return this;
         }
 
         public SybaseAseConnectionStringBuilder Port(int port)
         {
             _port = port;
-            IsDirty = true;
             return this;
         }
 
         public SybaseAseConnectionStringBuilder Database(string database)
         {
             _database = database;
-            IsDirty = true;
             return this;
         }
 
         public SybaseAseConnectionStringBuilder Username(string username)
         {
             _username = username;
-            IsDirty = true;
             return this;
         }
 
         public SybaseAseConnectionStringBuilder Password(string password)
         {
             _password = password;
-            IsDirty = true;
             return this;
         }
 
         public SybaseAseConnectionStringBuilder Charset(string charset)
         {
             _charset = charset;
-            IsDirty = true;
             return this;
         }
 
-        protected override string Create()
+        public string Build()
         {
-            string connectionString = base.Create();
-            if (!string.IsNullOrEmpty(connectionString))
-            {
-                return connectionString;
-            }
-
             StringBuilder connectionStringBuilder = new StringBuilder();
 
             connectionStringBuilder.AppendFormat("Data Source={0};Port={1};Database={2};Uid={3};Pwd={4}",
