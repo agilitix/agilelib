@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -47,6 +48,8 @@
     <Compile Include="DisposeHelper.cs" />
     <Compile Include="Ensure.cs" />
     <Compile Include="EnumUtils.cs" />
+    <Compile Include="CultureInfoUtils.cs" />
+    <Compile Include="ModelValidatorExtensions.cs" />
     <Compile Include="NetworkUtils.cs" />
     <Compile Include="WorkerQueue.cs" />
     <Compile Include="Interfaces\IWorkerQueue.cs" />
