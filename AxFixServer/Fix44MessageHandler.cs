@@ -1,22 +1,11 @@
 ﻿using AxFixEngine;
+using AxFixEngine.Handlers;
 using QuickFix;
 
 namespace AxFixServer
 {
-    public class Fix44MessageHandler : FixMessageHandlerBase
+    public class Fix44MessageHandler : FixMessageCrackingHandlerBase
     {
-        public string Name { get; }
-
-        public Fix44MessageHandler()
-            : this(nameof(Fix44MessageHandler))
-        {
-        }
-
-        public Fix44MessageHandler(string name)
-        {
-            Name = name;
-        }
-
         #region Session level messages
 
         public void OnMessage(QuickFix.FIX44.Logon message, SessionID sessionId)

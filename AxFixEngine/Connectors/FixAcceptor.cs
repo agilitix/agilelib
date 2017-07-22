@@ -3,7 +3,7 @@ using AxCommonLogger.Interfaces;
 using AxFixEngine.Interfaces;
 using QuickFix;
 
-namespace AxFixEngine
+namespace AxFixEngine.Connectors
 {
     public class FixAcceptor : IFixConnector
     {

@@ -4,7 +4,7 @@ using AxFixEngine.Interfaces;
 using QuickFix;
 using QuickFix.Transport;
 
-namespace AxFixEngine
+namespace AxFixEngine.Connectors
 {
     class FixInitiator : IFixConnector
     {

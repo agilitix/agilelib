@@ -4,14 +4,19 @@ using AxFixEngine.Interfaces;
 using QuickFix;
 using QuickFix.DataDictionary;
 
-namespace AxFixEngine
+namespace AxFixEngine.Dialects
 {
-    public class FixDataDictionaries : IFixDataDictionaries
+    public class FixDialects : IFixDialects
     {
         protected readonly IDictionary<SessionID, DataDictionary> _dataDictionaries = new Dictionary<SessionID, DataDictionary>();
         protected readonly IDictionary<string, DataDictionary> _dataDictionariesBySpecFile = new Dictionary<string, DataDictionary>();
 
-        public FixDataDictionaries(SessionSettings fixSettings)
+        public FixDialects(string fixSettingsFile)
+            : this(new SessionSettings(fixSettingsFile))
+        {
+        }
+
+        public FixDialects(SessionSettings fixSettings)
         {
             HashSet<SessionID> sessions = fixSettings.GetSessions();
             foreach (SessionID sessionId in sessions)

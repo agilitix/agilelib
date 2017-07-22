@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Xml;
 using System.Xml.Linq;
-using AxFixEngine.Interfaces;
+using AxFixEngine.Utilities;
 using QuickFix;
 using QuickFix.DataDictionary;
 using QuickFix.Fields;
@@ -9,10 +13,65 @@ namespace AxFixEngine.Extensions
 {
     public static class MessageExtensions
     {
+        public static MsgType GetMsgType(this Message self)
+        {
+            string msgType = self.GetField(Tags.MsgType);
+            return new MsgType(msgType);
+        }
+
+        public static SessionID GetSessionID(this Message self)
+        {
+            SessionID sessionId = self.GetSessionID(self);
+            return sessionId;
+        }
+
         public static string GetName(this Message self, DataDictionary dictionary)
         {
-            string msgType = self.Header.GetField(Tags.MsgType);    // "D"
-            return dictionary.GetEnumLabel(Tags.MsgType, msgType);  // "ORDER_SINGLE"
+            string msgType = self.Header.GetField(Tags.MsgType);
+            return dictionary.GetEnumLabel(Tags.MsgType, msgType);
+        }
+
+        public static string GetFieldEnum(this Message self, int tag, DataDictionary dictionary)
+        {
+            DataDictionaryProvider p;
+            string value;
+            return TryGetField(self, tag, out value)
+                       ? dictionary.GetEnumLabel(tag, value)
+                       : null;
+        }
+
+        public static T GetField<T>(this Message self, int tag, T defaultValue = default(T))
+        {
+            T value;
+            return TryGetField(self, tag, out value)
+                       ? value
+                       : defaultValue;
+        }
+
+        public static bool TryGetField<T>(this Message self, int tag, out T value)
+        {
+            try
+            {
+                FieldMap fieldMap = self.IsSetField(tag)
+                                        ? self
+                                        : self.Header.IsSetField(tag)
+                                            ? self.Header
+                                            : self.Trailer.IsSetField(tag)
+                                                ? self.Trailer as FieldMap
+                                                : null;
+                if (fieldMap != null)
+                {
+                    value = FixValueConverter.FromString<T>(fieldMap.GetString(tag));
+                    return true;
+                }
+            }
+            catch
+            {
+                // ignored
+            }
+
+            value = default(T);
+            return false;
         }
 
         public static XDocument ToXDocument(this Message self, DataDictionary dictionary)
@@ -26,37 +85,102 @@ namespace AxFixEngine.Extensions
 
             XElement header = new XElement("header");
             root.Add(header);
-            foreach (KeyValuePair<int, IField> field in self.Header)
+            IList<KeyValuePair<int, string>> outputFields = new List<KeyValuePair<int, string>>();
+            DumpFields(self.Header, outputFields, self.Header.HEADER_FIELD_ORDER);
+            foreach (KeyValuePair<int, string> field in outputFields)
             {
-                XElement fieldElement = CreateElement(field, dictionary);
+                XElement fieldElement = CreateElement(field.Key, field.Value, dictionary);
                 header.Add(fieldElement);
             }
 
             XElement body = new XElement("body");
             root.Add(body);
-            foreach (KeyValuePair<int, IField> field in self)
+            outputFields.Clear();
+            DumpFields(self, outputFields);
+            foreach (KeyValuePair<int, string> field in outputFields)
             {
-                XElement fieldElement = CreateElement(field, dictionary);
+                XElement fieldElement = CreateElement(field.Key, field.Value, dictionary);
                 body.Add(fieldElement);
             }
 
             XElement trailer = new XElement("trailer");
             root.Add(trailer);
-            foreach (KeyValuePair<int, IField> field in self.Trailer)
+            outputFields.Clear();
+            DumpFields(self.Trailer, outputFields);
+            foreach (KeyValuePair<int, string> field in outputFields)
             {
-                XElement fieldElement = CreateElement(field, dictionary);
+                XElement fieldElement = CreateElement(field.Key, field.Value, dictionary);
                 trailer.Add(fieldElement);
             }
 
             return doc;
         }
 
-        private static XElement CreateElement(KeyValuePair<int, IField> field, DataDictionary dictionary)
+        public static XmlDocument ToXmlDocument(this Message self, DataDictionary dataDictionary)
         {
-            int tagNumber = field.Key;                          // 21
-            string tagName = dictionary.GetTagName(tagNumber);  // "HandlInst"
-            string tagValue = field.Value.ToString();           // "1"
-            string tagType = dictionary.GetTagType(tagNumber);  // "CHAR"
+            XDocument xdoc = ToXDocument(self, dataDictionary);
+            XmlDocument xmldoc = new ConfigXmlDocument();
+            using (XmlReader xmlreader = xdoc.CreateReader())
+            {
+                xmldoc.Load(xmlreader);
+            }
+            return xmldoc;
+        }
+
+        private static void DumpFields(FieldMap current, IList<KeyValuePair<int, string>> output, int[] precedingFields = null)
+        {
+            if (precedingFields == null)
+            {
+                precedingFields = new int[] { };
+            }
+
+            IList<int> groupTags = current.GetGroupTags();
+
+            // The preceding fields and groups must appear first.
+            foreach (int preField in precedingFields)
+            {
+                if (current.IsSetField(preField))
+                {
+                    output.Add(new KeyValuePair<int, string>(preField, current.GetField(preField)));
+                    if (groupTags.Contains(preField))
+                    {
+                        for (int i = 0; i < current.GroupCount(preField); ++i)
+                        {
+                            Group group = current.GetGroup(i + 1, preField);
+                            DumpFields(group, output, new[] {group.Delim});
+                        }
+                    }
+                }
+            }
+
+            // The remaining fields after the preceding.
+            foreach (KeyValuePair<int, IField> field in current)
+            {
+                if (!precedingFields.Contains(field.Key) && !groupTags.Contains(field.Key))
+                {
+                    output.Add(new KeyValuePair<int, string>(field.Key, field.Value.ToString()));
+                }
+            }
+
+            // The remaining groups after the preceding.
+            foreach (int grpTag in groupTags)
+            {
+                if (!precedingFields.Contains(grpTag))
+                {
+                    output.Add(new KeyValuePair<int, string>(grpTag, current.GetField(grpTag)));
+                    for (int i = 0; i < current.GroupCount(grpTag); ++i)
+                    {
+                        Group group = current.GetGroup(i + 1, grpTag);
+                        DumpFields(group, output, new[] {group.Delim});
+                    }
+                }
+            }
+        }
+
+        private static XElement CreateElement(int tagNumber, string tagValue, DataDictionary dictionary)
+        {
+            string tagName = dictionary.GetTagName(tagNumber);
+            string tagType = dictionary.GetTagType(tagNumber);
 
             XElement element = new XElement(tagName);
 
@@ -66,18 +190,20 @@ namespace AxFixEngine.Extensions
             {
                 try
                 {
+                    // Try to convert field DATA to an XML content.
                     XElement data = XElement.Parse(tagValue);
                     element.Add(data);
                 }
                 catch
                 {
+                    // XML parsing has failed, add it as CDATA.
                     element.Add(new XCData(tagValue));
                 }
             }
             else
             {
                 element.Add(new XAttribute("value", tagValue));
-                string enumLabel = dictionary.GetEnumLabel(tagNumber, tagValue); // "HandlInst=1" => "AUTOMATED_EXECUTION_ORDER_PRIVATE"
+                string enumLabel = dictionary.GetEnumLabel(tagNumber, tagValue);
                 if (!string.IsNullOrWhiteSpace(enumLabel))
                 {
                     element.Add(new XAttribute("desc", enumLabel));
@@ -85,6 +211,13 @@ namespace AxFixEngine.Extensions
             }
 
             element.Add(new XAttribute("type", tagType));
+
+            // Cleanup namespaces decorations (may occur within encoded fields having XML).
+            foreach (XElement descendant in element.Descendants())
+            {
+                descendant.Attributes().Where(x => x.IsNamespaceDeclaration).Remove();
+                descendant.Name = descendant.Name.LocalName;
+            }
 
             return element;
         }

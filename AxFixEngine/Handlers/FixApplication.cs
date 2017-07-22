@@ -1,26 +1,21 @@
 ﻿using AxCommonLogger;
 using AxCommonLogger.Interfaces;
+using AxFixEngine.Dialects;
 using AxFixEngine.Extensions;
 using AxFixEngine.Interfaces;
 using QuickFix;
 using QuickFix.DataDictionary;
 
-namespace AxFixEngine
+namespace AxFixEngine.Handlers
 {
     public class FixApplication : IApplication
     {
-        protected static ILoggerFacade Log = LoggerFacadeProvider.GetLogger<FixApplication>();
-        private readonly IFixMessageHandler _messageHandler;
-        private readonly IFixMessageHistorizer _messageHistorizer;
-        private readonly IFixDataDictionaries _sessionDictionaries;
+        protected static ILoggerFacade Log = LoggerFacadeProvider.GetDeclaringTypeLogger();
+        protected readonly IFixMessageHandler _messageHandler;
 
-        public FixApplication(IFixMessageHandler messageHandler,
-                              IFixMessageHistorizer messageHistorizer,
-                              IFixDataDictionaries sessionDictionaries)
+        public FixApplication(IFixMessageHandler messageHandler)
         {
             _messageHandler = messageHandler;
-            _messageHistorizer = messageHistorizer;
-            _sessionDictionaries = sessionDictionaries;
         }
 
         /// <summary>
@@ -32,11 +27,9 @@ namespace AxFixEngine
         /// </summary>
         public void ToAdmin(Message message, SessionID sessionID)
         {
-            DataDictionary sessionDictionary = _sessionDictionaries.GetDataDictionary(sessionID);
+            DataDictionary sessionDictionary = FixDialectsProvider.Dialects.GetDataDictionary(sessionID);
             Log.InfoFormat("Send admin MsgType={0} content=<{1}>", message.GetName(sessionDictionary), message);
-            _messageHistorizer.Historize(message);
-
-            _messageHandler.SendingToAdmin(message, sessionID);
+            _messageHandler.ToAdmin(message, sessionID);
         }
 
         /// <summary>
@@ -47,11 +40,9 @@ namespace AxFixEngine
         /// </summary>
         public void FromAdmin(Message message, SessionID sessionID)
         {
-            DataDictionary sessionDictionary = _sessionDictionaries.GetDataDictionary(sessionID);
+            DataDictionary sessionDictionary = FixDialectsProvider.Dialects.GetDataDictionary(sessionID);
             Log.InfoFormat("Recv admin MsgType={0} content=<{1}>", message.GetName(sessionDictionary), message);
-            _messageHistorizer.Historize(message);
-
-            _messageHandler.ReceivingFromAdmin(message, sessionID);
+            _messageHandler.FromAdmin(message, sessionID);
         }
 
         /// <summary>
@@ -68,11 +59,9 @@ namespace AxFixEngine
         /// </summary>
         public void ToApp(Message message, SessionID sessionID)
         {
-            DataDictionary sessionDictionary = _sessionDictionaries.GetDataDictionary(sessionID);
+            DataDictionary sessionDictionary = FixDialectsProvider.Dialects.GetDataDictionary(sessionID);
             Log.InfoFormat("Send appli MsgType={0} content=<{1}>", message.GetName(sessionDictionary), message);
-            _messageHistorizer.Historize(message);
-
-            _messageHandler.SendingToApp(message, sessionID);
+            _messageHandler.ToApp(message, sessionID);
         }
 
         /// <summary>
@@ -92,11 +81,9 @@ namespace AxFixEngine
         /// </summary>
         public void FromApp(Message message, SessionID sessionID)
         {
-            DataDictionary sessionDictionary = _sessionDictionaries.GetDataDictionary(sessionID);
+            DataDictionary sessionDictionary = FixDialectsProvider.Dialects.GetDataDictionary(sessionID);
             Log.InfoFormat("Recv appli MsgType={0} content=<{1}>", message.GetName(sessionDictionary), message);
-            _messageHistorizer.Historize(message);
-
-            _messageHandler.ReceivingFromApp(message, sessionID);
+            _messageHandler.FromApp(message, sessionID);
         }
 
         /// <summary>
@@ -109,7 +96,7 @@ namespace AxFixEngine
         /// </summary>
         public void OnCreate(SessionID sessionID)
         {
-            DataDictionary sessionDictionary = _sessionDictionaries.GetDataDictionary(sessionID);
+            DataDictionary sessionDictionary = FixDialectsProvider.Dialects.GetDataDictionary(sessionID);
             Log.InfoFormat("Created session={0} dictionaryDescription=<{1}>", sessionID, sessionDictionary.GetDescription());
         }
 

@@ -10,8 +10,12 @@ using AxCommonLogger.Interfaces;
 using AxConfiguration;
 using AxConfiguration.Interfaces;
 using AxFixEngine;
+using AxFixEngine.Dialects;
 using AxFixEngine.Extensions;
+using AxFixEngine.Factories;
+using AxFixEngine.Handlers;
 using AxFixEngine.Interfaces;
+using AxFixEngine.Utilities;
 using AxUtils;
 using Microsoft.Practices.Unity;
 using QuickFix;
@@ -78,13 +82,11 @@ namespace AxFixServer
                 string configFile = appConfiguration.Configuration.GetSetting<string>("acceptor_settings");
 
                 SessionSettings fixSettings = new SessionSettings(configFile);
-                IFixDataDictionaries dataDictionaries = new FixDataDictionaries(fixSettings);
 
-                string historyFolder = fixSettings.GetSetting<string>("FileHistoryPath");
+                FixDialectsProvider.Initialize(new FixDialects(fixSettings));
 
-                IFixMessageHistorizer messageHistorizer = new FixMessageFileHistorizer(historyFolder);
                 IFixMessageHandler messageHandler = unityConfiguration.Configuration.Resolve<IFixMessageHandler>();
-                IApplication fixApp = new FixApplication(messageHandler, messageHistorizer, dataDictionaries);
+                IApplication fixApp = new FixApplication(messageHandler);
 
                 acceptor = connectorFactory.CreateAcceptor(fixApp, fixSettings);
             }
@@ -96,13 +98,11 @@ namespace AxFixServer
                 string configFile = appConfiguration.Configuration.GetSetting<string>("initiator_settings");
 
                 SessionSettings fixSettings = new SessionSettings(configFile);
-                IFixDataDictionaries dataDictionaries = new FixDataDictionaries(fixSettings);
 
-                string historyFolder = fixSettings.GetSetting<string>("FileHistoryPath");
+                FixDialectsProvider.Initialize(new FixDialects(fixSettings));
 
-                IFixMessageHistorizer messageHistorizer = new FixMessageFileHistorizer(historyFolder);
                 IFixMessageHandler messageHandler = unityConfiguration.Configuration.Resolve<IFixMessageHandler>();
-                IApplication fixApp = new FixApplication(messageHandler, messageHistorizer, dataDictionaries);
+                IApplication fixApp = new FixApplication(messageHandler);
 
                 initiator = connectorFactory.CreateInitiator(fixApp, fixSettings);
             }

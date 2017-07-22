@@ -4,6 +4,8 @@ using AxQuality;
 using FluentAssertions;
 using NUnit.Framework;
 using QuickFix.DataDictionary;
+using QuickFix.Fields;
+using QuickFix.FIX44;
 using Message = QuickFix.Message;
 
 namespace AxFixEngine.UnitTests
@@ -18,7 +20,7 @@ namespace AxFixEngine.UnitTests
 
         public override void Arrange()
         {
-            FixMessage = "8=FIX.4.1^9=103^35=D^34=4^49=BANZAI^52=20121105-23:24:55^56=EXEC^11=1352157895032^21=1^38=10000^40=1^54=1^55=ORCL^59=0^354=127^355=<Allocations><Allocation><BookingEntity>TEST</BookingEntity><BookingQuantity>50000</BookingQuantity></Allocation></Allocations>^10=047^"
+            FixMessage = "8=FIX.4.1^9=103^35=D^34=4^49=BANZAI^52=20121105-23:24:55^56=EXEC^11=1352157895032^21=1^38=10000^40=1^54=1^55=ORCL^59=0^354=127^355=<h:table xmlns:h=\"http://www.w3.org/TR/html4/\"><h:tr><h:td>Apples</h:td><h:td>Bananas</h:td></h:tr></h:table>^10=047^"
                 .Replace("^", Message.SOH);
 
             FixDictionary = new DataDictionary();
@@ -36,7 +38,7 @@ namespace AxFixEngine.UnitTests
         public override void Arrange()
         {
             base.Arrange();
-            ExpectedXDocument = "<message name=\"ORDER_SINGLE\"><header><BeginString tag=\"8\" value=\"FIX.4.1\" type=\"STRING\" /><BodyLength tag=\"9\" value=\"103\" type=\"LENGTH\" /><MsgSeqNum tag=\"34\" value=\"4\" type=\"SEQNUM\" /><MsgType tag=\"35\" value=\"D\" desc=\"ORDER_SINGLE\" type=\"STRING\" /><SenderCompID tag=\"49\" value=\"BANZAI\" type=\"STRING\" /><SendingTime tag=\"52\" value=\"20121105-23:24:55\" type=\"UTCTIMESTAMP\" /><TargetCompID tag=\"56\" value=\"EXEC\" type=\"STRING\" /></header><body><ClOrdID tag=\"11\" value=\"1352157895032\" type=\"STRING\" /><HandlInst tag=\"21\" value=\"1\" desc=\"AUTOMATED_EXECUTION_ORDER_PRIVATE\" type=\"CHAR\" /><OrderQty tag=\"38\" value=\"10000\" type=\"QTY\" /><OrdType tag=\"40\" value=\"1\" desc=\"MARKET\" type=\"CHAR\" /><Side tag=\"54\" value=\"1\" desc=\"BUY\" type=\"CHAR\" /><Symbol tag=\"55\" value=\"ORCL\" type=\"STRING\" /><TimeInForce tag=\"59\" value=\"0\" desc=\"DAY\" type=\"CHAR\" /><EncodedTextLen tag=\"354\" value=\"127\" type=\"LENGTH\" /><EncodedText tag=\"355\" type=\"DATA\"><Allocations><Allocation><BookingEntity>TEST</BookingEntity><BookingQuantity>50000</BookingQuantity></Allocation></Allocations></EncodedText></body><trailer><CheckSum tag=\"10\" value=\"047\" type=\"STRING\" /></trailer></message>";
+            ExpectedXDocument = "<message name=\"ORDER_SINGLE\"><header><BeginString tag=\"8\" value=\"FIX.4.1\" type=\"STRING\" /><BodyLength tag=\"9\" value=\"103\" type=\"LENGTH\" /><MsgType tag=\"35\" value=\"D\" desc=\"ORDER_SINGLE\" type=\"STRING\" /><MsgSeqNum tag=\"34\" value=\"4\" type=\"SEQNUM\" /><SenderCompID tag=\"49\" value=\"BANZAI\" type=\"STRING\" /><SendingTime tag=\"52\" value=\"20121105-23:24:55\" type=\"UTCTIMESTAMP\" /><TargetCompID tag=\"56\" value=\"EXEC\" type=\"STRING\" /></header><body><ClOrdID tag=\"11\" value=\"1352157895032\" type=\"STRING\" /><HandlInst tag=\"21\" value=\"1\" desc=\"AUTOMATED_EXECUTION_ORDER_PRIVATE\" type=\"CHAR\" /><OrderQty tag=\"38\" value=\"10000\" type=\"QTY\" /><OrdType tag=\"40\" value=\"1\" desc=\"MARKET\" type=\"CHAR\" /><Side tag=\"54\" value=\"1\" desc=\"BUY\" type=\"CHAR\" /><Symbol tag=\"55\" value=\"ORCL\" type=\"STRING\" /><TimeInForce tag=\"59\" value=\"0\" desc=\"DAY\" type=\"CHAR\" /><EncodedTextLen tag=\"354\" value=\"127\" type=\"LENGTH\" /><EncodedText tag=\"355\" type=\"DATA\"><table><tr><td>Apples</td><td>Bananas</td></tr></table></EncodedText></body><trailer><CheckSum tag=\"10\" value=\"047\" type=\"STRING\" /></trailer></message>";
         }
 
         public override void Act()

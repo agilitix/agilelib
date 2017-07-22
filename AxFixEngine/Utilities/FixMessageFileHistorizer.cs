@@ -5,7 +5,7 @@ using AxUtils;
 using AxUtils.Interfaces;
 using QuickFix;
 
-namespace AxFixEngine
+namespace AxFixEngine.Utilities
 {
     public class FixMessageFileHistorizer : IFixMessageHistorizer
     {
