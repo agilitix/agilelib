@@ -282,9 +282,9 @@ namespace AxFixEngine.Extensions
         // Message with XML encoded field in tag[355] :
         //
         // "8=FIX.4.4^9=235^35=D^34=4^49=BANZAI^52=20121105-23:24:55^56=EXEC^11=1352157895032
-        //  ^21=1^38=10000^40=1^54=1^55=ORCL^59=0^354=127
+        //  ^21=1^38=10000^40=1^54=1^55=ORCL^59=0^354=119
         //  ^355=<h:box xmlns:h=\"http://www.w3.org/TR/html4/\"><h:bag><h:fruit>Apples</h:fruit><h:fruit>Bananas</h:fruit></h:bag></h:box>
-        //  ^10=102^"
+        //  ^10=103^"
         //
         //  <message name = "ORDER_SINGLE" >
         //      <header>
@@ -304,7 +304,7 @@ namespace AxFixEngine.Extensions
         //          <Side tag = "54" value="1" desc="BUY" type="CHAR" />
         //          <Symbol tag = "55" value="ORCL" type="STRING" />
         //          <TimeInForce tag = "59" value="0" desc="DAY" type="CHAR" />
-        //          <EncodedTextLen tag = "354" value="127" type="LENGTH" />
+        //          <EncodedTextLen tag = "354" value="119" type="LENGTH" />
         //          <EncodedText tag = "355" type="DATA">
         //              <box>
         //                  <bag>
@@ -315,7 +315,7 @@ namespace AxFixEngine.Extensions
         //          </EncodedText>
         //      </body>
         //      <trailer>
-        //          <CheckSum tag = "10" value="102" type="STRING" />
+        //          <CheckSum tag = "10" value="103" type="STRING" />
         //      </trailer>
         //  </message>
 
