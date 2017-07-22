@@ -85,33 +85,15 @@ namespace AxFixEngine.Extensions
 
             XElement header = new XElement("header");
             root.Add(header);
-            IList<KeyValuePair<int, string>> outputFields = new List<KeyValuePair<int, string>>();
-            DumpFields(self.Header, outputFields, self.Header.HEADER_FIELD_ORDER);
-            foreach (KeyValuePair<int, string> field in outputFields)
-            {
-                XElement fieldElement = CreateElement(field.Key, field.Value, dictionary);
-                header.Add(fieldElement);
-            }
+            AppendFields(self.Header, header, dictionary);
 
             XElement body = new XElement("body");
             root.Add(body);
-            outputFields.Clear();
-            DumpFields(self, outputFields);
-            foreach (KeyValuePair<int, string> field in outputFields)
-            {
-                XElement fieldElement = CreateElement(field.Key, field.Value, dictionary);
-                body.Add(fieldElement);
-            }
+            AppendFields(self, body, dictionary);
 
             XElement trailer = new XElement("trailer");
             root.Add(trailer);
-            outputFields.Clear();
-            DumpFields(self.Trailer, outputFields);
-            foreach (KeyValuePair<int, string> field in outputFields)
-            {
-                XElement fieldElement = CreateElement(field.Key, field.Value, dictionary);
-                trailer.Add(fieldElement);
-            }
+            AppendFields(self.Trailer, trailer, dictionary);
 
             return doc;
         }
@@ -127,90 +109,165 @@ namespace AxFixEngine.Extensions
             return xmldoc;
         }
 
-        private static void DumpFields(FieldMap current, IList<KeyValuePair<int, string>> output, int[] precedingFields = null)
+        private struct FixField
+        {
+            public int Tag;
+            public string TagName;
+            public string Value;
+            public string ValueName;
+            public string Type;
+            public IList<FixField> Group;
+        }
+
+        private static void AppendFields(FieldMap fromMap, XElement toElement, DataDictionary dictionary)
+        {
+            IList<FixField> collectedFields = new List<FixField>();
+            CollectFields(fromMap, collectedFields, dictionary);
+            foreach (FixField field in collectedFields)
+            {
+                XElement fieldElement = CreateElement(field);
+                toElement.Add(fieldElement);
+            }
+        }
+
+        private static void CollectFields(FieldMap currentMap,
+                                          IList<FixField> output,
+                                          DataDictionary dictionary,
+                                          int[] precedingFields = null,
+                                          FixField? groupField = null)
         {
             if (precedingFields == null)
             {
                 precedingFields = new int[] { };
             }
 
-            IList<int> groupTags = current.GetGroupTags();
+            IList<int> groupTags = currentMap.GetGroupTags();
 
-            // The preceding fields and groups must appear first.
+            // Preceding tags must appear first.
             foreach (int preField in precedingFields)
             {
-                if (current.IsSetField(preField))
+                if (currentMap.IsSetField(preField))
                 {
-                    output.Add(new KeyValuePair<int, string>(preField, current.GetField(preField)));
+                    string value = currentMap.GetField(preField);
+                    FixField newField = new FixField
+                                        {
+                                            Tag = preField,
+                                            Value = value,
+                                            Group = new List<FixField>(),
+                                            Type = dictionary.GetTagType(preField),
+                                            TagName = dictionary.GetTagName(preField),
+                                            ValueName = dictionary.GetEnumLabel(preField, value) ?? string.Empty
+                                        };
+                    if (groupField.HasValue)
+                    {
+                        groupField.Value.Group.Add(newField);
+                    }
+                    else
+                    {
+                        output.Add(newField);
+                    }
                     if (groupTags.Contains(preField))
                     {
-                        for (int i = 0; i < current.GroupCount(preField); ++i)
+                        for (int i = 0; i < currentMap.GroupCount(preField); ++i)
                         {
-                            Group group = current.GetGroup(i + 1, preField);
-                            DumpFields(group, output, new[] {group.Delim});
+                            Group group = currentMap.GetGroup(i + 1, preField);
+                            CollectFields(group, output, dictionary, new[] {group.Delim}, newField);
                         }
                     }
                 }
             }
 
-            // The remaining fields after the preceding.
-            foreach (KeyValuePair<int, IField> field in current)
+            // Other fields after preceding tags.
+            foreach (KeyValuePair<int, IField> field in currentMap)
             {
                 if (!precedingFields.Contains(field.Key) && !groupTags.Contains(field.Key))
                 {
-                    output.Add(new KeyValuePair<int, string>(field.Key, field.Value.ToString()));
+                    string value = currentMap.GetField(field.Key);
+                    FixField newField = new FixField
+                                        {
+                                            Tag = field.Key,
+                                            Value = value,
+                                            Group = new List<FixField>(),
+                                            Type = dictionary.GetTagType(field.Key),
+                                            TagName = dictionary.GetTagName(field.Key),
+                                            ValueName = dictionary.GetEnumLabel(field.Key, value) ?? string.Empty
+                                        };
+                    if (groupField.HasValue)
+                    {
+                        groupField.Value.Group.Add(newField);
+                    }
+                    else
+                    {
+                        output.Add(newField);
+                    }
                 }
             }
 
-            // The remaining groups after the preceding.
+            // Other groups after preceding tags.
             foreach (int grpTag in groupTags)
             {
                 if (!precedingFields.Contains(grpTag))
                 {
-                    output.Add(new KeyValuePair<int, string>(grpTag, current.GetField(grpTag)));
-                    for (int i = 0; i < current.GroupCount(grpTag); ++i)
+                    FixField newField = new FixField
+                                        {
+                                            Tag = grpTag,
+                                            Value = currentMap.GetField(grpTag),
+                                            Group = new List<FixField>(),
+                                            Type = dictionary.GetTagType(grpTag),
+                                            TagName = dictionary.GetTagName(grpTag)
+                                        };
+                    if (groupField.HasValue)
                     {
-                        Group group = current.GetGroup(i + 1, grpTag);
-                        DumpFields(group, output, new[] {group.Delim});
+                        groupField.Value.Group.Add(newField);
+                    }
+                    else
+                    {
+                        output.Add(newField);
+                    }
+                    for (int i = 0; i < currentMap.GroupCount(grpTag); ++i)
+                    {
+                        Group group = currentMap.GetGroup(i + 1, grpTag);
+                        CollectFields(group, output, dictionary, new[] {group.Delim}, newField);
                     }
                 }
             }
         }
 
-        private static XElement CreateElement(int tagNumber, string tagValue, DataDictionary dictionary)
+        private static XElement CreateElement(FixField field)
         {
-            string tagName = dictionary.GetTagName(tagNumber);
-            string tagType = dictionary.GetTagType(tagNumber);
+            XElement element = new XElement(field.TagName);
+            element.Add(new XAttribute("tag", field.Tag));
 
-            XElement element = new XElement(tagName);
+            foreach (FixField group in field.Group)
+            {
+                XElement child = CreateElement(group);
+                element.Add(child);
+            }
 
-            element.Add(new XAttribute("tag", tagNumber));
-
-            if (tagType.Equals("DATA"))
+            if (field.Type.Equals("DATA"))
             {
                 try
                 {
                     // Try to convert field DATA to an XML content.
-                    XElement data = XElement.Parse(tagValue);
+                    XElement data = XElement.Parse(field.Value);
                     element.Add(data);
                 }
                 catch
                 {
                     // XML parsing has failed, add it as CDATA.
-                    element.Add(new XCData(tagValue));
+                    element.Add(new XCData(field.Value));
                 }
             }
             else
             {
-                element.Add(new XAttribute("value", tagValue));
-                string enumLabel = dictionary.GetEnumLabel(tagNumber, tagValue);
-                if (!string.IsNullOrWhiteSpace(enumLabel))
+                element.Add(new XAttribute("value", field.Value));
+                if (!string.IsNullOrWhiteSpace(field.ValueName))
                 {
-                    element.Add(new XAttribute("desc", enumLabel));
+                    element.Add(new XAttribute("desc", field.ValueName));
                 }
             }
 
-            element.Add(new XAttribute("type", tagType));
+            element.Add(new XAttribute("type", field.Type));
 
             // Cleanup namespaces decorations (may occur within encoded fields having XML).
             foreach (XElement descendant in element.Descendants())
@@ -222,41 +279,77 @@ namespace AxFixEngine.Extensions
             return element;
         }
 
-        // "8=FIX.4.1^9=103^35=D^34=4^49=BANZAI^52=20121105-23:24:55^56=EXEC^11=1352157895032^21=1^38=10000^40=1^54=1^55=ORCL^59=0^354=127
-        //  ^355=<Allocations><Allocation><BookingEntity>TEST</BookingEntity><BookingQuantity>50000</BookingQuantity></Allocation></Allocations>
-        //  ^10=047^"
+        // Message with XML encoded field in tag[355] :
         //
-        // <message name="ORDER_SINGLE">
-        //   <header>
-        //      <BeginString tag="8" value="FIX.4.1" type="STRING" />
-        //		<BodyLength tag="9" value="103" type="LENGTH" />
-        //		<MsgSeqNum tag="34" value="4" type="SEQNUM" />
-        //		<MsgType tag="35" value="D" desc="ORDER_SINGLE" type="STRING" />
-        //		<SenderCompID tag="49" value="BANZAI" type="STRING" />
-        //		<SendingTime tag="52" value="20121105-23:24:55" type="UTCTIMESTAMP" />
-        //		<TargetCompID tag="56" value="EXEC" type="STRING" />
-        //   </header>
-        //	 <body>
-        //		<ClOrdID tag="11" value="1352157895032" type="STRING" />
-        //		<HandlInst tag="21" value="1" desc="AUTOMATED_EXECUTION_ORDER_PRIVATE" type="CHAR" />
-        //		<OrderQty tag="38" value="10000" type="QTY" />
-        //		<OrdType tag="40" value="1" desc="MARKET" type="CHAR" />
-        //		<Side tag="54" value="1" desc="BUY" type="CHAR" />
-        //		<Symbol tag="55" value="ORCL" type="STRING" />
-        //		<TimeInForce tag="59" value="0" desc="DAY" type="CHAR" />
-        //		<EncodedTextLen tag="354" value="127" type="LENGTH" />
-        //		<EncodedText tag="355" type="DATA">
-        //			<Allocations>
-        //				<Allocation>
-        //					<BookingEntity>TEST</BookingEntity>
-        //					<BookingQuantity>50000</BookingQuantity>
-        //				</Allocation>
-        //			</Allocations>
-        //		</EncodedText>
-        //	 </body>
-        //	 <trailer>
-        //		<CheckSum tag="10" value="047" type="STRING" />
-        //	 </trailer>
-        // </message>
+        // "8=FIX.4.4^9=235^35=D^34=4^49=BANZAI^52=20121105-23:24:55^56=EXEC^11=1352157895032
+        //  ^21=1^38=10000^40=1^54=1^55=ORCL^59=0^354=127
+        //  ^355=<h:box xmlns:h=\"http://www.w3.org/TR/html4/\"><h:bag><h:fruit>Apples</h:fruit><h:fruit>Bananas</h:fruit></h:bag></h:box>
+        //  ^10=102^"
+        //
+        //  <message name = "ORDER_SINGLE" >
+        //      <header>
+        //          <BeginString tag="8" value="FIX.4.4" type="STRING" />
+        //          <BodyLength tag = "9" value="235" type="LENGTH" />
+        //          <MsgSeqNum tag = "34" value="4" type="SEQNUM" />
+        //          <MsgType tag = "35" value="D" desc="ORDER_SINGLE" type="STRING" />
+        //          <SenderCompID tag = "49" value="BANZAI" type="STRING" />
+        //          <SendingTime tag = "52" value="20121105-23:24:55" type="UTCTIMESTAMP" />
+        //          <TargetCompID tag = "56" value="EXEC" type="STRING" />
+        //      </header>
+        //      <body>
+        //          <ClOrdID tag = "11" value="1352157895032" type="STRING" />
+        //          <HandlInst tag = "21" value="1" desc="AUTOMATED_EXECUTION_ORDER_PRIVATE" type="CHAR" />
+        //          <OrderQty tag = "38" value="10000" type="QTY" />
+        //          <OrdType tag = "40" value="1" desc="MARKET" type="CHAR" />
+        //          <Side tag = "54" value="1" desc="BUY" type="CHAR" />
+        //          <Symbol tag = "55" value="ORCL" type="STRING" />
+        //          <TimeInForce tag = "59" value="0" desc="DAY" type="CHAR" />
+        //          <EncodedTextLen tag = "354" value="127" type="LENGTH" />
+        //          <EncodedText tag = "355" type="DATA">
+        //              <box>
+        //                  <bag>
+        //                      <fruit>Apples</fruit>
+        //                      <fruit>Bananas</fruit>
+        //                  </bag>
+        //              </box>
+        //          </EncodedText>
+        //      </body>
+        //      <trailer>
+        //          <CheckSum tag = "10" value="102" type="STRING" />
+        //      </trailer>
+        //  </message>
+
+        // Message with embedded groups :
+        //
+        //  "8=FIX.4.4^9=128^35=i^34=2^49=PXMD^52=20140922-14:48:49.825^56=Q037^117=1
+        //   ^296=1^302=123^295=1^299=0^134=1000000^135=900000^188=1.4363^190=1.4365^10=086^"
+        //
+        //  <message name = "MASS_QUOTE" >
+        //      <header>
+        //          <BeginString tag="8" value="FIX.4.4" type="STRING" />
+        //          <BodyLength tag = "9" value="128" type="LENGTH" />
+        //          <MsgSeqNum tag = "34" value="2" type="SEQNUM" />
+        //          <MsgType tag = "35" value="i" desc="MASS_QUOTE" type="STRING" />
+        //          <SenderCompID tag = "49" value="PXMD" type="STRING" />
+        //          <SendingTime tag = "52" value="20140922-14:48:49.825" type="UTCTIMESTAMP" />
+        //          <TargetCompID tag = "56" value="Q037" type="STRING" />
+        //          </header>
+        //      <body>
+        //          <QuoteID tag = "117" value="1" type="STRING" />
+        //          <NoQuoteSets tag = "296" value="1" type="NUMINGROUP">
+        //              <QuoteSetID tag = "302" value="123" type="STRING" />
+        //              <NoQuoteEntries tag = "295" value="1" type="NUMINGROUP">
+        //                  <QuoteEntryID tag = "299" value="0" type="STRING" />
+        //                  <BidSize tag = "134" value="1000000" type="QTY" />
+        //                  <OfferSize tag = "135" value="900000" type="QTY" />
+        //                  <BidSpotRate tag = "188" value="1.4363" type="PRICE" />
+        //                  <OfferSpotRate tag = "190" value="1.4365" type="PRICE" />
+        //              </NoQuoteEntries>
+        //          </NoQuoteSets>
+        //      </body>
+        //      <trailer>
+        //          <CheckSum tag = "10" value="086" type="STRING" />
+        //      </trailer>
+        //  </message>
     }
 }
