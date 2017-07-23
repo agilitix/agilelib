@@ -4,7 +4,7 @@ using QuickFix;
 
 namespace AxFixServer
 {
-    public class Fix44MessageHandler : FixMessageCrackingHandlerBase
+    public class Fix44MessageHandler : FixMessageCrackerHandlerBase
     {
         #region Session level messages
 

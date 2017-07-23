@@ -3,7 +3,7 @@ using QuickFix;
 
 namespace AxFixEngine.Handlers
 {
-    public abstract class FixMessageCrackingHandlerBase : MessageCracker, IFixMessageHandler
+    public abstract class FixMessageCrackerHandlerBase : MessageCracker, IFixMessageHandler
     {
         public virtual void OnLogon(SessionID sessionId)
         {

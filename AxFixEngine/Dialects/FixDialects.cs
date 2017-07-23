@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AxFixEngine.Extensions;
 using AxFixEngine.Interfaces;
 using QuickFix;
 using QuickFix.DataDictionary;
@@ -26,13 +27,13 @@ namespace AxFixEngine.Dialects
                 DataDictionary dataDictionary;
                 if (_dataDictionariesBySpecFile.TryGetValue(specFile, out dataDictionary))
                 {
-                    _dataDictionaries[sessionId] = dataDictionary;
+                    _dataDictionaries[sessionId] = _dataDictionaries[sessionId.ToReverseSessionID()] = dataDictionary;
                 }
                 else
                 {
                     dataDictionary = new DataDictionary();
                     dataDictionary.Load(specFile);
-                    _dataDictionaries[sessionId] = _dataDictionariesBySpecFile[specFile] = dataDictionary;
+                    _dataDictionaries[sessionId] = _dataDictionaries[sessionId.ToReverseSessionID()] = _dataDictionariesBySpecFile[specFile] = dataDictionary;
                 }
             }
         }
