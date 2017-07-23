@@ -83,7 +83,7 @@ namespace AxFixServer
 
                 SessionSettings fixSettings = new SessionSettings(configFile);
 
-                FixDialectsProvider.Initialize(new FixDialects(fixSettings));
+                FixDialectsProvider.Attach(new FixDialects(fixSettings));
 
                 IFixMessageHandler messageHandler = unityConfiguration.Configuration.Resolve<IFixMessageHandler>();
                 IApplication fixApp = new FixApplication(messageHandler);
@@ -99,7 +99,7 @@ namespace AxFixServer
 
                 SessionSettings fixSettings = new SessionSettings(configFile);
 
-                FixDialectsProvider.Initialize(new FixDialects(fixSettings));
+                FixDialectsProvider.Attach(new FixDialects(fixSettings));
 
                 IFixMessageHandler messageHandler = unityConfiguration.Configuration.Resolve<IFixMessageHandler>();
                 IApplication fixApp = new FixApplication(messageHandler);

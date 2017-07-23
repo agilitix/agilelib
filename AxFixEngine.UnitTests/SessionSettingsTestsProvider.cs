@@ -106,5 +106,28 @@ namespace AxFixEngine.UnitTests
 
             return settings;
         }
+
+        public static SessionSettings GetSessionSettings4(string beginString, string specFile)
+        {
+            string configuration = new StringBuilder()
+                .AppendLine("[DEFAULT]")
+                .AppendLine("CONNECTIONTYPE=acceptor")
+                .AppendLine("DATADICTIONARY=" + specFile)
+                .AppendLine()
+                .AppendLine("[SESSION]")
+                .AppendLine("BEGINSTRING=" + beginString)
+                .AppendLine("SENDERCOMPID=BANZAI")
+                .AppendLine("TARGETCOMPID=EXEC")
+                .AppendLine()
+                .AppendLine("[SESSION]")
+                .AppendLine("BEGINSTRING=" + beginString)
+                .AppendLine("SENDERCOMPID=PXMD")
+                .AppendLine("TARGETCOMPID=Q037")
+                .ToString();
+
+            SessionSettings settings = new SessionSettings(new System.IO.StringReader(configuration));
+
+            return settings;
+        }
     }
 }

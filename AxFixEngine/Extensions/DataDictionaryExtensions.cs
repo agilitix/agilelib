@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using QuickFix.DataDictionary;
+using QuickFix.Fields;
 
 namespace AxFixEngine.Extensions
 {
@@ -18,6 +19,14 @@ namespace AxFixEngine.Extensions
             sb.Append(", CheckFieldsOutOfOrder=" + self.CheckFieldsOutOfOrder);
             sb.Append(", CheckUserDefinedFields=" + self.CheckUserDefinedFields);
             return sb.ToString();
+        }
+
+        public static bool IsBodyField(this DataDictionary self, int tag)
+        {
+            DDField ddField;
+            return self.FieldsByTag.TryGetValue(tag, out ddField)
+                   && !self.IsHeaderField(tag)
+                   && !self.IsTrailerField(tag);
         }
 
         /// <summary>
@@ -67,41 +76,41 @@ namespace AxFixEngine.Extensions
         }
 
         /// <summary>
-        /// Get enum label from tag number and enum value: 54, "2" => "SELL"
+        /// Get enum Name from tag number and enum value: 54, "2" => "SELL"
         /// </summary>
-        public static string GetEnumLabel(this DataDictionary self, int tagNumber, string enumValue)
+        public static string GetEnumName(this DataDictionary self, int tagNumber, string enumValue)
         {
-            string enumLabel;
-            TryGetEnumLabel(self, tagNumber, enumValue, out enumLabel);
-            return enumLabel;
+            string enumName;
+            TryGetEnumName(self, tagNumber, enumValue, out enumName);
+            return enumName;
         }
 
-        public static bool TryGetEnumLabel(this DataDictionary self, int tagNumber, string enumValue, out string enumLabel)
+        public static bool TryGetEnumName(this DataDictionary self, int tagNumber, string enumValue, out string enumName)
         {
-            enumLabel = string.Empty;
+            enumName = string.Empty;
             DDField ddField;
             return self.FieldsByTag.TryGetValue(tagNumber, out ddField)
-                   && ddField.EnumDict.TryGetValue(enumValue, out enumLabel);
+                   && ddField.EnumDict.TryGetValue(enumValue, out enumName);
         }
 
         /// <summary>
-        /// Get enum value from tag number and enum label: 54, "SELL" => "2"
+        /// Get enum value from tag number and enum Name: 54, "SELL" => "2"
         /// </summary>
-        public static string GetEnumValue(this DataDictionary self, int tagNumber, string enumLabel)
+        public static string GetEnumValue(this DataDictionary self, int tagNumber, string enumName)
         {
             string enumValue;
-            TryGetEnumValue(self, tagNumber, enumLabel, out enumValue);
+            TryGetEnumValue(self, tagNumber, enumName, out enumValue);
             return enumValue;
         }
 
-        public static bool TryGetEnumValue(this DataDictionary self, int tagNumber, string enumLabel, out string enumValue)
+        public static bool TryGetEnumValue(this DataDictionary self, int tagNumber, string enumName, out string enumValue)
         {
             DDField ddField;
             if (self.FieldsByTag.TryGetValue(tagNumber, out ddField))
             {
                 foreach (KeyValuePair<string, string> enumDictInfo in ddField.EnumDict)
                 {
-                    if (enumDictInfo.Value.Equals(enumLabel))
+                    if (enumDictInfo.Value.Equals(enumName))
                     {
                         enumValue = enumDictInfo.Key;
                         return true;
@@ -137,31 +146,31 @@ namespace AxFixEngine.Extensions
         }
 
         /// <summary>
-        /// Get enum label from tag name and enum value: "Side", "2" => "SELL"
+        /// Get enum Name from tag name and enum value: "Side", "2" => "SELL"
         /// </summary>
-        public static string GetEnumLabel(this DataDictionary self, string tagName, string enumValue)
+        public static string GetEnumName(this DataDictionary self, string tagName, string enumValue)
         {
             int tagNumber;
             if (TryGetTagNumber(self, tagName, out tagNumber))
             {
-                string enumLabel;
-                TryGetEnumLabel(self, tagNumber, enumValue, out enumLabel);
-                return enumLabel;
+                string enumName;
+                TryGetEnumName(self, tagNumber, enumValue, out enumName);
+                return enumName;
             }
 
             return string.Empty;
         }
 
         /// <summary>
-        /// Get enum value from tag name and enum label: "Side", "SELL" => "2"
+        /// Get enum value from tag name and enum Name: "Side", "SELL" => "2"
         /// </summary>
-        public static string GetEnumValue(this DataDictionary self, string tagName, string enumLabel)
+        public static string GetEnumValue(this DataDictionary self, string tagName, string enumName)
         {
             int tagNumber;
             if (TryGetTagNumber(self, tagName, out tagNumber))
             {
                 string enumValue;
-                TryGetEnumValue(self, tagNumber, enumLabel, out enumValue);
+                TryGetEnumValue(self, tagNumber, enumName, out enumValue);
                 return enumValue;
             }
 

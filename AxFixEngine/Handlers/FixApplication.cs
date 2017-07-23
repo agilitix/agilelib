@@ -27,8 +27,7 @@ namespace AxFixEngine.Handlers
         /// </summary>
         public void ToAdmin(Message message, SessionID sessionID)
         {
-            DataDictionary sessionDictionary = FixDialectsProvider.Dialects.GetDataDictionary(sessionID);
-            Log.InfoFormat("Send admin MsgType={0} content=<{1}>", message.GetName(sessionDictionary), message);
+            Log.InfoFormat("Send admin MsgType={0} content=<{1}>", message.GetMsgName(), message);
             _messageHandler.ToAdmin(message, sessionID);
         }
 
@@ -40,8 +39,7 @@ namespace AxFixEngine.Handlers
         /// </summary>
         public void FromAdmin(Message message, SessionID sessionID)
         {
-            DataDictionary sessionDictionary = FixDialectsProvider.Dialects.GetDataDictionary(sessionID);
-            Log.InfoFormat("Recv admin MsgType={0} content=<{1}>", message.GetName(sessionDictionary), message);
+            Log.InfoFormat("Recv admin MsgType={0} content=<{1}>", message.GetMsgName(), message);
             _messageHandler.FromAdmin(message, sessionID);
         }
 
@@ -59,8 +57,7 @@ namespace AxFixEngine.Handlers
         /// </summary>
         public void ToApp(Message message, SessionID sessionID)
         {
-            DataDictionary sessionDictionary = FixDialectsProvider.Dialects.GetDataDictionary(sessionID);
-            Log.InfoFormat("Send appli MsgType={0} content=<{1}>", message.GetName(sessionDictionary), message);
+            Log.InfoFormat("Send appli MsgType={0} content=<{1}>", message.GetMsgName(), message);
             _messageHandler.ToApp(message, sessionID);
         }
 
@@ -81,8 +78,7 @@ namespace AxFixEngine.Handlers
         /// </summary>
         public void FromApp(Message message, SessionID sessionID)
         {
-            DataDictionary sessionDictionary = FixDialectsProvider.Dialects.GetDataDictionary(sessionID);
-            Log.InfoFormat("Recv appli MsgType={0} content=<{1}>", message.GetName(sessionDictionary), message);
+            Log.InfoFormat("Recv appli MsgType={0} content=<{1}>", message.GetMsgName(), message);
             _messageHandler.FromApp(message, sessionID);
         }
 

@@ -65,7 +65,8 @@
     <Compile Include="Factories\FixMessageFactory.cs" />
     <Compile Include="Handlers\FixMessageHandlerBase.cs" />
     <Compile Include="Handlers\FixMessageReactiveHandlerBase.cs" />
-    <Compile Include="Utilities\FixValueConverter.cs" />
+    <Compile Include="Utilities\FixUtils.cs" />
+    <Compile Include="Utilities\DayOfWeekConverter.cs" />
     <Compile Include="Extensions\DataDictionaryExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\MessageExtensions.cs" />
@@ -74,7 +75,6 @@
     <Compile Include="Handlers\FixApplication.cs" />
     <Compile Include="Factories\FixConnectorFactory.cs" />
     <Compile Include="Connectors\FixInitiator.cs" />
-    <Compile Include="Utilities\FixMessageFileHistorizer.cs" />
     <Compile Include="Handlers\FixMessageCrackingHandlerBase.cs" />
     <Compile Include="Dialects\FixDialects.cs" />
     <Compile Include="Interfaces\IFixConnector.cs" />

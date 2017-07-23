@@ -1,26 +1,22 @@
 ﻿using System;
 using System.Threading;
 using AxFixEngine.Interfaces;
+using AxUtils;
 
 namespace AxFixEngine.Dialects
 {
     public static class FixDialectsProvider
     {
-        private static int _latch;
-        private static IFixDialects _dialects;
-
-        public static void Initialize(IFixDialects dialects)
+        public static void Attach(IFixDialects dialects)
         {
-            if (Interlocked.Exchange(ref _latch, 1) == 0)
-            {
-                _dialects = dialects;
-            }
-            else
-            {
-                throw new InvalidOperationException();
-            }
+            InstanceHolder<IFixDialects>.Attach(dialects);
         }
 
-        public static IFixDialects Dialects => _dialects;
+        public static void Detach()
+        {
+            InstanceHolder<IFixDialects>.Detach();
+        }
+
+        public static IFixDialects Dialects => InstanceHolder<IFixDialects>.Instance;
     }
 }

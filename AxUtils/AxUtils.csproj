@@ -49,6 +49,7 @@
     <Compile Include="Ensure.cs" />
     <Compile Include="EnumUtils.cs" />
     <Compile Include="CultureInfoUtils.cs" />
+    <Compile Include="InstanceHolder.cs" />
     <Compile Include="ModelValidatorExtensions.cs" />
     <Compile Include="NetworkUtils.cs" />
     <Compile Include="WorkerQueue.cs" />
