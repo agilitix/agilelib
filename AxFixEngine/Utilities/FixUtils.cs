@@ -5,7 +5,7 @@ namespace AxFixEngine.Utilities
 {
     public static class FixUtils
     {
-        public static SessionID GetSessionID(string fixMessage)
+        public static SessionID ParseSessionID(string fixMessage)
         {
             Message msg = new Message();
             if (msg.FromStringHeader(fixMessage))
@@ -16,7 +16,7 @@ namespace AxFixEngine.Utilities
             return null;
         }
 
-        public static MsgType GetMsgType(string fixMessage)
+        public static MsgType ParseMsgType(string fixMessage)
         {
             Message msg = new Message();
             if (msg.FromStringHeader(fixMessage))
@@ -25,6 +25,11 @@ namespace AxFixEngine.Utilities
             }
 
             return null;
+        }
+
+        public static string ParseBeginString(string fixMessage)
+        {
+            return Message.ExtractBeginString(fixMessage);
         }
     }
 }

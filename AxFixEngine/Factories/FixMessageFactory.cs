@@ -18,18 +18,18 @@ namespace AxFixEngine.Factories
 
         public Message CreateMessageFromString(string fixMessage)
         {
-            SessionID sessionId = FixUtils.GetSessionID(fixMessage);
+            string beginString = FixUtils.ParseBeginString(fixMessage);
             Message message = new Message(fixMessage,
-                                          FixDialectsProvider.Dialects.GetDataDictionary(sessionId),
+                                          FixDialectsProvider.Dialects.GetDataDictionary(beginString),
                                           false);
             return message;
         }
 
         public Message CreateValidatedMessageFromString(string fixMessage)
         {
-            SessionID sessionId = FixUtils.GetSessionID(fixMessage);
+            string beginString = FixUtils.ParseBeginString(fixMessage);
             Message message = new Message(fixMessage,
-                                          FixDialectsProvider.Dialects.GetDataDictionary(sessionId),
+                                          FixDialectsProvider.Dialects.GetDataDictionary(beginString),
                                           true);
             return message;
         }

@@ -92,7 +92,7 @@ namespace AxFixEngine.Handlers
         /// </summary>
         public void OnCreate(SessionID sessionID)
         {
-            DataDictionary sessionDictionary = FixDialectsProvider.Dialects.GetDataDictionary(sessionID);
+            DataDictionary sessionDictionary = FixDialectsProvider.Dialects.GetDataDictionary(sessionID.BeginString);
             Log.InfoFormat("Created session={0} dictionaryDescription=<{1}>", sessionID, sessionDictionary.GetDescription());
         }
 

@@ -9,15 +9,10 @@ using AxCommonLogger.Factories;
 using AxCommonLogger.Interfaces;
 using AxConfiguration;
 using AxConfiguration.Interfaces;
-using AxFixEngine;
 using AxFixEngine.Dialects;
-using AxFixEngine.Extensions;
 using AxFixEngine.Factories;
 using AxFixEngine.Handlers;
 using AxFixEngine.Interfaces;
-using AxFixEngine.Utilities;
-using AxUtils;
-using Microsoft.Practices.Unity;
 using QuickFix;
 
 namespace AxFixServer
@@ -28,12 +23,14 @@ namespace AxFixServer
 
         static Program()
         {
+#if DEBUG == false
             Console.TreatControlCAsInput = false;
             Console.CancelKeyPress += (snd, evt) =>
                                       {
                                           Console.WriteLine("Ctrl+C pressed");
                                           evt.Cancel = true;
                                       };
+#endif
         }
 
         static void Main(string[] args)
@@ -65,11 +62,6 @@ namespace AxFixServer
             Logger.Info("Starting FIX engine version=" + Assembly.GetEntryAssembly().GetName().Version);
             Logger.Info("Main => PID=" + Process.GetCurrentProcess().Id + " / ThreadID=" + Thread.CurrentThread.ManagedThreadId);
 
-            // Read Unity configuration.
-            Logger.Info("Reading Unity container config");
-            IUnityConfiguration unityConfiguration = new UnityConfiguration();
-            unityConfiguration.LoadConfiguration(configurationFileProvider.IocConfigFile);
-
             ICommandLineArguments commandLineArguments = new CommandLineArguments(args);
             Logger.Info("Command line arguments: " + commandLineArguments);
 
@@ -85,7 +77,7 @@ namespace AxFixServer
 
                 FixDialectsProvider.Attach(new FixDialects(fixSettings));
 
-                IFixMessageHandler messageHandler = unityConfiguration.Configuration.Resolve<IFixMessageHandler>();
+                IFixMessageHandler messageHandler = new Fix44MessageHandler();
                 IApplication fixApp = new FixApplication(messageHandler);
 
                 acceptor = connectorFactory.CreateAcceptor(fixApp, fixSettings);
@@ -101,7 +93,7 @@ namespace AxFixServer
 
                 FixDialectsProvider.Attach(new FixDialects(fixSettings));
 
-                IFixMessageHandler messageHandler = unityConfiguration.Configuration.Resolve<IFixMessageHandler>();
+                IFixMessageHandler messageHandler = new Fix44MessageHandler();
                 IApplication fixApp = new FixApplication(messageHandler);
 
                 initiator = connectorFactory.CreateInitiator(fixApp, fixSettings);
