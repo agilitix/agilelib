@@ -5,6 +5,7 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using AxFixEngine.Dialects;
+using Newtonsoft.Json;
 using QuickFix;
 using QuickFix.DataDictionary;
 using QuickFix.Fields;
@@ -160,6 +161,12 @@ namespace AxFixEngine.Extensions
                 xmldoc.Load(xmlreader);
             }
             return xmldoc;
+        }
+
+        public static string ToJson(this Message self)
+        {
+            XmlDocument doc = ToXmlDocument(self);
+            return JsonConvert.SerializeXmlNode(doc);
         }
 
         private static void FieldMapToXml(FieldMap fieldMap,
