@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using AxFixEngine.Dialects;
-using AxFixEngine.Extensions;
+﻿using AxFixEngine.Dialects;
 using AxFixEngine.Interfaces;
 using AxFixEngine.Utilities;
 using QuickFix;
-using QuickFix.DataDictionary;
 using QuickFix.Fields;
 using Message = QuickFix.Message;
 
@@ -38,10 +34,17 @@ namespace AxFixEngine.Factories
             return message;
         }
 
-        public T CreateMessage<T>(SessionID sessionID, string msgType) where T : Message
+        public TMessage CreateMessage<TMessage>(SessionID sessionID, MsgType msgType) where TMessage : Message
         {
-            Message msg = _factory.Create(sessionID.BeginString, msgType);
-            return (T) msg;
+            Message msg = _factory.Create(sessionID.BeginString, msgType.getValue());
+            return (TMessage) msg;
+        }
+
+        public TReply CreateReplyMessage<TReply>(Message request, MsgType replyType) where TReply : Message
+        {
+            Message msg = _factory.Create(request.GetField(Tags.BeginString), replyType.getValue());
+            msg.ReverseRoute(request.Header);
+            return (TReply) msg;
         }
     }
 }

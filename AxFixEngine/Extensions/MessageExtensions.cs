@@ -26,6 +26,12 @@ namespace AxFixEngine.Extensions
             return sessionId;
         }
 
+        public static SessionID GetReverseSessionID(this Message self)
+        {
+            SessionID sessionId = Message.GetReverseSessionID(self);
+            return sessionId;
+        }
+
         public static MsgType GetMsgType(this Message self)
         {
             string msgType = self.Header.GetField(Tags.MsgType);
@@ -136,11 +142,11 @@ namespace AxFixEngine.Extensions
 
             XElement body = new XElement("Body");
             root.Add(body);
-            FieldMapToXml(self, body, dictionary);
+            FieldMapToXml(self, body, dictionary, new int[0]);
 
             XElement trailer = new XElement("Trailer");
             root.Add(trailer);
-            FieldMapToXml(self.Trailer, trailer, dictionary);
+            FieldMapToXml(self.Trailer, trailer, dictionary, new int[0]);
 
             return doc;
         }
@@ -159,13 +165,8 @@ namespace AxFixEngine.Extensions
         private static void FieldMapToXml(FieldMap fieldMap,
                                           XElement parent,
                                           DataDictionary dictionary,
-                                          int[] precedingFields = null)
+                                          int[] precedingFields)
         {
-            if (precedingFields == null)
-            {
-                precedingFields = new int[0];
-            }
-
             // Sort by preceding tags first then append other tags.
             IEnumerable<int> sortedTags = fieldMap.Where(x => precedingFields.Contains(x.Key))
                                                   .Concat(fieldMap.Where(x => !precedingFields.Contains(x.Key)))
@@ -257,179 +258,5 @@ namespace AxFixEngine.Extensions
                 parent.Add(child);
             }
         }
-
-        #region Dump FIX fields to XML
-
-        ////private struct FixField
-        ////{
-        ////    public int Tag;
-        ////    public string TagName;
-        ////    public string Value;
-        ////    public string ValueName;
-        ////    public string Type;
-        ////    public IList<FixField> Group;
-        ////}
-
-        ////private static void AppendFields(FieldMap fromMap, XElement toElement, DataDictionary dictionary)
-        ////{
-        ////    IList<FixField> collectedFields = new List<FixField>();
-        ////    CollectFields(fromMap, collectedFields, dictionary);
-        ////    foreach (FixField field in collectedFields)
-        ////    {
-        ////        XElement fieldElement = CreateElement(field);
-        ////        toElement.Add(fieldElement);
-        ////    }
-        ////}
-
-        ////private static void CollectFields(FieldMap currentMap,
-        ////                                  IList<FixField> output,
-        ////                                  DataDictionary dictionary,
-        ////                                  int[] precedingFields = null,
-        ////                                  FixField? groupField = null)
-        ////{
-        ////    if (precedingFields == null)
-        ////    {
-        ////        precedingFields = new int[] { };
-        ////    }
-
-        ////    IList<int> groupTags = currentMap.GetGroupTags();
-
-        ////    // Preceding tags must appear first.
-        ////    foreach (int preField in precedingFields)
-        ////    {
-        ////        if (currentMap.IsSetField(preField))
-        ////        {
-        ////            string value = currentMap.GetField(preField);
-        ////            FixField newField = new FixField
-        ////                                {
-        ////                                    Tag = preField,
-        ////                                    Value = value,
-        ////                                    Group = new List<FixField>(),
-        ////                                    Type = dictionary.GetTagType(preField),
-        ////                                    TagName = dictionary.GetTagName(preField),
-        ////                                    ValueName = dictionary.GetEnumLabel(preField, value) ?? string.Empty
-        ////                                };
-        ////            if (groupField.HasValue)
-        ////            {
-        ////                groupField.Value.Group.Add(newField);
-        ////            }
-        ////            else
-        ////            {
-        ////                output.Add(newField);
-        ////            }
-        ////            if (groupTags.Contains(preField))
-        ////            {
-        ////                for (int i = 0; i < currentMap.GroupCount(preField); ++i)
-        ////                {
-        ////                    Group group = currentMap.GetGroup(i + 1, preField);
-        ////                    CollectFields(group, output, dictionary, new[] {group.Delim}, newField);
-        ////                }
-        ////            }
-        ////        }
-        ////    }
-
-        ////    // Other fields after preceding tags.
-        ////    foreach (KeyValuePair<int, IField> field in currentMap)
-        ////    {
-        ////        if (!precedingFields.Contains(field.Key) && !groupTags.Contains(field.Key))
-        ////        {
-        ////            string value = currentMap.GetField(field.Key);
-        ////            FixField newField = new FixField
-        ////                                {
-        ////                                    Tag = field.Key,
-        ////                                    Value = value,
-        ////                                    Group = new List<FixField>(),
-        ////                                    Type = dictionary.GetTagType(field.Key),
-        ////                                    TagName = dictionary.GetTagName(field.Key),
-        ////                                    ValueName = dictionary.GetEnumLabel(field.Key, value) ?? string.Empty
-        ////                                };
-        ////            if (groupField.HasValue)
-        ////            {
-        ////                groupField.Value.Group.Add(newField);
-        ////            }
-        ////            else
-        ////            {
-        ////                output.Add(newField);
-        ////            }
-        ////        }
-        ////    }
-
-        ////    // Other groups after preceding tags.
-        ////    foreach (int grpTag in groupTags)
-        ////    {
-        ////        if (!precedingFields.Contains(grpTag))
-        ////        {
-        ////            FixField newField = new FixField
-        ////                                {
-        ////                                    Tag = grpTag,
-        ////                                    Value = currentMap.GetField(grpTag),
-        ////                                    Group = new List<FixField>(),
-        ////                                    Type = dictionary.GetTagType(grpTag),
-        ////                                    TagName = dictionary.GetTagName(grpTag)
-        ////                                };
-        ////            if (groupField.HasValue)
-        ////            {
-        ////                groupField.Value.Group.Add(newField);
-        ////            }
-        ////            else
-        ////            {
-        ////                output.Add(newField);
-        ////            }
-        ////            for (int i = 0; i < currentMap.GroupCount(grpTag); ++i)
-        ////            {
-        ////                Group group = currentMap.GetGroup(i + 1, grpTag);
-        ////                CollectFields(group, output, dictionary, new[] {group.Delim}, newField);
-        ////            }
-        ////        }
-        ////    }
-        ////}
-
-        ////private static XElement CreateElement(FixField field)
-        ////{
-        ////    XElement element = new XElement(field.TagName);
-        ////    element.Add(new XAttribute("tag", field.Tag));
-
-        ////    foreach (FixField group in field.Group)
-        ////    {
-        ////        XElement child = CreateElement(group);
-        ////        element.Add(child);
-        ////    }
-
-        ////    if (field.Type.Equals("DATA"))
-        ////    {
-        ////        try
-        ////        {
-        ////            // Try to convert field DATA to an XML content.
-        ////            XElement data = XElement.Parse(field.Value);
-        ////            element.Add(data);
-        ////        }
-        ////        catch
-        ////        {
-        ////            // XML parsing has failed, add it as CDATA.
-        ////            element.Add(new XCData(field.Value));
-        ////        }
-        ////    }
-        ////    else
-        ////    {
-        ////        element.Add(new XAttribute("value", field.Value));
-        ////        if (!string.IsNullOrWhiteSpace(field.ValueName))
-        ////        {
-        ////            element.Add(new XAttribute("desc", field.ValueName));
-        ////        }
-        ////    }
-
-        ////    element.Add(new XAttribute("type", field.Type));
-
-        ////    // Cleanup namespaces decorations (may occur within encoded fields having XML).
-        ////    foreach (XElement descendant in element.Descendants())
-        ////    {
-        ////        descendant.Attributes().Where(x => x.IsNamespaceDeclaration).Remove();
-        ////        descendant.Name = descendant.Name.LocalName;
-        ////    }
-
-        ////    return element;
-        ////}
-
-        #endregion
     }
 }
