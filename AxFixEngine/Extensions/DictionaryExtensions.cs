@@ -18,9 +18,11 @@ namespace AxFixEngine.Extensions
             IEnumerator enumerator = self.GetEnumerator();
             while (enumerator.MoveNext())
             {
-                KeyValuePair<string, string> current = (KeyValuePair < string, string > )enumerator.Current;
+                KeyValuePair<string, string> current = (KeyValuePair<string, string>) enumerator.Current;
                 yield return current;
             }
+
+            enumerator.Reset();
         }
     }
 }

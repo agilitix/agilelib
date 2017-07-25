@@ -6,11 +6,10 @@ namespace AxFixEngine.Interfaces
 {
     public interface IFixDialects
     {
-        IDictionary<string /*BeginString*/, DataDictionary> GetAllDataDictionaries();
-
         void SetDataDictionary(string beginString, DataDictionary dataDictionary);
-
         DataDictionary GetDataDictionary(string beginString);
         bool TryGetDataDictionary(string beginString, out DataDictionary dataDictionary);
+
+        IDictionary<string /*BeginString*/, DataDictionary> GetAllDataDictionaries();
     }
 }

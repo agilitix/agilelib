@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using QuickFix.DataDictionary;
-using QuickFix.Fields;
 
 namespace AxFixEngine.Extensions
 {

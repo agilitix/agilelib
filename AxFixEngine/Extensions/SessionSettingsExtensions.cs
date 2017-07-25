@@ -31,13 +31,8 @@ namespace AxFixEngine.Extensions
             IEnumerable<Dictionary> settings = sessionSettings.GetSessions().Select(sessionSettings.Get);
             foreach (Dictionary setting in settings)
             {
-                DateTime startTime = setting.GetTime(SessionSettings.START_TIME);
-                DateTime endTime = setting.GetTime(SessionSettings.END_TIME);
-                if (endTime < startTime)
-                {
-                    endTime = endTime.AddDays(1);
-                }
-                if (now >= startTime && now <= endTime)
+                SessionSchedule sch = new SessionSchedule(setting);
+                if (sch.IsSessionTime(now))
                 {
                     return true;
                 }
