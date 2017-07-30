@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mappings>
+  <map fixType="CHAR" clrType="char" />
+  <map fixType="STRING" clrType="string" />
+  <map fixType="MULTIPLEVALUESTRING" clrType="string" />
+  <map fixType="PRICE" clrType="decimal" />
+  <map fixType="QTY" clrType="int" />
+  <map fixType="CURRENCY" clrType="string" />
+  <map fixType="INT" clrType="int" />
+  <map fixType="BOOLEAN" clrType="bool" />
+  <map fixType="LENGTH" clrType="int" />
+  <map fixType="UTCTIMESTAMP" clrType="DateTime" />
+  <map fixType="LOCALMKTDATE" clrType="DateTime" parseExpression=".ParseExact({0},&quot;YYYYMMDD=&quot;, CultureInfo.InvariantCulture)" />
+  <map fixType="UTCDATEONLY" clrType="DateTime" />
+  <map fixType="UTCTIMEONLY" clrType="DateTime" />
+  <map fixType="MONTHYEAR" clrType="DateTime" parseExpression=".ParseExact({0},&quot;YYYYMM=&quot;, CultureInfo.InvariantCulture)" />
+  <map fixType="PRICEOFFSET" clrType="decimal" />
+  <map fixType="EXCHANGE" clrType="string" />
+  <map fixType="PERCENTAGE" clrType="decimal" />
+  <map fixType="DATA" clrType="string" />
+  <map fixType="SEQNUM" clrType="int" />
+  <map fixType="AMT" clrType="decimal" />
+  <map fixType="FLOAT" clrType="decimal" />
+  <map fixType="NUMINGROUP" clrType="int" />
+  <map fixType="COUNTRY" clrType="string" />
+</mappings>

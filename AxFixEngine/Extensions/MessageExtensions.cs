@@ -16,7 +16,7 @@ namespace AxFixEngine.Extensions
     {
         public static DataDictionary GetDialect(this Message self)
         {
-            string beginString = self.GetField(Tags.BeginString);
+            string beginString = self.Header.GetField(Tags.BeginString);
             DataDictionary dictionary = FixDialectsProvider.Dialects.GetDataDictionary(beginString);
             return dictionary;
         }

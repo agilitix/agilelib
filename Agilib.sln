@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.15
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxQuality", "AxQuality\AxQuality.csproj", "{EBF4DE7B-53CB-4F6A-8A86-BD7E0190E469}"
 EndProject
@@ -61,6 +61,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxRepository", "AxRepository\AxRepository.csproj", "{342C00FE-29D4-4DCA-B701-AE304B23DFEF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxMsmqSample", "AxMsmqSample\AxMsmqSample.csproj", "{ECA7AC8D-2EC6-4220-B08B-4B38698163F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxFixEntities", "AxFixEntities\AxFixEntities.csproj", "{CF759057-A424-430C-AA12-463A6EC1F333}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -392,6 +394,22 @@ Global
 		{ECA7AC8D-2EC6-4220-B08B-4B38698163F1}.Release|x64.Build.0 = Release|Any CPU
 		{ECA7AC8D-2EC6-4220-B08B-4B38698163F1}.Release|x86.ActiveCfg = Release|Any CPU
 		{ECA7AC8D-2EC6-4220-B08B-4B38698163F1}.Release|x86.Build.0 = Release|Any CPU
+		{CF759057-A424-430C-AA12-463A6EC1F333}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF759057-A424-430C-AA12-463A6EC1F333}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF759057-A424-430C-AA12-463A6EC1F333}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{CF759057-A424-430C-AA12-463A6EC1F333}.Debug|ARM.Build.0 = Debug|Any CPU
+		{CF759057-A424-430C-AA12-463A6EC1F333}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CF759057-A424-430C-AA12-463A6EC1F333}.Debug|x64.Build.0 = Debug|Any CPU
+		{CF759057-A424-430C-AA12-463A6EC1F333}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CF759057-A424-430C-AA12-463A6EC1F333}.Debug|x86.Build.0 = Debug|Any CPU
+		{CF759057-A424-430C-AA12-463A6EC1F333}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF759057-A424-430C-AA12-463A6EC1F333}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF759057-A424-430C-AA12-463A6EC1F333}.Release|ARM.ActiveCfg = Release|Any CPU
+		{CF759057-A424-430C-AA12-463A6EC1F333}.Release|ARM.Build.0 = Release|Any CPU
+		{CF759057-A424-430C-AA12-463A6EC1F333}.Release|x64.ActiveCfg = Release|Any CPU
+		{CF759057-A424-430C-AA12-463A6EC1F333}.Release|x64.Build.0 = Release|Any CPU
+		{CF759057-A424-430C-AA12-463A6EC1F333}.Release|x86.ActiveCfg = Release|Any CPU
+		{CF759057-A424-430C-AA12-463A6EC1F333}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
