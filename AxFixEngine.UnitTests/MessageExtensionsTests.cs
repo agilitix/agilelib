@@ -31,7 +31,8 @@ namespace AxFixEngine.UnitTests
 
             SessionSettings sessionSettings = SessionSettingsTestsProvider.GetSessionSettings4("FIX.4.4", TestDirectory + @"\Spec\FIX44.xml");
 
-            IFixDialects dialects = new FixDialects(sessionSettings);
+            IFixDialects dialects = new FixDialects();
+            dialects.AddDataDictionaries(sessionSettings);
 
             FixDialectsProvider.Detach();
             FixDialectsProvider.Attach(dialects);

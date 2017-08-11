@@ -10,7 +10,7 @@ namespace AxFixEntities
 {
     public static class MessagesGenerator
     {
-        public static void GenerateMessages()
+        public static void Generate()
         {
             SpecDoc spec = SpecDoc.Load(@".\Spec\FIX44.xml");
             TypeMappingDoc typeMap = TypeMappingDoc.Load(@".\Spec\TypeMapping.xml");
@@ -24,7 +24,7 @@ namespace AxFixEntities
             sb.AppendLine();
             sb.AppendLine("// Generated file");
             sb.AppendLine();
-            sb.AppendLine("namespace AxFixEntities");
+            sb.AppendLine("namespace FIX44.Entities");
             sb.Append("{\n");
 
             var c = spec.Components;
@@ -40,13 +40,13 @@ namespace AxFixEntities
 
                 foreach (var component in message.Components)
                 {
-                    sb.AppendFormat("    public {0} {1} {{ get; set; }}\n", component.Name, component.Name);
+                    sb.AppendFormat("    public {0} {1} {{ get; set; }}\n", component.Name + (component.Required ? "" : "?"), component.Name);
                 }
 
                 foreach (var group in message.Groups)
                 {
                     sb.AppendFormat("    public {0}Item[] {0} {{ get; set; }}\n", group.Name);
-                    sb.AppendFormat("    public class {0}Item\n", group.Name);
+                    sb.AppendFormat("    public struct {0}Item\n", group.Name);
                     sb.Append("    {\n");
                     foreach (var field in group.Fields)
                     {
@@ -55,7 +55,7 @@ namespace AxFixEntities
 
                     foreach (var component in group.Components)
                     {
-                        sb.AppendFormat("      public {0} {1} {{ get; set; }}\n", component.Name, component.Name);
+                        sb.AppendFormat("      public {0} {1} {{ get; set; }}\n", component.Name + (component.Required ? "" : "?"), component.Name);
                     }
 
                     sb.Append("    }\n");

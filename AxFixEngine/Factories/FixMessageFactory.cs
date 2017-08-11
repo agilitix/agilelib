@@ -1,4 +1,5 @@
 ﻿using AxFixEngine.Dialects;
+using AxFixEngine.Extensions;
 using AxFixEngine.Interfaces;
 using AxFixEngine.Utilities;
 using QuickFix;
@@ -18,20 +19,12 @@ namespace AxFixEngine.Factories
 
         public Message CreateMessageFromString(string fixMessage)
         {
-            string beginString = FixUtils.ParseBeginString(fixMessage);
-            Message message = new Message(fixMessage,
-                                          FixDialectsProvider.Dialects.GetDataDictionary(beginString),
-                                          false);
-            return message;
+            return CreateMessageFromString(fixMessage, false);
         }
 
         public Message CreateValidatedMessageFromString(string fixMessage)
         {
-            string beginString = FixUtils.ParseBeginString(fixMessage);
-            Message message = new Message(fixMessage,
-                                          FixDialectsProvider.Dialects.GetDataDictionary(beginString),
-                                          true);
-            return message;
+            return CreateMessageFromString(fixMessage, true);
         }
 
         public TMessage CreateMessage<TMessage>(SessionID sessionID, MsgType msgType) where TMessage : Message
@@ -40,11 +33,16 @@ namespace AxFixEngine.Factories
             return (TMessage) msg;
         }
 
-        public TReply CreateReplyMessage<TReply>(Message request, MsgType replyType) where TReply : Message
+        private Message CreateMessageFromString(string fixMessage, bool validate)
         {
-            Message msg = _factory.Create(request.GetField(Tags.BeginString), replyType.getValue());
-            msg.ReverseRoute(request.Header);
-            return (TReply) msg;
+            Message headerOnly = new Message();
+            headerOnly.FromStringHeader(fixMessage);
+
+            Message message = new Message(fixMessage,
+                                          FixDialectsProvider.Dialects.GetDataDictionary(headerOnly.GetSessionID()),
+                                          validate);
+            return message;
         }
+
     }
 }

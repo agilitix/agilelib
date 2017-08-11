@@ -2,7 +2,7 @@
 using AxFixEntities.FixSpec;
 using AxFixEntities.Messages;
 
-namespace AxFixEntities.TypeMapping
+namespace AxFixEntities
 {
     public class TypeResolver
     {
@@ -22,7 +22,7 @@ namespace AxFixEntities.TypeMapping
 
             if (f.Values.Any())
             {
-                return f.Name + ".Parse(" + prefix + "." + fieldName + ".getValue())";
+                return f.Name + ".FromValue(" + prefix + "." + fieldName + ".getValue())";
             }
 
             string parseExpression = _typeMappingDoc.GetParseExpression(f.Type);

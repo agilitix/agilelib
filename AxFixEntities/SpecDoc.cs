@@ -1,12 +1,52 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using AxFixEntities.FixSpec;
+using AxFixEntities.Messages;
 
-namespace AxFixEntities.Messages
+namespace AxFixEntities
 {
-    public static class Builder
+    public class SpecDoc
     {
-        public static Message CreateMessage(XElement specMessage)
+        private readonly XDocument _specDoc;
+
+        public IEnumerable<Message> Messages => _specDoc.Root.Element("messages").Elements("message").Select(CreateMessage);
+        public IEnumerable<SpecField> Fields => _specDoc.Root.Element("fields").Elements("field").Select(CreateSpecField);
+        public IEnumerable<Component> Components => _specDoc.Root.Element("components").Elements("component").Select(CreateComponentReference);
+        public IEnumerable<Component> ComponentsDetails => _specDoc.Root.Element("components").Elements("component").Select(CreateComponentDetails);
+
+        private SpecDoc(XDocument specDoc)
+        {
+            _specDoc = specDoc;
+        }
+
+        public static SpecDoc Load(string path)
+        {
+            return new SpecDoc(XDocument.Load(path));
+        }
+
+
+        private static SpecField CreateSpecField(XElement specElement)
+        {
+            if (specElement.Name != "field")
+            {
+                throw new ArgumentException("Invalid argument", nameof(specElement));
+            }
+
+            return new SpecField(int.Parse(specElement.Attribute("number").Value),
+                                 specElement.Attribute("name").Value,
+                                 specElement.Attribute("type").Value,
+                                 specElement.Elements("value").Select(CreateSpecValue));
+        }
+
+        private static SpecValue CreateSpecValue(XElement elt)
+        {
+            return new SpecValue(elt.Attribute("enum").Value,
+                                 elt.Attribute("description").Value);
+        }
+
+        private static Message CreateMessage(XElement specMessage)
         {
             if (specMessage.Name != "message")
             {
@@ -19,7 +59,7 @@ namespace AxFixEntities.Messages
                                specMessage.Elements("component").Select(CreateComponentReference));
         }
 
-        public static Field CreateField(XElement specField)
+        private static Field CreateField(XElement specField)
         {
             if (specField.Name != "field")
             {
@@ -30,7 +70,7 @@ namespace AxFixEntities.Messages
                              specField.Attribute("required").Value == "Y");
         }
 
-        public static Group CreateGroup(XElement specGroup)
+        private static Group CreateGroup(XElement specGroup)
         {
             if (specGroup.Name != "group")
             {
@@ -43,7 +83,7 @@ namespace AxFixEntities.Messages
                              specGroup.Elements("component").Select(CreateComponentReference));
         }
 
-        public static Component CreateComponentReference(XElement specComponent)
+        private static Component CreateComponentReference(XElement specComponent)
         {
             if (specComponent.Name != "component")
             {
@@ -54,7 +94,7 @@ namespace AxFixEntities.Messages
                                  specComponent.Attribute("required").Value == "Y");
         }
 
-        public static Component CreateComponentDetails(XElement specComponent)
+        private static Component CreateComponentDetails(XElement specComponent)
         {
             if (specComponent.Name != "component")
             {

@@ -25,7 +25,7 @@ namespace AxFixEntities
             sb.AppendLine();
             sb.AppendLine("// Generated file");
             sb.AppendLine();
-            sb.AppendLine("namespace AxFixEntities");
+            sb.AppendLine("namespace FIX44.Entities");
             sb.Append("{\n");
 
             foreach (var field in spec.Fields.Where(f => f.Values.Any()))
@@ -160,8 +160,6 @@ namespace AxFixEntities
             sb.Append("}\n");
 
             File.WriteAllText("Enums.cs", sb.ToString());
-
-            Console.WriteLine(sb);
         }
 
         private static string DeHumanize(string input)

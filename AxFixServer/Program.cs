@@ -68,6 +68,8 @@ namespace AxFixServer
 
             IFixConnectorFactory connectorFactory = new FixConnectorFactory();
 
+            FixDialectsProvider.Attach(new FixDialects());
+
             IFixConnector acceptor = null;
             bool acceptorEnabled = appConfiguration.Configuration.GetSetting<bool>("acceptor_enabled");
             if (acceptorEnabled)
@@ -76,7 +78,7 @@ namespace AxFixServer
 
                 SessionSettings fixSettings = new SessionSettings(configFile);
 
-                FixDialectsProvider.Attach(new FixDialects(fixSettings));
+                FixDialectsProvider.Dialects.AddDataDictionaries(fixSettings);
 
                 IFixMessageHandler messageHandler = new Fix44MessageHandler();
                 IApplication fixApp = new FixApplication(messageHandler);
@@ -92,7 +94,7 @@ namespace AxFixServer
 
                 SessionSettings fixSettings = new SessionSettings(configFile);
 
-                FixDialectsProvider.Attach(new FixDialects(fixSettings));
+                FixDialectsProvider.Dialects.AddDataDictionaries(fixSettings);
 
                 IFixMessageHandler messageHandler = new Fix44MessageHandler();
                 IApplication fixApp = new FixApplication(messageHandler);

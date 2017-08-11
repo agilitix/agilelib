@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Xml.Linq;
 
-namespace AxFixEntities.TypeMapping
+namespace AxFixEntities
 {
     public class TypeMappingDoc
     {
@@ -18,13 +18,13 @@ namespace AxFixEntities.TypeMapping
             return new TypeMappingDoc(XDocument.Load(path));
         }
 
-        public IEnumerable<TypeMapping> TypeMappings
+        public IEnumerable<TypeMapping.TypeMapping> TypeMappings
         {
             get
             {
                 return _mappingsDoc.Root
                                    .Elements("map")
-                                   .Select(x => new TypeMapping(x.Attribute("fixType").Value,
+                                   .Select(x => new TypeMapping.TypeMapping(x.Attribute("fixType").Value,
                                                                 x.Attribute("clrType").Value,
                                                                 x.Attributes("parseExpression").Any()
                                                                     ? x.Attribute("parseExpression").Value
@@ -36,14 +36,14 @@ namespace AxFixEntities.TypeMapping
         {
             get
             {
-                TypeMapping typeMapping = TypeMappings.SingleOrDefault(m => m.FixType == fixType);
+                TypeMapping.TypeMapping typeMapping = TypeMappings.SingleOrDefault(m => m.FixType == fixType);
                 return typeMapping.ClrType;
             }
         }
 
         public string GetParseExpression(string fixType)
         {
-            TypeMapping typeMapping = TypeMappings.SingleOrDefault(m => m.FixType == fixType);
+            TypeMapping.TypeMapping typeMapping = TypeMappings.SingleOrDefault(m => m.FixType == fixType);
             return typeMapping.ParseExpression;
         }
     }

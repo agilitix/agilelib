@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using AxFixEngine.Extensions;
 using AxFixEngine.Interfaces;
 using QuickFix;
@@ -11,65 +9,43 @@ namespace AxFixEngine.Dialects
 {
     public class FixDialects : IFixDialects
     {
-        protected readonly IDictionary<string, DataDictionary> _dataDictionariesByBeginString = new Dictionary<string, DataDictionary>();
+        protected readonly IDictionary<SessionID, DataDictionary> _dataDictionaries = new Dictionary<SessionID, DataDictionary>();
+        protected readonly IDictionary<string, DataDictionary> _dataDictionariesBySpecFile = new Dictionary<string, DataDictionary>();
 
-        public FixDialects()
-        {
-        }
-
-        public FixDialects(string fixSettingsFile)
-            : this(new SessionSettings(fixSettingsFile))
-        {
-        }
-
-        public FixDialects(SessionSettings fixSettings)
+        public void AddDataDictionaries(SessionSettings fixSettings)
         {
             HashSet<SessionID> sessions = fixSettings.GetSessions();
             foreach (SessionID sessionId in sessions)
             {
-                if (_dataDictionariesByBeginString.ContainsKey(sessionId.BeginString))
-                {
-                    continue;
-                }
-
                 Dictionary settings = fixSettings.Get(sessionId);
                 string specFile = settings.GetString(SessionSettings.DATA_DICTIONARY);
 
-                DataDictionary dataDictionary = new DataDictionary();
-                dataDictionary.Load(specFile);
-                if (dataDictionary.Version != sessionId.BeginString)
+                DataDictionary dataDictionary;
+                if (!_dataDictionariesBySpecFile.TryGetValue(specFile, out dataDictionary))
                 {
-                    throw new InvalidOperationException("BeginString mismatch between session=" + sessionId + " and dictionary spec file=" + specFile);
+                    dataDictionary = new DataDictionary();
+                    dataDictionary.Load(specFile);
+                    if (dataDictionary.Version != sessionId.BeginString)
+                    {
+                        throw new InvalidOperationException("Cannot use SessionID=" + sessionId + " with dictionary read from spec file=" + specFile + " => the BeginString are not equal");
+                    }
                 }
 
-                _dataDictionariesByBeginString[sessionId.BeginString] = dataDictionary;
+                _dataDictionaries[sessionId] = _dataDictionaries[sessionId.GetReverseSessionID()] = dataDictionary;
             }
         }
 
-        public IDictionary<string, DataDictionary> GetAllDataDictionaries()
-        {
-            return _dataDictionariesByBeginString;
-        }
-
-        public void SetDataDictionary(string beginString, DataDictionary dataDictionary)
-        {
-            _dataDictionariesByBeginString[beginString] = dataDictionary;
-        }
-
-        public DataDictionary GetDataDictionary(string beginString)
+        public DataDictionary GetDataDictionary(SessionID sessionID)
         {
             DataDictionary dataDictionary;
-            if (TryGetDataDictionary(beginString, out dataDictionary))
-            {
-                return dataDictionary;
-            }
-
-            return null;
+            return TryGetDataDictionary(sessionID, out dataDictionary)
+                       ? dataDictionary
+                       : null;
         }
 
-        public bool TryGetDataDictionary(string beginString, out DataDictionary dataDictionary)
+        public bool TryGetDataDictionary(SessionID sessionID, out DataDictionary dataDictionary)
         {
-            return _dataDictionariesByBeginString.TryGetValue(beginString, out dataDictionary);
+            return _dataDictionaries.TryGetValue(sessionID, out dataDictionary);
         }
     }
 }

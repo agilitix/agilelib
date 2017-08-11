@@ -33,6 +33,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="QuickFix, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\QuickFix.Net.1.7.0\lib\QuickFix.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,16 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConvertersGenerator.cs" />
     <Compile Include="EnumsGenerator.cs" />
     <Compile Include="FixSpec\SpecField.cs" />
     <Compile Include="FixSpec\SpecValue.cs" />
-    <Compile Include="FixSpec\SpecDoc.cs" />
+    <Compile Include="SpecDoc.cs" />
     <Compile Include="ComponentsGenerator.cs" />
-    <Compile Include="Generated\Components.cs" />
-    <Compile Include="Generated\Enums.cs" />
-    <Compile Include="Generated\Messages.cs" />
     <Compile Include="MessagesGenerator.cs" />
-    <Compile Include="Messages\Builder.cs" />
     <Compile Include="Messages\Field.cs" />
     <Compile Include="Messages\Group.cs" />
     <Compile Include="Messages\Component.cs" />
@@ -59,8 +59,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeMapping\TypeMapping.cs" />
-    <Compile Include="TypeMapping\TypeMappingDoc.cs" />
-    <Compile Include="TypeMapping\TypeResolver.cs" />
+    <Compile Include="TypeMappingDoc.cs" />
+    <Compile Include="TypeResolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -74,5 +74,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

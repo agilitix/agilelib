@@ -10,7 +10,7 @@ namespace AxFixEntities
 {
     public static class ComponentsGenerator
     {
-        public static void GenerateComponents()
+        public static void Generate()
         {
             SpecDoc spec = SpecDoc.Load(@".\Spec\FIX44.xml");
             TypeMappingDoc typeMap = TypeMappingDoc.Load(@".\Spec\TypeMapping.xml");
@@ -24,14 +24,12 @@ namespace AxFixEntities
             sb.AppendLine();
             sb.AppendLine("// Generated file");
             sb.AppendLine();
-            sb.AppendLine("namespace AxFixEntities");
+            sb.AppendLine("namespace FIX44.Entities");
             sb.Append("{\n");
-
-            var c = spec.Components;
 
             foreach (var component in spec.ComponentsDetails)
             {
-                sb.AppendFormat("  public class {0}\n", component.Name);
+                sb.AppendFormat("  public struct {0}\n", component.Name);
                 sb.Append("  {\n");
                 foreach (var field in component.Fields)
                 {
@@ -41,7 +39,7 @@ namespace AxFixEntities
                 foreach (var group in component.Groups)
                 {
                     sb.AppendFormat("    public {0}Item[] {0} {{ get; set; }}\n", group.Name);
-                    sb.AppendFormat("    public class {0}Item\n", group.Name);
+                    sb.AppendFormat("    public struct {0}Item\n", group.Name);
                     sb.Append("    {\n");
                     foreach (var field in group.Fields)
                     {
