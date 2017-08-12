@@ -79,7 +79,7 @@
     <Compile Include="Handlers\FixApplication.cs" />
     <Compile Include="Factories\FixConnectorFactory.cs" />
     <Compile Include="Connectors\FixInitiator.cs" />
-    <Compile Include="Handlers\FixMessageCrackerHandlerBase.cs" />
+    <Compile Include="Handlers\FixMessageCrackingHandlerBase.cs" />
     <Compile Include="Dialects\FixDialects.cs" />
     <Compile Include="Interfaces\IFixConnector.cs" />
     <Compile Include="Interfaces\IFixConnectorFactory.cs" />

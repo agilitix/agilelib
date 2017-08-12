@@ -80,7 +80,7 @@ namespace AxFixServer
 
                 FixDialectsProvider.Dialects.AddDataDictionaries(fixSettings);
 
-                IFixMessageHandler messageHandler = new Fix44MessageHandler();
+                IFixMessageHandler messageHandler = new Fix44MessageCrackingHandler();
                 IApplication fixApp = new FixApplication(messageHandler);
 
                 acceptor = connectorFactory.CreateAcceptor(fixApp, fixSettings);
@@ -96,7 +96,7 @@ namespace AxFixServer
 
                 FixDialectsProvider.Dialects.AddDataDictionaries(fixSettings);
 
-                IFixMessageHandler messageHandler = new Fix44MessageHandler();
+                IFixMessageHandler messageHandler = new Fix44MessageCrackingHandler();
                 IApplication fixApp = new FixApplication(messageHandler);
 
                 initiator = connectorFactory.CreateInitiator(fixApp, fixSettings);

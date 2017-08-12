@@ -10,6 +10,7 @@ using AxQuality;
 using FluentAssertions;
 using NUnit.Framework;
 using QuickFix;
+using QuickFix.Fields;
 using Message = QuickFix.Message;
 
 namespace AxFixEngine.UnitTests
@@ -62,6 +63,63 @@ namespace AxFixEngine.UnitTests
 
         [Test]
         public void Assert_xdocument_is_generated_from_fix_message()
+        {
+            ActualDocument.Should().Be(ExpectedDocument);
+        }
+    }
+
+    internal class MessageExtensionsTests_generate_XDocument_with_custom_tag : MessageExtensionsTests
+    {
+        public override void Arrange()
+        {
+            base.Arrange();
+
+            ExpectedDocument =
+                "<Message MsgType=\"D\" MsgName=\"ORDER_SINGLE\"><Header><BeginString Tag=\"8\" Value=\"FIX.4.4\" /><BodyLength Tag=\"9\" Value=\"235\" /><MsgType Tag=\"35\" Value=\"D\" HasEnums=\"true\" EnumValue=\"ORDER_SINGLE\" /><MsgSeqNum Tag=\"34\" Value=\"4\" /><SenderCompID Tag=\"49\" Value=\"BANZAI\" /><SendingTime Tag=\"52\" Value=\"20121105-23:24:55\" /><TargetCompID Tag=\"56\" Value=\"EXEC\" /></Header><Body><ClOrdID Tag=\"11\" Value=\"1352157895032\" /><HandlInst Tag=\"21\" Value=\"1\" HasEnums=\"true\" EnumValue=\"AUTOMATED_EXECUTION_ORDER_PRIVATE\" /><OrderQty Tag=\"38\" Value=\"10000\" /><OrdType Tag=\"40\" Value=\"1\" HasEnums=\"true\" EnumValue=\"MARKET\" /><Side Tag=\"54\" Value=\"1\" HasEnums=\"true\" EnumValue=\"BUY\" /><Symbol Tag=\"55\" Value=\"ORCL\" /><TimeInForce Tag=\"59\" Value=\"0\" HasEnums=\"true\" EnumValue=\"DAY\" /><CustomTag_219 Tag=\"219\" Value=\"A\" /><EncodedTextLen Tag=\"354\" Value=\"119\" /><EncodedText Tag=\"355\" EncodedType=\"XML\"><box><bag><fruit>Apples</fruit><fruit>Bananas</fruit></bag></box></EncodedText></Body><Trailer><CheckSum Tag=\"10\" Value=\"103\" /></Trailer></Message>";
+
+            FixMessage = "8=FIX.4.4^9=235^35=D^34=4^49=BANZAI^52=20121105-23:24:55^56=EXEC^11=1352157895032^21=1^38=10000^40=1^54=1^55=ORCL^59=0^354=119^355=<h:box xmlns:h=\"http://www.w3.org/TR/html4/\"><h:bag><h:fruit>Apples</h:fruit><h:fruit>Bananas</h:fruit></h:bag></h:box>^10=103^"
+                .Replace("^", Message.SOH);
+
+            ObjectUnderTest = MessagesFactory.CreateValidatedMessageFromString(FixMessage);
+            ObjectUnderTest.SetField(new Benchmark('A')); // Not in NewOrderSingle, will be considered as a custom tag.
+        }
+
+        public override void Act()
+        {
+            XDocument doc = ObjectUnderTest.ToXDocument();
+            ActualDocument = doc.ToString(SaveOptions.DisableFormatting);
+        }
+
+        [Test]
+        public void Assert_xdocument_is_generated_from_fix_message()
+        {
+            ActualDocument.Should().Be(ExpectedDocument);
+        }
+    }
+
+    internal class MessageExtensionsTests_generate_XDocument_with_CDATA : MessageExtensionsTests
+    {
+        public override void Arrange()
+        {
+            base.Arrange();
+
+            ExpectedDocument =
+                "<Message MsgType=\"D\" MsgName=\"ORDER_SINGLE\"><Header><BeginString Tag=\"8\" Value=\"FIX.4.4\" /><BodyLength Tag=\"9\" Value=\"143\" /><MsgType Tag=\"35\" Value=\"D\" HasEnums=\"true\" EnumValue=\"ORDER_SINGLE\" /><MsgSeqNum Tag=\"34\" Value=\"4\" /><SenderCompID Tag=\"49\" Value=\"BANZAI\" /><SendingTime Tag=\"52\" Value=\"20121105-23:24:55\" /><TargetCompID Tag=\"56\" Value=\"EXEC\" /></Header><Body><ClOrdID Tag=\"11\" Value=\"1352157895032\" /><HandlInst Tag=\"21\" Value=\"1\" HasEnums=\"true\" EnumValue=\"AUTOMATED_EXECUTION_ORDER_PRIVATE\" /><OrderQty Tag=\"38\" Value=\"10000\" /><OrdType Tag=\"40\" Value=\"1\" HasEnums=\"true\" EnumValue=\"MARKET\" /><Side Tag=\"54\" Value=\"1\" HasEnums=\"true\" EnumValue=\"BUY\" /><Symbol Tag=\"55\" Value=\"ORCL\" /><TimeInForce Tag=\"59\" Value=\"0\" HasEnums=\"true\" EnumValue=\"DAY\" /><EncodedTextLen Tag=\"354\" Value=\"119\" /><EncodedText Tag=\"355\" EncodedType=\"DATA\"><![CDATA[Lorem ipsum dolor sit amet.]]></EncodedText></Body><Trailer><CheckSum Tag=\"10\" Value=\"120\" /></Trailer></Message>";
+
+            FixMessage = "8=FIX.4.4^9=143^35=D^34=4^49=BANZAI^52=20121105-23:24:55^56=EXEC^11=1352157895032^21=1^38=10000^40=1^54=1^55=ORCL^59=0^354=119^355=Lorem ipsum dolor sit amet.^10=120^"
+                .Replace("^", Message.SOH);
+
+            ObjectUnderTest = MessagesFactory.CreateValidatedMessageFromString(FixMessage);
+        }
+
+        public override void Act()
+        {
+            XDocument doc = ObjectUnderTest.ToXDocument();
+            ActualDocument = doc.ToString(SaveOptions.DisableFormatting);
+        }
+
+        [Test]
+        public void Assert_xdocument_is_generated_from_fix_message_and_contains_CDATA()
         {
             ActualDocument.Should().Be(ExpectedDocument);
         }

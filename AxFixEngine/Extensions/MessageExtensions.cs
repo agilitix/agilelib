@@ -204,15 +204,17 @@ namespace AxFixEngine.Extensions
                     {
                         try
                         {
-                            // Try to parse an encoded field as XML.
+                            // Try to parse the value as XML content.
                             XElement data = XElement.Parse(value);
                             child.Add(new XAttribute("EncodedType", "XML"));
                             child.Add(data);
                         }
                         catch
                         {
-                            // XML parsing failed, add content as CDATA.
-                            child.Add(new XCData(value));
+                            // XML parsing failed, add the value as CDATA.
+                            XCData data = new XCData(value);
+                            child.Add(new XAttribute("EncodedType", "DATA"));
+                            child.Add(data);
                         }
                     }
                     else
@@ -249,7 +251,7 @@ namespace AxFixEngine.Extensions
                 }
                 else
                 {
-                    child = new XElement("UserTag_" + tag);
+                    child = new XElement("CustomTag_" + tag);
                     child.Add(new XAttribute("Tag", tag));
                     child.Add(new XAttribute("Value", value));
                 }
