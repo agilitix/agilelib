@@ -82,7 +82,7 @@ namespace AxFixEntities
                     sb.AppendFormat("    public string ToEnumName()\n");
                     sb.Append("    {\n");
                     sb.Append("      string name;\n");
-                    sb.Append("      return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;\n");
+                    sb.Append("      return _value.HasValue ? _possibleValues.TryGetValue(_value.Value, out name) ? name : string.Empty : string.Empty;\n");
                     sb.Append("    }\n");
                 }
                 else if (clrType == "char")
@@ -106,7 +106,7 @@ namespace AxFixEntities
                     sb.AppendFormat("    public string ToEnumName()\n");
                     sb.Append("    {\n");
                     sb.Append("      string name;\n");
-                    sb.Append("      return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;\n");
+                    sb.Append("      return _value.HasValue ? _possibleValues.TryGetValue(_value.Value, out name) ? name : string.Empty : string.Empty;\n");
                     sb.Append("    }\n");
                 }
                 else if (clrType == "string")
@@ -124,7 +124,7 @@ namespace AxFixEntities
                     sb.AppendFormat("    public string ToEnumName()\n");
                     sb.Append("    {\n");
                     sb.Append("      string name;\n");
-                    sb.Append("      return _possibleValues.TryGetValue(_value, out name) ? name : null;\n");
+                    sb.Append("      return !string.IsNullOrWhiteSpace(_value) ? _possibleValues.TryGetValue(_value, out name) ? name : string.Empty : string.Empty;\n");
                     sb.Append("    }\n");
                 }
 

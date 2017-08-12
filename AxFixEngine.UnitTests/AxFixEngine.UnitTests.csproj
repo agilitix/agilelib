@@ -67,6 +67,10 @@
       <Project>{BA2A8276-B890-43BF-B05D-2AF2222F13A4}</Project>
       <Name>AxFixEngine</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AxFixEntities\AxFixEntities.csproj">
+      <Project>{cf759057-a424-430c-aa12-463a6ec1f333}</Project>
+      <Name>AxFixEntities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AxQuality\AxQuality.csproj">
       <Project>{EBF4DE7B-53CB-4F6A-8A86-BD7E0190E469}</Project>
       <Name>AxQuality</Name>
