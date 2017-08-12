@@ -49,6 +49,9 @@
     <Compile Include="EnumsGenerator.cs" />
     <Compile Include="FixSpec\SpecField.cs" />
     <Compile Include="FixSpec\SpecValue.cs" />
+    <Compile Include="Generated\Components.cs" />
+    <Compile Include="Generated\Enums.cs" />
+    <Compile Include="Generated\Messages.cs" />
     <Compile Include="SpecDoc.cs" />
     <Compile Include="ComponentsGenerator.cs" />
     <Compile Include="MessagesGenerator.cs" />
