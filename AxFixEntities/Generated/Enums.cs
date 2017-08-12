@@ -64,7 +64,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static AdvSide FromEnumName(string name)
@@ -158,7 +159,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value) ? _possibleValues[_value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value, out name) ? name : null;
         }
 
         public static AdvTransType FromEnumName(string name)
@@ -255,7 +257,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static CommType FromEnumName(string name)
@@ -403,7 +406,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value) ? _possibleValues[_value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value, out name) ? name : null;
         }
 
         public static ExecInst FromEnumName(string name)
@@ -690,7 +694,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static HandlInst FromEnumName(string name)
@@ -779,7 +784,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value) ? _possibleValues[_value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value, out name) ? name : null;
         }
 
         public static SecurityIDSource FromEnumName(string name)
@@ -956,7 +962,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static IOIQltyInd FromEnumName(string name)
@@ -1053,7 +1060,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static IOITransType FromEnumName(string name)
@@ -1150,7 +1158,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static LastCapacity FromEnumName(string name)
@@ -1340,7 +1349,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value) ? _possibleValues[_value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value, out name) ? name : null;
         }
 
         public static MsgType FromEnumName(string name)
@@ -1887,7 +1897,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static OrdStatus FromEnumName(string name)
@@ -2044,7 +2055,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static OrdType FromEnumName(string name)
@@ -2241,7 +2253,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static Side FromEnumName(string name)
@@ -2403,7 +2416,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static TimeInForce FromEnumName(string name)
@@ -2525,7 +2539,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static Urgency FromEnumName(string name)
@@ -2622,7 +2637,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static SettlType FromEnumName(string name)
@@ -2746,7 +2762,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value) ? _possibleValues[_value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value, out name) ? name : null;
         }
 
         public static SymbolSfx FromEnumName(string name)
@@ -2838,7 +2855,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static AllocTransType FromEnumName(string name)
@@ -2935,7 +2953,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static PositionEffect FromEnumName(string name)
@@ -3037,7 +3056,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static ProcessCode FromEnumName(string name)
@@ -3146,7 +3166,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static AllocStatus FromEnumName(string name)
@@ -3250,7 +3271,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static AllocRejCode FromEnumName(string name)
@@ -3402,7 +3424,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static EmailType FromEnumName(string name)
@@ -3491,7 +3514,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static EncryptMethod FromEnumName(string name)
@@ -3600,7 +3624,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static CxlRejReason FromEnumName(string name)
@@ -3714,7 +3739,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static OrdRejReason FromEnumName(string name)
@@ -3881,7 +3907,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static IOIQualifier FromEnumName(string name)
@@ -4053,7 +4080,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static DKReason FromEnumName(string name)
@@ -4162,7 +4190,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static MiscFeeType FromEnumName(string name)
@@ -4304,7 +4333,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static ExecType FromEnumName(string name)
@@ -4481,7 +4511,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static SettlCurrFxRateCalc FromEnumName(string name)
@@ -4573,7 +4604,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static SettlInstMode FromEnumName(string name)
@@ -4675,7 +4707,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static SettlInstTransType FromEnumName(string name)
@@ -4777,7 +4810,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static SettlInstSource FromEnumName(string name)
@@ -4963,7 +4997,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value) ? _possibleValues[_value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value, out name) ? name : null;
         }
 
         public static SecurityType FromEnumName(string name)
@@ -5507,7 +5542,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static StandInstDbType FromEnumName(string name)
@@ -5606,7 +5642,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static SettlDeliveryType FromEnumName(string name)
@@ -5700,7 +5737,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static AllocLinkType FromEnumName(string name)
@@ -5784,7 +5822,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static PutOrCall FromEnumName(string name)
@@ -5868,7 +5907,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static CoveredOrUncovered FromEnumName(string name)
@@ -5952,7 +5992,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static AllocHandlInst FromEnumName(string name)
@@ -6041,7 +6082,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static RoutingType FromEnumName(string name)
@@ -6135,7 +6177,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value) ? _possibleValues[_value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value, out name) ? name : null;
         }
 
         public static BenchmarkCurveName FromEnumName(string name)
@@ -6331,7 +6374,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value) ? _possibleValues[_value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value, out name) ? name : null;
         }
 
         public static StipulationType FromEnumName(string name)
@@ -6700,7 +6744,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value) ? _possibleValues[_value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value, out name) ? name : null;
         }
 
         public static StipulationValue FromEnumName(string name)
@@ -6881,7 +6926,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value) ? _possibleValues[_value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value, out name) ? name : null;
         }
 
         public static YieldType FromEnumName(string name)
@@ -7133,7 +7179,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static SubscriptionRequestType FromEnumName(string name)
@@ -7222,7 +7269,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static MDUpdateType FromEnumName(string name)
@@ -7314,7 +7362,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static MDEntryType FromEnumName(string name)
@@ -7461,7 +7510,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static TickDirection FromEnumName(string name)
@@ -7555,7 +7605,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value) ? _possibleValues[_value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value, out name) ? name : null;
         }
 
         public static QuoteCondition FromEnumName(string name)
@@ -7674,7 +7725,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value) ? _possibleValues[_value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value, out name) ? name : null;
         }
 
         public static TradeCondition FromEnumName(string name)
@@ -7841,7 +7893,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static MDUpdateAction FromEnumName(string name)
@@ -7938,7 +7991,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static MDReqRejReason FromEnumName(string name)
@@ -8085,7 +8139,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static DeleteReason FromEnumName(string name)
@@ -8169,7 +8224,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value) ? _possibleValues[_value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value, out name) ? name : null;
         }
 
         public static OpenCloseSettlFlag FromEnumName(string name)
@@ -8273,7 +8329,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value) ? _possibleValues[_value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value, out name) ? name : null;
         }
 
         public static FinancialStatus FromEnumName(string name)
@@ -8357,7 +8414,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value) ? _possibleValues[_value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value, out name) ? name : null;
         }
 
         public static CorporateAction FromEnumName(string name)
@@ -8456,7 +8514,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static QuoteStatus FromEnumName(string name)
@@ -8610,7 +8669,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static QuoteCancelType FromEnumName(string name)
@@ -8704,7 +8764,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static QuoteRejectReason FromEnumName(string name)
@@ -8828,7 +8889,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static QuoteResponseLevel FromEnumName(string name)
@@ -8917,7 +8979,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static QuoteRequestType FromEnumName(string name)
@@ -9001,7 +9064,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static UnderlyingPutOrCall FromEnumName(string name)
@@ -9085,7 +9149,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static SecurityRequestType FromEnumName(string name)
@@ -9179,7 +9244,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static SecurityResponseType FromEnumName(string name)
@@ -9283,7 +9349,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static SecurityTradingStatus FromEnumName(string name)
@@ -9480,7 +9547,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static HaltReason FromEnumName(string name)
@@ -9584,7 +9652,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static Adjustment FromEnumName(string name)
@@ -9673,7 +9742,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static TradSesMethod FromEnumName(string name)
@@ -9762,7 +9832,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static TradSesMode FromEnumName(string name)
@@ -9851,7 +9922,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static TradSesStatus FromEnumName(string name)
@@ -9960,7 +10032,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value) ? _possibleValues[_value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value, out name) ? name : null;
         }
 
         public static MessageEncoding FromEnumName(string name)
@@ -10054,7 +10127,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static QuoteEntryRejectReason FromEnumName(string name)
@@ -10173,7 +10247,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static SessionRejectReason FromEnumName(string name)
@@ -10350,7 +10425,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static BidRequestTransType FromEnumName(string name)
@@ -10434,7 +10510,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static ExecRestatementReason FromEnumName(string name)
@@ -10558,7 +10635,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static BusinessRejectReason FromEnumName(string name)
@@ -10680,7 +10758,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static MsgDirection FromEnumName(string name)
@@ -10772,7 +10851,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static DiscretionInst FromEnumName(string name)
@@ -10881,7 +10961,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static BidType FromEnumName(string name)
@@ -10970,7 +11051,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static BidDescriptorType FromEnumName(string name)
@@ -11059,7 +11141,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static SideValueInd FromEnumName(string name)
@@ -11143,7 +11226,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static LiquidityIndType FromEnumName(string name)
@@ -11237,7 +11321,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static ProgRptReqs FromEnumName(string name)
@@ -11326,7 +11411,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static IncTaxInd FromEnumName(string name)
@@ -11418,7 +11504,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static BidTradeType FromEnumName(string name)
@@ -11520,7 +11607,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static BasisPxType FromEnumName(string name)
@@ -11659,7 +11747,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static PriceType FromEnumName(string name)
@@ -11788,7 +11877,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static GTBookingInst FromEnumName(string name)
@@ -11877,7 +11967,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static ListStatusType FromEnumName(string name)
@@ -11981,7 +12072,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static NetGrossInd FromEnumName(string name)
@@ -12065,7 +12157,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static ListOrderStatus FromEnumName(string name)
@@ -12182,7 +12275,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static ListExecInstType FromEnumName(string name)
@@ -12289,7 +12383,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static CxlRejResponseTo FromEnumName(string name)
@@ -12381,7 +12476,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static MultiLegReportingType FromEnumName(string name)
@@ -12478,7 +12574,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static PartyIDSource FromEnumName(string name)
@@ -12642,7 +12739,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static PartyRole FromEnumName(string name)
@@ -12901,7 +12999,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static Product FromEnumName(string name)
@@ -13040,7 +13139,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static QuantityType FromEnumName(string name)
@@ -13162,7 +13262,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static RoundingDirection FromEnumName(string name)
@@ -13251,7 +13352,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static DistribPaymentMethod FromEnumName(string name)
@@ -13393,7 +13495,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static CancellationRights FromEnumName(string name)
@@ -13495,7 +13598,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static MoneyLaunderingStatus FromEnumName(string name)
@@ -13602,7 +13706,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static ExecPriceType FromEnumName(string name)
@@ -13716,7 +13821,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static TradeReportTransType FromEnumName(string name)
@@ -13815,7 +13921,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static PaymentMethod FromEnumName(string name)
@@ -13964,7 +14071,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static TaxAdvantageType FromEnumName(string name)
@@ -14101,7 +14209,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static FundRenewWaiv FromEnumName(string name)
@@ -14193,7 +14302,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static RegistStatus FromEnumName(string name)
@@ -14287,7 +14397,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static RegistRejReasonCode FromEnumName(string name)
@@ -14464,7 +14575,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static RegistTransType FromEnumName(string name)
@@ -14561,7 +14673,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static OwnershipType FromEnumName(string name)
@@ -14650,7 +14763,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static ContAmtType FromEnumName(string name)
@@ -14769,7 +14883,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static OwnerType FromEnumName(string name)
@@ -14916,7 +15031,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static OrderCapacity FromEnumName(string name)
@@ -15020,7 +15136,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value) ? _possibleValues[_value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value, out name) ? name : null;
         }
 
         public static OrderRestrictions FromEnumName(string name)
@@ -15152,7 +15269,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static MassCancelRequestType FromEnumName(string name)
@@ -15269,7 +15387,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static MassCancelResponse FromEnumName(string name)
@@ -15383,7 +15502,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static MassCancelRejectReason FromEnumName(string name)
@@ -15497,7 +15617,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static QuoteType FromEnumName(string name)
@@ -15599,7 +15720,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static CashMargin FromEnumName(string name)
@@ -15688,7 +15810,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value) ? _possibleValues[_value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value, out name) ? name : null;
         }
 
         public static Scope FromEnumName(string name)
@@ -15777,7 +15900,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static CrossType FromEnumName(string name)
@@ -15871,7 +15995,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static CrossPrioritization FromEnumName(string name)
@@ -15960,7 +16085,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static NoSides FromEnumName(string name)
@@ -16044,7 +16170,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static SecurityListRequestType FromEnumName(string name)
@@ -16143,7 +16270,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static SecurityRequestResult FromEnumName(string name)
@@ -16247,7 +16375,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static MultiLegRptTypeReq FromEnumName(string name)
@@ -16336,7 +16465,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static TradSesStatusRejReason FromEnumName(string name)
@@ -16415,7 +16545,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static TradeRequestType FromEnumName(string name)
@@ -16522,7 +16653,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static MatchStatus FromEnumName(string name)
@@ -16611,7 +16743,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static ClearingInstruction FromEnumName(string name)
@@ -16755,7 +16888,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static AccountType FromEnumName(string name)
@@ -16864,7 +16998,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static CustOrderCapacity FromEnumName(string name)
@@ -16958,7 +17093,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static MassStatusReqType FromEnumName(string name)
@@ -17080,7 +17216,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static DayBookingInst FromEnumName(string name)
@@ -17177,7 +17314,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static BookingUnit FromEnumName(string name)
@@ -17274,7 +17412,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static PreallocMethod FromEnumName(string name)
@@ -17358,7 +17497,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static AllocType FromEnumName(string name)
@@ -17457,7 +17597,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value) ? _possibleValues[_value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value, out name) ? name : null;
         }
 
         public static ClearingFeeIndicator FromEnumName(string name)
@@ -17571,7 +17712,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static PriorityIndicator FromEnumName(string name)
@@ -17655,7 +17797,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static QuoteRequestRejectReason FromEnumName(string name)
@@ -17784,7 +17927,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static AcctIDSource FromEnumName(string name)
@@ -17888,7 +18032,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static ConfirmStatus FromEnumName(string name)
@@ -17987,7 +18132,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static ConfirmTransType FromEnumName(string name)
@@ -18076,7 +18222,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static DeliveryForm FromEnumName(string name)
@@ -18160,7 +18307,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static LegSwapType FromEnumName(string name)
@@ -18254,7 +18402,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static QuotePriceType FromEnumName(string name)
@@ -18378,7 +18527,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static QuoteRespType FromEnumName(string name)
@@ -18482,7 +18632,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value) ? _possibleValues[_value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value, out name) ? name : null;
         }
 
         public static PosType FromEnumName(string name)
@@ -18651,7 +18802,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static PosQtyStatus FromEnumName(string name)
@@ -18740,7 +18892,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value) ? _possibleValues[_value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value, out name) ? name : null;
         }
 
         public static PosAmtType FromEnumName(string name)
@@ -18854,7 +19007,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static PosTransType FromEnumName(string name)
@@ -18953,7 +19107,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static PosMaintAction FromEnumName(string name)
@@ -19042,7 +19197,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static AdjustmentType FromEnumName(string name)
@@ -19136,7 +19292,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static PosMaintStatus FromEnumName(string name)
@@ -19235,7 +19392,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static PosMaintResult FromEnumName(string name)
@@ -19324,7 +19482,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static PosReqType FromEnumName(string name)
@@ -19418,7 +19577,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static ResponseTransportType FromEnumName(string name)
@@ -19502,7 +19662,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static PosReqResult FromEnumName(string name)
@@ -19606,7 +19767,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static PosReqStatus FromEnumName(string name)
@@ -19695,7 +19857,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static SettlPriceType FromEnumName(string name)
@@ -19787,7 +19950,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static AssignmentMethod FromEnumName(string name)
@@ -19879,7 +20043,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static ExerciseMethod FromEnumName(string name)
@@ -19963,7 +20128,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static TradeRequestResult FromEnumName(string name)
@@ -20082,7 +20248,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static TradeRequestStatus FromEnumName(string name)
@@ -20171,7 +20338,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static TradeReportRejectReason FromEnumName(string name)
@@ -20275,7 +20443,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static SideMultiLegReportingType FromEnumName(string name)
@@ -20364,7 +20533,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static TrdRegTimestampType FromEnumName(string name)
@@ -20463,7 +20633,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static ConfirmType FromEnumName(string name)
@@ -20552,7 +20723,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static ConfirmRejReason FromEnumName(string name)
@@ -20641,7 +20813,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static BookingType FromEnumName(string name)
@@ -20730,7 +20903,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static AllocSettlInstType FromEnumName(string name)
@@ -20837,7 +21011,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static DlvyInstType FromEnumName(string name)
@@ -20921,7 +21096,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static TerminationType FromEnumName(string name)
@@ -21015,7 +21191,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static SettlInstReqRejCode FromEnumName(string name)
@@ -21109,7 +21286,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static AllocReportType FromEnumName(string name)
@@ -21203,7 +21381,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static AllocCancReplaceReason FromEnumName(string name)
@@ -21287,7 +21466,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static AllocAccountType FromEnumName(string name)
@@ -21396,7 +21576,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static AllocIntermedReqType FromEnumName(string name)
@@ -21500,7 +21681,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static ApplQueueResolution FromEnumName(string name)
@@ -21594,7 +21776,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static ApplQueueAction FromEnumName(string name)
@@ -21688,7 +21871,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static AvgPxIndicator FromEnumName(string name)
@@ -21777,7 +21961,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static TradeAllocIndicator FromEnumName(string name)
@@ -21866,7 +22051,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static ExpirationCycle FromEnumName(string name)
@@ -21950,7 +22136,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static TrdType FromEnumName(string name)
@@ -22079,7 +22266,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static PegMoveType FromEnumName(string name)
@@ -22163,7 +22351,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static PegOffsetType FromEnumName(string name)
@@ -22257,7 +22446,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static PegLimitType FromEnumName(string name)
@@ -22346,7 +22536,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static PegRoundDirection FromEnumName(string name)
@@ -22430,7 +22621,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static PegScope FromEnumName(string name)
@@ -22524,7 +22716,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static DiscretionMoveType FromEnumName(string name)
@@ -22608,7 +22801,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static DiscretionOffsetType FromEnumName(string name)
@@ -22702,7 +22896,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static DiscretionLimitType FromEnumName(string name)
@@ -22791,7 +22986,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static DiscretionRoundDirection FromEnumName(string name)
@@ -22875,7 +23071,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static DiscretionScope FromEnumName(string name)
@@ -22969,7 +23166,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static LastLiquidityInd FromEnumName(string name)
@@ -23058,7 +23256,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static ShortSaleReason FromEnumName(string name)
@@ -23162,7 +23361,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static QtyType FromEnumName(string name)
@@ -23246,7 +23446,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static TradeReportType FromEnumName(string name)
@@ -23360,7 +23561,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static AllocNoOrdersType FromEnumName(string name)
@@ -23444,7 +23646,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static EventType FromEnumName(string name)
@@ -23543,7 +23746,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static InstrAttribType FromEnumName(string name)
@@ -23732,7 +23936,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static MiscFeeBasis FromEnumName(string name)
@@ -23821,7 +24026,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static CollAsgnReason FromEnumName(string name)
@@ -23935,7 +24141,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static CollInquiryQualifier FromEnumName(string name)
@@ -24049,7 +24256,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static CollAsgnTransType FromEnumName(string name)
@@ -24148,7 +24356,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static CollAsgnRespType FromEnumName(string name)
@@ -24242,7 +24451,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static CollAsgnRejectReason FromEnumName(string name)
@@ -24351,7 +24561,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static CollStatus FromEnumName(string name)
@@ -24450,7 +24661,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static DeliveryType FromEnumName(string name)
@@ -24544,7 +24756,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static UserRequestType FromEnumName(string name)
@@ -24638,7 +24851,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static UserStatus FromEnumName(string name)
@@ -24742,7 +24956,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static StatusValue FromEnumName(string name)
@@ -24836,7 +25051,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static NetworkRequestType FromEnumName(string name)
@@ -24930,7 +25146,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static NetworkStatusResponseType FromEnumName(string name)
@@ -25014,7 +25231,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static TrdRptStatus FromEnumName(string name)
@@ -25098,7 +25316,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static AffirmStatus FromEnumName(string name)
@@ -25187,7 +25406,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static CollAction FromEnumName(string name)
@@ -25276,7 +25496,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static CollInquiryStatus FromEnumName(string name)
@@ -25375,7 +25596,8 @@ namespace FIX44.Entities
 
         public string ToEnumName()
         {
-            return _possibleValues.ContainsKey(_value.Value) ? _possibleValues[_value.Value] : null;
+            string name;
+            return _possibleValues.TryGetValue(_value.Value, out name) ? name : null;
         }
 
         public static CollInquiryResult FromEnumName(string name)
