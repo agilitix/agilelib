@@ -9,7 +9,7 @@ namespace AxFixEngine.Factories
 {
     public class FixConnectorFactory : IFixConnectorFactory
     {
-        protected static ILoggerFacade Log = LoggerFacadeProvider.GetLogger<FixConnectorFactory>();
+        protected static ILoggerFacade Log = LoggerFacadeProvider.GetDeclaringTypeLogger();
 
         public IFixConnector CreateAcceptor(IApplication fixApplication, SessionSettings fixSettings)
         {

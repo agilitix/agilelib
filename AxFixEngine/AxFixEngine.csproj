@@ -68,7 +68,7 @@
     <Compile Include="Extensions\SessionIDExtensions.cs" />
     <Compile Include="Factories\FixMessageFactory.cs" />
     <Compile Include="Handlers\FixMessageHandlerBase.cs" />
-    <Compile Include="Handlers\FixMessageReactiveHandlerBase.cs" />
+    <Compile Include="Handlers\FixMessageEventHandler.cs" />
     <Compile Include="Utilities\FixUtils.cs" />
     <Compile Include="Utilities\DayOfWeekConverter.cs" />
     <Compile Include="Extensions\DataDictionaryExtensions.cs" />
@@ -85,7 +85,6 @@
     <Compile Include="Interfaces\IFixConnectorFactory.cs" />
     <Compile Include="Interfaces\IFixDialects.cs" />
     <Compile Include="Interfaces\IFixMessageFactory.cs" />
-    <Compile Include="Interfaces\IFixMessageHistorizer.cs" />
     <Compile Include="Interfaces\IFixMessageHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

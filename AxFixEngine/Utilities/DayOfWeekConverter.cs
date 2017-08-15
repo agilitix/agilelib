@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace QuickFix.Fields.Converters
+namespace AxFixEngine.Utilities
 {
     public static class DayOfWeekConverter
     {

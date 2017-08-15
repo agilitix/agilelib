@@ -11,11 +11,16 @@ namespace AxFixEngine.Handlers
     public class FixApplication : IApplication
     {
         protected static ILoggerFacade Log = LoggerFacadeProvider.GetDeclaringTypeLogger();
-        protected readonly IFixMessageHandler _messageHandler;
+        private readonly IFixMessageHandler[] _messageHandlers;
 
         public FixApplication(IFixMessageHandler messageHandler)
+            : this(new[] {messageHandler})
         {
-            _messageHandler = messageHandler;
+        }
+
+        public FixApplication(IFixMessageHandler[] messageHandlers)
+        {
+            _messageHandlers = messageHandlers;
         }
 
         /// <summary>
@@ -28,7 +33,10 @@ namespace AxFixEngine.Handlers
         public void ToAdmin(Message message, SessionID sessionID)
         {
             Log.InfoFormat("Send admin MsgType={0} content=<{1}>", message.GetMsgName(), message);
-            _messageHandler.ToAdmin(message, sessionID);
+            foreach (IFixMessageHandler handler in _messageHandlers)
+            {
+                handler.ToAdmin(message, sessionID);
+            }
         }
 
         /// <summary>
@@ -40,7 +48,10 @@ namespace AxFixEngine.Handlers
         public void FromAdmin(Message message, SessionID sessionID)
         {
             Log.InfoFormat("Recv admin MsgType={0} content=<{1}>", message.GetMsgName(), message);
-            _messageHandler.FromAdmin(message, sessionID);
+            foreach (IFixMessageHandler handler in _messageHandlers)
+            {
+                handler.FromAdmin(message, sessionID);
+            }
         }
 
         /// <summary>
@@ -58,7 +69,10 @@ namespace AxFixEngine.Handlers
         public void ToApp(Message message, SessionID sessionID)
         {
             Log.InfoFormat("Send appli MsgType={0} content=<{1}>", message.GetMsgName(), message);
-            _messageHandler.ToApp(message, sessionID);
+            foreach (IFixMessageHandler handler in _messageHandlers)
+            {
+                handler.ToApp(message, sessionID);
+            }
         }
 
         /// <summary>
@@ -79,7 +93,10 @@ namespace AxFixEngine.Handlers
         public void FromApp(Message message, SessionID sessionID)
         {
             Log.InfoFormat("Recv appli MsgType={0} content=<{1}>", message.GetMsgName(), message);
-            _messageHandler.FromApp(message, sessionID);
+            foreach (IFixMessageHandler handler in _messageHandlers)
+            {
+                handler.FromApp(message, sessionID);
+            }
         }
 
         /// <summary>
@@ -104,7 +121,10 @@ namespace AxFixEngine.Handlers
         public void OnLogout(SessionID sessionID)
         {
             Log.InfoFormat("Logout session={0}", sessionID);
-            _messageHandler.OnLogout(sessionID);
+            foreach (IFixMessageHandler handler in _messageHandlers)
+            {
+                handler.OnLogout(sessionID);
+            }
         }
 
         /// <summary>
@@ -116,7 +136,10 @@ namespace AxFixEngine.Handlers
         public void OnLogon(SessionID sessionID)
         {
             Log.InfoFormat("Logon session={0}", sessionID);
-            _messageHandler.OnLogon(sessionID);
+            foreach (IFixMessageHandler handler in _messageHandlers)
+            {
+                handler.OnLogon(sessionID);
+            }
         }
     }
 }

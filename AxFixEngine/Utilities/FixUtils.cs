@@ -22,24 +22,15 @@ namespace AxFixEngine.Utilities
 
         //public static SessionID ParseSessionID(string fixMessage)
         //{
-        //    Message msg = new Message();
-        //    if (msg.FromStringHeader(fixMessage))
-        //    {
-        //        return msg.GetSessionID(msg);
-        //    }
-
-        //    return null;
+        //    Message dummyMessage = new Message();
+        //    return dummyMessage.FromStringHeader(fixMessage)
+        //               ? dummyMessage.GetSessionID(dummyMessage)
+        //               : null;
         //}
 
         //public static MsgType ParseMsgType(string fixMessage)
         //{
-        //    Message msg = new Message();
-        //    if (msg.FromStringHeader(fixMessage))
-        //    {
-        //        return new MsgType(msg.Header.GetField(Tags.MsgType));
-        //    }
-
-        //    return null;
+        //    return Message.IdentifyType(fixMessage);
         //}
     }
 }

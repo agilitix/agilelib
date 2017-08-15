@@ -10,7 +10,6 @@ using AxCommonLogger.Interfaces;
 using AxConfiguration;
 using AxConfiguration.Interfaces;
 using AxFixEngine.Dialects;
-using AxFixEngine.Extensions;
 using AxFixEngine.Factories;
 using AxFixEngine.Handlers;
 using AxFixEngine.Interfaces;
