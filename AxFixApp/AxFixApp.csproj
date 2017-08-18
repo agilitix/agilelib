@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{88972574-31D9-44F6-9E2F-690103421477}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>AxFixServer</RootNamespace>
-    <AssemblyName>AxFixServer</AssemblyName>
+    <RootNamespace>AxFixApp</RootNamespace>
+    <AssemblyName>AxFixApp</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -77,13 +77,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Configuration\app.main.config">
+    <None Include="Config\app.main.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Configuration\initiator.ini">
+    <None Include="Config\initiator.ini">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Configuration\log4net.config">
+    <None Include="Config\log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

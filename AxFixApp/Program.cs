@@ -36,7 +36,7 @@ namespace AxFixServer
         static void Main(string[] args)
         {
             // Lookup configuration files in config folder.
-            IConfigurationFileProvider configurationFileProvider = new ConfigurationFileProvider(@".\Configuration");
+            IConfigurationFileProvider configurationFileProvider = new ConfigurationFileProvider(@".\Config");
 
             // Read app configuration.
             IAppConfiguration appConfiguration = new AppConfiguration();
