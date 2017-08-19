@@ -28,17 +28,10 @@ namespace AxFixEngine.Extensions
         public static bool HasSessionInTime(this SessionSettings sessionSettings)
         {
             DateTime now = DateTime.UtcNow;
-            IEnumerable<Dictionary> settings = sessionSettings.GetSessions().Select(sessionSettings.Get);
-            foreach (Dictionary setting in settings)
-            {
-                SessionSchedule sch = new SessionSchedule(setting);
-                if (sch.IsSessionTime(now))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            IEnumerable<Dictionary> settings = sessionSettings.GetSessions()
+                                                              .Select(sessionSettings.Get);
+            return settings.Select(setting => new SessionSchedule(setting))
+                           .Any(sch => sch.IsSessionTime(now));
         }
     }
 }

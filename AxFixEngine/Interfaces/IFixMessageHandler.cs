@@ -4,6 +4,7 @@ namespace AxFixEngine.Interfaces
 {
     public interface IFixMessageHandler
     {
+        void OnCreate(SessionID sessionId);
         void OnLogon(SessionID sessionId);
         void OnLogout(SessionID sessionId);
 

@@ -47,7 +47,7 @@ namespace AxFixEngine.Extensions
                 return true;
             }
 
-            tagName = string.Empty;
+            tagName = null;
             return false;
         }
 
@@ -86,7 +86,7 @@ namespace AxFixEngine.Extensions
 
         public static bool TryGetEnumName(this DataDictionary self, int tagNumber, string enumValue, out string enumName)
         {
-            enumName = string.Empty;
+            enumName = null;
             DDField ddField;
             return self.FieldsByTag.TryGetValue(tagNumber, out ddField)
                    && ddField.EnumDict.TryGetValue(enumValue, out enumName);
@@ -117,7 +117,7 @@ namespace AxFixEngine.Extensions
                 }
             }
 
-            enumValue = string.Empty;
+            enumValue = null;
             return false;
         }
 
@@ -140,7 +140,7 @@ namespace AxFixEngine.Extensions
                 return true;
             }
 
-            tagType = string.Empty;
+            tagType = null;
             return false;
         }
 
@@ -157,7 +157,7 @@ namespace AxFixEngine.Extensions
                 return enumName;
             }
 
-            return string.Empty;
+            return null;
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace AxFixEngine.Extensions
                 return enumValue;
             }
 
-            return string.Empty;
+            return null;
         }
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace AxFixEngine.Extensions
                 return fixFieldType;
             }
 
-            return string.Empty;
+            return null;
         }
     }
 }

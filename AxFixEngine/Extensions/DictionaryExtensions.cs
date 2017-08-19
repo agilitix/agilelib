@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using QuickFix;
+using QuickFix.Fields.Converters;
 
 namespace AxFixEngine.Extensions
 {
@@ -10,7 +11,8 @@ namespace AxFixEngine.Extensions
         public static DateTime GetTime(this Dictionary self, string settingName)
         {
             string setting = self.GetString(settingName);
-            return (DateTime) Convert.ChangeType(setting, typeof(DateTime));
+            DateTime dt = DateTimeConverter.ConvertToTimeOnly(setting);
+            return dt;
         }
 
         public static IEnumerable<KeyValuePair<string, string>> AsEnumerable(this Dictionary self)

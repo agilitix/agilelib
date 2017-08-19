@@ -1,12 +1,11 @@
-﻿using AxFixEngine;
-using AxFixEngine.Handlers;
+﻿using AxFixEngine.Handlers;
 using QuickFix;
 
-namespace AxFixServer
+namespace AxFixApp
 {
-    public class Fix44MessageCrackingHandler : FixMessageCrackingHandlerBase
+    public class Fix44MessageCracker : FixMessageCrackerBase
     {
-        #region Session level messages
+        #region Admin messages
 
         public void OnMessage(QuickFix.FIX44.Logon message, SessionID sessionId)
         {
@@ -38,7 +37,7 @@ namespace AxFixServer
 
         #endregion
 
-        #region Business level messages
+        #region App messages
 
         public void OnMessage(QuickFix.FIX44.BusinessMessageReject message, SessionID sessionId)
         {

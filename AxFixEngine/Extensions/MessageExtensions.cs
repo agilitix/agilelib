@@ -16,7 +16,7 @@ namespace AxFixEngine.Extensions
     {
         public static DataDictionary GetDialect(this Message self)
         {
-            DataDictionary dictionary = FixDialectsProvider.Dialects.GetDataDictionary(self.GetSessionID());
+            DataDictionary dictionary = FixDialectsProvider.Dialects.GetDataDictionary(self.Header.GetString(Tags.BeginString));
             return dictionary;
         }
 
@@ -26,102 +26,64 @@ namespace AxFixEngine.Extensions
             return sessionId;
         }
 
-        public static SessionID GetReverseSessionID(this Message self)
+        public static string GetMsgType(this Message self)
         {
-            SessionID sessionId = Message.GetReverseSessionID(self);
-            return sessionId;
-        }
-
-        public static MsgType GetMsgType(this Message self)
-        {
-            string msgType = self.Header.GetField(Tags.MsgType);
-            return new MsgType(msgType);
+            string msgType = self.Header.GetString(Tags.MsgType);
+            return msgType;
         }
 
         public static string GetMsgName(this Message self)
         {
+            string msgType = GetMsgType(self);
             DataDictionary dictionary = GetDialect(self);
-            string msgType = self.Header.GetField(Tags.MsgType);
             return dictionary.GetEnumName(Tags.MsgType, msgType);
         }
 
-        public static string GetEnumName(this Message self, IField field)
+        public static string GetEnumNameSafe(this Message self, int tag, string defaultValue = null)
         {
-            return GetEnumName(self, field.Tag);
-        }
-
-        public static string GetEnumName(this Message self, int tag)
-        {
-            FieldMap fm = FindFieldMap(self, tag);
-            string value = fm?.GetString(tag);
-            if (!string.IsNullOrWhiteSpace(value))
+            FieldMap fm = GetFieldMap(self, tag);
+            string enumValue = fm?.GetString(tag);
+            if (!string.IsNullOrWhiteSpace(enumValue))
             {
                 DataDictionary dictionary = GetDialect(self);
-                return dictionary.GetEnumName(tag, value);
+                return dictionary.GetEnumName(tag, enumValue) ?? defaultValue;
             }
 
-            return string.Empty;
+            return defaultValue;
         }
 
-        public static bool IsField(this Message self, IField field)
+        public static string GetStringSafe(this Message self, int tag, string defaultValue = null)
         {
-            return IsField(self, field.Tag);
+            FieldMap fm = GetFieldMap(self, tag);
+            return fm?.GetString(tag) ?? defaultValue;
         }
 
-        public static bool IsField(this Message self, int tag)
+        public static decimal GetDecimalSafe(this Message self, int tag, decimal defaultValue = 0)
         {
-            DataDictionary dictionary = GetDialect(self);
-            return dictionary.Messages[self.Header.GetField(Tags.MsgType)].IsField(tag);
+            FieldMap fm = GetFieldMap(self, tag);
+            return fm?.GetDecimal(tag) ?? defaultValue;
         }
 
-        public static bool IsHeaderField(this Message self, IField field)
+        public static double GetDoubleSafe(this Message self, int tag, double defaultValue = 0)
         {
-            return IsHeaderField(self, field.Tag);
+            return (double) GetDecimalSafe(self, tag, (decimal) defaultValue);
         }
 
-        public static bool IsHeaderField(this Message self, int tag)
+        public static DateTime GetDateTimeSafe(this Message self, int tag, DateTime defaultValue = default(DateTime))
         {
-            DataDictionary dictionary = GetDialect(self);
-            return dictionary.IsHeaderField(tag);
+            FieldMap fm = GetFieldMap(self, tag);
+            return fm?.GetDateTime(tag) ?? defaultValue;
         }
 
-        public static bool IsBodyField(this Message self, IField field)
+        public static FieldMap GetFieldMap(this Message self, int tag)
         {
-            return IsBodyField(self, field.Tag);
-        }
-
-        public static bool IsBodyField(this Message self, int tag)
-        {
-            DataDictionary dictionary = GetDialect(self);
-            return dictionary.IsBodyField(tag);
-        }
-
-        public static bool IsTrailerField(this Message self, IField field)
-        {
-            return IsTrailerField(self, field.Tag);
-        }
-
-        public static bool IsTrailerField(this Message self, int tag)
-        {
-            DataDictionary dictionary = GetDialect(self);
-            return dictionary.IsTrailerField(tag);
-        }
-
-        public static FieldMap FindFieldMap(this Message self, IField field)
-        {
-            return FindFieldMap(self, field.Tag);
-        }
-
-        public static FieldMap FindFieldMap(this Message message, int tag)
-        {
-            FieldMap fieldMap = message.IsSetField(tag)
-                                    ? message
-                                    : message.Header.IsSetField(tag)
-                                        ? message.Header
-                                        : message.Trailer.IsSetField(tag)
-                                            ? message.Trailer as FieldMap
-                                            : null;
-            return fieldMap;
+            return self.IsSetField(tag)
+                       ? self
+                       : (self.Header.IsSetField(tag)
+                              ? (FieldMap) self.Header
+                              : (self.Trailer.IsSetField(tag)
+                                     ? self.Trailer
+                                     : null));
         }
 
         public static XDocument ToXDocument(this Message self)

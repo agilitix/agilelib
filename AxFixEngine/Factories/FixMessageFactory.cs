@@ -1,9 +1,6 @@
 ﻿using AxFixEngine.Dialects;
-using AxFixEngine.Extensions;
 using AxFixEngine.Interfaces;
-using AxFixEngine.Utilities;
 using QuickFix;
-using QuickFix.Fields;
 using Message = QuickFix.Message;
 
 namespace AxFixEngine.Factories
@@ -17,32 +14,18 @@ namespace AxFixEngine.Factories
             _factory = factory;
         }
 
-        public Message CreateMessageFromString(string fixMessage)
+        public T CreateMessage<T>(string beginString, string msgType) where T : Message
         {
-            return CreateMessageFromString(fixMessage, false);
+            return (T) _factory.Create(beginString, msgType);
         }
 
-        public Message CreateValidatedMessageFromString(string fixMessage)
+        public Message CreateMessage(string fixMessage, bool validate = true)
         {
-            return CreateMessageFromString(fixMessage, true);
-        }
-
-        public TMessage CreateMessage<TMessage>(SessionID sessionID, MsgType msgType) where TMessage : Message
-        {
-            Message msg = _factory.Create(sessionID.BeginString, msgType.getValue());
-            return (TMessage) msg;
-        }
-
-        private Message CreateMessageFromString(string fixMessage, bool validate)
-        {
-            Message headerOnly = new Message();
-            headerOnly.FromStringHeader(fixMessage);
-
+            string beginString = Message.ExtractBeginString(fixMessage);
             Message message = new Message(fixMessage,
-                                          FixDialectsProvider.Dialects.GetDataDictionary(headerOnly.GetSessionID()),
+                                          FixDialectsProvider.Dialects.GetDataDictionary(beginString),
                                           validate);
             return message;
         }
-
     }
 }

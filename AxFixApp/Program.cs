@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using AxCommandLine;
@@ -10,12 +12,14 @@ using AxCommonLogger.Interfaces;
 using AxConfiguration;
 using AxConfiguration.Interfaces;
 using AxFixEngine.Dialects;
+using AxFixEngine.Engine;
 using AxFixEngine.Factories;
 using AxFixEngine.Handlers;
 using AxFixEngine.Interfaces;
 using QuickFix;
+using QuickFix.FixValues;
 
-namespace AxFixServer
+namespace AxFixApp
 {
     class Program
     {
@@ -65,44 +69,29 @@ namespace AxFixServer
             ICommandLineArguments commandLineArguments = new CommandLineArguments(args);
             Logger.Info("Command line arguments: " + commandLineArguments);
 
-            IFixConnectorFactory connectorFactory = new FixConnectorFactory();
-
-            FixDialectsProvider.Attach(new FixDialects());
-
-            IFixConnector acceptor = null;
-            bool acceptorEnabled = appConfiguration.Configuration.GetSetting<bool>("acceptor_enabled");
-            if (acceptorEnabled)
+            string acceptorConfig = null, initiatorConfig = null;
+            if (appConfiguration.Configuration.GetSetting<bool>("acceptor_enabled"))
             {
-                string configFile = appConfiguration.Configuration.GetSetting<string>("acceptor_settings");
-
-                SessionSettings fixSettings = new SessionSettings(configFile);
-
-                FixDialectsProvider.Dialects.AddDataDictionaries(fixSettings);
-
-                IFixMessageHandler messageHandler = new Fix44MessageCrackingHandler();
-                IApplication fixApp = new FixApplication(messageHandler);
-
-                acceptor = connectorFactory.CreateAcceptor(fixApp, fixSettings);
+                acceptorConfig = appConfiguration.Configuration.GetSetting<string>("acceptor_settings");
+            }
+            if (appConfiguration.Configuration.GetSetting<bool>("initiator_enabled"))
+            {
+                initiatorConfig = appConfiguration.Configuration.GetSetting<string>("initiator_settings");
             }
 
-            IFixConnector initiator = null;
-            bool initiatorEnabled = appConfiguration.Configuration.GetSetting<bool>("initiator_enabled");
-            if (initiatorEnabled)
+            IFixEngine fixEngine = new FixEngine(acceptorConfig, initiatorConfig);
+
+            IFixMessageHandlerProvider messageHandlerProvider = new FixMessageHandlerProvider();
+            IFixMessageHandler fix44MessageCracker = new Fix44MessageCracker();
+
+            foreach (SessionID sessionId in fixEngine.Sessions.Where(x => x.BeginString == BeginString.FIX44))
             {
-                string configFile = appConfiguration.Configuration.GetSetting<string>("initiator_settings");
-
-                SessionSettings fixSettings = new SessionSettings(configFile);
-
-                FixDialectsProvider.Dialects.AddDataDictionaries(fixSettings);
-
-                IFixMessageHandler messageHandler = new Fix44MessageCrackingHandler();
-                IApplication fixApp = new FixApplication(messageHandler);
-
-                initiator = connectorFactory.CreateInitiator(fixApp, fixSettings);
+                messageHandlerProvider.AddMessageHandler(sessionId, fix44MessageCracker);
             }
 
-            acceptor?.Start();
-            initiator?.Start();
+            fixEngine.InitializeFixApplication(messageHandlerProvider);
+
+            fixEngine.Start();
 
             do
             {
@@ -111,8 +100,7 @@ namespace AxFixServer
             }
             while (Console.ReadKey().Key != ConsoleKey.X);
 
-            acceptor?.Stop();
-            initiator?.Stop();
+            fixEngine.Stop();
         }
     }
 }

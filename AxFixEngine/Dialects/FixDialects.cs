@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using AxFixEngine.Extensions;
 using AxFixEngine.Interfaces;
 using QuickFix;
 using QuickFix.DataDictionary;
@@ -9,7 +8,7 @@ namespace AxFixEngine.Dialects
 {
     public class FixDialects : IFixDialects
     {
-        protected readonly IDictionary<SessionID, DataDictionary> _dataDictionaries = new Dictionary<SessionID, DataDictionary>();
+        protected readonly IDictionary<string, DataDictionary> _dataDictionaries = new Dictionary<string, DataDictionary>();
         protected readonly IDictionary<string, DataDictionary> _dataDictionariesBySpecFile = new Dictionary<string, DataDictionary>();
 
         public void AddDataDictionaries(SessionSettings fixSettings)
@@ -31,21 +30,21 @@ namespace AxFixEngine.Dialects
                     }
                 }
 
-                _dataDictionaries[sessionId] = _dataDictionaries[sessionId.GetReverseSessionID()] = dataDictionary;
+                _dataDictionaries[sessionId.BeginString] = _dataDictionariesBySpecFile[specFile] = dataDictionary;
             }
         }
 
-        public DataDictionary GetDataDictionary(SessionID sessionID)
+        public DataDictionary GetDataDictionary(string beginString)
         {
             DataDictionary dataDictionary;
-            return TryGetDataDictionary(sessionID, out dataDictionary)
+            return TryGetDataDictionary(beginString, out dataDictionary)
                        ? dataDictionary
                        : null;
         }
 
-        public bool TryGetDataDictionary(SessionID sessionID, out DataDictionary dataDictionary)
+        public bool TryGetDataDictionary(string beginString, out DataDictionary dataDictionary)
         {
-            return _dataDictionaries.TryGetValue(sessionID, out dataDictionary);
+            return _dataDictionaries.TryGetValue(beginString, out dataDictionary);
         }
     }
 }

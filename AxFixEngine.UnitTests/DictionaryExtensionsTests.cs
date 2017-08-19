@@ -68,7 +68,7 @@ namespace AxFixEngine.UnitTests
         public override void Arrange()
         {
             base.Arrange();
-            ExpectedDateTime = DateTime.Parse("08:00:00");
+            ExpectedDateTime = DateTime.Parse("1980-01-01T08:00:00");
         }
 
         public override void Act()

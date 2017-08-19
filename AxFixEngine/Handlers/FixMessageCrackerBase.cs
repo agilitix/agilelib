@@ -3,8 +3,12 @@ using QuickFix;
 
 namespace AxFixEngine.Handlers
 {
-    public abstract class FixMessageHandlerBase : IFixMessageHandler
+    public abstract class FixMessageCrackerBase : MessageCracker, IFixMessageHandler
     {
+        public void OnCreate(SessionID sessionId)
+        {
+        }
+
         public virtual void OnLogon(SessionID sessionId)
         {
         }
@@ -23,10 +27,12 @@ namespace AxFixEngine.Handlers
 
         public virtual void FromAdmin(Message message, SessionID sourceSessionId)
         {
+            Crack(message, sourceSessionId);
         }
 
         public virtual void FromApp(Message message, SessionID sourceSessionId)
         {
+            Crack(message, sourceSessionId);
         }
     }
 }

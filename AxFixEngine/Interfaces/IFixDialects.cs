@@ -8,7 +8,7 @@ namespace AxFixEngine.Interfaces
     {
         void AddDataDictionaries(SessionSettings fixSettings);
 
-        DataDictionary GetDataDictionary(SessionID sessionID);
-        bool TryGetDataDictionary(SessionID sessionID, out DataDictionary dataDictionary);
+        DataDictionary GetDataDictionary(string beginString);
+        bool TryGetDataDictionary(string beginString, out DataDictionary dataDictionary);
     }
 }
