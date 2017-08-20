@@ -36,6 +36,8 @@ namespace AxFixEngine.Engine
                     throw new ConfigError("The config file is not valid for an acceptor");
                 }
 
+                FixDialectsProvider.Dialects.AddDataDictionaries(_acceptorSettings);
+
                 foreach (SessionID sessionId in _acceptorSettings.GetSessions())
                 {
                     _sessions.Add(sessionId);
@@ -50,6 +52,8 @@ namespace AxFixEngine.Engine
                     throw new ConfigError("The config file is not valid for an initiator");
                 }
 
+                FixDialectsProvider.Dialects.AddDataDictionaries(_initiatorSettings);
+
                 foreach (SessionID sessionId in _initiatorSettings.GetSessions())
                 {
                     _sessions.Add(sessionId);
@@ -57,17 +61,15 @@ namespace AxFixEngine.Engine
             }
         }
 
-        public void InitializeFixApplication(IFixMessageHandlerProvider messageHandlerProvider)
+        public void CreateApplication(IFixMessageHandlerProvider messageHandlerProvider)
         {
             if (_acceptorSettings != null)
             {
-                FixDialectsProvider.Dialects.AddDataDictionaries(_acceptorSettings);
                 IApplication fixApp = new FixApplication(messageHandlerProvider);
                 _acceptor = _connectorFactory.CreateAcceptor(fixApp, _acceptorSettings);
             }
             if (_initiatorSettings != null)
             {
-                FixDialectsProvider.Dialects.AddDataDictionaries(_initiatorSettings);
                 IApplication fixApp = new FixApplication(messageHandlerProvider);
                 _initiator = _connectorFactory.CreateInitiator(fixApp, _initiatorSettings);
             }

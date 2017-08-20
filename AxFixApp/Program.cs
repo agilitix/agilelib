@@ -89,7 +89,7 @@ namespace AxFixApp
                 messageHandlerProvider.AddMessageHandler(sessionId, fix44MessageCracker);
             }
 
-            fixEngine.InitializeFixApplication(messageHandlerProvider);
+            fixEngine.CreateApplication(messageHandlerProvider);
 
             fixEngine.Start();
 
