@@ -12,7 +12,7 @@ namespace AxFixEngine.Handlers
     public class FixApplication : IApplication
     {
         protected static ILoggerFacade Log = LoggerFacadeProvider.GetDeclaringTypeLogger();
-        private readonly IFixMessageHandlerProvider _messageHandlerProvider;
+        protected readonly IFixMessageHandlerProvider _messageHandlerProvider;
 
         public FixApplication(IFixMessageHandlerProvider messageHandlerProvider)
         {
@@ -29,10 +29,10 @@ namespace AxFixEngine.Handlers
         public void ToAdmin(Message message, SessionID sessionID)
         {
             Log.InfoFormat("Send admin MsgType={0} content=<{1}>", message.GetMsgName(), message);
-            IList<IFixMessageHandler> handlers = _messageHandlerProvider.GetMessageHandlers(sessionID);
+            IList<IFixMessageHandler> handlers = _messageHandlerProvider.GetMessageHandlers(message.GetSessionID());
             foreach (IFixMessageHandler handler in handlers)
             {
-                handler.ToAdmin(message, sessionID);
+                handler.OnAdmin(message, sessionID);
             }
         }
 
@@ -45,10 +45,10 @@ namespace AxFixEngine.Handlers
         public void FromAdmin(Message message, SessionID sessionID)
         {
             Log.InfoFormat("Recv admin MsgType={0} content=<{1}>", message.GetMsgName(), message);
-            IList<IFixMessageHandler> handlers = _messageHandlerProvider.GetMessageHandlers(sessionID);
+            IList<IFixMessageHandler> handlers = _messageHandlerProvider.GetMessageHandlers(message.GetSessionID());
             foreach (IFixMessageHandler handler in handlers)
             {
-                handler.FromAdmin(message, sessionID);
+                handler.OnAdmin(message, sessionID);
             }
         }
 
@@ -67,10 +67,10 @@ namespace AxFixEngine.Handlers
         public void ToApp(Message message, SessionID sessionID)
         {
             Log.InfoFormat("Send appli MsgType={0} content=<{1}>", message.GetMsgName(), message);
-            IList<IFixMessageHandler> handlers = _messageHandlerProvider.GetMessageHandlers(sessionID);
+            IList<IFixMessageHandler> handlers = _messageHandlerProvider.GetMessageHandlers(message.GetSessionID());
             foreach (IFixMessageHandler handler in handlers)
             {
-                handler.ToApp(message, sessionID);
+                handler.OnApp(message, sessionID);
             }
         }
 
@@ -92,10 +92,10 @@ namespace AxFixEngine.Handlers
         public void FromApp(Message message, SessionID sessionID)
         {
             Log.InfoFormat("Recv appli MsgType={0} content=<{1}>", message.GetMsgName(), message);
-            IList<IFixMessageHandler> handlers = _messageHandlerProvider.GetMessageHandlers(sessionID);
+            IList<IFixMessageHandler> handlers = _messageHandlerProvider.GetMessageHandlers(message.GetSessionID());
             foreach (IFixMessageHandler handler in handlers)
             {
-                handler.FromApp(message, sessionID);
+                handler.OnApp(message, sessionID);
             }
         }
 

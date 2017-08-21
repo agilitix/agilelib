@@ -28,9 +28,11 @@ namespace AxFixEngine.Dialects
                     {
                         throw new InvalidOperationException("Cannot use SessionID=" + sessionId + " with dictionary read from spec file=" + specFile + " => the BeginString are not equal");
                     }
+
+                    _dataDictionariesBySpecFile[specFile] = dataDictionary;
                 }
 
-                _dataDictionaries[sessionId.BeginString] = _dataDictionariesBySpecFile[specFile] = dataDictionary;
+                _dataDictionaries[sessionId.BeginString] = dataDictionary;
             }
         }
 

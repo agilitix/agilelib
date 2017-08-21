@@ -1,0 +1,52 @@
+﻿using AxFixEngine.Handlers;
+using QuickFix;
+
+namespace AxFixApp
+{
+    public class Fix44OutboundMessageCracker : FixMessageCrackerBase
+    {
+        #region Admin messages
+
+        public void OnMessage(QuickFix.FIX44.Logon message, SessionID sessionId)
+        {
+        }
+
+        public void OnMessage(QuickFix.FIX44.Logout message, SessionID sessionId)
+        {
+        }
+
+        public void OnMessage(QuickFix.FIX44.TestRequest message, SessionID sessionId)
+        {
+        }
+
+        public void OnMessage(QuickFix.FIX44.ResendRequest message, SessionID sessionId)
+        {
+        }
+
+        public void OnMessage(QuickFix.FIX44.SequenceReset message, SessionID sessionId)
+        {
+        }
+
+        public void OnMessage(QuickFix.FIX44.Reject message, SessionID sessionId)
+        {
+        }
+
+        public void OnMessage(QuickFix.FIX44.Heartbeat message, SessionID sessionId)
+        {
+        }
+
+        #endregion
+
+        #region App messages
+
+        public void OnMessage(QuickFix.FIX44.BusinessMessageReject message, SessionID sessionId)
+        {
+        }
+
+        public void OnMessage(QuickFix.FIX44.OrderCancelReject message, SessionID sessionId)
+        {
+        }
+
+        #endregion
+    }
+}

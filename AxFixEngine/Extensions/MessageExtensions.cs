@@ -39,53 +39,6 @@ namespace AxFixEngine.Extensions
             return dictionary.GetEnumName(Tags.MsgType, msgType);
         }
 
-        public static string GetEnumNameSafe(this Message self, int tag, string defaultValue = null)
-        {
-            FieldMap fm = GetFieldMap(self, tag);
-            string enumValue = fm?.GetString(tag);
-            if (!string.IsNullOrWhiteSpace(enumValue))
-            {
-                DataDictionary dictionary = GetDialect(self);
-                return dictionary.GetEnumName(tag, enumValue) ?? defaultValue;
-            }
-
-            return defaultValue;
-        }
-
-        public static string GetStringSafe(this Message self, int tag, string defaultValue = null)
-        {
-            FieldMap fm = GetFieldMap(self, tag);
-            return fm?.GetString(tag) ?? defaultValue;
-        }
-
-        public static decimal GetDecimalSafe(this Message self, int tag, decimal defaultValue = 0)
-        {
-            FieldMap fm = GetFieldMap(self, tag);
-            return fm?.GetDecimal(tag) ?? defaultValue;
-        }
-
-        public static double GetDoubleSafe(this Message self, int tag, double defaultValue = 0)
-        {
-            return (double) GetDecimalSafe(self, tag, (decimal) defaultValue);
-        }
-
-        public static DateTime GetDateTimeSafe(this Message self, int tag, DateTime defaultValue = default(DateTime))
-        {
-            FieldMap fm = GetFieldMap(self, tag);
-            return fm?.GetDateTime(tag) ?? defaultValue;
-        }
-
-        public static FieldMap GetFieldMap(this Message self, int tag)
-        {
-            return self.IsSetField(tag)
-                       ? self
-                       : (self.Header.IsSetField(tag)
-                              ? (FieldMap) self.Header
-                              : (self.Trailer.IsSetField(tag)
-                                     ? self.Trailer
-                                     : null));
-        }
-
         public static XDocument ToXDocument(this Message self)
         {
             string msgName = GetMsgName(self);

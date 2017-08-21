@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dialects\FixDialectsProvider.cs" />
+    <Compile Include="Extensions\SessionIDExtensions.cs" />
     <Compile Include="Factories\FixMessageFactory.cs" />
     <Compile Include="Handlers\FixMessageHandlerProvider.cs" />
     <Compile Include="Interfaces\IFixEngine.cs" />

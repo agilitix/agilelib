@@ -8,10 +8,7 @@ namespace AxFixEngine.Interfaces
         void OnLogon(SessionID sessionId);
         void OnLogout(SessionID sessionId);
 
-        void ToAdmin(Message message, SessionID sourceSessionId);
-        void FromAdmin(Message message, SessionID sourceSessionId);
-
-        void ToApp(Message message, SessionID sourceSessionId);
-        void FromApp(Message message, SessionID sourceSessionId);
+        void OnAdmin(Message message, SessionID sessionId);
+        void OnApp(Message message, SessionID sessionId);
     }
 }

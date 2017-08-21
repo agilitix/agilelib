@@ -13,6 +13,7 @@ using AxConfiguration;
 using AxConfiguration.Interfaces;
 using AxFixEngine.Dialects;
 using AxFixEngine.Engine;
+using AxFixEngine.Extensions;
 using AxFixEngine.Factories;
 using AxFixEngine.Handlers;
 using AxFixEngine.Interfaces;
@@ -81,15 +82,17 @@ namespace AxFixApp
 
             IFixEngine fixEngine = new FixEngine(acceptorConfig, initiatorConfig);
 
-            IFixMessageHandlerProvider messageHandlerProvider = new FixMessageHandlerProvider();
-            IFixMessageHandler fix44MessageCracker = new Fix44MessageCracker();
+            IFixMessageHandlerProvider handlerProvider = new FixMessageHandlerProvider();
+            IFixMessageHandler fix44InboundMessageCracker = new Fix44MessageCracker();
+            IFixMessageHandler fix44OutboundMessageCracker = new Fix44OutboundMessageCracker();
 
             foreach (SessionID sessionId in fixEngine.Sessions.Where(x => x.BeginString == BeginString.FIX44))
             {
-                messageHandlerProvider.AddMessageHandler(sessionId, fix44MessageCracker);
+                handlerProvider.AddMessageHandler(sessionId, fix44OutboundMessageCracker);
+                handlerProvider.AddMessageHandler(sessionId.GetReverseSessionID(), fix44InboundMessageCracker);
             }
 
-            fixEngine.CreateApplication(messageHandlerProvider);
+            fixEngine.CreateApplication(handlerProvider);
 
             fixEngine.Start();
 
