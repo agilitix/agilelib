@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using QuickFix.DataDictionary;
+using QuickFix.Fields;
 
 namespace AxFixEngine.Extensions
 {
@@ -72,6 +73,24 @@ namespace AxFixEngine.Extensions
 
             tagNumber = 0;
             return false;
+        }
+
+        /// <summary>
+        /// Get enum Name from tag number and enum value: 54, "2" => "SELL"
+        /// </summary>
+        public static string GetEnumName(this DataDictionary self, IField field)
+        {
+            string enumName;
+            TryGetEnumName(self, field, out enumName);
+            return enumName;
+        }
+
+        public static bool TryGetEnumName(this DataDictionary self, IField field, out string enumName)
+        {
+            enumName = null;
+            DDField ddField;
+            return self.FieldsByTag.TryGetValue(field.Tag, out ddField)
+                   && ddField.EnumDict.TryGetValue(field.ToString(), out enumName);
         }
 
         /// <summary>

@@ -26,17 +26,17 @@ namespace AxFixEngine.Extensions
             return sessionId;
         }
 
-        public static string GetMsgType(this Message self)
+        public static MsgType GetMsgType(this Message self)
         {
-            string msgType = self.Header.GetString(Tags.MsgType);
-            return msgType;
+            string msgType = self.Header.GetField(Tags.MsgType);
+            return new MsgType(msgType);
         }
 
         public static string GetMsgName(this Message self)
         {
-            string msgType = GetMsgType(self);
             DataDictionary dictionary = GetDialect(self);
-            return dictionary.GetEnumName(Tags.MsgType, msgType);
+            MsgType msgType = GetMsgType(self);
+            return dictionary.GetEnumName(msgType);
         }
 
         public static XDocument ToXDocument(this Message self)
