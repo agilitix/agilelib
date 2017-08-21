@@ -1,10 +1,16 @@
 ﻿using AxFixEngine.Handlers;
+using AxFixEngine.Interfaces;
 using QuickFix;
 
 namespace AxFixApp
 {
-    public class Fix44MessageCracker : FixMessageCrackerBase
+    public class Fix44InboundMessageCracker : FixMessageCrackerBase
     {
+        public Fix44InboundMessageCracker()
+            :base(FixMessageDirection.Inbound)
+        {
+        }
+
         #region Admin messages
 
         public void OnMessage(QuickFix.FIX44.Logon message, SessionID sessionId)

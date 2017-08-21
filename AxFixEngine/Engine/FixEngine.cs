@@ -61,16 +61,16 @@ namespace AxFixEngine.Engine
             }
         }
 
-        public void CreateApplication(IFixMessageHandlerProvider messageHandlerProvider)
+        public void CreateApplication(IFixMessageCrackerProvider messageCrackerProvider)
         {
             if (_acceptorSettings != null)
             {
-                IApplication fixApp = new FixApplication(messageHandlerProvider);
+                IApplication fixApp = new FixApplication(messageCrackerProvider);
                 _acceptor = _connectorFactory.CreateAcceptor(fixApp, _acceptorSettings);
             }
             if (_initiatorSettings != null)
             {
-                IApplication fixApp = new FixApplication(messageHandlerProvider);
+                IApplication fixApp = new FixApplication(messageCrackerProvider);
                 _initiator = _connectorFactory.CreateInitiator(fixApp, _initiatorSettings);
             }
         }

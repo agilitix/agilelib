@@ -82,17 +82,17 @@ namespace AxFixApp
 
             IFixEngine fixEngine = new FixEngine(acceptorConfig, initiatorConfig);
 
-            IFixMessageHandlerProvider handlerProvider = new FixMessageHandlerProvider();
-            IFixMessageHandler fix44InboundMessageCracker = new Fix44MessageCracker();
-            IFixMessageHandler fix44OutboundMessageCracker = new Fix44OutboundMessageCracker();
+            IFixMessageCrackerProvider crackerProvider = new FixMessageCrackerProvider();
+            IFixMessageCracker fix44InboundMessageCracker = new Fix44InboundMessageCracker();
+            IFixMessageCracker fix44OutboundMessageCracker = new Fix44OutboundMessageCracker();
 
             foreach (SessionID sessionId in fixEngine.Sessions.Where(x => x.BeginString == BeginString.FIX44))
             {
-                handlerProvider.AddMessageHandler(sessionId, fix44OutboundMessageCracker);
-                handlerProvider.AddMessageHandler(sessionId.GetReverseSessionID(), fix44InboundMessageCracker);
+                crackerProvider.AddMessageCracker(sessionId, fix44InboundMessageCracker);
+                crackerProvider.AddMessageCracker(sessionId, fix44OutboundMessageCracker);
             }
 
-            fixEngine.CreateApplication(handlerProvider);
+            fixEngine.CreateApplication(crackerProvider);
 
             fixEngine.Start();
 

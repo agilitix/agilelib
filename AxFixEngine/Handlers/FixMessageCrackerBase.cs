@@ -3,8 +3,15 @@ using QuickFix;
 
 namespace AxFixEngine.Handlers
 {
-    public abstract class FixMessageCrackerBase : MessageCracker, IFixMessageHandler
+    public abstract class FixMessageCrackerBase : MessageCracker, IFixMessageCracker
     {
+        public FixMessageDirection Direction { get; }
+
+        protected FixMessageCrackerBase(FixMessageDirection direction)
+        {
+            Direction = direction;
+        }
+
         public void OnCreate(SessionID sessionId)
         {
         }

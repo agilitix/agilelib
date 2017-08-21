@@ -10,7 +10,7 @@ namespace AxFixEngine.Interfaces
     {
         IList<SessionID> Sessions { get; }
 
-        void CreateApplication(IFixMessageHandlerProvider messageHandlerProvider);
+        void CreateApplication(IFixMessageCrackerProvider messageCrackerProvider);
 
         void Start();
         void Stop();

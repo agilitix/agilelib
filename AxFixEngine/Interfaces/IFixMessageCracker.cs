@@ -2,8 +2,16 @@
 
 namespace AxFixEngine.Interfaces
 {
-    public interface IFixMessageHandler
+    public enum FixMessageDirection
     {
+        Inbound,
+        Outbound
+    }
+
+    public interface IFixMessageCracker
+    {
+        FixMessageDirection Direction { get; }
+
         void OnCreate(SessionID sessionId);
         void OnLogon(SessionID sessionId);
         void OnLogout(SessionID sessionId);
