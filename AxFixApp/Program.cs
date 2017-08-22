@@ -17,6 +17,7 @@ using AxFixEngine.Extensions;
 using AxFixEngine.Factories;
 using AxFixEngine.Handlers;
 using AxFixEngine.Interfaces;
+using AxUtils;
 using QuickFix;
 using QuickFix.FixValues;
 
@@ -40,6 +41,9 @@ namespace AxFixApp
 
         static void Main(string[] args)
         {
+            // Set culture overall app and threads.
+            CultureInfoUtils.SetDefaultCultureInfo_en_US();
+
             // Lookup configuration files in config folder.
             IConfigurationFileProvider configurationFileProvider = new ConfigurationFileProvider(@".\Config");
 
