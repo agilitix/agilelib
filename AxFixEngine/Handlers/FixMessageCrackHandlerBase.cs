@@ -3,11 +3,11 @@ using QuickFix;
 
 namespace AxFixEngine.Handlers
 {
-    public abstract class FixMessageCrackerBase : MessageCracker, IFixMessageCracker
+    public abstract class FixMessageCrackHandlerBase : MessageCracker, IFixMessageHandler
     {
         public FixMessageDirection Direction { get; }
 
-        protected FixMessageCrackerBase(FixMessageDirection direction)
+        protected FixMessageCrackHandlerBase(FixMessageDirection direction)
         {
             Direction = direction;
         }

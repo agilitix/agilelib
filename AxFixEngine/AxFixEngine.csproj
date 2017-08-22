@@ -67,9 +67,10 @@
     <Compile Include="Dialects\FixDialectsProvider.cs" />
     <Compile Include="Extensions\SessionIDExtensions.cs" />
     <Compile Include="Factories\FixMessageFactory.cs" />
-    <Compile Include="Handlers\FixMessageCrackerProvider.cs" />
+    <Compile Include="Handlers\FixMessageCrackHandlerBase.cs" />
+    <Compile Include="Handlers\FixMessageHandlerProvider.cs" />
     <Compile Include="Interfaces\IFixEngine.cs" />
-    <Compile Include="Interfaces\IFixMessageCrackerProvider.cs" />
+    <Compile Include="Interfaces\IFixMessageHandlerProvider.cs" />
     <Compile Include="Extensions\DataDictionaryExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\MessageExtensions.cs" />
@@ -78,13 +79,13 @@
     <Compile Include="Handlers\FixApplication.cs" />
     <Compile Include="Factories\FixConnectorFactory.cs" />
     <Compile Include="Connectors\FixInitiator.cs" />
-    <Compile Include="Handlers\FixMessageCrackerBase.cs" />
+    <Compile Include="Handlers\FixMessageHandlerBase.cs" />
     <Compile Include="Dialects\FixDialects.cs" />
     <Compile Include="Interfaces\IFixConnector.cs" />
     <Compile Include="Interfaces\IFixConnectorFactory.cs" />
     <Compile Include="Interfaces\IFixDialects.cs" />
     <Compile Include="Interfaces\IFixMessageFactory.cs" />
-    <Compile Include="Interfaces\IFixMessageCracker.cs" />
+    <Compile Include="Interfaces\IFixMessageHandler.cs" />
     <Compile Include="Engine\FixEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

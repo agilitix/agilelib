@@ -4,7 +4,7 @@ using QuickFix;
 
 namespace AxFixApp
 {
-    public class Fix44InboundMessageCracker : FixMessageCrackerBase
+    public class Fix44InboundMessageCracker : FixMessageCrackHandlerBase
     {
         public Fix44InboundMessageCracker()
             :base(FixMessageDirection.Inbound)
