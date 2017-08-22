@@ -12,11 +12,11 @@ namespace AxFixEngine.Handlers
     public class FixApplication : IApplication
     {
         protected static ILoggerFacade Log = LoggerFacadeProvider.GetDeclaringTypeLogger();
-        protected readonly IFixMessageCrackerProvider _messageCrackerProvider;
+        protected readonly IFixMessageHandlerProvider _messageHandlerProvider;
 
-        public FixApplication(IFixMessageCrackerProvider messageCrackerProvider)
+        public FixApplication(IFixMessageHandlerProvider messageHandlerProvider)
         {
-            _messageCrackerProvider = messageCrackerProvider;
+            _messageHandlerProvider = messageHandlerProvider;
         }
 
         /// <summary>
@@ -29,10 +29,10 @@ namespace AxFixEngine.Handlers
         public void ToAdmin(Message message, SessionID sessionID)
         {
             Log.InfoFormat("Send admin MsgType={0} content=<{1}>", message.GetMsgName(), message);
-            IList<IFixMessageCracker> crackers = _messageCrackerProvider.GetOutboundMessageCrackers(sessionID);
-            foreach (IFixMessageCracker cracker in crackers)
+            IList<IFixMessageHandler> messageHandlers = _messageHandlerProvider.GetMessageHandlers(sessionID, FixMessageDirection.Outbound);
+            foreach (IFixMessageHandler handler in messageHandlers)
             {
-                cracker.OnAdmin(message, sessionID);
+                handler.OnAdmin(message, sessionID);
             }
         }
 
@@ -45,10 +45,10 @@ namespace AxFixEngine.Handlers
         public void FromAdmin(Message message, SessionID sessionID)
         {
             Log.InfoFormat("Recv admin MsgType={0} content=<{1}>", message.GetMsgName(), message);
-            IList<IFixMessageCracker> crackers = _messageCrackerProvider.GetInboundMessageCrackers(sessionID);
-            foreach (IFixMessageCracker cracker in crackers)
+            IList<IFixMessageHandler> messageHandlers = _messageHandlerProvider.GetMessageHandlers(sessionID, FixMessageDirection.Inbound);
+            foreach (IFixMessageHandler handler in messageHandlers)
             {
-                cracker.OnAdmin(message, sessionID);
+                handler.OnAdmin(message, sessionID);
             }
         }
 
@@ -67,10 +67,10 @@ namespace AxFixEngine.Handlers
         public void ToApp(Message message, SessionID sessionID)
         {
             Log.InfoFormat("Send appli MsgType={0} content=<{1}>", message.GetMsgName(), message);
-            IList<IFixMessageCracker> crackers = _messageCrackerProvider.GetOutboundMessageCrackers(sessionID);
-            foreach (IFixMessageCracker cracker in crackers)
+            IList<IFixMessageHandler> messageHandlers = _messageHandlerProvider.GetMessageHandlers(sessionID, FixMessageDirection.Outbound);
+            foreach (IFixMessageHandler handler in messageHandlers)
             {
-                cracker.OnApp(message, sessionID);
+                handler.OnApp(message, sessionID);
             }
         }
 
@@ -92,10 +92,10 @@ namespace AxFixEngine.Handlers
         public void FromApp(Message message, SessionID sessionID)
         {
             Log.InfoFormat("Recv appli MsgType={0} content=<{1}>", message.GetMsgName(), message);
-            IList<IFixMessageCracker> crackers = _messageCrackerProvider.GetInboundMessageCrackers(sessionID);
-            foreach (IFixMessageCracker cracker in crackers)
+            IList<IFixMessageHandler> messageHandlers = _messageHandlerProvider.GetMessageHandlers(sessionID, FixMessageDirection.Inbound);
+            foreach (IFixMessageHandler handler in messageHandlers)
             {
-                cracker.OnApp(message, sessionID);
+                handler.OnApp(message, sessionID);
             }
         }
 
@@ -111,10 +111,10 @@ namespace AxFixEngine.Handlers
         {
             DataDictionary sessionDictionary = FixDialectsProvider.Dialects.GetDataDictionary(sessionID.BeginString);
             Log.InfoFormat("Created session={0} dictionaryDescription=<{1}>", sessionID, sessionDictionary.GetDescription());
-            IList<IFixMessageCracker> crackers = _messageCrackerProvider.GetMessageCrackers(sessionID);
-            foreach (IFixMessageCracker cracker in crackers)
+            IList<IFixMessageHandler> messageHandlers = _messageHandlerProvider.GetMessageHandlers(sessionID, FixMessageDirection.Both);
+            foreach (IFixMessageHandler handler in messageHandlers)
             {
-                cracker.OnCreate(sessionID);
+                handler.OnCreate(sessionID);
             }
         }
 
@@ -126,10 +126,10 @@ namespace AxFixEngine.Handlers
         public void OnLogout(SessionID sessionID)
         {
             Log.InfoFormat("Logout session={0}", sessionID);
-            IList<IFixMessageCracker> crackers = _messageCrackerProvider.GetMessageCrackers(sessionID);
-            foreach (IFixMessageCracker cracker in crackers)
+            IList<IFixMessageHandler> messageHandlers = _messageHandlerProvider.GetMessageHandlers(sessionID, FixMessageDirection.Both);
+            foreach (IFixMessageHandler handler in messageHandlers)
             {
-                cracker.OnLogout(sessionID);
+                handler.OnLogout(sessionID);
             }
         }
 
@@ -142,10 +142,10 @@ namespace AxFixEngine.Handlers
         public void OnLogon(SessionID sessionID)
         {
             Log.InfoFormat("Logon session={0}", sessionID);
-            IList<IFixMessageCracker> crackers = _messageCrackerProvider.GetMessageCrackers(sessionID);
-            foreach (IFixMessageCracker cracker in crackers)
+            IList<IFixMessageHandler> messageHandlers = _messageHandlerProvider.GetMessageHandlers(sessionID, FixMessageDirection.Both);
+            foreach (IFixMessageHandler handler in messageHandlers)
             {
-                cracker.OnLogon(sessionID);
+                handler.OnLogon(sessionID);
             }
         }
     }

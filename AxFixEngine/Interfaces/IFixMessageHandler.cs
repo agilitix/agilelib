@@ -5,10 +5,11 @@ namespace AxFixEngine.Interfaces
     public enum FixMessageDirection
     {
         Inbound,
-        Outbound
+        Outbound,
+        Both
     }
 
-    public interface IFixMessageCracker
+    public interface IFixMessageHandler
     {
         FixMessageDirection Direction { get; }
 
