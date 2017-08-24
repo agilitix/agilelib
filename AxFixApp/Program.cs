@@ -11,6 +11,8 @@ using AxCommonLogger.Factories;
 using AxCommonLogger.Interfaces;
 using AxConfiguration;
 using AxConfiguration.Interfaces;
+using AxFixEngine.Decorators;
+using AxFixEngine.Decorators.FIX44;
 using AxFixEngine.Dialects;
 using AxFixEngine.Engine;
 using AxFixEngine.Extensions;
@@ -19,7 +21,9 @@ using AxFixEngine.Handlers;
 using AxFixEngine.Interfaces;
 using AxUtils;
 using QuickFix;
-using QuickFix.FixValues;
+using QuickFix.Fields;
+using QuickFix.FIX44;
+using BeginString = QuickFix.FixValues.BeginString;
 
 namespace AxFixApp
 {
