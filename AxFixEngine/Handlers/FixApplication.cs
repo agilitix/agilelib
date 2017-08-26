@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using AxCommonLogger;
 using AxCommonLogger.Interfaces;
 using AxFixEngine.Dialects;
 using AxFixEngine.Extensions;
-using AxFixEngine.Interfaces;
 using QuickFix;
 using QuickFix.DataDictionary;
 
@@ -29,11 +29,8 @@ namespace AxFixEngine.Handlers
         public void ToAdmin(Message message, SessionID sessionID)
         {
             Log.InfoFormat("Send admin MsgType={0} content=<{1}>", message.GetMsgName(), message);
-            IList<IFixMessageHandler> messageHandlers = _messageHandlerProvider.GetMessageHandlers(sessionID, FixMessageDirection.Outbound);
-            foreach (IFixMessageHandler handler in messageHandlers)
-            {
-                handler.OnAdmin(message, sessionID);
-            }
+            IFixMessageHandler messageHandler = _messageHandlerProvider.GetMessageHandler(sessionID);
+            messageHandler?.ToAdmin(message, sessionID);
         }
 
         /// <summary>
@@ -45,11 +42,8 @@ namespace AxFixEngine.Handlers
         public void FromAdmin(Message message, SessionID sessionID)
         {
             Log.InfoFormat("Recv admin MsgType={0} content=<{1}>", message.GetMsgName(), message);
-            IList<IFixMessageHandler> messageHandlers = _messageHandlerProvider.GetMessageHandlers(sessionID, FixMessageDirection.Inbound);
-            foreach (IFixMessageHandler handler in messageHandlers)
-            {
-                handler.OnAdmin(message, sessionID);
-            }
+            IFixMessageHandler messageHandler = _messageHandlerProvider.GetMessageHandler(sessionID);
+            messageHandler?.FromAdmin(message, sessionID);
         }
 
         /// <summary>
@@ -67,11 +61,8 @@ namespace AxFixEngine.Handlers
         public void ToApp(Message message, SessionID sessionID)
         {
             Log.InfoFormat("Send appli MsgType={0} content=<{1}>", message.GetMsgName(), message);
-            IList<IFixMessageHandler> messageHandlers = _messageHandlerProvider.GetMessageHandlers(sessionID, FixMessageDirection.Outbound);
-            foreach (IFixMessageHandler handler in messageHandlers)
-            {
-                handler.OnApp(message, sessionID);
-            }
+            IFixMessageHandler messageHandler = _messageHandlerProvider.GetMessageHandler(sessionID);
+            messageHandler?.ToApp(message, sessionID);
         }
 
         /// <summary>
@@ -92,11 +83,8 @@ namespace AxFixEngine.Handlers
         public void FromApp(Message message, SessionID sessionID)
         {
             Log.InfoFormat("Recv appli MsgType={0} content=<{1}>", message.GetMsgName(), message);
-            IList<IFixMessageHandler> messageHandlers = _messageHandlerProvider.GetMessageHandlers(sessionID, FixMessageDirection.Inbound);
-            foreach (IFixMessageHandler handler in messageHandlers)
-            {
-                handler.OnApp(message, sessionID);
-            }
+            IFixMessageHandler messageHandler = _messageHandlerProvider.GetMessageHandler(sessionID);
+            messageHandler?.FromApp(message, sessionID);
         }
 
         /// <summary>
@@ -111,11 +99,8 @@ namespace AxFixEngine.Handlers
         {
             DataDictionary sessionDictionary = FixDialectsProvider.Dialects.GetDataDictionary(sessionID.BeginString);
             Log.InfoFormat("Created session={0} dictionaryDescription=<{1}>", sessionID, sessionDictionary.GetDescription());
-            IList<IFixMessageHandler> messageHandlers = _messageHandlerProvider.GetMessageHandlers(sessionID, FixMessageDirection.Both);
-            foreach (IFixMessageHandler handler in messageHandlers)
-            {
-                handler.OnCreate(sessionID);
-            }
+            IFixMessageHandler messageHandler = _messageHandlerProvider.GetMessageHandler(sessionID);
+            messageHandler?.OnCreate(sessionID);
         }
 
         /// <summary>
@@ -126,11 +111,8 @@ namespace AxFixEngine.Handlers
         public void OnLogout(SessionID sessionID)
         {
             Log.InfoFormat("Logout session={0}", sessionID);
-            IList<IFixMessageHandler> messageHandlers = _messageHandlerProvider.GetMessageHandlers(sessionID, FixMessageDirection.Both);
-            foreach (IFixMessageHandler handler in messageHandlers)
-            {
-                handler.OnLogout(sessionID);
-            }
+            IFixMessageHandler messageHandler = _messageHandlerProvider.GetMessageHandler(sessionID);
+            messageHandler?.OnLogout(sessionID);
         }
 
         /// <summary>
@@ -142,11 +124,8 @@ namespace AxFixEngine.Handlers
         public void OnLogon(SessionID sessionID)
         {
             Log.InfoFormat("Logon session={0}", sessionID);
-            IList<IFixMessageHandler> messageHandlers = _messageHandlerProvider.GetMessageHandlers(sessionID, FixMessageDirection.Both);
-            foreach (IFixMessageHandler handler in messageHandlers)
-            {
-                handler.OnLogon(sessionID);
-            }
+            IFixMessageHandler messageHandler = _messageHandlerProvider.GetMessageHandler(sessionID);
+            messageHandler?.OnLogon(sessionID);
         }
     }
 }

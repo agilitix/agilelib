@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using QuickFix;
+﻿using QuickFix;
 using QuickFix.DataDictionary;
 
-namespace AxFixEngine.Interfaces
+namespace AxFixEngine.Dialects
 {
     public interface IFixDialects
     {

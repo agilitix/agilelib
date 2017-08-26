@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using AxCommonLogger;
 using AxCommonLogger.Interfaces;
+using AxFixEngine.Connectors;
 using AxFixEngine.Dialects;
-using AxFixEngine.Factories;
 using AxFixEngine.Handlers;
-using AxFixEngine.Interfaces;
 using QuickFix;
 
 namespace AxFixEngine.Engine

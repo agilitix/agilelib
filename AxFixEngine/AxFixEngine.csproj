@@ -64,31 +64,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Handlers\FixMessageCracker.cs" />
     <Compile Include="Decorators\FixGroupDecorator.cs" />
     <Compile Include="Decorators\FixMessageDecorator.cs" />
-    <Compile Include="Decorators\FIX44\QuoteRequestDecorator.cs" />
     <Compile Include="Dialects\FixDialectsProvider.cs" />
     <Compile Include="Extensions\SessionIDExtensions.cs" />
-    <Compile Include="Factories\FixMessageFactory.cs" />
+    <Compile Include="Messages\FixMessageParser.cs" />
     <Compile Include="Handlers\FixMessageCrackHandlerBase.cs" />
     <Compile Include="Handlers\FixMessageHandlerProvider.cs" />
-    <Compile Include="Interfaces\IFixEngine.cs" />
-    <Compile Include="Interfaces\IFixMessageHandlerProvider.cs" />
+    <Compile Include="Engine\IFixEngine.cs" />
+    <Compile Include="Messages\IFixMessageParser.cs" />
+    <Compile Include="Handlers\IFixMessageHandlerProvider.cs" />
     <Compile Include="Extensions\DataDictionaryExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\MessageExtensions.cs" />
     <Compile Include="Extensions\SessionSettingsExtensions.cs" />
     <Compile Include="Connectors\FixAcceptor.cs" />
     <Compile Include="Handlers\FixApplication.cs" />
-    <Compile Include="Factories\FixConnectorFactory.cs" />
+    <Compile Include="Connectors\FixConnectorFactory.cs" />
     <Compile Include="Connectors\FixInitiator.cs" />
     <Compile Include="Handlers\FixMessageHandlerBase.cs" />
     <Compile Include="Dialects\FixDialects.cs" />
-    <Compile Include="Interfaces\IFixConnector.cs" />
-    <Compile Include="Interfaces\IFixConnectorFactory.cs" />
-    <Compile Include="Interfaces\IFixDialects.cs" />
-    <Compile Include="Interfaces\IFixMessageFactory.cs" />
-    <Compile Include="Interfaces\IFixMessageHandler.cs" />
+    <Compile Include="Connectors\IFixConnector.cs" />
+    <Compile Include="Connectors\IFixConnectorFactory.cs" />
+    <Compile Include="Dialects\IFixDialects.cs" />
+    <Compile Include="Handlers\IFixMessageHandler.cs" />
     <Compile Include="Engine\FixEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -111,6 +111,10 @@
     <ProjectReference Include="..\AxExtensions\AxExtensions.csproj">
       <Project>{F3EEFDB9-EE62-4962-B8FE-6D709F0C63F8}</Project>
       <Name>AxExtensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AxFixDomain\AxFixDomain.csproj">
+      <Project>{704CD61E-F353-4536-8509-07D309EB4F6E}</Project>
+      <Name>AxFixDomain</Name>
     </ProjectReference>
     <ProjectReference Include="..\AxUtils\AxUtils.csproj">
       <Project>{0772C612-7C30-4CBE-8499-186B62970671}</Project>

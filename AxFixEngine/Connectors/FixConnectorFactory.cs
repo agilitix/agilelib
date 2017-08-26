@@ -1,11 +1,9 @@
 ﻿using System;
 using AxCommonLogger;
 using AxCommonLogger.Interfaces;
-using AxFixEngine.Connectors;
-using AxFixEngine.Interfaces;
 using QuickFix;
 
-namespace AxFixEngine.Factories
+namespace AxFixEngine.Connectors
 {
     public class FixConnectorFactory : IFixConnectorFactory
     {

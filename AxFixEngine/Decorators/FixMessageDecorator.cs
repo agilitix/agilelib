@@ -1,16 +1,96 @@
-﻿using System.Xml.Linq;
+﻿using System;
+using System.Xml.Linq;
 using AxFixEngine.Extensions;
+using QuickFix;
+using QuickFix.Fields;
 using Message = QuickFix.Message;
 
 namespace AxFixEngine.Decorators
 {
-    public class FixMessageDecorator : Message
+    public abstract class FixMessageDecorator : Message
     {
         private readonly Message _message;
 
-        public FixMessageDecorator(Message message)
+        protected FixMessageDecorator(Message message)
+            : base(message)
         {
             _message = message;
+        }
+
+        public void Accept(Action<Message> visitor)
+        {
+            visitor?.Invoke(_message);
+        }
+
+        public SessionID SessionID
+        {
+            get => _message.GetSessionID();
+            set => _message.SetSessionID(value);
+        }
+
+        public string SenderCompID
+        {
+            get => _message.Header.IsSetField(Tags.SenderCompID) ? _message.Header.GetString(Tags.SenderCompID) : null;
+
+            set
+            {
+                if (value != null)
+                    _message.Header.SetField(new SenderCompID(value));
+                else
+                    _message.Header.RemoveField(Tags.SenderCompID);
+            }
+        }
+
+        public string TargetCompID
+        {
+            get => _message.Header.IsSetField(Tags.TargetCompID) ? _message.Header.GetString(Tags.TargetCompID) : null;
+
+            set
+            {
+                if (value != null)
+                    _message.Header.SetField(new TargetCompID(value));
+                else
+                    _message.Header.RemoveField(Tags.TargetCompID);
+            }
+        }
+
+        public string OnBehalfOfCompID
+        {
+            get => _message.Header.IsSetField(Tags.OnBehalfOfCompID) ? _message.Header.GetString(Tags.OnBehalfOfCompID) : null;
+
+            set
+            {
+                if (value != null)
+                    _message.Header.SetField(new OnBehalfOfCompID(value));
+                else
+                    _message.Header.RemoveField(Tags.OnBehalfOfCompID);
+            }
+        }
+
+        public string DeliverToCompID
+        {
+            get => _message.Header.IsSetField(Tags.DeliverToCompID) ? _message.Header.GetString(Tags.DeliverToCompID) : null;
+
+            set
+            {
+                if (value != null)
+                    _message.Header.SetField(new DeliverToCompID(value));
+                else
+                    _message.Header.RemoveField(Tags.DeliverToCompID);
+            }
+        }
+
+        public DateTime? SendingTime
+        {
+            get => _message.Header.IsSetField(Tags.SendingTime) ? _message.Header.GetDateTime(Tags.SendingTime) : default(DateTime?);
+
+            set
+            {
+                if (value.HasValue)
+                    _message.Header.SetField(new SendingTime(value.Value));
+                else
+                    _message.Header.RemoveField(Tags.SendingTime);
+            }
         }
 
         public override string ToString()
@@ -23,7 +103,7 @@ namespace AxFixEngine.Decorators
             return _message.ToXDocument();
         }
 
-        public T Decorated<T>() where T : Message
+        protected T DecoratedMessage<T>() where T : Message
         {
             return (T) _message;
         }

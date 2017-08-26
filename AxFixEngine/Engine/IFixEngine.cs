@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using AxFixEngine.Handlers;
 using QuickFix;
 
-namespace AxFixEngine.Interfaces
+namespace AxFixEngine.Engine
 {
     public interface IFixEngine
     {

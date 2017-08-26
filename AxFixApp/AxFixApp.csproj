@@ -71,8 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Fix44OutboundMessageCracker.cs" />
-    <Compile Include="Fix44InboundMessageCracker.cs" />
+    <Compile Include="Fix44MessageCracker.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

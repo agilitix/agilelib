@@ -1,6 +1,6 @@
 ﻿using QuickFix;
 
-namespace AxFixEngine.Interfaces
+namespace AxFixEngine.Connectors
 {
     public interface IFixConnectorFactory
     {

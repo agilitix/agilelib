@@ -1,6 +1,5 @@
 ﻿using AxCommonLogger;
 using AxCommonLogger.Interfaces;
-using AxFixEngine.Interfaces;
 using QuickFix;
 using QuickFix.Transport;
 

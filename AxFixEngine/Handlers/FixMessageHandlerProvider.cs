@@ -1,31 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using AxFixEngine.Extensions;
-using AxFixEngine.Interfaces;
+﻿using System.Collections.Generic;
 using QuickFix;
 
 namespace AxFixEngine.Handlers
 {
     public class FixMessageHandlerProvider : IFixMessageHandlerProvider
     {
-        protected IDictionary<SessionID, IList<IFixMessageHandler>> _handlers = new Dictionary<SessionID, IList<IFixMessageHandler>>();
+        protected IDictionary<SessionID, IFixMessageHandler> _handlers = new Dictionary<SessionID, IFixMessageHandler>();
 
-        public void AddMessageHandler(SessionID sessionId, IFixMessageHandler handler)
+        public void SetMessageHandler(SessionID sessionId, IFixMessageHandler handler)
         {
-            if (_handlers.ContainsKey(sessionId) == false)
-            {
-                _handlers[sessionId] = new List<IFixMessageHandler>();
-            }
-            _handlers[sessionId].Add(handler);
+            _handlers[sessionId] = handler;
         }
 
-        public IList<IFixMessageHandler> GetMessageHandlers(SessionID sessionId, FixMessageDirection direction)
+        public IFixMessageHandler GetMessageHandler(SessionID sessionId)
         {
-            IList<IFixMessageHandler> handlers;
-            return _handlers.TryGetValue(sessionId, out handlers)
-                       ? handlers.Where(x => direction == FixMessageDirection.Both || x.Direction == direction).ToList()
+            IFixMessageHandler handler;
+            return _handlers.TryGetValue(sessionId, out handler)
+                       ? handler
                        : null;
         }
     }

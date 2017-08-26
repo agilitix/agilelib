@@ -1,4 +1,4 @@
-﻿namespace AxFixEngine.Interfaces
+﻿namespace AxFixEngine.Connectors
 {
     public interface IFixConnector
     {

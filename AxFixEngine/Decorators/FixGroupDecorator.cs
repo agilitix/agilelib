@@ -1,15 +1,21 @@
-﻿using QuickFix;
+﻿using System;
+using QuickFix;
 
 namespace AxFixEngine.Decorators
 {
-    public class FixGroupDecorator : Group
+    public abstract class FixGroupDecorator : Group
     {
         private readonly Group _group;
 
-        public FixGroupDecorator(Group group)
+        protected FixGroupDecorator(Group group)
             : base(group)
         {
             _group = group;
+        }
+
+        public void Accept(Action<Group> visitor)
+        {
+            visitor?.Invoke(_group);
         }
 
         public override string ToString()
@@ -17,7 +23,7 @@ namespace AxFixEngine.Decorators
             return _group.ToString();
         }
 
-        public T Decorated<T>() where T : Group
+        protected T DecoratedGroup<T>() where T : Group
         {
             return (T) _group;
         }

@@ -1,18 +1,20 @@
-﻿using AxFixEngine.Interfaces;
+﻿using System;
 using QuickFix;
 
 namespace AxFixEngine.Handlers
 {
-    public abstract class FixMessageCrackHandlerBase : MessageCracker, IFixMessageHandler
+    public abstract class FixMessageCrackHandlerBase : FixMessageCracker, IFixMessageHandler
     {
-        public FixMessageDirection Direction { get; }
-
-        protected FixMessageCrackHandlerBase(FixMessageDirection direction)
+        protected FixMessageCrackHandlerBase()
         {
-            Direction = direction;
         }
 
-        public void OnCreate(SessionID sessionId)
+        protected FixMessageCrackHandlerBase(Action<Message, SessionID> unsupportedMessageAction)
+            : base(unsupportedMessageAction)
+        {
+        }
+
+        public virtual void OnCreate(SessionID sessionId)
         {
         }
 
@@ -24,14 +26,24 @@ namespace AxFixEngine.Handlers
         {
         }
 
-        public virtual void OnAdmin(Message message, SessionID sourceSessionId)
+        public virtual void FromAdmin(Message message, SessionID sessionId)
         {
-            Crack(message, sourceSessionId);
+            CrackFrom(message, sessionId);
         }
 
-        public virtual void OnApp(Message message, SessionID sourceSessionId)
+        public virtual void ToAdmin(Message message, SessionID sessionId)
         {
-            Crack(message, sourceSessionId);
+            CrackTo(message, sessionId);
+        }
+
+        public virtual void FromApp(Message message, SessionID sessionId)
+        {
+            CrackFrom(message, sessionId);
+        }
+
+        public virtual void ToApp(Message message, SessionID sessionId)
+        {
+            CrackTo(message, sessionId);
         }
     }
 }

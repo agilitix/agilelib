@@ -1,18 +1,10 @@
-﻿using AxFixEngine.Interfaces;
-using QuickFix;
+﻿using QuickFix;
 
 namespace AxFixEngine.Handlers
 {
     public abstract class FixMessageHandlerBase : IFixMessageHandler
     {
-        public FixMessageDirection Direction { get; }
-
-        protected FixMessageHandlerBase(FixMessageDirection direction)
-        {
-            Direction = direction;
-        }
-
-        public void OnCreate(SessionID sessionId)
+        public virtual void OnCreate(SessionID sessionId)
         {
         }
 
@@ -24,11 +16,19 @@ namespace AxFixEngine.Handlers
         {
         }
 
-        public virtual void OnAdmin(Message message, SessionID sourceSessionId)
+        public virtual void FromAdmin(Message message, SessionID sessionId)
         {
         }
 
-        public virtual void OnApp(Message message, SessionID sourceSessionId)
+        public virtual void ToAdmin(Message message, SessionID sessionId)
+        {
+        }
+
+        public virtual void FromApp(Message message, SessionID sessionId)
+        {
+        }
+
+        public virtual void ToApp(Message message, SessionID sessionId)
         {
         }
     }

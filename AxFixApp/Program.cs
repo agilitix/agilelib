@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -11,19 +10,10 @@ using AxCommonLogger.Factories;
 using AxCommonLogger.Interfaces;
 using AxConfiguration;
 using AxConfiguration.Interfaces;
-using AxFixEngine.Decorators;
-using AxFixEngine.Decorators.FIX44;
-using AxFixEngine.Dialects;
 using AxFixEngine.Engine;
-using AxFixEngine.Extensions;
-using AxFixEngine.Factories;
 using AxFixEngine.Handlers;
-using AxFixEngine.Interfaces;
 using AxUtils;
 using QuickFix;
-using QuickFix.Fields;
-using QuickFix.FIX44;
-using BeginString = QuickFix.FixValues.BeginString;
 
 namespace AxFixApp
 {
@@ -91,13 +81,10 @@ namespace AxFixApp
             IFixEngine fixEngine = new FixEngine(acceptorConfig, initiatorConfig);
 
             IFixMessageHandlerProvider handlerProvider = new FixMessageHandlerProvider();
-            IFixMessageHandler fix44InboundMessageCracker = new Fix44InboundMessageCracker();
-            IFixMessageHandler fix44OutboundMessageCracker = new Fix44OutboundMessageCracker();
-
-            foreach (SessionID sessionId in fixEngine.Sessions.Where(x => x.BeginString == BeginString.FIX44))
+            IFixMessageHandler fix44MessageCracker = new Fix44MessageCracker();
+            foreach (SessionID sessionId in fixEngine.Sessions.Where(x => x.BeginString == QuickFix.FixValues.BeginString.FIX44))
             {
-                handlerProvider.AddMessageHandler(sessionId, fix44InboundMessageCracker);
-                handlerProvider.AddMessageHandler(sessionId, fix44OutboundMessageCracker);
+                handlerProvider.SetMessageHandler(sessionId, fix44MessageCracker);
             }
 
             fixEngine.CreateApplication(handlerProvider);

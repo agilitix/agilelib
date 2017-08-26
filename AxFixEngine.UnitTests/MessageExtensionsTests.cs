@@ -1,11 +1,8 @@
-﻿using System;
-using System.Linq;
-using System.Xml;
+﻿using System.Xml;
 using System.Xml.Linq;
 using AxFixEngine.Dialects;
 using AxFixEngine.Extensions;
-using AxFixEngine.Factories;
-using AxFixEngine.Interfaces;
+using AxFixEngine.Messages;
 using AxQuality;
 using FluentAssertions;
 using NUnit.Framework;
@@ -23,14 +20,14 @@ namespace AxFixEngine.UnitTests
         protected string FixMessage;
         protected string ExpectedDocument;
         protected string ActualDocument;
-        protected IFixMessageFactory MessagesFactory;
+        protected IFixMessageParser MessagesParser;
 
         protected NewOrderSingle NewOrderSingleUnderTest;
         protected MassQuote MassQuoteUnderTest;
 
         public override void Arrange()
         {
-            MessagesFactory = new FixMessageFactory(new DefaultMessageFactory());
+            MessagesParser = new FixMessageParser(new DefaultMessageFactory());
 
             SessionSettings sessionSettings = SessionSettingsTestsProvider.GetSessionSettings4("FIX.4.4", TestDirectory + @"\Spec\FIX44.xml");
 
@@ -54,7 +51,7 @@ namespace AxFixEngine.UnitTests
             FixMessage = "8=FIX.4.4^9=235^35=D^34=4^49=BANZAI^52=20121105-23:24:55^56=EXEC^11=1352157895032^21=1^38=10000^40=1^54=1^55=ORCL^59=0^354=119^355=<h:box xmlns:h=\"http://www.w3.org/TR/html4/\"><h:bag><h:fruit>Apples</h:fruit><h:fruit>Bananas</h:fruit></h:bag></h:box>^10=103^"
                 .Replace("^", Message.SOH);
 
-            NewOrderSingleUnderTest = (NewOrderSingle) MessagesFactory.CreateMessage(FixMessage);
+            NewOrderSingleUnderTest = (NewOrderSingle) MessagesParser.ParseMessage(FixMessage);
         }
 
         public override void Act()
@@ -82,7 +79,7 @@ namespace AxFixEngine.UnitTests
             FixMessage = "8=FIX.4.4^9=235^35=D^34=4^49=BANZAI^52=20121105-23:24:55^56=EXEC^11=1352157895032^21=1^38=10000^40=1^54=1^55=ORCL^59=0^354=119^355=<h:box xmlns:h=\"http://www.w3.org/TR/html4/\"><h:bag><h:fruit>Apples</h:fruit><h:fruit>Bananas</h:fruit></h:bag></h:box>^10=103^"
                 .Replace("^", Message.SOH);
 
-            NewOrderSingleUnderTest = (NewOrderSingle) MessagesFactory.CreateMessage(FixMessage);
+            NewOrderSingleUnderTest = (NewOrderSingle) MessagesParser.ParseMessage(FixMessage);
             NewOrderSingleUnderTest.SetField(new Benchmark('A')); // For unit test purpose only: this tag is not in NewOrderSingle, it will be considered as a custom tag.
         }
 
@@ -111,7 +108,7 @@ namespace AxFixEngine.UnitTests
             FixMessage = "8=FIX.4.4^9=143^35=D^34=4^49=BANZAI^52=20121105-23:24:55^56=EXEC^11=1352157895032^21=1^38=10000^40=1^54=1^55=ORCL^59=0^354=119^355=Lorem ipsum dolor sit amet.^10=120^"
                 .Replace("^", Message.SOH);
 
-            NewOrderSingleUnderTest = (NewOrderSingle) MessagesFactory.CreateMessage(FixMessage);
+            NewOrderSingleUnderTest = (NewOrderSingle) MessagesParser.ParseMessage(FixMessage);
         }
 
         public override void Act()
@@ -139,7 +136,7 @@ namespace AxFixEngine.UnitTests
             FixMessage = "8=FIX.4.4^9=176^35=i^34=2^49=PXMD^52=20140922-14:48:49.825^56=Q037^117=1^296=1^302=123^295=2^299=0^134=1000000^135=900000^188=1.4363^190=1.4365^299=1^134=9850000^135=750000^188=10.63^190=2.65^10=038^"
                 .Replace("^", Message.SOH);
 
-            MassQuoteUnderTest = (MassQuote) MessagesFactory.CreateMessage(FixMessage);
+            MassQuoteUnderTest = (MassQuote) MessagesParser.ParseMessage(FixMessage);
         }
 
         public override void Act()
@@ -167,7 +164,7 @@ namespace AxFixEngine.UnitTests
             FixMessage = "8=FIX.4.4^9=235^35=D^34=4^49=BANZAI^52=20121105-23:24:55^56=EXEC^11=1352157895032^21=1^38=10000^40=1^54=1^55=ORCL^59=0^354=119^355=<h:box xmlns:h=\"http://www.w3.org/TR/html4/\"><h:bag><h:fruit>Apples</h:fruit><h:fruit>Bananas</h:fruit></h:bag></h:box>^10=103^"
                 .Replace("^", Message.SOH);
 
-            NewOrderSingleUnderTest = (NewOrderSingle) MessagesFactory.CreateMessage(FixMessage);
+            NewOrderSingleUnderTest = (NewOrderSingle) MessagesParser.ParseMessage(FixMessage);
         }
 
         public override void Act()
@@ -195,7 +192,7 @@ namespace AxFixEngine.UnitTests
             FixMessage = "8=FIX.4.4^9=176^35=i^34=2^49=PXMD^52=20140922-14:48:49.825^56=Q037^117=1^296=1^302=123^295=2^299=0^134=1000000^135=900000^188=1.4363^190=1.4365^299=1^134=9850000^135=750000^188=10.63^190=2.65^10=038^"
                 .Replace("^", Message.SOH);
 
-            MassQuoteUnderTest = (MassQuote) MessagesFactory.CreateMessage(FixMessage);
+            MassQuoteUnderTest = (MassQuote) MessagesParser.ParseMessage(FixMessage);
         }
 
         public override void Act()
@@ -225,7 +222,7 @@ namespace AxFixEngine.UnitTests
 
             ExpectedMessageName = "ORDER_SINGLE";
 
-            NewOrderSingleUnderTest = (NewOrderSingle) MessagesFactory.CreateMessage(FixMessage);
+            NewOrderSingleUnderTest = (NewOrderSingle) MessagesParser.ParseMessage(FixMessage);
         }
 
         public override void Act()
@@ -252,7 +249,7 @@ namespace AxFixEngine.UnitTests
             FixMessage = "8=FIX.4.4^9=235^35=D^34=4^49=BANZAI^52=20121105-23:24:55^56=EXEC^11=1352157895032^21=1^38=10000^40=1^54=1^55=ORCL^59=0^354=119^355=<h:box xmlns:h=\"http://www.w3.org/TR/html4/\"><h:bag><h:fruit>Apples</h:fruit><h:fruit>Bananas</h:fruit></h:bag></h:box>^10=103^"
                 .Replace("^", Message.SOH);
 
-            NewOrderSingleUnderTest = (NewOrderSingle) MessagesFactory.CreateMessage(FixMessage);
+            NewOrderSingleUnderTest = (NewOrderSingle) MessagesParser.ParseMessage(FixMessage);
         }
 
         public override void Act()
@@ -279,7 +276,7 @@ namespace AxFixEngine.UnitTests
             FixMessage = "8=FIX.4.4^9=176^35=i^34=2^49=PXMD^52=20140922-14:48:49.825^56=Q037^117=1^296=1^302=123^295=2^299=0^134=1000000^135=900000^188=1.4363^190=1.4365^299=1^134=9850000^135=750000^188=10.63^190=2.65^10=038^"
                 .Replace("^", Message.SOH);
 
-            MassQuoteUnderTest = (MassQuote) MessagesFactory.CreateMessage(FixMessage);
+            MassQuoteUnderTest = (MassQuote) MessagesParser.ParseMessage(FixMessage);
         }
 
         public override void Act()
