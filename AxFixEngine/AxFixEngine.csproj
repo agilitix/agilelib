@@ -67,7 +67,7 @@
     <Compile Include="Handlers\FixMessageCracker.cs" />
     <Compile Include="Decorators\FixGroupDecorator.cs" />
     <Compile Include="Decorators\FixMessageDecorator.cs" />
-    <Compile Include="Dialects\FixDialectsProvider.cs" />
+    <Compile Include="Dialects\FixDialectsInstance.cs" />
     <Compile Include="Extensions\SessionIDExtensions.cs" />
     <Compile Include="Messages\FixMessageParser.cs" />
     <Compile Include="Handlers\FixMessageCrackHandlerBase.cs" />

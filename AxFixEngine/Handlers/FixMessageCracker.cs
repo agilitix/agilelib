@@ -8,29 +8,28 @@ namespace AxFixEngine.Handlers
 {
     public abstract class FixMessageCracker
     {
-        private readonly IDictionary<Type, Action<Message, SessionID>> _inboundActions = new Dictionary<Type, Action<Message, SessionID>>();
-        private readonly IDictionary<Type, Action<Message, SessionID>> _outboundActions = new Dictionary<Type, Action<Message, SessionID>>();
-        private readonly Action<Message, SessionID> _unsupportedMessageAction;
+        private readonly IDictionary<Type, Action<Message, SessionID>> _inboundCallActions = new Dictionary<Type, Action<Message, SessionID>>();
+        private readonly IDictionary<Type, Action<Message, SessionID>> _outboundCallActions = new Dictionary<Type, Action<Message, SessionID>>();
+        private readonly IDictionary<Type, Action<Message, SessionID>> _callActions = new Dictionary<Type, Action<Message, SessionID>>();
 
         protected FixMessageCracker()
-            : this((m, s) => throw new UnsupportedMessageType())
-        {
-        }
-
-        protected FixMessageCracker(Action<Message, SessionID> unsupportedMessageAction)
         {
             Initialize(this);
-            _unsupportedMessageAction = unsupportedMessageAction;
         }
 
         public void CrackFrom(Message message, SessionID sessionID)
         {
-            Crack(message, sessionID, _inboundActions);
+            Crack(message, sessionID, _inboundCallActions);
         }
 
         public void CrackTo(Message message, SessionID sessionID)
         {
-            Crack(message, sessionID, _outboundActions);
+            Crack(message, sessionID, _outboundCallActions);
+        }
+
+        public void Crack(Message message, SessionID sessionID)
+        {
+            Crack(message, sessionID, _callActions);
         }
 
         private void Initialize(FixMessageCracker messageCracker)
@@ -39,8 +38,9 @@ namespace AxFixEngine.Handlers
             MethodInfo[] methodInfos = messageCrakerType.GetMethods(BindingFlags.Public | BindingFlags.Instance);
             foreach (MethodInfo methodInfo in methodInfos)
             {
-                TryBuildCallCache(methodInfo, "OnMessageFrom", _inboundActions);
-                TryBuildCallCache(methodInfo, "OnMessageTo", _outboundActions);
+                TryBuildCallCache(methodInfo, "OnMessageFrom", _inboundCallActions);
+                TryBuildCallCache(methodInfo, "OnMessageTo", _outboundCallActions);
+                TryBuildCallCache(methodInfo, "OnMessage", _callActions);
             }
         }
 
@@ -84,7 +84,7 @@ namespace AxFixEngine.Handlers
             }
             else
             {
-                _unsupportedMessageAction?.Invoke(message, sessionID);
+                throw new UnsupportedMessageType();
             }
         }
     }

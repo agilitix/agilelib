@@ -5,8 +5,8 @@ namespace AxUtils
 {
     /// <summary>
     /// Simple global instance holder and provider.
-    /// You should attach here an interface of the global instance,
-    /// it will help mocking and writing unit tests.
+    /// You should attach an interface of the global instance,
+    /// it will be easier to mock and unit test.
     /// </summary>
     public static class InstanceHolder<T>
     {

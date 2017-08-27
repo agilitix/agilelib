@@ -19,7 +19,7 @@ namespace AxFixEngine.Messages
         {
             string beginString = Message.ExtractBeginString(fixMessage);
             MsgType msgType = Message.IdentifyType(fixMessage);
-            DataDictionary dataDictionary = FixDialectsProvider.Dialects.GetDataDictionary(beginString);
+            DataDictionary dataDictionary = FixDialectsInstance.Dialects.GetDataDictionary(beginString);
 
             Message message = _factory.Create(beginString, msgType.getValue());
 

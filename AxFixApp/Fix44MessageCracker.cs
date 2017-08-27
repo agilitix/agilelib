@@ -1,4 +1,5 @@
-﻿using AxFixEngine.Handlers;
+﻿using AxFixEngine.Extensions;
+using AxFixEngine.Handlers;
 using QuickFix;
 
 namespace AxFixApp

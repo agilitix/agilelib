@@ -22,7 +22,7 @@ namespace AxFixEngine.Engine
 
         public FixEngine(string acceptorConfig, string initiatorConfig)
         {
-            FixDialectsProvider.Attach(new FixDialects());
+            FixDialectsInstance.Set(new FixDialects());
 
             _connectorFactory = new FixConnectorFactory();
             _sessions = new List<SessionID>();
@@ -35,7 +35,7 @@ namespace AxFixEngine.Engine
                     throw new ConfigError("The config file is not valid for an acceptor");
                 }
 
-                FixDialectsProvider.Dialects.AddDataDictionaries(_acceptorSettings);
+                FixDialectsInstance.Dialects.AddDataDictionaries(_acceptorSettings);
 
                 foreach (SessionID sessionId in _acceptorSettings.GetSessions())
                 {
@@ -51,7 +51,7 @@ namespace AxFixEngine.Engine
                     throw new ConfigError("The config file is not valid for an initiator");
                 }
 
-                FixDialectsProvider.Dialects.AddDataDictionaries(_initiatorSettings);
+                FixDialectsInstance.Dialects.AddDataDictionaries(_initiatorSettings);
 
                 foreach (SessionID sessionId in _initiatorSettings.GetSessions())
                 {

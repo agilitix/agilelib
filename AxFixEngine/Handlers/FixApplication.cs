@@ -97,7 +97,7 @@ namespace AxFixEngine.Handlers
         /// </summary>
         public void OnCreate(SessionID sessionID)
         {
-            DataDictionary sessionDictionary = FixDialectsProvider.Dialects.GetDataDictionary(sessionID.BeginString);
+            DataDictionary sessionDictionary = FixDialectsInstance.Dialects.GetDataDictionary(sessionID.BeginString);
             Log.InfoFormat("Created session={0} dictionaryDescription=<{1}>", sessionID, sessionDictionary.GetDescription());
             IFixMessageHandler messageHandler = _messageHandlerProvider.GetMessageHandler(sessionID);
             messageHandler?.OnCreate(sessionID);

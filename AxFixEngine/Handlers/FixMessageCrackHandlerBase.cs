@@ -5,15 +5,6 @@ namespace AxFixEngine.Handlers
 {
     public abstract class FixMessageCrackHandlerBase : FixMessageCracker, IFixMessageHandler
     {
-        protected FixMessageCrackHandlerBase()
-        {
-        }
-
-        protected FixMessageCrackHandlerBase(Action<Message, SessionID> unsupportedMessageAction)
-            : base(unsupportedMessageAction)
-        {
-        }
-
         public virtual void OnCreate(SessionID sessionId)
         {
         }
