@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.8
+VisualStudioVersion = 15.0.26730.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxQuality", "AxQuality\AxQuality.csproj", "{EBF4DE7B-53CB-4F6A-8A86-BD7E0190E469}"
 EndProject
@@ -65,6 +65,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxFixApp", "AxFixApp\AxFixApp.csproj", "{88972574-31D9-44F6-9E2F-690103421477}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxFixDomain", "AxFixDomain\AxFixDomain.csproj", "{704CD61E-F353-4536-8509-07D309EB4F6E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AxData.UnitTests", "AxData.UnitTests\AxData.UnitTests.csproj", "{0D9221F2-8132-4E3B-A54A-F115B378CFC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -428,6 +430,22 @@ Global
 		{704CD61E-F353-4536-8509-07D309EB4F6E}.Release|x64.Build.0 = Release|Any CPU
 		{704CD61E-F353-4536-8509-07D309EB4F6E}.Release|x86.ActiveCfg = Release|Any CPU
 		{704CD61E-F353-4536-8509-07D309EB4F6E}.Release|x86.Build.0 = Release|Any CPU
+		{0D9221F2-8132-4E3B-A54A-F115B378CFC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D9221F2-8132-4E3B-A54A-F115B378CFC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D9221F2-8132-4E3B-A54A-F115B378CFC1}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{0D9221F2-8132-4E3B-A54A-F115B378CFC1}.Debug|ARM.Build.0 = Debug|Any CPU
+		{0D9221F2-8132-4E3B-A54A-F115B378CFC1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0D9221F2-8132-4E3B-A54A-F115B378CFC1}.Debug|x64.Build.0 = Debug|Any CPU
+		{0D9221F2-8132-4E3B-A54A-F115B378CFC1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0D9221F2-8132-4E3B-A54A-F115B378CFC1}.Debug|x86.Build.0 = Debug|Any CPU
+		{0D9221F2-8132-4E3B-A54A-F115B378CFC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D9221F2-8132-4E3B-A54A-F115B378CFC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D9221F2-8132-4E3B-A54A-F115B378CFC1}.Release|ARM.ActiveCfg = Release|Any CPU
+		{0D9221F2-8132-4E3B-A54A-F115B378CFC1}.Release|ARM.Build.0 = Release|Any CPU
+		{0D9221F2-8132-4E3B-A54A-F115B378CFC1}.Release|x64.ActiveCfg = Release|Any CPU
+		{0D9221F2-8132-4E3B-A54A-F115B378CFC1}.Release|x64.Build.0 = Release|Any CPU
+		{0D9221F2-8132-4E3B-A54A-F115B378CFC1}.Release|x86.ActiveCfg = Release|Any CPU
+		{0D9221F2-8132-4E3B-A54A-F115B378CFC1}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -442,9 +460,10 @@ Global
 		{F56CA93C-E15A-4607-9961-074BD44C3228} = {3926A2C5-EDA5-467D-8021-A6285856B343}
 		{6227A554-CB7F-4E3D-B9A2-CE36AFE69B5E} = {3926A2C5-EDA5-467D-8021-A6285856B343}
 		{58131DD8-A53F-4A81-B84D-B35B930CECC9} = {3926A2C5-EDA5-467D-8021-A6285856B343}
+		{0D9221F2-8132-4E3B-A54A-F115B378CFC1} = {3926A2C5-EDA5-467D-8021-A6285856B343}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {9571E454-045E-4D29-8904-DA3940A12740}
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.2.1.505.0\lib\NET35
+		SolutionGuid = {9571E454-045E-4D29-8904-DA3940A12740}
 	EndGlobalSection
 EndGlobal
