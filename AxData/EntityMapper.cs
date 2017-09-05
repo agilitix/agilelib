@@ -13,8 +13,9 @@ namespace AxData
     public class EntityMapper<TEntity> : IEntityMapper<TEntity> where TEntity : class, new()
     {
         protected const string _mappedFieldPrefix = "_col_";
-        protected readonly Dictionary<string, FieldInfo> _fields;
+        protected readonly IDictionary<string, FieldInfo> _fields;
         protected readonly Type _entityType;
+        protected readonly DataTable _tablePrototype;
 
         public EntityMapper()
         {
@@ -23,63 +24,73 @@ namespace AxData
                                      .Where(x => x.Name.StartsWith(_mappedFieldPrefix))
                                      .ToDictionary(x => x.Name.Substring(_mappedFieldPrefix.Length), x => x);
             _entityType = typeof(TEntity);
+
+            _tablePrototype = new DataTable(_entityType.Name);
+            foreach (KeyValuePair<string, FieldInfo> field in _fields)
+            {
+                Type fieldType = Nullable.GetUnderlyingType(field.Value.FieldType) ?? field.Value.FieldType;
+                _tablePrototype.Columns.Add(field.Key, fieldType);
+            }
         }
 
         public DataTable Map(IEnumerable<TEntity> entities)
         {
-            DataTable table = new DataTable(_entityType.Name);
-            foreach (KeyValuePair<string, FieldInfo> field in _fields)
-            {
-                Type fieldType = Nullable.GetUnderlyingType(field.Value.FieldType) ?? field.Value.FieldType;
-                table.Columns.Add(field.Key, fieldType);
-            }
-
+            DataTable table = _tablePrototype.Clone();
             foreach (TEntity entity in entities)
             {
-                DataRow row = table.NewRow();
-                foreach (KeyValuePair<string, FieldInfo> field in _fields)
-                {
-                    row[field.Key] = field.Value.GetValue(entity) ?? DBNull.Value;
-                }
-
-                table.Rows.Add(row);
+                DataRow row = Map(entity);
+                table.ImportRow(row);
             }
 
             return table;
         }
 
+        public DataRow Map(TEntity entity)
+        {
+            DataTable table = _tablePrototype.Clone();
+            DataRow row = table.NewRow();
+            foreach (KeyValuePair<string, FieldInfo> field in _fields)
+            {
+                // GetValue should be extracted to another method to manage DbValue conversions.
+                row[field.Key] = field.Value.GetValue(entity) ?? DBNull.Value;
+            }
+
+            table.Rows.Add(row);
+            return row;
+        }
+
         public IEnumerable<TEntity> Map(DataTable dataTable)
         {
-            IList<string> columns = dataTable.Columns
-                                             .Cast<DataColumn>()
-                                             .Select(x => x.ColumnName)
-                                             .ToList();
-
             IList<TEntity> result = new List<TEntity>();
-
             foreach (DataRow row in dataTable.Rows)
             {
-                TEntity entity = new TEntity();
+                TEntity entity = Map(row);
                 result.Add(entity);
-
-                foreach (string column in columns)
-                {
-                    object value = row[column];
-                    if (value == DBNull.Value)
-                    {
-                        continue;
-                    }
-
-                    FieldInfo field;
-                    if (_fields.TryGetValue(column, out field))
-                    {
-                        Type fieldType = Nullable.GetUnderlyingType(field.FieldType) ?? field.FieldType;
-                        field.SetValue(entity, ChangeDbValue(value, fieldType));
-                    }
-                }
             }
 
             return result;
+        }
+
+        public TEntity Map(DataRow dataRow)
+        {
+            TEntity entity = new TEntity();
+            foreach (DataColumn column in dataRow.Table.Columns)
+            {
+                object value = dataRow[column.ColumnName];
+                if (value == DBNull.Value)
+                {
+                    continue;
+                }
+
+                FieldInfo field;
+                if (_fields.TryGetValue(column.ColumnName, out field))
+                {
+                    Type fieldType = Nullable.GetUnderlyingType(field.FieldType) ?? field.FieldType;
+                    field.SetValue(entity, ChangeDbValue(value, fieldType));
+                }
+            }
+
+            return entity;
         }
 
         // To be continued with other types not managed by Convert.ChangeType
