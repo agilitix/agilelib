@@ -13,17 +13,18 @@ namespace AxData
     public class EntityMapper<TEntity> : IEntityMapper<TEntity> where TEntity : class, new()
     {
         protected const string _mappedFieldPrefix = "_col_";
+        protected const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
         protected readonly IDictionary<string, FieldInfo> _fields;
         protected readonly Type _entityType;
         protected readonly DataTable _tablePrototype;
 
         public EntityMapper()
         {
-            const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-            _fields = typeof(TEntity).GetFields(flags)
-                                     .Where(x => x.Name.StartsWith(_mappedFieldPrefix))
-                                     .ToDictionary(x => x.Name.Substring(_mappedFieldPrefix.Length), x => x);
             _entityType = typeof(TEntity);
+
+            _fields = _entityType.GetFields(flags)
+                                 .Where(x => x.Name.StartsWith(_mappedFieldPrefix))
+                                 .ToDictionary(x => x.Name.Substring(_mappedFieldPrefix.Length), x => x);
 
             _tablePrototype = new DataTable(_entityType.Name);
             foreach (KeyValuePair<string, FieldInfo> field in _fields)
@@ -98,7 +99,7 @@ namespace AxData
         {
             if (type == typeof(bool))
             {
-                return (bool) ToBoolean(dbValue);
+                return ToBoolean(dbValue);
             }
 
             return Convert.ChangeType(dbValue, type);
