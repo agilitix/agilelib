@@ -12,23 +12,20 @@ namespace AxUtils.UnitTests
     {
         protected enum EnumUnderTest
         {
-            [System.ComponentModel.Description("DescA")]
-            A,
+            [System.ComponentModel.Description("DescA")] A,
 
             B = 10,
 
-            [System.ComponentModel.Description("DescC")]
-            C,
+            [System.ComponentModel.Description("DescC")] C,
 
-            [System.ComponentModel.Description("DescD")]
-            D
+            [System.ComponentModel.Description("DescD")] D
         }
 
         protected bool AreMatching(string[] stringEnumValues, EnumUnderTest[] enumValues)
         {
             if (stringEnumValues.Length == enumValues.Length)
             {
-                EnumUnderTest[] parsed = stringEnumValues.Select(x => (EnumUnderTest) Enum.Parse(typeof(EnumUnderTest), x)).ToArray();
+                EnumUnderTest[] parsed = stringEnumValues.Select(x => (EnumUnderTest)Enum.Parse(typeof(EnumUnderTest), x)).ToArray();
                 return parsed.SequenceEqual(enumValues);
             }
 
@@ -150,10 +147,18 @@ namespace AxUtils.UnitTests
     internal class EnumUtilsUnitTestsParsingUndefinedDescriptionsShouldRaiseExceptions : EnumUtilsUnitTests
     {
         protected IList<Exception> Result;
+        protected IList<Type> Expected;
 
         public override void Arrange()
         {
             Result = new List<Exception>();
+            Expected = new List<Type>
+                       {
+                           typeof(ArgumentNullException),
+                           typeof(KeyNotFoundException),
+                           typeof(KeyNotFoundException),
+                           typeof(KeyNotFoundException),
+                       };
         }
 
         public override void Act()
@@ -167,10 +172,7 @@ namespace AxUtils.UnitTests
         [Test]
         public void Assert_we_got_expected_exceptions_for_unknow_definitions()
         {
-            foreach (Exception ex in Result)
-            {
-                ex.Should().BeOfType<InvalidEnumArgumentException>();
-            }
+            Result.Select( x => x.GetType()).ShouldAllBeEquivalentTo(Expected);
         }
     }
 
@@ -241,7 +243,7 @@ namespace AxUtils.UnitTests
         {
             foreach (string strEnum in InputStringEnumValues)
             {
-                EnumUnderTest result = EnumUtils<EnumUnderTest>.ParseName(strEnum);
+                EnumUnderTest result = EnumUtils<EnumUnderTest>.Parse(strEnum);
                 Results.Add(result);
             }
         }
@@ -271,7 +273,7 @@ namespace AxUtils.UnitTests
             foreach (string strEnum in InputStringEnumValues)
             {
                 EnumUnderTest result;
-                Result.Add(EnumUtils<EnumUnderTest>.TryParseName(strEnum, out result));
+                Result.Add(EnumUtils<EnumUnderTest>.TryParse(strEnum, out result));
             }
         }
 
