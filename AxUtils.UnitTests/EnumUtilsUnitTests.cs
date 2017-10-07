@@ -56,10 +56,10 @@ namespace AxUtils.UnitTests
         {
             return new[]
                    {
-                       new EnumInfos<EnumUnderTest> {Value = EnumUnderTest.A, Name = "A", Description = "DescA"},
-                       new EnumInfos<EnumUnderTest> {Value = EnumUnderTest.B, Name = "B", Description = null},
-                       new EnumInfos<EnumUnderTest> {Value = EnumUnderTest.C, Name = "C", Description = "DescC"},
-                       new EnumInfos<EnumUnderTest> {Value = EnumUnderTest.D, Name = "D", Description = "DescD"},
+                       new EnumInfos<EnumUnderTest> {Value = EnumUnderTest.A, Name = "A", Description = "DescA", Number = (int)EnumUnderTest.A},
+                       new EnumInfos<EnumUnderTest> {Value = EnumUnderTest.B, Name = "B", Description = null, Number = (int)EnumUnderTest.B},
+                       new EnumInfos<EnumUnderTest> {Value = EnumUnderTest.C, Name = "C", Description = "DescC", Number = (int)EnumUnderTest.C},
+                       new EnumInfos<EnumUnderTest> {Value = EnumUnderTest.D, Name = "D", Description = "DescD", Number = (int)EnumUnderTest.D},
                    };
         }
     }
@@ -133,7 +133,7 @@ namespace AxUtils.UnitTests
         {
             foreach (string description in GetAllDescriptions())
             {
-                Result.Add(EnumUtils<EnumUnderTest>.ParseDescription(description));
+                Result.Add(EnumUtils<EnumUnderTest>.FromDescription(description));
             }
         }
 
@@ -163,10 +163,10 @@ namespace AxUtils.UnitTests
 
         public override void Act()
         {
-            Result.Add(Trying(() => EnumUtils<EnumUnderTest>.ParseDescription(null)));
-            Result.Add(Trying(() => EnumUtils<EnumUnderTest>.ParseDescription("")));
-            Result.Add(Trying(() => EnumUtils<EnumUnderTest>.ParseDescription("  ")));
-            Result.Add(Trying(() => EnumUtils<EnumUnderTest>.ParseDescription("Toto")));
+            Result.Add(Trying(() => EnumUtils<EnumUnderTest>.FromDescription(null)));
+            Result.Add(Trying(() => EnumUtils<EnumUnderTest>.FromDescription("")));
+            Result.Add(Trying(() => EnumUtils<EnumUnderTest>.FromDescription("  ")));
+            Result.Add(Trying(() => EnumUtils<EnumUnderTest>.FromDescription("Toto")));
         }
 
         [Test]
@@ -188,10 +188,10 @@ namespace AxUtils.UnitTests
         public override void Act()
         {
             EnumUnderTest output;
-            Result.Add(EnumUtils<EnumUnderTest>.TryParseDescription(null, out output));
-            Result.Add(EnumUtils<EnumUnderTest>.TryParseDescription("", out output));
-            Result.Add(EnumUtils<EnumUnderTest>.TryParseDescription("  ", out output));
-            Result.Add(EnumUtils<EnumUnderTest>.TryParseDescription("Toto", out output));
+            Result.Add(EnumUtils<EnumUnderTest>.TryFromDescription(null, out output));
+            Result.Add(EnumUtils<EnumUnderTest>.TryFromDescription("", out output));
+            Result.Add(EnumUtils<EnumUnderTest>.TryFromDescription("  ", out output));
+            Result.Add(EnumUtils<EnumUnderTest>.TryFromDescription("Toto", out output));
         }
 
         [Test]
@@ -215,7 +215,7 @@ namespace AxUtils.UnitTests
             foreach (string description in GetAllDescriptions())
             {
                 EnumUnderTest output;
-                Result.Add(EnumUtils<EnumUnderTest>.TryParseDescription(description, out output));
+                Result.Add(EnumUtils<EnumUnderTest>.TryFromDescription(description, out output));
             }
         }
 
@@ -243,7 +243,7 @@ namespace AxUtils.UnitTests
         {
             foreach (string strEnum in InputStringEnumValues)
             {
-                EnumUnderTest result = EnumUtils<EnumUnderTest>.Parse(strEnum);
+                EnumUnderTest result = EnumUtils<EnumUnderTest>.FromName(strEnum);
                 Results.Add(result);
             }
         }
@@ -273,7 +273,7 @@ namespace AxUtils.UnitTests
             foreach (string strEnum in InputStringEnumValues)
             {
                 EnumUnderTest result;
-                Result.Add(EnumUtils<EnumUnderTest>.TryParse(strEnum, out result));
+                Result.Add(EnumUtils<EnumUnderTest>.TryFromName(strEnum, out result));
             }
         }
 

@@ -5,12 +5,14 @@ using System.Linq;
 
 namespace AxUtils
 {
-    public static class EnumUtils<T> where T : struct
+    public static class EnumCachedUtils<T> where T : struct
     {
         private static readonly IDictionary<T, EnumInfos<T>> _valueToInfos;
+        private static readonly IDictionary<int, EnumInfos<T>> _numberToInfos;
         private static readonly IDictionary<string, EnumInfos<T>> _descriptionToInfos;
+        private static readonly IDictionary<string, EnumInfos<T>> _nameToInfos;
 
-        static EnumUtils()
+        static EnumCachedUtils()
         {
             var type = typeof(T);
             if (!type.IsEnum)
@@ -21,22 +23,27 @@ namespace AxUtils
             IList<EnumInfos<T>> enumInfos = Initialize().ToList();
 
             _valueToInfos = enumInfos.ToDictionary(x => x.Value);
+            _numberToInfos = enumInfos.ToDictionary(x => x.Number);
+            _nameToInfos = enumInfos.ToDictionary(x => x.Name);
             _descriptionToInfos = enumInfos.Where(x => x.Description != null).ToDictionary(x => x.Description);
         }
 
         public static IEnumerable<T> GetValues()
         {
-            return Enum.GetValues(typeof(T)).Cast<T>();
+            return _valueToInfos.Keys;
         }
 
         public static string GetName(T enumValue)
         {
-            return Enum.GetName(typeof(T), enumValue);
+            EnumInfos<T> info;
+            return _valueToInfos.TryGetValue(enumValue, out info)
+                       ? info.Name
+                       : null;
         }
 
         public static IEnumerable<string> GetNames()
         {
-            return Enum.GetNames(typeof(T));
+            return _nameToInfos.Keys;
         }
 
         public static string GetDescription(T enumValue)
@@ -59,7 +66,7 @@ namespace AxUtils
 
         public static IEnumerable<int> GetNumbers()
         {
-            return _valueToInfos.Values.Select(x => x.Number);
+            return _numberToInfos.Keys;
         }
 
         public static T FromDescription(string enumDescription)
@@ -94,7 +101,7 @@ namespace AxUtils
 
         public static T FromName(string enumName)
         {
-            return (T)Enum.Parse(typeof(T), enumName);
+            return _nameToInfos[enumName].Value;
         }
 
         public static T FromNameOrDefault(string enumName, T defaultValue)
@@ -106,7 +113,11 @@ namespace AxUtils
 
         public static bool TryFromName(string enumName, out T enumOutput)
         {
-            return Enum.TryParse(enumName, false, out enumOutput);
+            EnumInfos<T> info = null;
+            if (enumName != null)
+                _nameToInfos.TryGetValue(enumName, out info);
+            enumOutput = info?.Value ?? default(T);
+            return info != null;
         }
 
         public static bool TryFromNameOrDefault(string enumName, out T enumOutput, T defaultValue)
@@ -120,7 +131,7 @@ namespace AxUtils
 
         public static T Cast(int enumNumber)
         {
-            return (T)Enum.ToObject(typeof(T), enumNumber);
+            return _numberToInfos[enumNumber].Value;
         }
 
         public static T CastOrDefault(int enumNumber, T defaultValue)
@@ -132,18 +143,10 @@ namespace AxUtils
 
         public static bool TryCast(int enumNumber, out T enumOutput)
         {
-            try
-            {
-                enumOutput = (T)Enum.ToObject(typeof(T), enumNumber);
-                return true;
-            }
-            catch
-            {
-                // ignored
-            }
-
-            enumOutput = default(T);
-            return false;
+            EnumInfos<T> info;
+            _numberToInfos.TryGetValue(enumNumber, out info);
+            enumOutput = info?.Value ?? default(T);
+            return info != null;
         }
 
         public static bool TryCastOrDefault(int enumNumber, out T enumOutput, T defaultValue)
@@ -155,58 +158,34 @@ namespace AxUtils
             return false;
         }
 
-        public static TTarget ChangeTo<TTarget>(T enumInput) where TTarget : struct
+        public static TTarget ChangeTo<TTarget>(T enumValue) where TTarget : struct
         {
-            return (TTarget)Enum.Parse(typeof(TTarget), Enum.GetName(typeof(T), enumInput) ?? "");
+            return EnumCachedUtils<TTarget>.FromName(GetName(enumValue));
         }
 
-        public static TTarget ChangeToOrDefault<TTarget>(T enumInput, TTarget defaultValue) where TTarget : struct
+        public static TTarget ChangeToOrDefault<TTarget>(T enumValue, TTarget defaultValue) where TTarget : struct
         {
-            TTarget enumOutput;
-            TryChangeToOrDefault(enumInput, out enumOutput, defaultValue);
-            return enumOutput;
+            return EnumCachedUtils<TTarget>.FromNameOrDefault(GetName(enumValue), defaultValue);
         }
 
-        public static bool TryChangeTo<TTarget>(T enumInput, out TTarget enumOutput) where TTarget : struct
+        public static bool TryChangeTo<TTarget>(T enumValue, out TTarget enumOutput) where TTarget : struct
         {
-            return Enum.TryParse(Enum.GetName(typeof(T), enumInput) ?? "", false, out enumOutput);
+            return EnumCachedUtils<TTarget>.TryFromName(GetName(enumValue), out enumOutput);
         }
 
-        public static bool TryChangeToOrDefault<TTarget>(T enumInput, out TTarget enumOutput, TTarget defaultValue) where TTarget : struct
+        public static bool TryChangeToOrDefault<TTarget>(T enumValue, out TTarget enumOutput, TTarget defaultValue) where TTarget : struct
         {
-            if (TryChangeTo(enumInput, out enumOutput))
-                return true;
-
-            enumOutput = defaultValue;
-            return false;
+            return EnumCachedUtils<TTarget>.TryFromNameOrDefault(GetName(enumValue), out enumOutput, defaultValue);
         }
 
         public static bool IsNumberDefined(int enumNumber)
         {
-            try
-            {
-                return Enum.IsDefined(typeof(T), enumNumber);
-            }
-            catch
-            {
-                // ignored
-            }
-
-            return false;
+            return _numberToInfos.ContainsKey(enumNumber);
         }
 
         public static bool IsNameDefined(string enumName)
         {
-            try
-            {
-                return Enum.IsDefined(typeof(T), enumName);
-            }
-            catch
-            {
-                // ignored
-            }
-
-            return false;
+            return enumName != null && _nameToInfos.ContainsKey(enumName);
         }
 
         public static bool IsDescriptionDefined(string enumDescription)
