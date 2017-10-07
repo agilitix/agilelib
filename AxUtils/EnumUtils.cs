@@ -28,8 +28,7 @@ namespace AxUtils
             IList<EnumInfos<T>> enumInfos = Initialize().ToList();
 
             _valueToInfos = enumInfos.ToDictionary(x => x.Value);
-            _descriptionToInfos = enumInfos.Where(x => x.Description != null)
-                                           .ToDictionary(x => x.Description);
+            _descriptionToInfos = enumInfos.Where(x => x.Description != null).ToDictionary(x => x.Description);
         }
 
         public static IEnumerable<T> GetValues()
@@ -65,6 +64,13 @@ namespace AxUtils
             return _descriptionToInfos[description].Value;
         }
 
+        public static T ParseDescriptionOrDefault(string description, T defaultValue)
+        {
+            T result;
+            TryParseDescriptionOrDefault(description, out result, defaultValue);
+            return result;
+        }
+
         public static bool TryParseDescription(string description, out T result)
         {
             EnumInfos<T> info = null;
@@ -74,9 +80,25 @@ namespace AxUtils
             return info != null;
         }
 
+        public static bool TryParseDescriptionOrDefault(string description, out T result, T defaultValue)
+        {
+            if (TryParseDescription(description, out result))
+                return true;
+
+            result = defaultValue;
+            return false;
+        }
+
         public static T Parse(string name)
         {
             return (T)Enum.Parse(typeof(T), name);
+        }
+
+        public static T ParseOrDefault(string name, T defaultValue)
+        {
+            T result;
+            TryParseOrDefault(name, out result, defaultValue);
+            return result;
         }
 
         public static bool TryParse(string name, out T result)
@@ -84,9 +106,25 @@ namespace AxUtils
             return Enum.TryParse(name, false, out result);
         }
 
+        public static bool TryParseOrDefault(string name, out T result, T defaultValue)
+        {
+            if (TryParse(name, out result))
+                return true;
+
+            result = defaultValue;
+            return false;
+        }
+
         public static T Cast(int input)
         {
             return (T)Enum.ToObject(typeof(T), input);
+        }
+
+        public static T CastOrDefault(int input, T defaultValue)
+        {
+            T result;
+            TryCastOrDefault(input, out result, defaultValue);
+            return result;
         }
 
         public static bool TryCast(int input, out T result)
@@ -105,14 +143,39 @@ namespace AxUtils
             return false;
         }
 
+        public static bool TryCastOrDefault(int input, out T result, T defaultValue)
+        {
+            if (TryCast(input, out result))
+                return true;
+
+            result = defaultValue;
+            return false;
+        }
+
         public static TTarget ChangeTo<TTarget>(T input) where TTarget : struct
         {
             return (TTarget)Enum.Parse(typeof(TTarget), Enum.GetName(typeof(T), input) ?? "");
         }
 
+        public static TTarget ChangeToOrDefault<TTarget>(T input, TTarget defaultValue) where TTarget : struct
+        {
+            TTarget result;
+            TryChangeToOrDefault(input, out result, defaultValue);
+            return result;
+        }
+
         public static bool TryChangeTo<TTarget>(T input, out TTarget result) where TTarget : struct
         {
-            return Enum.TryParse(Enum.GetName(typeof(T), input), false, out result);
+            return Enum.TryParse(Enum.GetName(typeof(T), input) ?? "", false, out result);
+        }
+
+        public static bool TryChangeToOrDefault<TTarget>(T input, out TTarget result, TTarget defaultValue) where TTarget : struct
+        {
+            if (TryChangeTo(input, out result))
+                return true;
+
+            result = defaultValue;
+            return false;
         }
 
         public static bool IsValueDefined(int value)
@@ -145,10 +208,7 @@ namespace AxUtils
 
         public static bool IsDescriptionDefined(string description)
         {
-            if (description != null)
-                return _descriptionToInfos.ContainsKey(description);
-
-            return false;
+            return description != null && _descriptionToInfos.ContainsKey(description);
         }
 
         public static IEnumerable<EnumInfos<T>> GetEnumInfos()
@@ -161,16 +221,20 @@ namespace AxUtils
             Type type = typeof(T);
             return Enum.GetValues(type)
                        .Cast<T>()
-                       .Select(enumValue => new EnumInfos<T>
-                                            {
-                                                Value = enumValue,
-                                                Description = type.GetField(enumValue.ToString())
-                                                                  .GetCustomAttributes(typeof(DescriptionAttribute), false)
-                                                                  .Cast<DescriptionAttribute>()
-                                                                  .Select(attribute => attribute.Description)
-                                                                  .FirstOrDefault(),
-                                                Name = Enum.GetName(typeof(T), enumValue)
-                                            });
+                       .Select(enumValue =>
+                               {
+                                   string enumName = Enum.GetName(type, enumValue);
+                                   return new EnumInfos<T>
+                                          {
+                                              Value = enumValue,
+                                              Description = type.GetField(enumName)
+                                                                .GetCustomAttributes(typeof(DescriptionAttribute), false)
+                                                                .Cast<DescriptionAttribute>()
+                                                                .Select(attribute => attribute.Description)
+                                                                .FirstOrDefault(),
+                                              Name = enumName
+                                          };
+                               });
         }
     }
 }
