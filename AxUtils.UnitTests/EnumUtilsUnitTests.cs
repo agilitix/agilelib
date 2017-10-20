@@ -39,7 +39,7 @@ namespace AxUtils.UnitTests
 
         protected string[] GetAllDescriptions()
         {
-            return new[] {"DescA", "DescC", "DescD"};
+            return new[] {"DescA", null, "DescC", "DescD"};
         }
 
         protected EnumUnderTest[] GetAllValues()
@@ -82,7 +82,7 @@ namespace AxUtils.UnitTests
         [Test]
         public void Assert_all_descriptions_were_retrieved_as_expected()
         {
-            Result.Should().ContainInOrder(ExpectedDescriptions);
+            Result.Should().BeEquivalentTo(ExpectedDescriptions);
         }
     }
 
@@ -91,7 +91,6 @@ namespace AxUtils.UnitTests
         public override void Act()
         {
             Result = GetAllValues().Select(EnumUtils<EnumUnderTest>.GetDescription)
-                                   .Where(description => description != null)
                                    .ToList();
         }
     }
@@ -133,7 +132,10 @@ namespace AxUtils.UnitTests
         {
             foreach (string description in GetAllDescriptions())
             {
-                Result.Add(EnumUtils<EnumUnderTest>.FromDescription(description));
+                if (description != null)
+                {
+                    Result.Add(EnumUtils<EnumUnderTest>.FromDescription(description));
+                }
             }
         }
 
@@ -154,10 +156,10 @@ namespace AxUtils.UnitTests
             Result = new List<Exception>();
             Expected = new List<Type>
                        {
-                           typeof(ArgumentNullException),
-                           typeof(KeyNotFoundException),
-                           typeof(KeyNotFoundException),
-                           typeof(KeyNotFoundException),
+                           typeof(ArgumentOutOfRangeException),
+                           typeof(ArgumentOutOfRangeException),
+                           typeof(ArgumentOutOfRangeException),
+                           typeof(ArgumentOutOfRangeException),
                        };
         }
 
@@ -214,8 +216,11 @@ namespace AxUtils.UnitTests
         {
             foreach (string description in GetAllDescriptions())
             {
-                EnumUnderTest output;
-                Result.Add(EnumUtils<EnumUnderTest>.TryFromDescription(description, out output));
+                if (description != null)
+                {
+                    EnumUnderTest output;
+                    Result.Add(EnumUtils<EnumUnderTest>.TryFromDescription(description, out output));
+                }
             }
         }
 

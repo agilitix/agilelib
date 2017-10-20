@@ -7,9 +7,6 @@ namespace AxUtils
 {
     public static class EnumUtils<T> where T : struct
     {
-        private static readonly IDictionary<T, EnumInfos<T>> _valueToInfos;
-        private static readonly IDictionary<string, EnumInfos<T>> _descriptionToInfos;
-
         static EnumUtils()
         {
             var type = typeof(T);
@@ -17,11 +14,6 @@ namespace AxUtils
             {
                 throw new NotSupportedException();
             }
-
-            IList<EnumInfos<T>> enumInfos = Initialize().ToList();
-
-            _valueToInfos = enumInfos.ToDictionary(x => x.Value);
-            _descriptionToInfos = enumInfos.Where(x => x.Description != null).ToDictionary(x => x.Description);
         }
 
         public static IEnumerable<T> GetValues()
@@ -41,30 +33,38 @@ namespace AxUtils
 
         public static string GetDescription(T enumValue)
         {
-            EnumInfos<T> info;
-            return _valueToInfos.TryGetValue(enumValue, out info)
-                       ? info.Description
-                       : null;
+            Type type = typeof(T);
+            return type.GetField(Enum.GetName(type, enumValue))
+                       .GetCustomAttributes(typeof(DescriptionAttribute), false)
+                       .Cast<DescriptionAttribute>()
+                       .Select(attribute => attribute.Description)
+                       .FirstOrDefault();
         }
 
         public static IEnumerable<string> GetDescriptions()
         {
-            return _descriptionToInfos.Keys;
+            return GetValues().Select(GetDescription);
         }
 
         public static int GetNumber(T enumValue)
         {
-            return ToInt(enumValue);
+            return (int)Convert.ChangeType(enumValue, typeof(int));
         }
 
         public static IEnumerable<int> GetNumbers()
         {
-            return _valueToInfos.Values.Select(x => x.Number);
+            return GetValues().Select(GetNumber);
         }
 
         public static T FromDescription(string enumDescription)
         {
-            return _descriptionToInfos[enumDescription].Value;
+            T enumOutput;
+            if (TryFromDescription(enumDescription, out enumOutput))
+            {
+                return enumOutput;
+            }
+
+            throw new ArgumentOutOfRangeException(nameof(enumDescription));
         }
 
         public static T FromDescriptionOrDefault(string enumDescription, T defaultValue)
@@ -76,11 +76,19 @@ namespace AxUtils
 
         public static bool TryFromDescription(string enumDescription, out T enumOutput)
         {
-            EnumInfos<T> info = null;
-            if (enumDescription != null)
-                _descriptionToInfos.TryGetValue(enumDescription, out info);
-            enumOutput = info?.Value ?? default(T);
-            return info != null;
+            var found = Enum.GetValues(typeof(T))
+                            .Cast<T>()
+                            .Where(enumValue => enumDescription != null && enumDescription == GetDescription(enumValue))
+                            .Select(x => new {Val = x})
+                            .FirstOrDefault();
+            if (found != null)
+            {
+                enumOutput = found.Val;
+                return true;
+            }
+
+            enumOutput = default(T);
+            return false;
         }
 
         public static bool TryFromDescriptionOrDefault(string enumDescription, out T enumOutput, T defaultValue)
@@ -211,39 +219,19 @@ namespace AxUtils
 
         public static bool IsDescriptionDefined(string enumDescription)
         {
-            return enumDescription != null && _descriptionToInfos.ContainsKey(enumDescription);
+            T enumOutput;
+            return TryFromDescription(enumDescription, out enumOutput);
         }
 
         public static IEnumerable<EnumInfos<T>> GetEnumInfos()
         {
-            return _valueToInfos.Values;
-        }
-
-        public static int ToInt(T enumValue)
-        {
-            return (int)(object)enumValue;
-        }
-
-        private static IEnumerable<EnumInfos<T>> Initialize()
-        {
-            Type type = typeof(T);
-            return Enum.GetValues(type)
-                       .Cast<T>()
-                       .Select(enumValue =>
-                               {
-                                   string enumName = Enum.GetName(type, enumValue);
-                                   return new EnumInfos<T>
-                                          {
-                                              Value = enumValue,
-                                              Number = ToInt(enumValue),
-                                              Description = type.GetField(enumName)
-                                                                .GetCustomAttributes(typeof(DescriptionAttribute), false)
-                                                                .Cast<DescriptionAttribute>()
-                                                                .Select(attribute => attribute.Description)
-                                                                .FirstOrDefault(),
-                                              Name = enumName
-                                          };
-                               });
+            return GetValues().Select(enumValue => new EnumInfos<T>
+                                                   {
+                                                       Value = enumValue,
+                                                       Number = GetNumber(enumValue),
+                                                       Description = GetDescription(enumValue),
+                                                       Name = GetName(enumValue)
+                                                   });
         }
     }
 }
