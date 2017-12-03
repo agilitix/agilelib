@@ -6,11 +6,10 @@ using QuickFix;
 
 namespace AxFixEngine.Handlers
 {
-    public abstract class FixMessageCracker
+    public abstract class FixMessageCracker : IFixMessageCracker
     {
-        private readonly IDictionary<Type, Action<Message, SessionID>> _inboundCallActions = new Dictionary<Type, Action<Message, SessionID>>();
-        private readonly IDictionary<Type, Action<Message, SessionID>> _outboundCallActions = new Dictionary<Type, Action<Message, SessionID>>();
-        private readonly IDictionary<Type, Action<Message, SessionID>> _callActions = new Dictionary<Type, Action<Message, SessionID>>();
+        private readonly IDictionary<Type, Action<Message, SessionID>> _inboundMessages = new Dictionary<Type, Action<Message, SessionID>>();
+        private readonly IDictionary<Type, Action<Message, SessionID>> _outboundMessages = new Dictionary<Type, Action<Message, SessionID>>();
 
         protected FixMessageCracker()
         {
@@ -19,17 +18,12 @@ namespace AxFixEngine.Handlers
 
         public void CrackFrom(Message message, SessionID sessionID)
         {
-            Crack(message, sessionID, _inboundCallActions);
+            Crack(message, sessionID, _inboundMessages);
         }
 
         public void CrackTo(Message message, SessionID sessionID)
         {
-            Crack(message, sessionID, _outboundCallActions);
-        }
-
-        public void Crack(Message message, SessionID sessionID)
-        {
-            Crack(message, sessionID, _callActions);
+            Crack(message, sessionID, _outboundMessages);
         }
 
         private void Initialize(FixMessageCracker messageCracker)
@@ -38,13 +32,14 @@ namespace AxFixEngine.Handlers
             MethodInfo[] methodInfos = messageCrakerType.GetMethods(BindingFlags.Public | BindingFlags.Instance);
             foreach (MethodInfo methodInfo in methodInfos)
             {
-                TryBuildCallCache(methodInfo, "OnMessageFrom", _inboundCallActions);
-                TryBuildCallCache(methodInfo, "OnMessageTo", _outboundCallActions);
-                TryBuildCallCache(methodInfo, "OnMessage", _callActions);
+                TryBuildCallCache(methodInfo, "OnMessageFrom", _inboundMessages);
+                TryBuildCallCache(methodInfo, "OnMessageTo", _outboundMessages);
             }
         }
 
-        private void TryBuildCallCache(MethodInfo methodInfo, string methodName, IDictionary<Type, Action<Message, SessionID>> handlers)
+        private void TryBuildCallCache(MethodInfo methodInfo,
+                                       string methodName,
+                                       IDictionary<Type, Action<Message, SessionID>> handlers)
         {
             if (IsHandlerMethod(methodInfo, methodName))
             {
@@ -74,13 +69,15 @@ namespace AxFixEngine.Handlers
                    && typeof(SessionID).IsAssignableFrom(methodInfo.GetParameters()[1].ParameterType) && methodInfo.ReturnType == typeof(void);
         }
 
-        private void Crack(Message message, SessionID sessionID, IDictionary<Type, Action<Message, SessionID>> actions)
+        private void Crack(Message message,
+                           SessionID sessionID,
+                           IDictionary<Type, Action<Message, SessionID>> actions)
         {
             Type type = message.GetType();
-            Action<Message, SessionID> action;
-            if (actions.TryGetValue(type, out action))
+            Action<Message, SessionID> messageAction;
+            if (actions.TryGetValue(type, out messageAction))
             {
-                action(message, sessionID);
+                messageAction(message, sessionID);
             }
             else
             {

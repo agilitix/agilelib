@@ -48,6 +48,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\AxData\AxData.csproj">
+      <Project>{ACACD0AA-5ED4-4302-8A9B-E6986EC994D4}</Project>
+      <Name>AxData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\AxExtensions\AxExtensions.csproj">
+      <Project>{F3EEFDB9-EE62-4962-B8FE-6D709F0C63F8}</Project>
+      <Name>AxExtensions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\AxUtils\AxUtils.csproj">
       <Project>{0772c612-7c30-4cbe-8499-186b62970671}</Project>
       <Name>AxUtils</Name>

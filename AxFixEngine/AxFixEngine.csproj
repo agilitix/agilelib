@@ -69,8 +69,9 @@
     <Compile Include="Decorators\FixMessageDecorator.cs" />
     <Compile Include="Dialects\FixDialectsInstance.cs" />
     <Compile Include="Extensions\SessionIDExtensions.cs" />
+    <Compile Include="Handlers\IFixMessageCracker.cs" />
     <Compile Include="Messages\FixMessageParser.cs" />
-    <Compile Include="Handlers\FixMessageCrackHandlerBase.cs" />
+    <Compile Include="Handlers\FixMessageCrackerBase.cs" />
     <Compile Include="Handlers\FixMessageHandlerProvider.cs" />
     <Compile Include="Engine\IFixEngine.cs" />
     <Compile Include="Messages\IFixMessageParser.cs" />
@@ -83,7 +84,6 @@
     <Compile Include="Handlers\FixApplication.cs" />
     <Compile Include="Connectors\FixConnectorFactory.cs" />
     <Compile Include="Connectors\FixInitiator.cs" />
-    <Compile Include="Handlers\FixMessageHandlerBase.cs" />
     <Compile Include="Dialects\FixDialects.cs" />
     <Compile Include="Connectors\IFixConnector.cs" />
     <Compile Include="Connectors\IFixConnectorFactory.cs" />

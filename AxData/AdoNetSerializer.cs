@@ -16,27 +16,7 @@ namespace AxData
                                                                         Indent = false
                                                                     };
 
-        public static string SerializeDataRow(DataRow row)
-        {
-            DataTable table = row.Table.Clone();
-            table.ImportRow(row);
-            return SerializeDataTable(table);
-        }
-
-        public static DataRow DeserializeDataRow(string serialized)
-        {
-            DataTable table = DeserializeDataTable(serialized);
-            if (table.Rows.Count != 1)
-            {
-                throw new InvalidOperationException();
-            }
-
-            DataRow row = table.Rows[0];
-            table.Rows.Remove(row);
-            return row;
-        }
-
-        public static string SerializeDataSet(DataSet dataset)
+        public static string Serialize(DataSet dataset)
         {
             using (StringWriter sw = new StringWriter())
             using (XmlWriter xw = XmlWriter.Create(sw, _writerSettings))
@@ -44,6 +24,23 @@ namespace AxData
                 dataset.WriteXml(xw, XmlWriteMode.IgnoreSchema);
                 return sw.ToString();
             }
+        }
+
+        public static string Serialize(DataTable table)
+        {
+            using (StringWriter sw = new StringWriter())
+            using (XmlWriter xw = XmlWriter.Create(sw, _writerSettings))
+            {
+                table.WriteXml(xw, XmlWriteMode.IgnoreSchema, true);
+                return sw.ToString();
+            }
+        }
+
+        public static string Serialize(DataRow row)
+        {
+            DataTable table = row.Table.Clone();
+            table.ImportRow(row);
+            return Serialize(table);
         }
 
         public static DataSet DeserializeDataSet(string serialized)
@@ -56,31 +53,20 @@ namespace AxData
             return dataset;
         }
 
-        public static string SerializeDataTable(DataTable table)
-        {
-            using (StringWriter sw = new StringWriter())
-            using (XmlWriter xw = XmlWriter.Create(sw, _writerSettings))
-            {
-                table.WriteXml(xw, XmlWriteMode.IgnoreSchema, true);
-                return sw.ToString();
-            }
-        }
-
-        public static DataTable DeserializeDataTable(string serialized)
+        public static DataTable[] DeserializeDataTables(string serialized)
         {
             DataSet dataset = new DataSet();
             using (StringReader sr = new StringReader(serialized))
             {
                 dataset.ReadXml(sr);
             }
-            if (dataset.Tables.Count != 1)
-            {
-                throw new InvalidOperationException();
-            }
+            return dataset.Tables.Cast<DataTable>().ToArray();
+        }
 
-            DataTable result = dataset.Tables[0];
-            dataset.Tables.Remove(result);
-            return result;
+        public static DataRow[] DeserializeDataRows(string serialized)
+        {
+            DataTable[] tables = DeserializeDataTables(serialized);
+            return tables.SelectMany(x => x.Rows.Cast<DataRow>()).ToArray();
         }
     }
 }

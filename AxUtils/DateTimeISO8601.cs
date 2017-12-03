@@ -4,9 +4,9 @@ namespace AxUtils
 {
     public static class DateTimeISO8601
     {
-        private static readonly int _lenUnsKind = "2017-09-19T15:16:11.6008521".Length;
-        private static readonly int _lenUtcKind = "2017-09-19T13:15:48.8446795Z".Length;
-        private static readonly int _lenLocKind = "2017-09-19T15:16:11.6008521+02:00".Length;
+        private static readonly int _lenUnsKind = "2017-09-19T15:16:11.6008521".Length; // Unspecified
+        private static readonly int _lenUtcKind = "2017-09-19T13:16:11.6008521Z".Length; // UTC
+        private static readonly int _lenLocKind = "2017-09-19T15:16:11.6008521+02:00".Length; // Local
 
         public static string ToString(DateTime input)
         {
@@ -36,13 +36,13 @@ namespace AxUtils
 
         private static DateTime ToDateTime(string dateTime)
         {
-            DateTimeOffset dto = DateTimeOffset.Parse(dateTime);
-            if (dateTime.Length == _lenLocKind) // Local kind
-                return dto.LocalDateTime;
-            if (dateTime.Length == _lenUtcKind) // Utc kind
-                return dto.UtcDateTime;
-            if (dateTime.Length == _lenUnsKind) // Unspecified kind
-                return dto.DateTime;
+            DateTimeOffset dateTimeOffset = DateTimeOffset.Parse(dateTime);
+            if (dateTime.Length == _lenLocKind)
+                return dateTimeOffset.LocalDateTime;
+            if (dateTime.Length == _lenUtcKind)
+                return dateTimeOffset.UtcDateTime;
+            if (dateTime.Length == _lenUnsKind)
+                return dateTimeOffset.DateTime;
 
             throw new InvalidOperationException("Invalid date time string");
         }

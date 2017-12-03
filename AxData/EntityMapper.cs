@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using AxData.Interfaces;
+using AxExtensions;
 using AxUtils;
 
 namespace AxData
@@ -52,7 +53,6 @@ namespace AxData
             DataRow row = table.NewRow();
             foreach (KeyValuePair<string, FieldInfo> field in _fields)
             {
-                // GetValue should be extracted to another method to manage DbValue conversions.
                 row[field.Key] = field.Value.GetValue(entity) ?? DBNull.Value;
             }
 
@@ -86,34 +86,11 @@ namespace AxData
                 FieldInfo field;
                 if (_fields.TryGetValue(column.ColumnName, out field))
                 {
-                    Type fieldType = Nullable.GetUnderlyingType(field.FieldType) ?? field.FieldType;
-                    field.SetValue(entity, ChangeDbValue(value, fieldType));
+                    field.SetValue(entity, value.ConvertTo(field.FieldType));
                 }
             }
 
             return entity;
-        }
-
-        // To be continued with other types not managed by Convert.ChangeType
-        private static object ChangeDbValue(object dbValue, Type type)
-        {
-            if (type == typeof(bool))
-            {
-                return ToBoolean(dbValue);
-            }
-
-            return Convert.ChangeType(dbValue, type);
-        }
-
-        private static object ToBoolean(object value)
-        {
-            if (value == null || value == DBNull.Value)
-            {
-                return false;
-            }
-
-            string val = value.ToString().ToLowerInvariant();
-            return val == "1" || val == "true" || val == "y" || val == "yes";
         }
     }
 }

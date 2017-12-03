@@ -51,7 +51,6 @@
     <Compile Include="DisposableAction.cs" />
     <Compile Include="DisposeHelper.cs" />
     <Compile Include="Ensure.cs" />
-    <Compile Include="EnumCachedUtils.cs" />
     <Compile Include="EnumInfos.cs" />
     <Compile Include="EnumUtils.cs" />
     <Compile Include="CultureInfoUtils.cs" />

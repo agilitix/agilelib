@@ -8,35 +8,31 @@ namespace AxUtils
     /// You should attach an interface of the global instance,
     /// it will be easier to mock and unit test.
     /// </summary>
-    public static class InstanceHolder<T>
+    public static class InstanceHolder<T> where T : class
     {
-        private static int _latch;
-        private static T _instance;
+        private static readonly object _sync = new object();
 
         public static void Attach(T instance)
         {
-            if (Interlocked.Exchange(ref _latch, 1) == 0)
+            lock (_sync)
             {
-                _instance = instance;
-            }
-            else
-            {
-                throw new InvalidOperationException();
+                if (Instance == null)
+                    Instance = instance;
+                else
+                    throw new InvalidOperationException();
             }
         }
 
         public static T Detach()
         {
-            T current = default(T);
-            if (Interlocked.Exchange(ref _latch, 0) == 1)
+            lock (_sync)
             {
-                current = _instance;
-                _instance = default(T);
+                T current = Instance;
+                Instance = null;
+                return current;
             }
-
-            return current;
         }
 
-        public static T Instance => _instance;
+        public static T Instance { get; private set; }
     }
 }

@@ -4,7 +4,7 @@ using QuickFix;
 
 namespace AxFixApp
 {
-    public class Fix44MessageCracker : FixMessageCrackHandlerBase
+    public class Fix44MessageCracker : FixMessageCrackerBase
     {
         #region Admin inbound messages
 

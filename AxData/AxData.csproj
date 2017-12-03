@@ -45,6 +45,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AxExtensions\AxExtensions.csproj">
+      <Project>{F3EEFDB9-EE62-4962-B8FE-6D709F0C63F8}</Project>
+      <Name>AxExtensions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AxUtils\AxUtils.csproj">
       <Project>{0772C612-7C30-4CBE-8499-186B62970671}</Project>
       <Name>AxUtils</Name>
