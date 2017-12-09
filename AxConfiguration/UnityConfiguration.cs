@@ -3,8 +3,8 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using AxConfiguration.Interfaces;
-using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
+using Unity;
 
 namespace AxConfiguration
 {

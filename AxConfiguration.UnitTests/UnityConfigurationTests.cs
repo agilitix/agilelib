@@ -5,8 +5,9 @@ using AxConfiguration.UnitTests.Test.Logger.Implementations;
 using AxConfiguration.UnitTests.Test.Logger.Interfaces;
 using AxQuality;
 using FluentAssertions;
-using Microsoft.Practices.Unity;
 using NUnit.Framework;
+using Unity;
+using Unity.Exceptions;
 
 namespace AxConfiguration.UnitTests
 {
