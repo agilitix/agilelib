@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NHibernate;
 using NHibernate.Cfg;
+using NHibernate.Context;
 using NHibernate.Dialect;
 using NHibernate.Driver;
 

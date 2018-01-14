@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using NHibernate;
 using NHibernate.Cfg;
-using NHibernate.Cfg.MappingSchema;
-using NHibernate.Dialect;
-using NHibernate.Driver;
+using NHibernate.Context;
+using NHibernate.Impl;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
-using NHibernate.Tool.hbm2ddl;
 
 namespace nhibertest
 {
@@ -87,19 +81,22 @@ namespace nhibertest
         static void Main(string[] args)
         {
             Configuration cfg = new MsSqlConfiguration(@"Server=virgo\SQLEXPRESS;Database=testDB;Trusted_Connection=True;");
+            cfg = cfg.CurrentSessionContext<ThreadStaticSessionContext>();
 
             var mapper = new EntityMappings(cfg);
             mapper.AddMappings(typeof(CustomerDaoMapping));
             mapper.AddMappings(typeof(OrderDaoMapping));
             mapper.CompileMappings();
 
-            SessionManager sm = new SessionManager(cfg);
+            ISessionFactory sfact = cfg.BuildSessionFactory();
+
+            //CurrentSessionContextBinder currentSessionCtxBinder = new CurrentSessionContextBinder();
+            //ISession boundSession = currentSessionCtxBinder.Bind(sfact);
 
             var se = new SchemaExporter(cfg);
             se.ToConsole();
 
-            ISession session = sm.CurrentSession;
-
+            using (ISession session = sfact.OpenSession())
             using (UnitOfWork uow = new UnitOfWork(session))
             {
                 CustomerDao cust = new CustomerDao();
@@ -116,6 +113,10 @@ namespace nhibertest
                 uow.Commit();
             }
 
+            //currentSessionCtxBinder.Unbind(sfact);
+            //session = currentSessionCtxBinder.Bind(sfact);
+
+            using (ISession session = sfact.OpenSession())
             using (UnitOfWork uow = new UnitOfWork(session))
             {
                 CustomerDao cust = session.Get<CustomerDao>(14L);
@@ -131,6 +132,10 @@ namespace nhibertest
                 session.SaveOrUpdate(cust);
                 uow.Commit();
             }
+
+            Console.WriteLine();
+            Console.Write("Hit ENTER to exit:");
+            Console.ReadLine();
         }
     }
 }

@@ -50,6 +50,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CurrentSessionContextBinder.cs" />
     <Compile Include="EntityBase.cs" />
     <Compile Include="EntityMappings.cs" />
     <Compile Include="MsSqlConfiguration.cs" />
@@ -57,7 +58,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="SchemaExporter.cs" />
-    <Compile Include="SessionManager.cs" />
+    <Compile Include="SessionMgr1.cs" />
     <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
