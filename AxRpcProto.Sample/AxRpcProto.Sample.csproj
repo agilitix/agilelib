@@ -61,8 +61,8 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="build_proto.bat" />
+    <None Include="HelloWorld.proto" />
     <None Include="packages.config" />
-    <None Include="Service.proto" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
