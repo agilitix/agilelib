@@ -24,13 +24,13 @@ namespace AxFixEngine.Decorators
 
         public SessionID SessionID
         {
-            get => _message.GetSessionID();
-            set => _message.SetSessionID(value);
+            get { return _message.GetSessionID(); }
+            set { _message.SetSessionID(value); }
         }
 
         public string SenderCompID
         {
-            get => _message.Header.IsSetField(Tags.SenderCompID) ? _message.Header.GetString(Tags.SenderCompID) : null;
+            get { return _message.Header.IsSetField(Tags.SenderCompID) ? _message.Header.GetString(Tags.SenderCompID) : null; }
 
             set
             {
@@ -43,7 +43,7 @@ namespace AxFixEngine.Decorators
 
         public string TargetCompID
         {
-            get => _message.Header.IsSetField(Tags.TargetCompID) ? _message.Header.GetString(Tags.TargetCompID) : null;
+            get { return _message.Header.IsSetField(Tags.TargetCompID) ? _message.Header.GetString(Tags.TargetCompID) : null; }
 
             set
             {
@@ -56,7 +56,7 @@ namespace AxFixEngine.Decorators
 
         public string OnBehalfOfCompID
         {
-            get => _message.Header.IsSetField(Tags.OnBehalfOfCompID) ? _message.Header.GetString(Tags.OnBehalfOfCompID) : null;
+            get { return _message.Header.IsSetField(Tags.OnBehalfOfCompID) ? _message.Header.GetString(Tags.OnBehalfOfCompID) : null; }
 
             set
             {
@@ -69,7 +69,7 @@ namespace AxFixEngine.Decorators
 
         public string DeliverToCompID
         {
-            get => _message.Header.IsSetField(Tags.DeliverToCompID) ? _message.Header.GetString(Tags.DeliverToCompID) : null;
+            get { return _message.Header.IsSetField(Tags.DeliverToCompID) ? _message.Header.GetString(Tags.DeliverToCompID) : null; }
 
             set
             {
@@ -82,7 +82,7 @@ namespace AxFixEngine.Decorators
 
         public DateTime? SendingTime
         {
-            get => _message.Header.IsSetField(Tags.SendingTime) ? _message.Header.GetDateTime(Tags.SendingTime) : default(DateTime?);
+            get { return _message.Header.IsSetField(Tags.SendingTime) ? _message.Header.GetDateTime(Tags.SendingTime) : default(DateTime?); }
 
             set
             {

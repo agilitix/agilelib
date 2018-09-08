@@ -90,19 +90,19 @@ namespace AxUtils.UnitTests
         [Test]
         public void Assert_read_DEFAULT_section_has_expected_keys()
         {
-            ActualSections.First(x => x.Name == "DEFAULT").Settings.ShouldBeEquivalentTo(ExpectedDefaultSessionDictionary);
+            ActualSections.First(x => x.Name == "DEFAULT").Settings.Should().BeEquivalentTo(ExpectedDefaultSessionDictionary);
         }
 
         [Test]
         public void Assert_read_1st_SESSION_section_has_expected_keys()
         {
-            ActualSections.First(x => x.Name == "SESSION").Settings.ShouldBeEquivalentTo(Expected1stSessionDictionary);
+            ActualSections.First(x => x.Name == "SESSION").Settings.Should().BeEquivalentTo(Expected1stSessionDictionary);
         }
 
         [Test]
         public void Assert_read_2nd_SESSION_section_has_expected_keys()
         {
-            ActualSections.Where(x => x.Name == "SESSION").ElementAt(1).Settings.ShouldBeEquivalentTo(Expected2ndSessionDictionary);
+            ActualSections.Where(x => x.Name == "SESSION").ElementAt(1).Settings.Should().BeEquivalentTo(Expected2ndSessionDictionary);
         }
     }
 }

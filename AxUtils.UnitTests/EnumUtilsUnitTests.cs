@@ -113,7 +113,7 @@ namespace AxUtils.UnitTests
         [Test]
         public void Assert_all_descriptions_pairs_were_retrieved_as_expected()
         {
-            Result.ShouldAllBeEquivalentTo(ExpectedPairs);
+            Result.Should().AllBeEquivalentTo(ExpectedPairs);
         }
     }
 
@@ -172,9 +172,9 @@ namespace AxUtils.UnitTests
         }
 
         [Test]
-        public void Assert_we_got_expected_exceptions_for_unknow_definitions()
+        public void Assert_we_got_expected_exceptions_for_unknown_definitions()
         {
-            Result.Select( x => x.GetType()).ShouldAllBeEquivalentTo(Expected);
+            Result.Select( x => x.GetType()).Should().AllBeEquivalentTo(Expected);
         }
     }
 

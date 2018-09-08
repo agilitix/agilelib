@@ -5,13 +5,14 @@ using System.Linq;
 
 namespace AxUtils
 {
-    public static class EnumUtils<T> where T : struct
+    public static class EnumCachedUtils<T> where T : struct
     {
         private static readonly IDictionary<T, EnumInfos<T>> _valueToInfos;
         private static readonly IDictionary<int, EnumInfos<T>> _numberToInfos;
+        private static readonly IDictionary<string, EnumInfos<T>> _descriptionToInfos;
         private static readonly IDictionary<string, EnumInfos<T>> _nameToInfos;
 
-        static EnumUtils()
+        static EnumCachedUtils()
         {
             var type = typeof(T);
             if (!type.IsEnum)
@@ -24,6 +25,7 @@ namespace AxUtils
             _valueToInfos = enumInfos.ToDictionary(x => x.Value);
             _numberToInfos = enumInfos.ToDictionary(x => x.Number);
             _nameToInfos = enumInfos.ToDictionary(x => x.Name);
+            _descriptionToInfos = enumInfos.Where(x => x.Description != null).ToDictionary(x => x.Description);
         }
 
         public static IEnumerable<T> GetValues()
@@ -54,7 +56,7 @@ namespace AxUtils
 
         public static IEnumerable<string> GetDescriptions()
         {
-            return _valueToInfos.Values.Select(x => x.Description);
+            return _descriptionToInfos.Keys;
         }
 
         public static int GetNumber(T enumValue)
@@ -69,11 +71,7 @@ namespace AxUtils
 
         public static T FromDescription(string enumDescription)
         {
-            T enumOutput;
-            if (TryFromDescription(enumDescription, out enumOutput))
-                return enumOutput;
-
-            throw new ArgumentOutOfRangeException(nameof(enumDescription));
+            return _descriptionToInfos[enumDescription].Value;
         }
 
         public static T FromDescriptionOrDefault(string enumDescription, T defaultValue)
@@ -85,7 +83,9 @@ namespace AxUtils
 
         public static bool TryFromDescription(string enumDescription, out T enumOutput)
         {
-            EnumInfos<T> info = _valueToInfos.Values.FirstOrDefault(x => enumDescription != null && x.Description == enumDescription);
+            EnumInfos<T> info = null;
+            if (enumDescription != null)
+                _descriptionToInfos.TryGetValue(enumDescription, out info);
             enumOutput = info?.Value ?? default(T);
             return info != null;
         }
@@ -160,22 +160,22 @@ namespace AxUtils
 
         public static TTarget ChangeTo<TTarget>(T enumValue) where TTarget : struct
         {
-            return EnumUtils<TTarget>.FromName(GetName(enumValue));
+            return EnumCachedUtils<TTarget>.FromName(GetName(enumValue));
         }
 
         public static TTarget ChangeToOrDefault<TTarget>(T enumValue, TTarget defaultValue) where TTarget : struct
         {
-            return EnumUtils<TTarget>.FromNameOrDefault(GetName(enumValue), defaultValue);
+            return EnumCachedUtils<TTarget>.FromNameOrDefault(GetName(enumValue), defaultValue);
         }
 
         public static bool TryChangeTo<TTarget>(T enumValue, out TTarget enumOutput) where TTarget : struct
         {
-            return EnumUtils<TTarget>.TryFromName(GetName(enumValue), out enumOutput);
+            return EnumCachedUtils<TTarget>.TryFromName(GetName(enumValue), out enumOutput);
         }
 
         public static bool TryChangeToOrDefault<TTarget>(T enumValue, out TTarget enumOutput, TTarget defaultValue) where TTarget : struct
         {
-            return EnumUtils<TTarget>.TryFromNameOrDefault(GetName(enumValue), out enumOutput, defaultValue);
+            return EnumCachedUtils<TTarget>.TryFromNameOrDefault(GetName(enumValue), out enumOutput, defaultValue);
         }
 
         public static bool IsNumberDefined(int enumNumber)
@@ -190,7 +190,7 @@ namespace AxUtils
 
         public static bool IsDescriptionDefined(string enumDescription)
         {
-            return _valueToInfos.Values.Any(x => enumDescription != null && x.Description == enumDescription);
+            return enumDescription != null && _descriptionToInfos.ContainsKey(enumDescription);
         }
 
         public static IEnumerable<EnumInfos<T>> GetEnumInfos()
@@ -200,7 +200,7 @@ namespace AxUtils
 
         public static int ToInt(T enumValue)
         {
-            return (int) (object) enumValue;
+            return (int)(object)enumValue;
         }
 
         private static IEnumerable<EnumInfos<T>> Initialize()
@@ -220,7 +220,7 @@ namespace AxUtils
                                                                 .Cast<DescriptionAttribute>()
                                                                 .Select(attribute => attribute.Description)
                                                                 .FirstOrDefault(),
-                                              Name = enumName,
+                                              Name = enumName
                                           };
                                });
         }

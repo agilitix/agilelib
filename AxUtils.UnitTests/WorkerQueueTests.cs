@@ -11,11 +11,11 @@ namespace AxUtils.UnitTests
     {
         protected WorkerQueue<Action> ObjectUnderTest;
         protected Exception RaisedException;
-        protected ManualResetEvent WaitEvent;
+        protected AutoResetEvent WaitEvent;
 
         public override void Arrange()
         {
-            WaitEvent = new ManualResetEvent(false);
+            WaitEvent = new AutoResetEvent(false);
 
             ObjectUnderTest = new WorkerQueue<Action>(action => action());
             ObjectUnderTest.OnWorkerQueueException += OnWorkerQueueException;

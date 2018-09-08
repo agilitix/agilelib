@@ -39,47 +39,6 @@ namespace AxFixEngine.Extensions
             return dictionary.GetEnumName(msgType);
         }
 
-        #region ToXDocument sample
-
-        // This method converts this regular FIX message :
-        // "8=FIX.4.4^9=235^35=D^34=4^49=BANZAI^52=20121105-23:24:55^56=EXEC^11=1352157895032^21=1^38=10000^40=1^54=1^55=ORCL^59=0^354=119^355=<h:box xmlns:h=\"http://www.w3.org/TR/html4/\"><h:bag><h:fruit>Apples</h:fruit><h:fruit>Bananas</h:fruit></h:bag></h:box>^10=103^"
-        //
-        // ...into this XML message :
-        //<Message MsgType="D" MsgName="ORDER_SINGLE">
-        //    <Header>
-        //        <BeginString Tag="8" Value="FIX.4.4" />
-        //        <BodyLength Tag="9" Value="235" />
-        //        <MsgType Tag="35" Value="D" HasEnums="true" EnumValue="ORDER_SINGLE" />
-        //        <MsgSeqNum Tag="34" Value="4" />
-        //        <SenderCompID Tag="49" Value="BANZAI" />
-        //        <SendingTime Tag="52" Value="20121105-23:24:55" />
-        //        <TargetCompID Tag="56" Value="EXEC" />
-        //    </Header>
-        //    <Body>
-        //        <ClOrdID Tag="11" Value="1352157895032" />
-        //        <HandlInst Tag="21" Value="1" HasEnums="true" EnumValue="AUTOMATED_EXECUTION_ORDER_PRIVATE" />
-        //        <OrderQty Tag="38" Value="10000" />
-        //        <OrdType Tag="40" Value="1" HasEnums="true" EnumValue="MARKET" />
-        //        <Side Tag="54" Value="1" HasEnums="true" EnumValue="BUY" />
-        //        <Symbol Tag="55" Value="ORCL" />
-        //        <TimeInForce Tag="59" Value="0" HasEnums="true" EnumValue="DAY" />
-        //        <EncodedTextLen Tag="354" Value="119" />
-        //        <EncodedText Tag="355" EncodedType="XML">
-        //            <box>
-        //                <bag>
-        //                    <fruit>Apples</fruit>
-        //                    <fruit>Bananas</fruit>
-        //                </bag>
-        //            </box>
-        //        </EncodedText>
-        //    </Body>
-        //    <Trailer>
-        //        <CheckSum Tag="10" Value="103" />
-        //    </Trailer>
-        //</Message>
-
-        #endregion
-
         public static XDocument ToXDocument(this Message self)
         {
             string msgName = GetMsgName(self);
@@ -104,136 +63,19 @@ namespace AxFixEngine.Extensions
             root.Add(trailer);
             FieldMapToXml(self.Trailer, trailer, dictionary, new int[0]);
 
-            // Cleanup namespaces decorations.
-            foreach (XElement descendant in header.Descendants()
-                                                  .Concat(body.Descendants())
-                                                  .Concat(trailer.Descendants()))
-            {
-                descendant.Attributes().Where(x => x.IsNamespaceDeclaration).Remove();
-                descendant.Name = descendant.Name.LocalName;
-            }
-
             return doc;
         }
 
         public static XmlDocument ToXmlDocument(this Message self)
         {
             XDocument xdoc = ToXDocument(self);
-            XmlDocument xmldoc = new XmlDocument();
+            XmlDocument xmldoc = new ConfigXmlDocument();
             using (XmlReader xmlreader = xdoc.CreateReader())
             {
                 xmldoc.Load(xmlreader);
             }
-
             return xmldoc;
         }
-
-        #region ToJson sample
-
-        // This method converts this regular FIX message :
-        // "8=FIX.4.4^9=235^35=D^34=4^49=BANZAI^52=20121105-23:24:55^56=EXEC^11=1352157895032^21=1^38=10000^40=1^54=1^55=ORCL^59=0^354=119^355=<h:box xmlns:h=\"http://www.w3.org/TR/html4/\"><h:bag><h:fruit>Apples</h:fruit><h:fruit>Bananas</h:fruit></h:bag></h:box>^10=103^"
-        //
-        // ...into this Json message :
-        //{
-        //  "Message":{  
-        //    "@MsgType":"D",
-        //    "@MsgName":"ORDER_SINGLE",
-        //    "Header":{  
-        //      "BeginString":{  
-        //        "@Tag":"8",
-        //        "@Value":"FIX.4.4"
-        //      },
-        //      "BodyLength":{  
-        //        "@Tag":"9",
-        //        "@Value":"235"
-        //      },
-        //      "MsgType":{  
-        //        "@Tag":"35",
-        //        "@Value":"D",
-        //        "@HasEnums":"true",
-        //        "@EnumValue":"ORDER_SINGLE"
-        //      },
-        //      "MsgSeqNum":{  
-        //        "@Tag":"34",
-        //        "@Value":"4"
-        //      },
-        //      "SenderCompID":{  
-        //        "@Tag":"49",
-        //        "@Value":"BANZAI"
-        //      },
-        //      "SendingTime":{  
-        //        "@Tag":"52",
-        //        "@Value":"20121105-23:24:55"
-        //      },
-        //      "TargetCompID":{  
-        //        "@Tag":"56",
-        //        "@Value":"EXEC"
-        //      }
-        //    },
-        //    "Body":{  
-        //      "ClOrdID":{  
-        //        "@Tag":"11",
-        //        "@Value":"1352157895032"
-        //      },
-        //      "HandlInst":{  
-        //        "@Tag":"21",
-        //        "@Value":"1",
-        //        "@HasEnums":"true",
-        //        "@EnumValue":"AUTOMATED_EXECUTION_ORDER_PRIVATE"
-        //      },
-        //      "OrderQty":{  
-        //        "@Tag":"38",
-        //        "@Value":"10000"
-        //      },
-        //      "OrdType":{  
-        //        "@Tag":"40",
-        //        "@Value":"1",
-        //        "@HasEnums":"true",
-        //        "@EnumValue":"MARKET"
-        //      },
-        //      "Side":{  
-        //        "@Tag":"54",
-        //        "@Value":"1",
-        //        "@HasEnums":"true",
-        //        "@EnumValue":"BUY"
-        //      },
-        //      "Symbol":{  
-        //        "@Tag":"55",
-        //        "@Value":"ORCL"
-        //      },
-        //      "TimeInForce":{  
-        //        "@Tag":"59",
-        //        "@Value":"0",
-        //        "@HasEnums":"true",
-        //        "@EnumValue":"DAY"
-        //      },
-        //      "EncodedTextLen":{  
-        //        "@Tag":"354",
-        //        "@Value":"119"
-        //      },
-        //      "EncodedText":{  
-        //        "@Tag":"355",
-        //        "@EncodedType":"XML",
-        //        "box":{  
-        //          "bag":{  
-        //            "fruit":[
-        //              "Apples",
-        //              "Bananas"
-        //            ]
-        //          }
-        //        }
-        //      }
-        //    },
-        //    "Trailer":{  
-        //      "CheckSum":{  
-        //        "@Tag":"10",
-        //        "@Value":"103"
-        //      }
-        //    }
-        //  }
-        //}
-
-        #endregion
 
         public static string ToJson(this Message self)
         {
@@ -246,7 +88,7 @@ namespace AxFixEngine.Extensions
                                           DataDictionary dictionary,
                                           int[] precedingFields)
         {
-            // Sort by preceding tags first then by other tags.
+            // Sort by preceding tags first then append other tags.
             IEnumerable<int> sortedTags = fieldMap.Where(x => precedingFields.Contains(x.Key))
                                                   .Concat(fieldMap.Where(x => !precedingFields.Contains(x.Key)))
                                                   .Select(x => x.Key);
@@ -262,8 +104,11 @@ namespace AxFixEngine.Extensions
             foreach (int tag in sortedTags)
             {
                 XElement child;
+                Type fieldType;
+
                 string value = fieldMap.GetField(tag);
-                if (dictionary.TryGetFieldType(tag, out _))
+
+                if (dictionary.TryGetFieldType(tag, out fieldType))
                 {
                     DDField ddField = dictionary.FieldsByTag[tag];
 
@@ -324,6 +169,13 @@ namespace AxFixEngine.Extensions
                     child = new XElement("CustomTag_" + tag);
                     child.Add(new XAttribute("Tag", tag));
                     child.Add(new XAttribute("Value", value));
+                }
+
+                // Cleanup namespaces decorations.
+                foreach (XElement descendant in child.Descendants())
+                {
+                    descendant.Attributes().Where(x => x.IsNamespaceDeclaration).Remove();
+                    descendant.Name = descendant.Name.LocalName;
                 }
 
                 parent.Add(child);
