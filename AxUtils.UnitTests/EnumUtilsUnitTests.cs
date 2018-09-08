@@ -54,13 +54,15 @@ namespace AxUtils.UnitTests
 
         protected EnumInfos<EnumUnderTest>[] GetInfos()
         {
-            return new[]
+            EnumInfos<EnumUnderTest>[] infos =
                    {
                        new EnumInfos<EnumUnderTest> {Value = EnumUnderTest.A, Name = "A", Description = "DescA", Number = (int)EnumUnderTest.A},
                        new EnumInfos<EnumUnderTest> {Value = EnumUnderTest.B, Name = "B", Description = null, Number = (int)EnumUnderTest.B},
                        new EnumInfos<EnumUnderTest> {Value = EnumUnderTest.C, Name = "C", Description = "DescC", Number = (int)EnumUnderTest.C},
                        new EnumInfos<EnumUnderTest> {Value = EnumUnderTest.D, Name = "D", Description = "DescD", Number = (int)EnumUnderTest.D},
                    };
+
+            return infos;
         }
     }
 
@@ -113,7 +115,7 @@ namespace AxUtils.UnitTests
         [Test]
         public void Assert_all_descriptions_pairs_were_retrieved_as_expected()
         {
-            Result.Should().AllBeEquivalentTo(ExpectedPairs);
+            Result.Should().BeEquivalentTo(ExpectedPairs);
         }
     }
 
@@ -174,7 +176,7 @@ namespace AxUtils.UnitTests
         [Test]
         public void Assert_we_got_expected_exceptions_for_unknown_definitions()
         {
-            Result.Select( x => x.GetType()).Should().AllBeEquivalentTo(Expected);
+            Result.Select( x => x.GetType()).Should().BeEquivalentTo(Expected);
         }
     }
 

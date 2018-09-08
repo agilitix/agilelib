@@ -9,7 +9,7 @@ namespace AxUtils
     {
         static EnumUtils()
         {
-            var type = typeof(T);
+            Type type = typeof(T);
             if (!type.IsEnum)
             {
                 throw new NotSupportedException();

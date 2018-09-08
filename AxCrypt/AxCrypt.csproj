@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="AesStringEncryption.cs" />
     <Compile Include="AesFileEncryption.cs" />
+    <Compile Include="Md5StringHash.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
