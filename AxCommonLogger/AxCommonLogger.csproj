@@ -40,12 +40,18 @@
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.5.9\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="nunit.framework, Version=3.10.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.10.1\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Net" />
     <Reference Include="System.Reactive.Core, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Reactive.Core.3.1.1\lib\net45\System.Reactive.Core.dll</HintPath>
@@ -67,6 +73,9 @@
       <HintPath>..\packages\System.Reactive.Windows.Threading.3.1.1\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -77,9 +86,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Appenders\Log4netReactiveForwardingAppender.cs" />
-    <Compile Include="Appenders\Log4netAsyncForwardingAppender.cs" />
+    <Compile Include="Facades\NLogLoggerFacade.cs" />
+    <Compile Include="Factories\LoggerFacadeFactoryBase.cs" />
+    <Compile Include="Factories\NLogLoggerFacadeFactory.cs" />
     <Compile Include="Interfaces\ILoggerFacade.cs" />
-    <Compile Include="Facades\NoOpLoggerFacade.cs" />
+    <Compile Include="Facades\NothingLoggerFacade.cs" />
     <Compile Include="Facades\Log4netLoggerFacade.cs" />
     <Compile Include="Interfaces\ILoggerFacadeFactory.cs" />
     <Compile Include="Factories\Log4netLoggerFacadeFactory.cs" />
@@ -89,6 +100,16 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Appenders\log4net.async.sample.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="log4net.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

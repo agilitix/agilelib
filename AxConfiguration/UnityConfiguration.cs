@@ -65,10 +65,10 @@ namespace AxConfiguration
                 }
             }
 
-            // We are at the top, start reading the unity from top/base to bottom files.
+            // We are at the top of the config files hierarchy, start reading the files from there to the bottom hierarchy.
             UnityConfigurationSection unitySection = (UnityConfigurationSection) configuration.GetSection("unity");
 
-            // Propagate base aliases to children. Other declarations are not inherited.
+            // Propagate base aliases to children. Other declarations than aliases are not inherited.
             if (_baseAliases != null)
             {
                 foreach (AliasElement baseAlias in _baseAliases)

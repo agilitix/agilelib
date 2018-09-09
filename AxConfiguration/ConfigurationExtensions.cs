@@ -42,7 +42,7 @@ namespace AxConfiguration
             return false;
         }
 
-        private static KeyValueConfigurationElement GetSetting(Configuration self, string key)
+        public static KeyValueConfigurationElement GetSetting(this Configuration self, string key)
         {
             KeyValueConfigurationElement setting = self.AppSettings
                                                        .Settings

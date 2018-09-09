@@ -4,6 +4,7 @@ using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Threading;
 using log4net.Appender;
 using log4net.Core;
 
@@ -13,18 +14,16 @@ namespace AxCommonLogger.Appenders
     {
         // The EventLoopScheduler preserve order of events on dedicated thread.
         protected EventLoopScheduler _scheduler = new EventLoopScheduler();
-
+        protected long _disposed;
         protected ISubject<LoggingEvent> _loggingSubject = new Subject<LoggingEvent>();
-        protected IDisposable _cleanUp;
+        protected IDisposable _appender;
 
         public Log4netReactiveForwardingAppender()
         {
-            IDisposable appender = _loggingSubject.AsObservable()
-                                                  .ObserveOn(_scheduler)
-                                                  .Where(x => x != null)
-                                                  .Subscribe(base.Append);
-
-            _cleanUp = Disposable.Create(() => { appender.Dispose(); });
+            _appender = _loggingSubject.AsObservable()
+                                       .ObserveOn(_scheduler)
+                                       .Where(x => x != null)
+                                       .Subscribe(base.Append);
         }
 
         [DebuggerStepThrough]
@@ -51,11 +50,16 @@ namespace AxCommonLogger.Appenders
 
         public void Dispose()
         {
-            _cleanUp?.Dispose();
-            _cleanUp = null;
+            if (Interlocked.Exchange(ref _disposed, 1) == 1)
+            {
+                return;
+            }
 
             _loggingSubject?.OnCompleted();
             _loggingSubject = null;
+
+            _appender?.Dispose();
+            _appender = null;
 
             _scheduler?.Dispose();
             _scheduler = null;

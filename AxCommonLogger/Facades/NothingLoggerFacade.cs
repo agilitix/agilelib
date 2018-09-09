@@ -4,7 +4,7 @@ using AxCommonLogger.Interfaces;
 
 namespace AxCommonLogger.Facades
 {
-    public class NoOpLoggerFacade : ILoggerFacade
+    public class NothingLoggerFacade : ILoggerFacade
     {
         public bool IsDebugEnabled => false;
         public bool IsInfoEnabled => false;
