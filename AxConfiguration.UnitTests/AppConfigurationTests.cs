@@ -7,7 +7,6 @@ namespace AxConfiguration.UnitTests
 {
     internal class AppConfigurationTests : ArrangeActAssert
     {
-        protected IConfigurationFileProvider ConfigurationFileProvider;
         protected IAppConfiguration AppConfigurationUnderTest;
         protected string ActualKeyValue;
         protected string ExpectedKeyValue;
@@ -17,9 +16,8 @@ namespace AxConfiguration.UnitTests
         {
             ExpectedKeyValue = "keyValue";
 
-            ConfigurationFileProvider = new ConfigurationFileProvider(TestDirectory + @"\MainConfiguration");
             AppConfigurationUnderTest = new AppConfiguration();
-            AppConfigurationUnderTest.LoadConfiguration(ConfigurationFileProvider.AppConfigFile);
+            AppConfigurationUnderTest.LoadConfiguration(TestDirectory + @"\AppConfiguration\app.main.config");
         }
 
         public override void Act()

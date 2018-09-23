@@ -21,29 +21,13 @@ namespace AxFixApp
     {
         protected static ILoggerFacade Logger;
 
-        static Program()
-        {
-#if DEBUG == false
-            Console.TreatControlCAsInput = false;
-            Console.CancelKeyPress += (snd, evt) =>
-                                      {
-                                          Console.WriteLine("Ctrl+C pressed");
-                                          evt.Cancel = true;
-                                      };
-#endif
-        }
-
         static void Main(string[] args)
         {
             // Set culture overall app and threads.
             CultureInfoUtils.SetDefaultCultureInfo_en_US();
 
-            // Lookup configuration files in config folder.
-            IConfigurationFileProvider configurationFileProvider = new ConfigurationFileProvider(@".\Config");
-
             // Read app configuration.
-            IAppConfiguration appConfiguration = new AppConfiguration();
-            appConfiguration.LoadConfiguration(configurationFileProvider.AppConfigFile);
+            IAppConfiguration appConfiguration = new AppConfiguration(@".\Config\app.main.config");
 
             string log4NetConfigFile = appConfiguration.Configuration.GetSetting<string>("log4net");
             if (string.IsNullOrWhiteSpace(log4NetConfigFile))
@@ -68,27 +52,15 @@ namespace AxFixApp
             ICommandLineArguments commandLineArguments = new CommandLineArguments(args);
             Logger.Info("Command line arguments: " + commandLineArguments);
 
-            string acceptorConfig = null, initiatorConfig = null;
-            if (appConfiguration.Configuration.GetSetting<bool>("acceptor_enabled"))
-            {
-                acceptorConfig = appConfiguration.Configuration.GetSetting<string>("acceptor_settings");
-            }
+            string initiatorConfig = null;
             if (appConfiguration.Configuration.GetSetting<bool>("initiator_enabled"))
             {
                 initiatorConfig = appConfiguration.Configuration.GetSetting<string>("initiator_settings");
             }
 
-            IFixEngine fixEngine = new FixEngine(acceptorConfig, initiatorConfig);
-
-            IFixMessageHandlerProvider handlerProvider = new FixMessageHandlerProvider();
-            IFixMessageHandler fix44MessageCracker = new Fix44MessageCracker();
-            foreach (SessionID sessionId in fixEngine.Sessions.Where(x => x.BeginString == QuickFix.FixValues.BeginString.FIX44))
-            {
-                handlerProvider.SetMessageHandler(sessionId, fix44MessageCracker);
-            }
-
-            fixEngine.CreateApplication(handlerProvider);
-
+            // Create the fix engine.
+            IFixEngine fixEngine = new FixEngine(initiatorConfig);
+            fixEngine.CreateApplication();
             fixEngine.Start();
 
             do

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml.Linq;
+using AxFixEngine.Dialects;
 using AxFixEngine.Extensions;
 using QuickFix;
 using QuickFix.Fields;
@@ -9,11 +10,13 @@ namespace AxFixEngine.Decorators
 {
     public abstract class FixMessageDecorator : Message
     {
+        private readonly IFixDialects _dialects;
         private readonly Message _message;
 
-        protected FixMessageDecorator(Message message)
+        protected FixMessageDecorator(IFixDialects dialects, Message message)
             : base(message)
         {
+            _dialects = dialects;
             _message = message;
         }
 
@@ -100,7 +103,7 @@ namespace AxFixEngine.Decorators
 
         public XDocument ToXDocument()
         {
-            return _message.ToXDocument();
+            return _message.ToXDocument(_dialects);
         }
 
         protected T DecoratedMessage<T>() where T : Message

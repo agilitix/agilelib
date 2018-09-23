@@ -17,13 +17,19 @@ namespace AxConfiguration
         public string ConfigurationFile { get; private set; }
 
         public UnityConfiguration()
-            : this("")
+        {
+            _containerName = "";
+        }
+
+        public UnityConfiguration(string unityFileName)
+            : this(unityFileName, "")
         {
         }
 
-        public UnityConfiguration(string containerName)
+        public UnityConfiguration(string unityFileName, string containerName)
         {
-            _containerName = containerName ?? "";
+            _containerName = string.IsNullOrWhiteSpace(containerName) ? "" : containerName;
+            LoadConfiguration(unityFileName);
         }
 
         public void LoadConfiguration(string configurationFile)

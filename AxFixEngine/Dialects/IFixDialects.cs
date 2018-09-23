@@ -5,9 +5,9 @@ namespace AxFixEngine.Dialects
 {
     public interface IFixDialects
     {
-        void AddDataDictionaries(SessionSettings fixSettings);
+        void AddSessionSettings(SessionSettings fixSettings);
 
-        DataDictionary GetDataDictionary(string beginString);
-        bool TryGetDataDictionary(string beginString, out DataDictionary dataDictionary);
+        DataDictionary GetDataDictionary(SessionID sessionId);
+        bool TryGetDataDictionary(SessionID sessionId, out DataDictionary dataDictionary);
     }
 }

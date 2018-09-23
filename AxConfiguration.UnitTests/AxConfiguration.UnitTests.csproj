@@ -89,19 +89,19 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="MainConfiguration\app.main.config">
+    <None Include="AppConfiguration\app.main.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Configuration\unity.base.config">
+    <None Include="UnityConfiguration\unity.base.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Configuration\unity.common.config">
+    <None Include="UnityConfiguration\unity.common.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Configuration\unity.dev.config">
+    <None Include="UnityConfiguration\unity.dev.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Configuration\unity.main.config">
+    <None Include="UnityConfiguration\unity.main.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config">

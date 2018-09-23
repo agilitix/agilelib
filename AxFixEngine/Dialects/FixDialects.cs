@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AxFixEngine.Extensions;
 using QuickFix;
 using QuickFix.DataDictionary;
 
@@ -7,10 +8,10 @@ namespace AxFixEngine.Dialects
 {
     public class FixDialects : IFixDialects
     {
-        protected readonly IDictionary<string, DataDictionary> _dataDictionaries = new Dictionary<string, DataDictionary>();
+        protected readonly IDictionary<SessionID, DataDictionary> _dataDictionaries = new Dictionary<SessionID, DataDictionary>();
         protected readonly IDictionary<string, DataDictionary> _dataDictionariesBySpecFile = new Dictionary<string, DataDictionary>();
 
-        public void AddDataDictionaries(SessionSettings fixSettings)
+        public void AddSessionSettings(SessionSettings fixSettings)
         {
             HashSet<SessionID> sessions = fixSettings.GetSessions();
             foreach (SessionID sessionId in sessions)
@@ -31,21 +32,25 @@ namespace AxFixEngine.Dialects
                     _dataDictionariesBySpecFile[specFile] = dataDictionary;
                 }
 
-                _dataDictionaries[sessionId.BeginString] = dataDictionary;
+                _dataDictionaries[sessionId] = dataDictionary;
+                _dataDictionaries[sessionId.GetReverseSessionID()] = dataDictionary;
             }
         }
 
-        public DataDictionary GetDataDictionary(string beginString)
+        public DataDictionary GetDataDictionary(SessionID sessionId)
         {
             DataDictionary dataDictionary;
-            return TryGetDataDictionary(beginString, out dataDictionary)
+            return TryGetDataDictionary(sessionId, out dataDictionary)
                        ? dataDictionary
-                       : null;
+                       : TryGetDataDictionary(sessionId.GetReverseSessionID(), out dataDictionary)
+                           ? dataDictionary
+                           : null;
         }
 
-        public bool TryGetDataDictionary(string beginString, out DataDictionary dataDictionary)
+        public bool TryGetDataDictionary(SessionID sessionId, out DataDictionary dataDictionary)
         {
-            return _dataDictionaries.TryGetValue(beginString, out dataDictionary);
+            return _dataDictionaries.TryGetValue(sessionId, out dataDictionary)
+                   || _dataDictionaries.TryGetValue(sessionId.GetReverseSessionID(), out dataDictionary);
         }
     }
 }

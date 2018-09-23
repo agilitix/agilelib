@@ -24,6 +24,15 @@ namespace AxConfiguration
         public IEnumerable<IIniSection> Configuration => _sections;
         public string ConfigurationFile { get; private set; }
 
+        public IniConfiguration()
+        {
+        }
+
+        public IniConfiguration(string iniFileName)
+        {
+            LoadConfiguration(iniFileName);
+        }
+
         public void LoadConfiguration(string iniFileName)
         {
             if (!File.Exists(iniFileName))

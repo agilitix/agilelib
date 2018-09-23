@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using AxCommonLogger;
 using AxCommonLogger.Interfaces;
 using AxFixEngine.Connectors;
@@ -11,79 +13,71 @@ namespace AxFixEngine.Engine
     public class FixEngine : IFixEngine
     {
         protected ILoggerFacade Logger = LoggerFacadeProvider.GetDeclaringTypeLogger();
-        protected IList<SessionID> _sessions;
-        protected IFixConnectorFactory _connectorFactory;
-        protected IFixConnector _acceptor;
-        protected IFixConnector _initiator;
-        protected SessionSettings _acceptorSettings;
-        protected SessionSettings _initiatorSettings;
+        protected IFixConnector _connector;
+        protected readonly IList<SessionID> _sessions;
+        protected readonly IFixConnectorFactory _connectorFactory;
+        protected readonly SessionSettings _sessionSettings;
+        protected readonly IFixDialects _dialects;
+        protected readonly IFixMessageHandlers _handlers;
+        protected readonly string _configFile;
 
+        public string ConfigFile => _configFile;
         public IList<SessionID> Sessions => _sessions;
+        public IFixDialects Dialects => _dialects;
+        public IFixMessageHandlers Handlers => _handlers;
 
-        public FixEngine(string acceptorConfig, string initiatorConfig)
+        public FixEngine(string fixIniFileConfig)
         {
-            FixDialectsInstance.Set(new FixDialects());
-
+            _dialects = new FixDialects();
             _connectorFactory = new FixConnectorFactory();
             _sessions = new List<SessionID>();
+            _handlers = new FixMessageHandlers();
+            _configFile = fixIniFileConfig;
 
-            if (!string.IsNullOrWhiteSpace(acceptorConfig))
+            if (!string.IsNullOrWhiteSpace(_configFile))
             {
-                _acceptorSettings = new SessionSettings(acceptorConfig);
-                if (_acceptorSettings.Get().GetString("ConnectionType") != "acceptor")
+                _sessionSettings = new SessionSettings(_configFile);
+
+                if (_sessionSettings.Get().GetString("ConnectionType") != "acceptor"
+                    && _sessionSettings.Get().GetString("ConnectionType") != "initiator")
                 {
-                    throw new ConfigError("The config file is not valid for an acceptor");
+                    throw new ConfigError("The config file is not valid for either an acceptor or initiator");
                 }
 
-                FixDialectsInstance.Dialects.AddDataDictionaries(_acceptorSettings);
+                _dialects.AddSessionSettings(_sessionSettings);
 
-                foreach (SessionID sessionId in _acceptorSettings.GetSessions())
+                foreach (SessionID sessionId in _sessionSettings.GetSessions())
                 {
                     _sessions.Add(sessionId);
-                }
-            }
 
-            if (!string.IsNullOrWhiteSpace(initiatorConfig))
-            {
-                _initiatorSettings = new SessionSettings(initiatorConfig);
-                if (_initiatorSettings.Get().GetString("ConnectionType") != "initiator")
-                {
-                    throw new ConfigError("The config file is not valid for an initiator");
-                }
+                    Dictionary sessionConf = _sessionSettings.Get(sessionId);
 
-                FixDialectsInstance.Dialects.AddDataDictionaries(_initiatorSettings);
-
-                foreach (SessionID sessionId in _initiatorSettings.GetSessions())
-                {
-                    _sessions.Add(sessionId);
+                    // Create message handler for this session.
+                    string typeName = sessionConf.GetString("MessageHandler");
+                    Type handlerType = Type.GetType(typeName);
+                    IFixMessageHandler handler = Activator.CreateInstance(handlerType) as IFixMessageHandler;
+                    _handlers.SetMessageHandler(sessionId, handler);
                 }
             }
         }
 
-        public void CreateApplication(IFixMessageHandlerProvider messageHandlerProvider)
+        public void CreateApplication()
         {
-            if (_acceptorSettings != null)
+            if (_sessionSettings != null)
             {
-                IApplication fixApp = new FixApplication(messageHandlerProvider);
-                _acceptor = _connectorFactory.CreateAcceptor(fixApp, _acceptorSettings);
-            }
-            if (_initiatorSettings != null)
-            {
-                IApplication fixApp = new FixApplication(messageHandlerProvider);
-                _initiator = _connectorFactory.CreateInitiator(fixApp, _initiatorSettings);
+                IApplication fixApp = new FixApplication(_dialects, _handlers);
+                _connector = _connectorFactory.CreateConnector(fixApp, _sessionSettings);
             }
         }
 
         public void Start()
         {
-            _acceptor?.Start();
-            _initiator?.Start();
+            _connector?.Start();
         }
 
         public void Stop()
         {
-            _initiator?.Stop();
-            _acceptor?.Stop();
+            _connector?.Stop();
         }
     }
 }

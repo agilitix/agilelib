@@ -14,9 +14,9 @@ namespace AxFixEngine.Extensions
 {
     public static class MessageExtensions
     {
-        public static DataDictionary GetDialect(this Message self)
+        public static DataDictionary GetDialect(this Message self, IFixDialects dialects)
         {
-            DataDictionary dictionary = FixDialectsInstance.Dialects.GetDataDictionary(self.Header.GetString(Tags.BeginString));
+            DataDictionary dictionary = dialects.GetDataDictionary(self.GetSessionID());
             return dictionary;
         }
 
@@ -32,9 +32,9 @@ namespace AxFixEngine.Extensions
             return new MsgType(msgType);
         }
 
-        public static string GetMsgName(this Message self)
+        public static string GetMsgName(this Message self, IFixDialects dialects)
         {
-            DataDictionary dictionary = GetDialect(self);
+            DataDictionary dictionary = GetDialect(self, dialects);
             MsgType msgType = GetMsgType(self);
             return dictionary.GetEnumName(msgType);
         }
@@ -80,9 +80,9 @@ namespace AxFixEngine.Extensions
 
         #endregion
 
-        public static XDocument ToXDocument(this Message self)
+        public static XDocument ToXDocument(this Message self, IFixDialects dialects)
         {
-            string msgName = GetMsgName(self);
+            string msgName = GetMsgName(self, dialects);
             XDocument doc = new XDocument(new XDeclaration("1.0", "utf-8", null));
 
             XElement root = new XElement("Message");
@@ -90,7 +90,7 @@ namespace AxFixEngine.Extensions
             root.Add(new XAttribute("MsgName", msgName));
             doc.Add(root);
 
-            DataDictionary dictionary = GetDialect(self);
+            DataDictionary dictionary = GetDialect(self, dialects);
 
             XElement header = new XElement("Header");
             root.Add(header);
@@ -116,9 +116,9 @@ namespace AxFixEngine.Extensions
             return doc;
         }
 
-        public static XmlDocument ToXmlDocument(this Message self)
+        public static XmlDocument ToXmlDocument(this Message self, IFixDialects dialects)
         {
-            XDocument xdoc = ToXDocument(self);
+            XDocument xdoc = ToXDocument(self, dialects);
             XmlDocument xmldoc = new XmlDocument();
             using (XmlReader xmlreader = xdoc.CreateReader())
             {
@@ -235,9 +235,9 @@ namespace AxFixEngine.Extensions
 
         #endregion
 
-        public static string ToJson(this Message self)
+        public static string ToJson(this Message self, IFixDialects dialects)
         {
-            XmlDocument doc = ToXmlDocument(self);
+            XmlDocument doc = ToXmlDocument(self, dialects);
             return JsonConvert.SerializeXmlNode(doc);
         }
 

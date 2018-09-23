@@ -96,15 +96,14 @@
     <Compile Include="Handlers\FixMessageCracker.cs" />
     <Compile Include="Decorators\FixGroupDecorator.cs" />
     <Compile Include="Decorators\FixMessageDecorator.cs" />
-    <Compile Include="Dialects\FixDialectsInstance.cs" />
     <Compile Include="Extensions\SessionIDExtensions.cs" />
     <Compile Include="Handlers\IFixMessageCracker.cs" />
     <Compile Include="Messages\FixMessageParser.cs" />
     <Compile Include="Handlers\FixMessageCrackerBase.cs" />
-    <Compile Include="Handlers\FixMessageHandlerProvider.cs" />
+    <Compile Include="Handlers\FixMessageHandlers.cs" />
     <Compile Include="Engine\IFixEngine.cs" />
     <Compile Include="Messages\IFixMessageParser.cs" />
-    <Compile Include="Handlers\IFixMessageHandlerProvider.cs" />
+    <Compile Include="Handlers\IFixMessageHandlers.cs" />
     <Compile Include="Extensions\DataDictionaryExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\MessageExtensions.cs" />

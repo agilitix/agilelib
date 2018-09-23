@@ -36,7 +36,7 @@ namespace AxHosting
                     Process parent = GetParent(Process.GetCurrentProcess());
                     return parent?.ProcessName == "services";
                 }
-                catch (InvalidOperationException ex)
+                catch (InvalidOperationException)
                 {
                     // Nothing.
                 }
@@ -84,7 +84,7 @@ namespace AxHosting
                     return Process.GetProcessById(processId);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // log error somewhere.
             }

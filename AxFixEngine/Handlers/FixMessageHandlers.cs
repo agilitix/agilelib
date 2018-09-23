@@ -1,15 +1,17 @@
 ﻿using System.Collections.Generic;
+using AxFixEngine.Extensions;
 using QuickFix;
 
 namespace AxFixEngine.Handlers
 {
-    public class FixMessageHandlerProvider : IFixMessageHandlerProvider
+    public class FixMessageHandlers : IFixMessageHandlers
     {
         protected IDictionary<SessionID, IFixMessageHandler> _handlers = new Dictionary<SessionID, IFixMessageHandler>();
 
         public void SetMessageHandler(SessionID sessionId, IFixMessageHandler handler)
         {
             _handlers[sessionId] = handler;
+            _handlers[sessionId.GetReverseSessionID()] = handler;
         }
 
         public IFixMessageHandler GetMessageHandler(SessionID sessionId)
@@ -17,7 +19,9 @@ namespace AxFixEngine.Handlers
             IFixMessageHandler handler;
             return _handlers.TryGetValue(sessionId, out handler)
                        ? handler
-                       : null;
+                       : _handlers.TryGetValue(sessionId.GetReverseSessionID(), out handler)
+                           ? handler
+                           : null;
         }
     }
 }

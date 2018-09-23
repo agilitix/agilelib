@@ -12,7 +12,7 @@ namespace AxUtils
 
         public static void SetDefaultCultureInfo(CultureInfo culture)
         {
-            // By reflection for .NET 4.0
+            // By reflection for .NET 4.0 and onward.
             Thread.CurrentThread.CurrentCulture.GetType().GetProperty("DefaultThreadCurrentCulture")?.SetValue(Thread.CurrentThread.CurrentCulture, culture, null);
             Thread.CurrentThread.CurrentCulture.GetType().GetProperty("DefaultThreadCurrentUICulture")?.SetValue(Thread.CurrentThread.CurrentCulture, culture, null);
         }

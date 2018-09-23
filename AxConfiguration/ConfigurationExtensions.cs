@@ -6,14 +6,9 @@ namespace AxConfiguration
 {
     public static class ConfigurationExtensions
     {
-        public static T GetSetting<T>(this Configuration self, string key)
+        public static T GetSetting<T>(this Configuration self, string key, T defaultValue = default(T))
         {
-            return GetSettingOrDefault<T>(self, key, default(T));
-        }
-
-        public static T GetSettingOrDefault<T>(this Configuration self, string key, T defaultValue)
-        {
-            KeyValueConfigurationElement setting = GetSetting(self, key);
+            KeyValueConfigurationElement setting = GetSettingKeyValue(self, key);
             if (setting != null)
             {
                 return (T) Convert.ChangeType(setting.Value, typeof(T));
@@ -26,7 +21,7 @@ namespace AxConfiguration
         {
             try
             {
-                KeyValueConfigurationElement setting = GetSetting(self, key);
+                KeyValueConfigurationElement setting = GetSettingKeyValue(self, key);
                 if (setting != null)
                 {
                     value = (T) Convert.ChangeType(setting.Value, typeof(T));
@@ -42,7 +37,7 @@ namespace AxConfiguration
             return false;
         }
 
-        public static KeyValueConfigurationElement GetSetting(this Configuration self, string key)
+        public static KeyValueConfigurationElement GetSettingKeyValue(this Configuration self, string key)
         {
             KeyValueConfigurationElement setting = self.AppSettings
                                                        .Settings

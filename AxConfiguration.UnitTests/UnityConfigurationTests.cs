@@ -18,16 +18,14 @@ namespace AxConfiguration.UnitTests
 
     internal class UnityConfigurationTests_default_container_resolving_file_logger : ArrangeActAssert
     {
-        protected IConfigurationFileProvider ConfigurationFileProvider;
         protected IUnityConfiguration UnityContainerUnderTest;
         protected ILogger ResolvedLogger;
         private readonly string TestDirectory = TestContext.CurrentContext.TestDirectory;
 
         public override void Arrange()
         {
-            ConfigurationFileProvider = new ConfigurationFileProvider(TestDirectory + @"\Configuration");
             UnityContainerUnderTest = new UnityConfiguration();
-            UnityContainerUnderTest.LoadConfiguration(ConfigurationFileProvider.IocConfigFile);
+            UnityContainerUnderTest.LoadConfiguration(TestDirectory + @"\UnityConfiguration\unity.main.config");
         }
 
         public override void Act()
@@ -54,15 +52,13 @@ namespace AxConfiguration.UnitTests
 
     internal class UnityConfigurationTests_default_container_resolving_global_vars : ArrangeActAssert
     {
-        protected IConfigurationFileProvider ConfigurationFileProvider;
         protected IUnityConfiguration UnityContainerUnderTest;
         private readonly string TestDirectory = TestContext.CurrentContext.TestDirectory;
 
         public override void Arrange()
         {
-            ConfigurationFileProvider = new ConfigurationFileProvider(TestDirectory + @"\Configuration");
             UnityContainerUnderTest = new UnityConfiguration();
-            UnityContainerUnderTest.LoadConfiguration(ConfigurationFileProvider.IocConfigFile);
+            UnityContainerUnderTest.LoadConfiguration(TestDirectory + @"\UnityConfiguration\unity.main.config");
         }
     }
 
@@ -136,7 +132,6 @@ namespace AxConfiguration.UnitTests
 
     internal class UnityConfigurationTests_loggers_container_resolving_unknown_instance_should_not_work : ArrangeActAssert
     {
-        protected IConfigurationFileProvider ConfigurationFileProvider;
         protected IUnityConfiguration UnityContainerUnderTest;
         protected Exception ExceptionWhileResolving;
         protected ILogger ResolvedLogger;
@@ -144,15 +139,13 @@ namespace AxConfiguration.UnitTests
 
         public override void Arrange()
         {
-            ConfigurationFileProvider = new ConfigurationFileProvider(TestDirectory + @"\Configuration");
             UnityContainerUnderTest = new UnityConfiguration();
-            UnityContainerUnderTest.LoadConfiguration(ConfigurationFileProvider.IocConfigFile);
+            UnityContainerUnderTest.LoadConfiguration(TestDirectory + @"\UnityConfiguration\unity.main.config");
         }
 
         public override void Act()
         {
-            ExceptionWhileResolving =
-                base.Trying(() => ResolvedLogger = UnityContainerUnderTest.Configuration.Resolve<ILogger>("UnknownLogger"));
+            ExceptionWhileResolving = Trying(() => ResolvedLogger = UnityContainerUnderTest.Configuration.Resolve<ILogger>("UnknownLogger"));
         }
 
         [Test]
@@ -174,21 +167,13 @@ namespace AxConfiguration.UnitTests
 
     internal class UnityConfigurationTests_loading_an_unknown_container_should_raise_an_exception : ArrangeActAssert
     {
-        protected IConfigurationFileProvider ConfigurationFileProvider;
         protected IUnityConfiguration UnityContainerUnderTest;
         protected Exception LoadContainerException;
         private readonly string TestDirectory = TestContext.CurrentContext.TestDirectory;
 
-        public override void Arrange()
-        {
-            ConfigurationFileProvider = new ConfigurationFileProvider(TestDirectory + @"\Configuration");
-            UnityContainerUnderTest = new UnityConfiguration("UnknownContainerName");
-        }
-
         public override void Act()
         {
-            LoadContainerException =
-                base.Trying(() => UnityContainerUnderTest.LoadConfiguration(ConfigurationFileProvider.IocConfigFile));
+            LoadContainerException = Trying(() => UnityContainerUnderTest = new UnityConfiguration(TestDirectory + @"\UnityConfiguration\unity.main.config", "UnknownContainerName"));
         }
 
         [Test]
@@ -198,37 +183,21 @@ namespace AxConfiguration.UnitTests
         }
     }
 
-    internal class UnityConfigurationTests_loading_an_unknown_container_and_resolving_instances_should_not_work : ArrangeActAssert
+    internal class UnityConfigurationTests_loading_an_unknown_container_should_not_work : ArrangeActAssert
     {
-        protected IConfigurationFileProvider ConfigurationFileProvider;
         protected IUnityConfiguration UnityContainerUnderTest;
-        protected Exception ExceptionWhileResolving;
-        protected ILogger ResolvedLogger;
+        protected Exception ExceptionWhileLoading;
         private readonly string TestDirectory = TestContext.CurrentContext.TestDirectory;
-
-        public override void Arrange()
-        {
-            ConfigurationFileProvider = new ConfigurationFileProvider(TestDirectory + @"\Configuration");
-
-            UnityContainerUnderTest = new UnityConfiguration("UnknownContainerName");
-            base.Trying(() => UnityContainerUnderTest.LoadConfiguration(ConfigurationFileProvider.IocConfigFile));
-        }
 
         public override void Act()
         {
-            ExceptionWhileResolving = base.Trying(() => ResolvedLogger = UnityContainerUnderTest.Configuration.Resolve<ILogger>("Logger"));
+            ExceptionWhileLoading = Trying(() => UnityContainerUnderTest = new UnityConfiguration(TestDirectory + @"\UnityConfiguration\unity.main.config", "UnknownContainerName"));
         }
 
         [Test]
         public void Assert_resolution_failed_exception_has_been_raised()
         {
-            ExceptionWhileResolving.Should().BeOfType<ResolutionFailedException>();
-        }
-
-        [Test]
-        public void Assert_the_instance_has_not_been_resolved()
-        {
-            ResolvedLogger.Should().BeNull();
+            ExceptionWhileLoading.Should().BeOfType<ArgumentException>();
         }
     }
 }

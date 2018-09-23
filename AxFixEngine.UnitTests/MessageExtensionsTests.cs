@@ -20,6 +20,7 @@ namespace AxFixEngine.UnitTests
         protected string FixMessage;
         protected string ExpectedDocument;
         protected string ActualDocument;
+        protected IFixDialects Dialects;
         protected IFixMessageParser MessagesParser;
 
         protected NewOrderSingle NewOrderSingleUnderTest;
@@ -27,12 +28,12 @@ namespace AxFixEngine.UnitTests
 
         public override void Arrange()
         {
-            MessagesParser = new FixMessageParser(new DefaultMessageFactory());
-
             SessionSettings sessionSettings = SessionSettingsTestsProvider.GetSessionSettings4("FIX.4.4", TestDirectory + @"\Spec\FIX44.xml");
 
-            FixDialectsInstance.Set(new FixDialects());
-            FixDialectsInstance.Dialects.AddDataDictionaries(sessionSettings);
+            Dialects = new FixDialects();
+            Dialects.AddSessionSettings(sessionSettings);
+
+            MessagesParser = new FixMessageParser(Dialects, new DefaultMessageFactory());
         }
     }
 
@@ -53,7 +54,7 @@ namespace AxFixEngine.UnitTests
 
         public override void Act()
         {
-            XDocument doc = NewOrderSingleUnderTest.ToXDocument();
+            XDocument doc = NewOrderSingleUnderTest.ToXDocument(Dialects);
             ActualDocument = doc.ToString(SaveOptions.DisableFormatting);
         }
 
@@ -82,7 +83,7 @@ namespace AxFixEngine.UnitTests
 
         public override void Act()
         {
-            XDocument doc = NewOrderSingleUnderTest.ToXDocument();
+            XDocument doc = NewOrderSingleUnderTest.ToXDocument(Dialects);
             ActualDocument = doc.ToString(SaveOptions.DisableFormatting);
         }
 
@@ -110,7 +111,7 @@ namespace AxFixEngine.UnitTests
 
         public override void Act()
         {
-            XDocument doc = NewOrderSingleUnderTest.ToXDocument();
+            XDocument doc = NewOrderSingleUnderTest.ToXDocument(Dialects);
             ActualDocument = doc.ToString(SaveOptions.DisableFormatting);
         }
 
@@ -138,7 +139,7 @@ namespace AxFixEngine.UnitTests
 
         public override void Act()
         {
-            XDocument doc = MassQuoteUnderTest.ToXDocument();
+            XDocument doc = MassQuoteUnderTest.ToXDocument(Dialects);
             ActualDocument = doc.ToString(SaveOptions.DisableFormatting);
         }
 
@@ -166,7 +167,7 @@ namespace AxFixEngine.UnitTests
 
         public override void Act()
         {
-            XmlDocument doc = NewOrderSingleUnderTest.ToXmlDocument();
+            XmlDocument doc = NewOrderSingleUnderTest.ToXmlDocument(Dialects);
             ActualDocument = doc.OuterXml;
         }
 
@@ -194,7 +195,7 @@ namespace AxFixEngine.UnitTests
 
         public override void Act()
         {
-            XmlDocument doc = MassQuoteUnderTest.ToXmlDocument();
+            XmlDocument doc = MassQuoteUnderTest.ToXmlDocument(Dialects);
             ActualDocument = doc.OuterXml;
         }
 
@@ -224,7 +225,7 @@ namespace AxFixEngine.UnitTests
 
         public override void Act()
         {
-            ActualMessageName = NewOrderSingleUnderTest.GetMsgName();
+            ActualMessageName = NewOrderSingleUnderTest.GetMsgName(Dialects);
         }
 
         [Test]
@@ -251,7 +252,7 @@ namespace AxFixEngine.UnitTests
 
         public override void Act()
         {
-            ActualDocument = NewOrderSingleUnderTest.ToJson();
+            ActualDocument = NewOrderSingleUnderTest.ToJson(Dialects);
         }
 
         [Test]
@@ -278,7 +279,7 @@ namespace AxFixEngine.UnitTests
 
         public override void Act()
         {
-            ActualDocument = MassQuoteUnderTest.ToJson();
+            ActualDocument = MassQuoteUnderTest.ToJson(Dialects);
         }
 
         [Test]

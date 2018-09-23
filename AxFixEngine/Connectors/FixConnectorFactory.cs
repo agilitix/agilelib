@@ -9,19 +9,30 @@ namespace AxFixEngine.Connectors
     {
         protected static ILoggerFacade Log = LoggerFacadeProvider.GetDeclaringTypeLogger();
 
-        public IFixConnector CreateAcceptor(IApplication fixApplication, SessionSettings fixSettings)
+        public IFixConnector CreateConnector(IApplication fixApplication, SessionSettings fixSettings)
+        {
+            switch (fixSettings.Get().GetString("ConnectionType"))
+            {
+                case "acceptor": return CreateAcceptor(fixApplication, fixSettings);
+                case "initiator": return CreateInitiator(fixApplication, fixSettings);
+            }
+
+            return null;
+        }
+
+        protected IFixConnector CreateAcceptor(IApplication fixApplication, SessionSettings fixSettings)
         {
             Log.Info("Building acceptor");
             return Create(fixApplication, fixSettings, (app, store, log, settings) => new FixAcceptor(app, store, log, settings));
         }
 
-        public IFixConnector CreateInitiator(IApplication fixApplication, SessionSettings fixSettings)
+        protected IFixConnector CreateInitiator(IApplication fixApplication, SessionSettings fixSettings)
         {
             Log.Info("Building initiator");
             return Create(fixApplication, fixSettings, (app, store, log, settings) => new FixInitiator(app, store, log, settings));
         }
 
-        private IFixConnector Create(IApplication fixApplication,
+        protected IFixConnector Create(IApplication fixApplication,
                                      SessionSettings fixSettings,
                                      Func<IApplication, IMessageStoreFactory, ILogFactory, SessionSettings, IFixConnector> builder)
         {

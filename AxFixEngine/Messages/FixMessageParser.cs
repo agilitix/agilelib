@@ -8,20 +8,22 @@ namespace AxFixEngine.Messages
 {
     public class FixMessageParser : IFixMessageParser
     {
+        private readonly IFixDialects _dialects;
         private readonly IMessageFactory _factory;
 
-        public FixMessageParser(IMessageFactory factory)
+        public FixMessageParser(IFixDialects dialects, IMessageFactory factory)
         {
+            _dialects = dialects;
             _factory = factory;
         }
 
         public Message ParseMessage(string fixMessage, bool validate = true)
         {
-            string beginString = Message.ExtractBeginString(fixMessage);
+            SessionID sessionId = ParseSessionID(fixMessage);
             MsgType msgType = Message.IdentifyType(fixMessage);
-            DataDictionary dataDictionary = FixDialectsInstance.Dialects.GetDataDictionary(beginString);
+            DataDictionary dataDictionary = _dialects.GetDataDictionary(sessionId);
 
-            Message message = _factory.Create(beginString, msgType.getValue());
+            Message message = _factory.Create(sessionId.BeginString, msgType.getValue());
 
             message.FromString(fixMessage,
                                validate,
