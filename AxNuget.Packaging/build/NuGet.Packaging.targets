@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <BuildDependsOn>
+      $(BuildDependsOn);
+      BuildPackage;
+    </BuildDependsOn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackagesDir Condition=" '$(PackagesDir)' == '' ">$(MsBuildThisFileDirectory)..\..</PackagesDir>
+    <PackCommand>"$(PackagesDir)\NuGet.CommandLine.4.9.2\tools\NuGet.exe" pack -version @(VersionNumber) $(MSBuildProjectName).nuspec</PackCommand>
+  </PropertyGroup>
+
+  <Target Name="SetVersion" AfterTargets="Build">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="Targets" />
+    </GetAssemblyIdentity>
+
+    <ItemGroup>
+      <VersionNumber Include="@(Targets->'%(Version)')" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="BuildPackage" DependsOnTargets="SetVersion">
+    <Exec WorkingDirectory="$(OutputPath)" Command="$(PackCommand)" />
+  </Target>
+
+</Project>
