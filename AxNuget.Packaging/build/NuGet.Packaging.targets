@@ -18,14 +18,15 @@
     <PackCommand>"$(PackagesDirectory)\NuGet.CommandLine.4.9.2\tools\NuGet.exe" pack -version @(VersionNumber) $(MSBuildProjectName).nuspec</PackCommand>
   </PropertyGroup>
 
-  <!-- Extract the NuGet version from the project output assembly -->
-  <Target Name="SetNugetVersion" AfterTargets="Build">
+  <!-- Extract the NuGet version from the project assembly output -->
+  <Target Name="SetNugetVersion">
     <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
       <Output TaskParameter="Assemblies" ItemName="Targets" />
     </GetAssemblyIdentity>
     <ItemGroup>
       <VersionNumber Include="@(Targets->'%(Version)')" />
     </ItemGroup>
+    <Message Importance="high" Text="NuGet version : @(Targets->'%(Version)')"/>
   </Target>
 
   <!-- Exec the nuget.exe command to package the NuGet -->

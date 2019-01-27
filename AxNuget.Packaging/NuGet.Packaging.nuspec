@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>NuGet.Packaging</id>
-    <version>0.0.0</version><!-- The version is extracted from AssemblyInfo.cs -->
+    <version>0.0.0</version><!-- The version is extracted from AssemblyInfo.cs[AssemblyVersion] -->
     <authors>Agilitix</authors>
     <owners>Agilitix</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
