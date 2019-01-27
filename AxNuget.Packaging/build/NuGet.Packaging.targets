@@ -2,6 +2,9 @@
 
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+  <!-- Theses targets will be included in the project referencing the "NuGet.Packaging" NuGet -->
+
+  <!-- Inject the BuildPackage target at the end of the build pipeline -->
   <PropertyGroup>
     <BuildDependsOn>
       $(BuildDependsOn);
@@ -9,22 +12,24 @@
     </BuildDependsOn>
   </PropertyGroup>
 
+  <!-- Set properties -->
   <PropertyGroup>
-    <PackagesDir Condition=" '$(PackagesDir)' == '' ">$(MsBuildThisFileDirectory)..\..</PackagesDir>
-    <PackCommand>"$(PackagesDir)\NuGet.CommandLine.4.9.2\tools\NuGet.exe" pack -version @(VersionNumber) $(MSBuildProjectName).nuspec</PackCommand>
+    <PackagesDirectory Condition=" '$(PackagesDirectory)' == '' ">$(MsBuildThisFileDirectory)..\..</PackagesDirectory>
+    <PackCommand>"$(PackagesDirectory)\NuGet.CommandLine.4.9.2\tools\NuGet.exe" pack -version @(VersionNumber) $(MSBuildProjectName).nuspec</PackCommand>
   </PropertyGroup>
 
-  <Target Name="SetVersion" AfterTargets="Build">
+  <!-- Extract the NuGet version from the project output assembly -->
+  <Target Name="SetNugetVersion" AfterTargets="Build">
     <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
       <Output TaskParameter="Assemblies" ItemName="Targets" />
     </GetAssemblyIdentity>
-
     <ItemGroup>
       <VersionNumber Include="@(Targets->'%(Version)')" />
     </ItemGroup>
   </Target>
 
-  <Target Name="BuildPackage" DependsOnTargets="SetVersion">
+  <!-- Exec the nuget.exe command to package the NuGet -->
+  <Target Name="BuildPackage" DependsOnTargets="SetNugetVersion">
     <Exec WorkingDirectory="$(OutputPath)" Command="$(PackCommand)" />
   </Target>
 

@@ -2,10 +2,12 @@
 
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+  <!-- This project is using the nuget.exe command line from local directory -->
   <PropertyGroup>
-    <PackagesDir>$(MSBuildProjectDirectory)\packages</PackagesDir>
+    <PackagesDirectory>$(MSBuildProjectDirectory)\packages</PackagesDirectory>
   </PropertyGroup>
 
+  <!-- Use the packaging script to build this NuGet -->
   <Import Project="$(MSBuildProjectDirectory)\build\NuGet.Packaging.targets" />
 
 </Project>
