@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using AxCommonLogger;
 using AxCommonLogger.Interfaces;
@@ -28,21 +29,27 @@ namespace AxFixEngine.Engine
 
         public FixEngine(string fixIniFileConfig)
         {
+            // Should be injected.
             _dialects = new FixDialects();
             _connectorFactory = new FixConnectorFactory();
             _sessions = new List<SessionID>();
             _handlers = new FixMessageHandlers();
+
             _configFile = fixIniFileConfig;
 
-            if (!string.IsNullOrWhiteSpace(_configFile))
+            if (!string.IsNullOrWhiteSpace(_configFile) && File.Exists(_configFile))
             {
+                Logger.InfoFormat("Building FIX engine with config file={0}", fixIniFileConfig);
+
                 _sessionSettings = new SessionSettings(_configFile);
 
-                if (_sessionSettings.Get().GetString("ConnectionType") != "acceptor"
-                    && _sessionSettings.Get().GetString("ConnectionType") != "initiator")
+                string connectionType = _sessionSettings.Get().GetString("ConnectionType");
+                if (connectionType != "acceptor" && connectionType != "initiator")
                 {
-                    throw new ConfigError("The config file is not valid for either an acceptor or initiator");
+                    throw new ConfigError("The config file is not valid for either acceptor or initiator type");
                 }
+
+                Logger.InfoFormat("The FIX engine is an '{0}'", connectionType);
 
                 _dialects.AddSessionSettings(_sessionSettings);
 
@@ -52,12 +59,28 @@ namespace AxFixEngine.Engine
 
                     Dictionary sessionConf = _sessionSettings.Get(sessionId);
 
-                    // Create message handler for this session.
-                    string typeName = sessionConf.GetString("MessageHandler");
+                    // The fix message handler must be declared in the ini file like :
+                    // ......
+                    // [SESSION]
+                    // MessageHandlerType="AxFixApp.Fix44MessageCracker, AxFixApp"
+                    // .....
+                    string typeName = sessionConf.GetString("MessageHandlerType").Trim('"').Trim(); // Remove quotes and white spaces.
                     Type handlerType = Type.GetType(typeName);
+                    if (handlerType == null)
+                    {
+                        throw new ConfigError("The config file=" + _configFile + " must define a message handler type (ie: MessageHandlerType=\"MyNamespace.MyMessageHandler, MyAssembly\"");
+                    }
+
+                    // Instantiate the handler for each session, it can be the same for all.
                     IFixMessageHandler handler = Activator.CreateInstance(handlerType) as IFixMessageHandler;
                     _handlers.SetMessageHandler(sessionId, handler);
+
+                    Logger.InfoFormat("Set session={0} with handler={1}", sessionId, handlerType);
                 }
+            }
+            else
+            {
+                Logger.InfoFormat("Invalid FIX config file=" + _configFile);
             }
         }
 
