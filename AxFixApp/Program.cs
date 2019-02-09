@@ -58,10 +58,21 @@ namespace AxFixApp
                 initiatorConfig = appConfiguration.Configuration.GetSetting<string>("initiator_settings");
             }
 
-            // Create the fix engine.
-            IFixEngine fixEngine = new FixEngine(initiatorConfig);
-            fixEngine.CreateApplication();
-            fixEngine.Start();
+            string acceptorConfig = null;
+            if (appConfiguration.Configuration.GetSetting<bool>("acceptor_enabled"))
+            {
+                acceptorConfig = appConfiguration.Configuration.GetSetting<string>("acceptor_settings");
+            }
+
+            // Create initiator fix engines.
+            IFixEngine initiator = new FixEngine(initiatorConfig);
+            initiator.CreateApplication();
+            initiator.Start();
+
+            // Create acceptor fix engines.
+            IFixEngine acceptor = new FixEngine(acceptorConfig);
+            acceptor.CreateApplication();
+            acceptor.Start();
 
             do
             {
@@ -70,7 +81,8 @@ namespace AxFixApp
             }
             while (Console.ReadKey().Key != ConsoleKey.X);
 
-            fixEngine.Stop();
+            acceptor.Stop();
+            initiator.Stop();
         }
     }
 }

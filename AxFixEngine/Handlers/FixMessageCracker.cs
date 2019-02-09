@@ -46,16 +46,22 @@ namespace AxFixEngine.Handlers
                 ParameterInfo[] parameters = methodInfo.GetParameters();
                 ParameterInfo expParamMessage = parameters[0];
                 ParameterInfo expParamSessionId = parameters[1];
+
                 ParameterExpression messageParam = Expression.Parameter(typeof(Message), "message");
                 ParameterExpression sessionParam = Expression.Parameter(typeof(SessionID), "sessionID");
+
                 ConstantExpression instance = Expression.Constant(this);
+
                 MethodCallExpression methodCall = Expression.Call(instance,
                                                                   methodInfo,
                                                                   Expression.Convert(messageParam, expParamMessage.ParameterType),
                                                                   Expression.Convert(sessionParam, expParamSessionId.ParameterType));
+
                 Action<Message, SessionID> action = Expression.Lambda<Action<Message, SessionID>>(methodCall,
                                                                                                   messageParam,
-                                                                                                  sessionParam).Compile();
+                                                                                                  sessionParam)
+                                                              .Compile();
+
                 handlers[expParamMessage.ParameterType] = action;
             }
         }
@@ -66,7 +72,8 @@ namespace AxFixEngine.Handlers
                    && methodInfo.Name.Equals(methodName)
                    && methodInfo.GetParameters().Length == 2
                    && methodInfo.GetParameters()[0].ParameterType.IsSubclassOf(typeof(Message))
-                   && typeof(SessionID).IsAssignableFrom(methodInfo.GetParameters()[1].ParameterType) && methodInfo.ReturnType == typeof(void);
+                   && typeof(SessionID).IsAssignableFrom(methodInfo.GetParameters()[1].ParameterType)
+                   && methodInfo.ReturnType == typeof(void);
         }
 
         private void Crack(Message message,
