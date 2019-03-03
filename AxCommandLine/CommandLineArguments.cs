@@ -22,10 +22,6 @@ namespace AxCommandLine
                 {
                     string option = match.Groups["option"].Value;
                     string value = match.Groups["value"].Value;
-                    if (string.IsNullOrEmpty(value))
-                    {
-                        value = "true";
-                    }
                     Set(option, value.Trim());
                 }
             }

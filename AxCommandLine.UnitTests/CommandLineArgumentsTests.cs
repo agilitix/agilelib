@@ -11,26 +11,26 @@ namespace AxCommandLine.UnitTests
         protected CommandLineArguments ObjectUnderTest;
         protected string[] Arguments;
 
-        protected bool ExpectedValue;
-        protected bool GetValueResult;
+        protected string ExpectedValue;
+        protected string GetValueResult;
         protected bool TryGetValueCall;
-        protected bool TryGetValueOutput;
+        protected string TryGetValueOutput;
 
         public override void Arrange()
         {
-            Arguments = new[] {"-testBool"};
-            ExpectedValue = true;
+            Arguments = new[] {"-test"};
+            ExpectedValue = string.Empty;
         }
 
         public override void Act()
         {
             ObjectUnderTest = new CommandLineArguments(Arguments);
-            GetValueResult = ObjectUnderTest.Get<bool>("testBool");
-            TryGetValueCall = ObjectUnderTest.TryGet("testBool", out TryGetValueOutput);
+            GetValueResult = ObjectUnderTest.Get<string>("test");
+            TryGetValueCall = ObjectUnderTest.TryGet("test", out TryGetValueOutput);
         }
 
         [Test]
-        public void Assert_argument_without_value_is_boolean_true()
+        public void Assert_argument_without_value_exists_as_empty_string()
         {
             GetValueResult.Should().Be(ExpectedValue);
 
@@ -47,7 +47,7 @@ namespace AxCommandLine.UnitTests
         [Test]
         public void Assert_command_line_arguments_contains_requested_name()
         {
-            ObjectUnderTest.Contains("testBool").Should().BeTrue();
+            ObjectUnderTest.Contains("test").Should().BeTrue();
         }
     }
 
