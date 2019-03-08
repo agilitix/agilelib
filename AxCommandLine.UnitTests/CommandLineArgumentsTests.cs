@@ -68,13 +68,10 @@ namespace AxCommandLine.UnitTests
                         {
                             "--testInt=12345",
                             "--testInt:12345",
-                            "--testInt 12345",
                             "/testInt=12345",
                             "/testInt:12345",
-                            "/testInt 12345",
                             "-testInt=12345",
                             "-testInt:12345",
-                            "-testInt 12345",
                         };
             ExpectedValue = 12345;
 
@@ -141,13 +138,10 @@ namespace AxCommandLine.UnitTests
                         {
                             "--testStr=\"abcd efgh\"",
                             "--testStr:\"abcd efgh\"",
-                            "--testStr \"abcd efgh\"",
                             "/testStr=\"abcd efgh\"",
                             "/testStr:\"abcd efgh\"",
-                            "/testStr \"abcd efgh\"",
                             "-testStr=\"abcd efgh\"",
                             "-testStr:\"abcd efgh\"",
-                            "-testStr \"abcd efgh\"",
                         };
             ExpectedValue = "\"abcd efgh\"";
 
@@ -214,13 +208,10 @@ namespace AxCommandLine.UnitTests
                         {
                             "--testFile=\"C:\\path\\to\\file\\file.txt\"",
                             "--testFile:\"C:\\path\\to\\file\\file.txt\"",
-                            "--testFile \"C:\\path\\to\\file\\file.txt\"",
                             "/testFile=\"C:\\path\\to\\file\\file.txt\"",
                             "/testFile:\"C:\\path\\to\\file\\file.txt\"",
-                            "/testFile \"C:\\path\\to\\file\\file.txt\"",
                             "-testFile=\"C:\\path\\to\\file\\file.txt\"",
                             "-testFile:\"C:\\path\\to\\file\\file.txt\"",
-                            "-testFile \"C:\\path\\to\\file\\file.txt\"",
                         };
             ExpectedValue = "\"C:\\path\\to\\file\\file.txt\"";
 

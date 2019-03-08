@@ -10,7 +10,19 @@ namespace AxCommandLine
 {
     public class CommandLineArguments : ICommandLineArguments
     {
+        #region Samples
+
+        // --test=12345     --test:12345
+        // -test=12345      -test:12345
+        // /test=12345      /test:12345
+        // --str="ab cd"    --test:"ab cd"
+        // -str="ab cd"     -test:"ab cd"
+        // /str="ab cd"     /test:"ab cd"
+
+        #endregion
+
         private static readonly Regex _matcher = new Regex(@"^(-{1,2}|\/)(?<option>\w+)[=:]*(?<value>.*)$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         private readonly IDictionary<string, string> _arguments = new Dictionary<string, string>();
 
         public CommandLineArguments(params string[] args)
@@ -22,7 +34,7 @@ namespace AxCommandLine
                 {
                     string option = match.Groups["option"].Value;
                     string value = match.Groups["value"].Value;
-                    Set(option, value.Trim());
+                    Set(option.Trim(), value.Trim());
                 }
             }
         }
