@@ -11,12 +11,11 @@ namespace AxUtils.UnitTests
     internal class IniFileTests : ArrangeActAssert
     {
         protected readonly string TestDirectory = TestContext.CurrentContext.TestDirectory;
-        protected IniConfiguration ObjectUnderTests;
+        protected IniConfig ObjectUnderTests;
 
         public override void Arrange()
         {
-            ObjectUnderTests = new IniConfiguration();
-            ObjectUnderTests.LoadConfiguration(TestDirectory + @"\initiator.ini");
+            ObjectUnderTests = new IniConfig(TestDirectory + @"\initiator.ini");
         }
     }
 
@@ -45,6 +44,7 @@ namespace AxUtils.UnitTests
                                                    {"ReconnectInterval", "2"},
                                                    {"ConnectionType", "initiator"},
                                                    {"MessageHistorizationFile", @".\history\messages.log"},
+                                                   {"EmptyParam", ""},
                                                };
 
             Expected1stSessionDictionary = new Dictionary<string, string>
@@ -66,7 +66,7 @@ namespace AxUtils.UnitTests
 
         public override void Act()
         {
-            ActualSections = ObjectUnderTests.Configuration;
+            ActualSections = ObjectUnderTests.Sections;
         }
 
         [Test]

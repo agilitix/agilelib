@@ -80,6 +80,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigFileProviderTests.cs" />
     <Compile Include="Test.Logger.Interfaces\ILogger.cs" />
     <Compile Include="Test.Logger.Implementations\ConsoleLogger.cs" />
     <Compile Include="Test.Logger.Implementations\FileLogger.cs" />
@@ -91,6 +92,18 @@
     <None Include="app.config" />
     <None Include="AppConfiguration\app.main.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ConfigProvider2\unity.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="ConfigProvider1\unity.host.virgo.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="ConfigProvider1\unity.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="ConfigProvider3\unity.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="UnityConfiguration\unity.base.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -121,6 +134,7 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

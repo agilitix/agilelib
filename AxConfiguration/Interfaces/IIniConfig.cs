@@ -8,11 +8,9 @@ namespace AxConfiguration.Interfaces
         IDictionary<string, string> Settings { get; }
     }
 
-    public interface IIniConfiguration
+    public interface IIniConfig
     {
-        string ConfigurationFile { get; }
-        IEnumerable<IIniSection> Configuration { get; }
-
-        void LoadConfiguration(string iniFileName);
+        string ConfigFile { get; }
+        IList<IIniSection> Sections { get; }
     }
 }

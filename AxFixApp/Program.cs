@@ -27,12 +27,12 @@ namespace AxFixApp
             CultureInfoUtils.SetDefaultCultureInfo_en_US();
 
             // Read app configuration.
-            IAppConfiguration appConfiguration = new AppConfiguration(@".\Config\app.main.config");
+            IAppConfig appConfig = new AppConfig(@".\Config\app.main.config");
 
-            string log4NetConfigFile = appConfiguration.Configuration.GetSetting<string>("log4net");
+            string log4NetConfigFile = appConfig.GetKey<string>("log4net");
             if (string.IsNullOrWhiteSpace(log4NetConfigFile))
             {
-                Console.WriteLine("Cannot get key 'log4net' from config file=" + appConfiguration.ConfigurationFile);
+                Console.WriteLine("Cannot get key 'log4net' from config file=" + appConfig.ConfigFile);
                 Console.ReadLine();
                 return;
             }
@@ -53,15 +53,15 @@ namespace AxFixApp
             Logger.Info("Command line arguments: " + commandLineArguments);
 
             string initiatorConfig = null;
-            if (appConfiguration.Configuration.GetSetting<bool>("initiator_enabled"))
+            if (appConfig.GetKey<bool>("initiator_enabled"))
             {
-                initiatorConfig = appConfiguration.Configuration.GetSetting<string>("initiator_settings");
+                initiatorConfig = appConfig.GetKey<string>("initiator_settings");
             }
 
             string acceptorConfig = null;
-            if (appConfiguration.Configuration.GetSetting<bool>("acceptor_enabled"))
+            if (appConfig.GetKey<bool>("acceptor_enabled"))
             {
-                acceptorConfig = appConfiguration.Configuration.GetSetting<string>("acceptor_settings");
+                acceptorConfig = appConfig.GetKey<string>("acceptor_settings");
             }
 
             // Create initiator fix engines.

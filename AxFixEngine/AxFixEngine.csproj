@@ -137,10 +137,6 @@
       <Project>{F3EEFDB9-EE62-4962-B8FE-6D709F0C63F8}</Project>
       <Name>AxExtensions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AxFixDomain\AxFixDomain.csproj">
-      <Project>{704CD61E-F353-4536-8509-07D309EB4F6E}</Project>
-      <Name>AxFixDomain</Name>
-    </ProjectReference>
     <ProjectReference Include="..\AxUtils\AxUtils.csproj">
       <Project>{0772C612-7C30-4CBE-8499-186B62970671}</Project>
       <Name>AxUtils</Name>

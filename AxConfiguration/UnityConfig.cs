@@ -8,49 +8,50 @@ using Unity;
 
 namespace AxConfiguration
 {
-    public class UnityConfiguration : IUnityConfiguration
+    public class UnityConfig : IUnityConfig
     {
         protected AliasElementCollection _baseAliases;
-        protected readonly string _containerName;
+        protected IUnityContainer _container;
 
-        public IUnityContainer Configuration { get; private set; }
-        public string ConfigurationFile { get; private set; }
+        public string ConfigFile { get; }
+        public string ContainerName { get; }
 
-        public UnityConfiguration()
+        public UnityConfig(string configFile, string containerName = "")
         {
-            _containerName = "";
-        }
-
-        public UnityConfiguration(string unityFileName)
-            : this(unityFileName, "")
-        {
-        }
-
-        public UnityConfiguration(string unityFileName, string containerName)
-        {
-            _containerName = string.IsNullOrWhiteSpace(containerName) ? "" : containerName;
-            LoadConfiguration(unityFileName);
-        }
-
-        public void LoadConfiguration(string configurationFile)
-        {
-            if (!File.Exists(configurationFile))
+            if (!File.Exists(configFile))
             {
-                throw new FileNotFoundException();
+                throw new FileNotFoundException("Unity config file not found", configFile);
             }
 
-            ConfigurationFile = configurationFile;
-            Configuration = new UnityContainer();
+            ConfigFile = configFile;
+            ContainerName = !string.IsNullOrWhiteSpace(containerName)
+                                ? containerName
+                                : string.Empty;
 
-            LoadUnityContainer(Configuration, configurationFile, _containerName);
+            _container = new UnityContainer();
+            LoadUnityContainer(ConfigFile);
 
             _baseAliases = null;
         }
 
-        protected void LoadUnityContainer(IUnityContainer unityContainer, string configurationFileName, string containerName)
+        public bool IsRegistered<T>(string name = "")
+        {
+            return string.IsNullOrWhiteSpace(name)
+                       ? _container.IsRegistered<T>()
+                       : _container.IsRegistered<T>(name);
+        }
+
+        public T Resolve<T>(string name = "")
+        {
+            return string.IsNullOrWhiteSpace(name)
+                       ? _container.Resolve<T>()
+                       : _container.Resolve<T>(name);
+        }
+
+        protected void LoadUnityContainer(string configFile)
         {
             // Open the configurationFileName file.
-            var fileMap = new ExeConfigurationFileMap {ExeConfigFilename = configurationFileName};
+            var fileMap = new ExeConfigurationFileMap {ExeConfigFilename = configFile};
             Configuration configuration = ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
 
             // Walk to the most top base file and start loading unity from there.
@@ -60,14 +61,14 @@ namespace AxConfiguration
                 string[] files = baseFiles.Value.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string file in files)
                 {
-                    string baseFile = Path.Combine(Path.GetDirectoryName(configurationFileName), file.Trim());
+                    string baseFile = Path.Combine(Path.GetDirectoryName(configFile), file.Trim());
                     if (!File.Exists(baseFile))
                     {
                         throw new FileNotFoundException(string.Format("Configuration file '{0}' not found", baseFile));
                     }
 
                     // Go to base file.
-                    LoadUnityContainer(unityContainer, baseFile, containerName);
+                    LoadUnityContainer(baseFile);
                 }
             }
 
@@ -89,8 +90,7 @@ namespace AxConfiguration
             }
 
             _baseAliases = unitySection.TypeAliases;
-
-            unityContainer.LoadConfiguration(unitySection, containerName);
+            _container.LoadConfiguration(unitySection, ContainerName);
         }
     }
 }
