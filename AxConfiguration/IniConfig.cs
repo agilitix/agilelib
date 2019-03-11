@@ -30,15 +30,19 @@ namespace AxConfiguration
 
             ConfigFile = configFile;
 
-            const string commentsMarker = ";#";
-            IIniSection iniSection = null;
-
-            string[] lines = File.ReadAllLines(ConfigFile);
-            foreach (string line in lines)
+            using (StreamReader sr = File.OpenText(ConfigFile))
             {
-                string trimLine = line.Trim();
-                if (trimLine.Length > 0 && !commentsMarker.Contains(trimLine[0]))
+                const string commentsMarker = ";#";
+                IIniSection iniSection = null;
+
+                string trimLine;
+                while ((trimLine = sr.ReadLine()?.Trim()) != null)
                 {
+                    if (string.IsNullOrWhiteSpace(trimLine) || commentsMarker.Contains(trimLine[0]))
+                    {
+                        continue;
+                    }
+
                     int index;
                     if (trimLine.StartsWith("[") && trimLine.EndsWith("]"))
                     {
