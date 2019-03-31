@@ -167,7 +167,7 @@ namespace AxQuality.Sample.UnitTests
             Numbers = new[] {1.0, double.NaN, 4.0, double.NegativeInfinity, double.PositiveInfinity, 7.5};
 
             // Setup the validator mock.
-            ValidatorMock.IsValid(Arg.Any<double>())
+            ValidatorMock.IsValid(number: Arg.Compat.Any<double>()) // Compat for lower than C#7
                          .Returns(arg =>  !double.IsNaN(arg.Arg<double>())
                                          && !double.IsNegativeInfinity(arg.Arg<double>())
                                          && !double.IsNegativeInfinity(arg.Arg<double>()));
