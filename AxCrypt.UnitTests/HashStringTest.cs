@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace AxCrypt.UnitTests
 {
     [TestFixture]
-    internal class StringHasherTest
+    internal class HashStringTest
     {
         private static object[] TestCases =
         {
@@ -22,7 +17,7 @@ namespace AxCrypt.UnitTests
         };
 
         [TestCaseSource(nameof(TestCases))]
-        public void Given_text_Should_be_hash(string text, string expectedHash, Func<HashAlgorithm> hasher)
+        public void Given_text_Should_hash_with_different_algos(string text, string expectedHash, Func<HashAlgorithm> hasherFactory)
         {
             /*
              * Arrange.
@@ -31,8 +26,8 @@ namespace AxCrypt.UnitTests
             /*
              * Act.
              */
-            StringHasher stringHasher = new StringHasher(hasher);
-            string actualHash = stringHasher.ComputeHash(text);
+            HashString hashString = new HashString(hasherFactory);
+            string actualHash = hashString.ComputeHash(text);
 
             /*
              * Assert.

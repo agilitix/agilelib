@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using AxCommandLine.Interfaces;
 
@@ -10,18 +8,18 @@ namespace AxCommandLine
 {
     public class CommandLineArguments : ICommandLineArguments
     {
-        #region Samples
+        #region Command line samples
 
         // --test=12345     --test:12345
         // -test=12345      -test:12345
         // /test=12345      /test:12345
-        // --str="ab cd"    --test:"ab cd"
-        // -str="ab cd"     -test:"ab cd"
-        // /str="ab cd"     /test:"ab cd"
+        // --text="ab cd"   --text:"ab cd"
+        // -text="ab cd"    -text:"ab cd"
+        // /text="ab cd"    /text:"ab cd"
 
         #endregion
 
-        private static readonly Regex _matcher = new Regex(@"^(-{1,2}|\/)(?<option>\w+)[=:]*(?<value>.*)$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex _matcher = new Regex(@"^(-{1,2}|\/)(?<arg>\w+)[=:]*(?<val>.*)$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private readonly IDictionary<string, string> _arguments = new Dictionary<string, string>();
 
@@ -32,9 +30,9 @@ namespace AxCommandLine
                 Match match = _matcher.Match(input);
                 if (match.Success)
                 {
-                    string option = match.Groups["option"].Value;
-                    string value = match.Groups["value"].Value;
-                    Set(option.Trim(), value.Trim());
+                    string argument = match.Groups["arg"].Value;
+                    string value = match.Groups["val"].Value;
+                    Set(argument.Trim(), value.Trim());
                 }
             }
         }

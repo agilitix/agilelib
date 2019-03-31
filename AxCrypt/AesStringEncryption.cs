@@ -82,7 +82,7 @@ namespace AxCrypt
 
         #endregion
 
-        public string Encrypt(string source, string password)
+        public string Encrypt(string input, string password)
         {
             Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(password, Salt, Iterations);
 
@@ -99,18 +99,16 @@ namespace AxCrypt
             using (MemoryStream output = new MemoryStream())
             {
                 using (CryptoStream cryptoStream = new CryptoStream(output, transform, CryptoStreamMode.Write))
+                using (StreamWriter streamWriter = new StreamWriter(cryptoStream))
                 {
-                    using (StreamWriter writer = new StreamWriter(cryptoStream))
-                    {
-                        writer.Write(source);
-                    }
+                    streamWriter.Write(input);
                 }
 
                 return Convert.ToBase64String(output.ToArray());
             }
         }
 
-        public string Decrypt(string source, string password)
+        public string Decrypt(string input, string password)
         {
             Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(password, Salt, Iterations);
 
@@ -124,15 +122,11 @@ namespace AxCrypt
 
             ICryptoTransform transform = aes.CreateDecryptor(aes.Key, aes.IV);
 
-            using (MemoryStream input = new MemoryStream(Convert.FromBase64String(source)))
+            using (MemoryStream memoryStream = new MemoryStream(Convert.FromBase64String(input)))
+            using (CryptoStream cryptoStream = new CryptoStream(memoryStream, transform, CryptoStreamMode.Read))
+            using (StreamReader streamReader = new StreamReader(cryptoStream))
             {
-                using (CryptoStream cryptoStream = new CryptoStream(input, transform, CryptoStreamMode.Read))
-                {
-                    using (StreamReader reader = new StreamReader(cryptoStream))
-                    {
-                        return reader.ReadToEnd();
-                    }
-                }
+                return streamReader.ReadToEnd();
             }
         }
     }

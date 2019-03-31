@@ -4,21 +4,21 @@ using System.Text;
 
 namespace AxCrypt
 {
-    public class StringHasher
+    public class HashString
     {
-        private readonly Func<HashAlgorithm> _hasher;
+        private readonly Func<HashAlgorithm> _hasherFactory;
 
-        public StringHasher(Func<HashAlgorithm> hasher)
+        public HashString(Func<HashAlgorithm> hasherFactory)
         {
-            _hasher = hasher;
+            _hasherFactory = hasherFactory;
         }
 
         public string ComputeHash(string input)
         {
-            using (HashAlgorithm hash = _hasher())
+            using (HashAlgorithm hashAlgorithm = _hasherFactory())
             {
                 byte[] inputBytes = Encoding.UTF8.GetBytes(input);
-                byte[] inputHashBytes = hash.ComputeHash(inputBytes);
+                byte[] inputHashBytes = hashAlgorithm.ComputeHash(inputBytes);
 
                 var sb = new StringBuilder();
                 for (int index = 0; index < inputHashBytes.Length; ++index)

@@ -99,23 +99,19 @@ namespace AxCrypt
             var aes = new RijndaelManaged();
             aes.KeySize = aes.LegalKeySizes[0].MaxSize;
             aes.BlockSize = aes.LegalBlockSizes[0].MaxSize;
-            aes.Key = key.GetBytes(aes.KeySize/8);
-            aes.IV = key.GetBytes(aes.BlockSize/8);
+            aes.Key = key.GetBytes(aes.KeySize / 8);
+            aes.IV = key.GetBytes(aes.BlockSize / 8);
             aes.Mode = CipherMode.CBC;
             aes.Padding = PaddingMode.ISO10126;
 
             ICryptoTransform transform = transformBuilder(aes);
 
             using (FileStream destination = new FileStream(destinationFilename, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+            using (CryptoStream cryptoStream = new CryptoStream(destination, transform, CryptoStreamMode.Write))
+            using (FileStream fileStream = new FileStream(sourceFilename, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                using (CryptoStream cryptoStream = new CryptoStream(destination, transform, CryptoStreamMode.Write))
-                {
-                    using (FileStream source = new FileStream(sourceFilename, FileMode.Open, FileAccess.Read, FileShare.Read))
-                    {
-                        source.CopyTo(cryptoStream);
-                        cryptoStream.FlushFinalBlock();
-                    }
-                }
+                fileStream.CopyTo(cryptoStream);
+                cryptoStream.FlushFinalBlock();
             }
         }
     }

@@ -12,6 +12,8 @@ namespace AxUtils
 
         public static void SetDefaultCultureInfo(CultureInfo culture)
         {
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
             CultureInfo.DefaultThreadCurrentCulture = culture;
             CultureInfo.DefaultThreadCurrentUICulture = culture;
         }
