@@ -9,8 +9,8 @@ namespace AxUtils
     {
         private static readonly IDictionary<T, EnumInfos<T>> _valueToInfos;
         private static readonly IDictionary<int, EnumInfos<T>> _numberToInfos;
-        private static readonly IDictionary<string, EnumInfos<T>> _descriptionToInfos;
         private static readonly IDictionary<string, EnumInfos<T>> _nameToInfos;
+        private static readonly IDictionary<string, EnumInfos<T>> _descriptionToInfos;
 
         static EnumCachedUtils()
         {
@@ -200,7 +200,7 @@ namespace AxUtils
 
         public static int ToInt(T enumValue)
         {
-            return (int)(object)enumValue;
+            return (int) (object) enumValue;
         }
 
         private static IEnumerable<EnumInfos<T>> Initialize()

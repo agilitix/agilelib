@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Configuration;
-using System.IO;
 using AxConfiguration.Interfaces;
 using AxConfiguration.UnitTests.Test.Logger.Implementations;
 using AxConfiguration.UnitTests.Test.Logger.Interfaces;
@@ -8,7 +6,6 @@ using AxQuality;
 using FluentAssertions;
 using Unity;
 using NUnit.Framework;
-using Unity.Exceptions;
 
 namespace AxConfiguration.UnitTests
 {

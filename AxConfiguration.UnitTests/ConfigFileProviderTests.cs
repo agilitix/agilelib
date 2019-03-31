@@ -36,7 +36,7 @@ namespace AxConfiguration.UnitTests
         [OneTimeTearDown]
         public void Cleanup()
         {
-            // Remove the user level config file.
+            // Remove the fake user level config file.
             string userFile = Path.Combine(TestContext.CurrentContext.TestDirectory, $@".\ConfigProvider2\unity.user.{Environment.UserName.ToLower()}.config");
             if (File.Exists(userFile))
             {

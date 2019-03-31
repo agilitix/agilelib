@@ -51,10 +51,11 @@
     <Compile Include="DisposableAction.cs" />
     <Compile Include="DisposeHelper.cs" />
     <Compile Include="Ensure.cs" />
+    <Compile Include="EnumCachedUtils.cs" />
     <Compile Include="EnumInfos.cs" />
     <Compile Include="EnumUtils.cs" />
     <Compile Include="CultureInfoUtils.cs" />
-    <Compile Include="InstanceHolder.cs" />
+    <Compile Include="GlobalInstance.cs" />
     <Compile Include="ModelValidatorExtensions.cs" />
     <Compile Include="NetworkUtils.cs" />
     <Compile Include="WorkerQueue.cs" />

@@ -48,7 +48,7 @@ namespace AxUtils
 
         public static int GetNumber(T enumValue)
         {
-            return (int)Convert.ChangeType(enumValue, typeof(int));
+            return (int) Convert.ChangeType(enumValue, typeof(int));
         }
 
         public static IEnumerable<int> GetNumbers()
@@ -102,7 +102,7 @@ namespace AxUtils
 
         public static T FromName(string enumName)
         {
-            return (T)Enum.Parse(typeof(T), enumName);
+            return (T) Enum.Parse(typeof(T), enumName);
         }
 
         public static T FromNameOrDefault(string enumName, T defaultValue)
@@ -128,7 +128,7 @@ namespace AxUtils
 
         public static T Cast(int enumNumber)
         {
-            return (T)Enum.ToObject(typeof(T), enumNumber);
+            return (T) Enum.ToObject(typeof(T), enumNumber);
         }
 
         public static T CastOrDefault(int enumNumber, T defaultValue)
@@ -142,7 +142,7 @@ namespace AxUtils
         {
             try
             {
-                enumOutput = (T)Enum.ToObject(typeof(T), enumNumber);
+                enumOutput = (T) Enum.ToObject(typeof(T), enumNumber);
                 return true;
             }
             catch
@@ -165,7 +165,7 @@ namespace AxUtils
 
         public static TTarget ChangeTo<TTarget>(T enumInput) where TTarget : struct
         {
-            return (TTarget)Enum.Parse(typeof(TTarget), Enum.GetName(typeof(T), enumInput) ?? "");
+            return (TTarget) Enum.Parse(typeof(TTarget), Enum.GetName(typeof(T), enumInput) ?? "");
         }
 
         public static TTarget ChangeToOrDefault<TTarget>(T enumInput, TTarget defaultValue) where TTarget : struct

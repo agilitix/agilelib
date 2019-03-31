@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using System.Threading;
 using AxCommandLine;
@@ -11,9 +10,7 @@ using AxCommonLogger.Interfaces;
 using AxConfiguration;
 using AxConfiguration.Interfaces;
 using AxFixEngine.Engine;
-using AxFixEngine.Handlers;
 using AxUtils;
-using QuickFix;
 
 namespace AxFixApp
 {
@@ -65,7 +62,7 @@ namespace AxFixApp
 
             // Create the fix engine manager and build the internal fix engines,
             // one for the acceptor then one for the initiator.
-            // Nothing happens if a config file does not exits.
+            // Nothing happens if the corresponding config file does not exits.
             IFixEngineManager fixEngineManager = new FixEngineManager();
             fixEngineManager.CreateFixEngine(acceptorConfig);
             fixEngineManager.CreateFixEngine(initiatorConfig);

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-
-namespace AxUtils
+﻿namespace AxUtils
 {
     public class EnumInfos<T> where T : struct
     {
