@@ -23,12 +23,13 @@ namespace AxFixApp
 
         static void Main(string[] args)
         {
-            // Set culture overall app and threads.
+            // Set the default culture everywhere.
             CultureInfoUtils.SetDefaultCultureInfo_en_US();
 
-            // Read app configuration.
+            // Read the app configuration.
             IAppConfig appConfig = new AppConfig(@".\Config\app.main.config");
 
+            // Get the log4net config name.
             string log4NetConfigFile = appConfig.GetKey<string>("log4net");
             if (string.IsNullOrWhiteSpace(log4NetConfigFile))
             {
@@ -37,12 +38,10 @@ namespace AxFixApp
                 return;
             }
 
-            // Init logger.
+            // Init the internal logger based on log4net.
             ILoggerFacadeFactory loggerFacadeFactory = new Log4netLoggerFacadeFactory();
             loggerFacadeFactory.Configure(log4NetConfigFile);
-
             LoggerFacadeProvider.Initialize(loggerFacadeFactory);
-
             Logger = LoggerFacadeProvider.GetDeclaringTypeLogger();
 
             // Log some useful infos.
@@ -64,15 +63,13 @@ namespace AxFixApp
                 acceptorConfig = appConfig.GetKey<string>("acceptor_settings");
             }
 
-            // Create initiator fix engines.
-            IFixEngine initiator = new FixEngine(initiatorConfig);
-            initiator.CreateApplication();
-            initiator.Start();
-
-            // Create acceptor fix engines.
-            IFixEngine acceptor = new FixEngine(acceptorConfig);
-            acceptor.CreateApplication();
-            acceptor.Start();
+            // Create the fix engine manager and build the internal fix engines,
+            // one for the acceptor then one for the initiator.
+            // Nothing happens if a config file does not exits.
+            IFixEngineManager fixEngineManager = new FixEngineManager();
+            fixEngineManager.CreateFixEngine(acceptorConfig);
+            fixEngineManager.CreateFixEngine(initiatorConfig);
+            fixEngineManager.Start();
 
             do
             {
@@ -81,8 +78,8 @@ namespace AxFixApp
             }
             while (Console.ReadKey().Key != ConsoleKey.X);
 
-            acceptor.Stop();
-            initiator.Stop();
+            // Stop the internal fix engines.
+            fixEngineManager.Stop();
         }
     }
 }

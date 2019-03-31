@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using AxCommonLogger;
 using AxCommonLogger.Interfaces;
 using AxFixEngine.Connectors;
@@ -59,7 +58,7 @@ namespace AxFixEngine.Engine
 
                     Dictionary sessionConf = _sessionSettings.Get(sessionId);
 
-                    // The fix message handler must be declared in the ini file like :
+                    // The fix message handler must be declared in the initiator/acceptor ini file like :
                     // ......
                     // [SESSION]
                     // MessageHandlerType="AxFixApp.Fix44MessageCracker, AxFixApp"
@@ -80,7 +79,7 @@ namespace AxFixEngine.Engine
             }
             else
             {
-                Logger.InfoFormat("Invalid FIX config file=" + _configFile);
+                Logger.InfoFormat("Invalid fix config file={0}, the requested fix engine is not created.", _configFile);
             }
         }
 
