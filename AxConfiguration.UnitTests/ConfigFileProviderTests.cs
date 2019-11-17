@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
 using NUnit.Framework;
 
 namespace AxConfiguration.UnitTests
@@ -44,10 +41,15 @@ namespace AxConfiguration.UnitTests
             }
         }
 
+        private static IEnumerable<TestCaseData> _configs = new List<TestCaseData>
+        {
+            new TestCaseData(@".\ConfigProvider1", @".\ConfigProvider1\unity.host." + Dns.GetHostName().ToLower() + ".config"),
+            new TestCaseData(@".\ConfigProvider2", @".\ConfigProvider2\unity.user." + Environment.UserName.ToLower() + ".config"),
+            new TestCaseData(@".\ConfigProvider3", @".\ConfigProvider3\unity.config"),
+        };
+
         [Test]
-        [TestCase(@".\ConfigProvider1", @".\ConfigProvider1\unity.host.virgo.config")] // Host level config file.
-        [TestCase(@".\ConfigProvider2", @".\ConfigProvider2\unity.user.{0}.config")] // User level config file.
-        [TestCase(@".\ConfigProvider3", @".\ConfigProvider3\unity.config")] // Default config file.
+        [TestCaseSource(nameof(_configs))]
         public void Given_a_folder_Should_find_a_config_file(string configFolder, string expectedConfigFile)
         {
             /*

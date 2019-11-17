@@ -32,6 +32,7 @@ namespace HelloWorld {
     }
 
     /// <summary>Base class for server-side implementations of Greeter</summary>
+    [grpc::BindServiceMethod(typeof(Greeter), "BindService")]
     public abstract partial class GreeterBase
     {
       /// <summary>
@@ -52,7 +53,7 @@ namespace HelloWorld {
     {
       /// <summary>Creates a new client for Greeter</summary>
       /// <param name="channel">The channel to use to make remote calls.</param>
-      public GreeterClient(grpc::Channel channel) : base(channel)
+      public GreeterClient(grpc::ChannelBase channel) : base(channel)
       {
       }
       /// <summary>Creates a new client for Greeter that uses a custom <c>CallInvoker</c>.</summary>

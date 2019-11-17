@@ -1,8 +1,8 @@
 
 @echo off
 
-set PROTOC="%~1\packages\Grpc.Tools.1.19.0\tools\windows_x64\protoc.exe"
-set PLUGIN="%~1\packages\Grpc.Tools.1.19.0\tools\windows_x64\grpc_csharp_plugin.exe"
+set PROTOC="%~1\packages\Grpc.Tools.2.25.0\tools\windows_x64\protoc.exe"
+set PLUGIN="%~1\packages\Grpc.Tools.2.25.0\tools\windows_x64\grpc_csharp_plugin.exe"
 set OUT_DIR="%~2"
 set PROTO_FILE="%~3"
 
