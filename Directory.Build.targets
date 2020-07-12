@@ -1,3 +1,11 @@
 <Project>
     <Import Project="Directory.Packages.targets" />
+
+    <Target Name="BuildInfos" AfterTargets="Build">
+        <Message Importance="High" Text="MSBuildProjectName=$(MSBuildProjectName)" />
+        <Message Importance="High" Text="Platform=$(Platform)" />
+        <Message Importance="High" Text="PlatformTarget=$(PlatformTarget) / Prefer32Bit=$(Prefer32Bit)" />
+        <Message Importance="High" Text="NuGetProjectStyle=$(NuGetProjectStyle)" />
+        <Message Importance="High" Text="NUGET_PACKAGES=$(NUGET_PACKAGES)" />
+    </Target>
 </Project>
