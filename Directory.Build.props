@@ -1,0 +1,16 @@
+<Project>
+    <PropertyGroup Label="Build">
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    </PropertyGroup>
+
+    <PropertyGroup Label="Compilation">
+        <TargetFramework>net462</TargetFramework>
+        <DebugType Condition=" '$(Configuration)' == 'Debug' ">full</DebugType>
+        <DebugType Condition=" '$(Configuration)' == 'Release' ">pdbonly</DebugType>
+    </PropertyGroup>
+
+    <PropertyGroup Label="Run">
+        <UseVSHostingProcess Condition=" $(OutputType.ToLowerInvariant()) == 'exe' ">false</UseVSHostingProcess>
+    </PropertyGroup>
+</Project>

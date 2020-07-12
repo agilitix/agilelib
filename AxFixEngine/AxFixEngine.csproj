@@ -1,150 +1,29 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\NUnit.3.12.0\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.12.0\build\NUnit.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BA2A8276-B890-43BF-B05D-2AF2222F13A4}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AxFixEngine</RootNamespace>
-    <AssemblyName>AxFixEngine</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
+    <AssemblyTitle>AxFixEngine</AssemblyTitle>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework, Version=3.12.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="QuickFix, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\QuickFix.Net.1.8.0\lib\QuickFix.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.6.0\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.3\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Unity.Abstractions, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.Abstractions.5.11.1\lib\net45\Unity.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Configuration, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.Configuration.5.11.1\lib\net45\Unity.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Container, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.Container.5.11.1\lib\net45\Unity.Container.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Engine\FixEngineManager.cs" />
-    <Compile Include="Engine\IFixEngineManager.cs" />
-    <Compile Include="Handlers\FixMessageCracker.cs" />
-    <Compile Include="Decorators\FixGroupDecorator.cs" />
-    <Compile Include="Decorators\FixMessageDecorator.cs" />
-    <Compile Include="Extensions\SessionIDExtensions.cs" />
-    <Compile Include="Handlers\IFixMessageCracker.cs" />
-    <Compile Include="Messages\FixMessageParser.cs" />
-    <Compile Include="Handlers\FixMessageCrackerBase.cs" />
-    <Compile Include="Handlers\FixMessageHandlers.cs" />
-    <Compile Include="Engine\IFixEngine.cs" />
-    <Compile Include="Messages\IFixMessageParser.cs" />
-    <Compile Include="Handlers\IFixMessageHandlers.cs" />
-    <Compile Include="Extensions\DataDictionaryExtensions.cs" />
-    <Compile Include="Extensions\DictionaryExtensions.cs" />
-    <Compile Include="Extensions\MessageExtensions.cs" />
-    <Compile Include="Extensions\SessionSettingsExtensions.cs" />
-    <Compile Include="Connectors\FixAcceptor.cs" />
-    <Compile Include="Handlers\FixApplication.cs" />
-    <Compile Include="Connectors\FixConnectorFactory.cs" />
-    <Compile Include="Connectors\FixInitiator.cs" />
-    <Compile Include="Dialects\FixDialects.cs" />
-    <Compile Include="Connectors\IFixConnector.cs" />
-    <Compile Include="Connectors\IFixConnectorFactory.cs" />
-    <Compile Include="Dialects\IFixDialects.cs" />
-    <Compile Include="Handlers\IFixMessageHandler.cs" />
-    <Compile Include="Engine\FixEngine.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <ProjectReference Include="..\AxCommandLine\AxCommandLine.csproj" />
+    <ProjectReference Include="..\AxCommonLogger\AxCommonLogger.csproj" />
+    <ProjectReference Include="..\AxConfiguration\AxConfiguration.csproj" />
+    <ProjectReference Include="..\AxExtensions\AxExtensions.csproj" />
+    <ProjectReference Include="..\AxUtils\AxUtils.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AxCommandLine\AxCommandLine.csproj">
-      <Project>{66255424-f482-43e7-b23d-77945739b854}</Project>
-      <Name>AxCommandLine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AxCommonLogger\AxCommonLogger.csproj">
-      <Project>{3DBD2AE8-2E2A-4A07-AF80-8991C8B833CC}</Project>
-      <Name>AxCommonLogger</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AxConfiguration\AxConfiguration.csproj">
-      <Project>{38c34733-3c7d-484d-9bd1-39c9f1744371}</Project>
-      <Name>AxConfiguration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AxExtensions\AxExtensions.csproj">
-      <Project>{F3EEFDB9-EE62-4962-B8FE-6D709F0C63F8}</Project>
-      <Name>AxExtensions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AxUtils\AxUtils.csproj">
-      <Project>{0772C612-7C30-4CBE-8499-186B62970671}</Project>
-      <Name>AxUtils</Name>
-    </ProjectReference>
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="NUnit" />
+    <PackageReference Include="QuickFix.Net" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" />
+    <PackageReference Include="System.ValueTuple" />
+    <PackageReference Include="Unity.Abstractions" />
+    <PackageReference Include="Unity.Configuration" />
+    <PackageReference Include="Unity.Container" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\NUnit.3.12.0\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.3.12.0\build\NUnit.props'))" />
-  </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

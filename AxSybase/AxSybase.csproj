@@ -1,84 +1,41 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7B443E7F-C485-4D1A-B347-D7AE2D8BFEC9}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AxSybase</RootNamespace>
-    <AssemblyName>AxSybase</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Dapper, Version=1.60.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapper.1.60.6\lib\net451\Dapper.dll</HintPath>
-    </Reference>
-    <Reference Include="FluentNHibernate, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentNHibernate.2.0.3.0\lib\net40\FluentNHibernate.dll</HintPath>
-    </Reference>
-    <Reference Include="Iesi.Collections, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Iesi.Collections.4.0.4\lib\net40\Iesi.Collections.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="NHibernate, Version=4.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <HintPath>..\packages\NHibernate.4.1.2.4000\lib\net40\NHibernate.dll</HintPath>
-    </Reference>
-    <Reference Include="Sybase.AdoNet4.AseClient">
-      <HintPath>Sybase.AdoNet4.AseClient\Sybase.AdoNet4.AseClient.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Dapper\AseCommandParameters.cs" />
-    <Compile Include="NHibernate\Fluent\SybaseFluentConfiguration.cs" />
-    <Compile Include="NHibernate\Fluent\SybaseFluentPersistenceConfiguration.cs" />
-    <Compile Include="NHibernate\SybaseAdoNet4Driver.cs" />
-    <Compile Include="NHibernate\SybaseAseConnectionStringBuilder.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Dapper\samples.txt" />
-    <Content Include="NHibernate\hibernate.cfg.xml" />
-    <Content Include="NHibernate\samples.txt" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>copy /Y "$(ProjectDir)Sybase.AdoNet4.AseClient\sbgse2.dll" "$(TargetDir)"
-copy /Y "$(ProjectDir)Sybase.AdoNet4.AseClient\sybdrvado20.dll" "$(TargetDir)"
-</PostBuildEvent>
-  </PropertyGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyTitle>AxSybase</AssemblyTitle>
+        <OutputPath>bin\$(Configuration)\</OutputPath>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="Sybase.AdoNet4.AseClient">
+            <HintPath>Sybase.AdoNet4.AseClient\Sybase.AdoNet4.AseClient.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Configuration" />
+        <Reference Include="System.ServiceModel" />
+        <Reference Include="System.Transactions" />
+        <Reference Include="System.Data.DataSetExtensions" />
+        <Reference Include="Microsoft.CSharp" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="Dapper\samples.txt" />
+        <Content Include="NHibernate\hibernate.cfg.xml" />
+        <Content Include="NHibernate\samples.txt" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Antlr3.Runtime" />
+        <PackageReference Include="Dapper" />
+        <PackageReference Include="FluentNHibernate" />
+        <PackageReference Include="Iesi.Collections" />
+        <PackageReference Include="NHibernate" />
+        <PackageReference Include="Remotion.Linq" />
+        <PackageReference Include="Remotion.Linq.EagerFetching" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Remove="NHibernate\SybaseFluentConfiguration.cs" />
+        <Compile Remove="NHibernate\SybaseFluentPersistenceConfiguration.cs" />
+    </ItemGroup>
+
+    <Target Name="CopySybaseAdoNet" AfterTargets="Build">
+        <ItemGroup>
+            <SybaseFiles Include="Sybase.AdoNet4.AseClient/*.*" />
+        </ItemGroup>
+        <Copy SourceFiles="@(SybaseFiles)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
+    </Target>
 </Project>
