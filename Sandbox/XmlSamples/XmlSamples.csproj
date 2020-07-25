@@ -4,12 +4,6 @@
         <AssemblyTitle>XmlSamples</AssemblyTitle>
         <OutputPath>bin\$(Configuration)\</OutputPath>
     </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <PlatformTarget>AnyCPU</PlatformTarget>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <PlatformTarget>AnyCPU</PlatformTarget>
-    </PropertyGroup>
     <ItemGroup>
         <Reference Include="System.Web.Extensions" />
         <Reference Include="System.Data.DataSetExtensions" />

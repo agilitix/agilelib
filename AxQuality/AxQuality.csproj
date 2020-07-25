@@ -2,13 +2,6 @@
     <PropertyGroup>
         <AssemblyTitle>AxUnit</AssemblyTitle>
         <OutputPath>bin\$(Configuration)\</OutputPath>
-        <OutputType>Library</OutputType>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <PlatformTarget>AnyCPU</PlatformTarget>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <PlatformTarget>AnyCPU</PlatformTarget>
     </PropertyGroup>
     <ItemGroup>
         <Reference Include="System.Data.DataSetExtensions" />
