@@ -5,6 +5,12 @@
         <OutputPath>bin\$(Configuration)\</OutputPath>
         <UserSecretsId>7defafe5-9cc0-43a9-ac1d-310b15fa3804</UserSecretsId>
     </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <PlatformTarget>AnyCPU</PlatformTarget>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <PlatformTarget>AnyCPU</PlatformTarget>
+    </PropertyGroup>
     <ItemGroup>
         <Reference Include="System.Configuration" />
         <Reference Include="System.Web" />
