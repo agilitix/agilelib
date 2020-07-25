@@ -1,24 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <AssemblyTitle>AxRpcServer</AssemblyTitle>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Net.Http" />
-  </ItemGroup>
-  <ItemGroup>
-      <PackageReference Include="Grpc" />
-      <PackageReference Include="Grpc.Core" />
-      <PackageReference Include="Grpc.Core.Api" />
-      <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" />
-      <PackageReference Include="System.Buffers" />
-      <PackageReference Include="System.Interactive.Async" />
-      <PackageReference Include="System.Linq.Async" />
-      <PackageReference Include="System.Memory" />
-      <PackageReference Include="System.Numerics.Vectors" />
-      <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
-      <PackageReference Include="System.Threading.Tasks.Extensions" />
-  </ItemGroup>
+    <PropertyGroup>
+        <AssemblyTitle>AxRpcServer</AssemblyTitle>
+        <OutputPath>bin\$(Configuration)\</OutputPath>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="System.Data.DataSetExtensions" />
+        <Reference Include="Microsoft.CSharp" />
+        <Reference Include="System.Net.Http" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Grpc" />
+        <PackageReference Include="Grpc.Core" />
+        <PackageReference Include="Grpc.Core.Api" />
+        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" />
+        <PackageReference Include="System.Buffers" />
+        <PackageReference Include="System.Interactive.Async" />
+        <PackageReference Include="System.Linq.Async" />
+        <PackageReference Include="System.Memory" />
+        <PackageReference Include="System.Numerics.Vectors" />
+        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
+        <PackageReference Include="System.Threading.Tasks.Extensions" />
+    </ItemGroup>
 </Project>

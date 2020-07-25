@@ -3,6 +3,12 @@
         <AssemblyTitle>AxFixEngine</AssemblyTitle>
         <OutputPath>bin\$(Configuration)\</OutputPath>
     </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+    </PropertyGroup>
     <ItemGroup>
         <Reference Include="System.Configuration" />
         <Reference Include="System.Data.DataSetExtensions" />
@@ -17,7 +23,6 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Newtonsoft.Json" />
-        <PackageReference Include="NUnit" />
         <PackageReference Include="QuickFIXn.Core" />
         <PackageReference Include="QuickFIXn.FIX4.4" />
         <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />

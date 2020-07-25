@@ -3,13 +3,12 @@
         <OutputType>Exe</OutputType>
         <AssemblyTitle>AxFixServer</AssemblyTitle>
         <OutputPath>bin\$(Configuration)\</OutputPath>
-        <UserSecretsId>7defafe5-9cc0-43a9-ac1d-310b15fa3804</UserSecretsId>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-      <PlatformTarget>AnyCPU</PlatformTarget>
+        <PlatformTarget>AnyCPU</PlatformTarget>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-      <PlatformTarget>AnyCPU</PlatformTarget>
+        <PlatformTarget>AnyCPU</PlatformTarget>
     </PropertyGroup>
     <ItemGroup>
         <Reference Include="System.Configuration" />
@@ -32,7 +31,6 @@
     <ItemGroup>
         <PackageReference Include="QuickFIXn.Core" />
         <PackageReference Include="QuickFIXn.FIX4.4" />
-        <PackageReference Include="NUnit" />
         <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
         <PackageReference Include="System.Threading.Tasks.Extensions" />
         <PackageReference Include="Unity.Abstractions" />
