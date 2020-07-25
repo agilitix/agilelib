@@ -1,5 +1,5 @@
 <Project>
-    <Import Project="Directory.Packages.targets" />
+    <Sdk Name="Microsoft.Build.CentralPackageVersions" Version="2.0.1" />
 
     <Target Name="BuildInfos" AfterTargets="Build">
         <Message Importance="High" Text="MSBuildProjectName=$(MSBuildProjectName)" />

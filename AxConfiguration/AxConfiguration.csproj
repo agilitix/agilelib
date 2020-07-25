@@ -1,24 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <AssemblyTitle>AxConfiguration</AssemblyTitle>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="SampleConfigs\config.ini">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="QuickFix.Net" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
-    <PackageReference Include="System.Threading.Tasks.Extensions" />
-    <PackageReference Include="Unity.Abstractions" />
-    <PackageReference Include="Unity.Configuration" />
-    <PackageReference Include="Unity.Container" />
-  </ItemGroup>
+    <PropertyGroup>
+        <AssemblyTitle>AxConfiguration</AssemblyTitle>
+        <OutputPath>bin\$(Configuration)\</OutputPath>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="System.Configuration" />
+        <Reference Include="System.Data.DataSetExtensions" />
+        <Reference Include="Microsoft.CSharp" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="SampleConfigs\config.ini">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="QuickFIXn.Core" />
+        <PackageReference Include="QuickFIXn.FIX4.4" />
+        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
+        <PackageReference Include="System.Threading.Tasks.Extensions" />
+        <PackageReference Include="Unity.Abstractions" />
+        <PackageReference Include="Unity.Configuration" />
+        <PackageReference Include="Unity.Container" />
+    </ItemGroup>
 </Project>

@@ -15,7 +15,8 @@
   <ItemGroup>
     <PackageReference Include="FluentAssertions" />
     <PackageReference Include="NUnit" />
-    <PackageReference Include="QuickFix.Net" />
+    <PackageReference Include="QuickFIXn.Core" />
+    <PackageReference Include="QuickFIXn.FIX4.4" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
     <PackageReference Include="System.Threading.Tasks.Extensions" />
     <PackageReference Include="System.ValueTuple" />

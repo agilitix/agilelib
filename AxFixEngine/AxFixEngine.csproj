@@ -1,29 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <AssemblyTitle>AxFixEngine</AssemblyTitle>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AxCommandLine\AxCommandLine.csproj" />
-    <ProjectReference Include="..\AxCommonLogger\AxCommonLogger.csproj" />
-    <ProjectReference Include="..\AxConfiguration\AxConfiguration.csproj" />
-    <ProjectReference Include="..\AxExtensions\AxExtensions.csproj" />
-    <ProjectReference Include="..\AxUtils\AxUtils.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" />
-    <PackageReference Include="NUnit" />
-    <PackageReference Include="QuickFix.Net" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
-    <PackageReference Include="System.Threading.Tasks.Extensions" />
-    <PackageReference Include="System.ValueTuple" />
-    <PackageReference Include="Unity.Abstractions" />
-    <PackageReference Include="Unity.Configuration" />
-    <PackageReference Include="Unity.Container" />
-  </ItemGroup>
+    <PropertyGroup>
+        <AssemblyTitle>AxFixEngine</AssemblyTitle>
+        <OutputPath>bin\$(Configuration)\</OutputPath>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="System.Configuration" />
+        <Reference Include="System.Data.DataSetExtensions" />
+        <Reference Include="Microsoft.CSharp" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\AxCommandLine\AxCommandLine.csproj" />
+        <ProjectReference Include="..\AxCommonLogger\AxCommonLogger.csproj" />
+        <ProjectReference Include="..\AxConfiguration\AxConfiguration.csproj" />
+        <ProjectReference Include="..\AxExtensions\AxExtensions.csproj" />
+        <ProjectReference Include="..\AxUtils\AxUtils.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json" />
+        <PackageReference Include="NUnit" />
+        <PackageReference Include="QuickFIXn.Core" />
+        <PackageReference Include="QuickFIXn.FIX4.4" />
+        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
+        <PackageReference Include="System.Threading.Tasks.Extensions" />
+        <PackageReference Include="System.ValueTuple" />
+        <PackageReference Include="Unity.Abstractions" />
+        <PackageReference Include="Unity.Configuration" />
+        <PackageReference Include="Unity.Container" />
+    </ItemGroup>
 </Project>

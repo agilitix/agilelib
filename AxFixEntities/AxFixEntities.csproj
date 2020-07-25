@@ -1,35 +1,36 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <AssemblyTitle>AxFixEntities</AssemblyTitle>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Spec\FIX44.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Spec\TypeMapping.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="QuickFix.Net" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
-    <PackageReference Include="System.Threading.Tasks.Extensions" />
-    <PackageReference Include="Unity.Abstractions" />
-    <PackageReference Include="Unity.Configuration" />
-    <PackageReference Include="Unity.Container" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="EnumsGenerator - Copie.cs" />
-    <Compile Remove="bin\Debug\Components.cs" />
-    <Compile Remove="bin\Debug\Converters.cs" />
-    <Compile Remove="bin\Debug\Enums.cs" />
-    <Compile Remove="bin\Debug\Messages.cs" />
-  </ItemGroup>
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <AssemblyTitle>AxFixEntities</AssemblyTitle>
+        <OutputPath>bin\$(Configuration)\</OutputPath>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="System.Configuration" />
+        <Reference Include="System.Data.DataSetExtensions" />
+        <Reference Include="Microsoft.CSharp" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="Spec\FIX44.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Spec\TypeMapping.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="QuickFIXn.Core" />
+        <PackageReference Include="QuickFIXn.FIX4.4" />
+        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
+        <PackageReference Include="System.Threading.Tasks.Extensions" />
+        <PackageReference Include="Unity.Abstractions" />
+        <PackageReference Include="Unity.Configuration" />
+        <PackageReference Include="Unity.Container" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Remove="EnumsGenerator - Copie.cs" />
+        <Compile Remove="bin\Debug\Components.cs" />
+        <Compile Remove="bin\Debug\Converters.cs" />
+        <Compile Remove="bin\Debug\Enums.cs" />
+        <Compile Remove="bin\Debug\Messages.cs" />
+    </ItemGroup>
 </Project>

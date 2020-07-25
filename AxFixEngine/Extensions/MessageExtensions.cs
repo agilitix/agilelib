@@ -28,7 +28,7 @@ namespace AxFixEngine.Extensions
 
         public static MsgType GetMsgType(this Message self)
         {
-            string msgType = self.Header.GetField(Tags.MsgType);
+            string msgType = self.Header.GetString(Tags.MsgType);
             return new MsgType(msgType);
         }
 
@@ -86,7 +86,7 @@ namespace AxFixEngine.Extensions
             XDocument doc = new XDocument(new XDeclaration("1.0", "utf-8", null));
 
             XElement root = new XElement("Message");
-            root.Add(new XAttribute("MsgType", self.Header.GetField(Tags.MsgType)));
+            root.Add(new XAttribute("MsgType", self.Header.GetString(Tags.MsgType)));
             root.Add(new XAttribute("MsgName", msgName));
             doc.Add(root);
 
@@ -264,7 +264,7 @@ namespace AxFixEngine.Extensions
                 XElement child;
                 Type fieldType;
 
-                string value = fieldMap.GetField(tag);
+                string value = fieldMap.GetString(tag);
 
                 if (dictionary.TryGetFieldType(tag, out fieldType))
                 {

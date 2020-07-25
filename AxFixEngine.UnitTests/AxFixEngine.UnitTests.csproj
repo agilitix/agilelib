@@ -1,35 +1,36 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <AssemblyTitle>AxQuickFix.UnitTests</AssemblyTitle>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AxFixEngine\AxFixEngine.csproj" />
-    <ProjectReference Include="..\AxFixEntities\AxFixEntities.csproj" />
-    <ProjectReference Include="..\AxQuality\AxQuality.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Spec\FIX44.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="FluentAssertions" />
-    <PackageReference Include="NUnit" />
-    <PackageReference Include="NUnit3TestAdapter">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="QuickFix.Net" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
-    <PackageReference Include="System.Threading.Tasks.Extensions" />
-    <PackageReference Include="System.ValueTuple" />
-    <PackageReference Include="Unity.Abstractions" />
-    <PackageReference Include="Unity.Configuration" />
-    <PackageReference Include="Unity.Container" />
-  </ItemGroup>
+    <PropertyGroup>
+        <AssemblyTitle>AxQuickFix.UnitTests</AssemblyTitle>
+        <OutputPath>bin\$(Configuration)\</OutputPath>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="System.Configuration" />
+        <Reference Include="System.Data.DataSetExtensions" />
+        <Reference Include="Microsoft.CSharp" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\AxFixEngine\AxFixEngine.csproj" />
+        <ProjectReference Include="..\AxFixEntities\AxFixEntities.csproj" />
+        <ProjectReference Include="..\AxQuality\AxQuality.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="Spec\FIX44.xml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="FluentAssertions" />
+        <PackageReference Include="NUnit" />
+        <PackageReference Include="NUnit3TestAdapter">
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="QuickFIXn.Core" />
+        <PackageReference Include="QuickFIXn.FIX4.4" />
+        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
+        <PackageReference Include="System.Threading.Tasks.Extensions" />
+        <PackageReference Include="System.ValueTuple" />
+        <PackageReference Include="Unity.Abstractions" />
+        <PackageReference Include="Unity.Configuration" />
+        <PackageReference Include="Unity.Container" />
+    </ItemGroup>
 </Project>
