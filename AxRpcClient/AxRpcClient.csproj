@@ -2,6 +2,11 @@
     <PropertyGroup>
         <AssemblyTitle>AxRpcClient</AssemblyTitle>
         <OutputPath>bin\$(Configuration)\</OutputPath>
+        <TargetFramework>net462</TargetFramework>
+        <PlatformTarget>$(Platform)</PlatformTarget>
+        <Prefer32Bit>false</Prefer32Bit>
+        <DebugType Condition=" '$(Configuration)' == 'Debug' ">full</DebugType>
+        <DebugType Condition=" '$(Configuration)' == 'Release' ">pdbonly</DebugType>
     </PropertyGroup>
     <ItemGroup>
         <Reference Include="System.Data.DataSetExtensions" />

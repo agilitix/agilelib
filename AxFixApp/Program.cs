@@ -42,7 +42,7 @@ namespace AxFixApp
             Logger = LoggerFacadeProvider.GetDeclaringTypeLogger();
 
             // Log some useful infos.
-            Logger.Info("Starting FIX engine version=" + Assembly.GetEntryAssembly().GetName().Version);
+            Logger.Info("Starting FIX engine version=" + Assembly.GetEntryAssembly()?.GetName().Version);
             Logger.Info("Main => PID=" + Process.GetCurrentProcess().Id + " / ThreadID=" + Thread.CurrentThread.ManagedThreadId);
 
             ICommandLineArguments commandLineArguments = new CommandLineArguments(args);

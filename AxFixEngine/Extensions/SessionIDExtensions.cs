@@ -10,9 +10,13 @@ namespace AxFixEngine.Extensions
     {
         public static SessionID GetReverseSessionID(this SessionID self)
         {
-            Message msg = new Message();
-            msg.SetSessionID(self);
-            return Message.GetReverseSessionID(msg);
+            return new SessionID(self.BeginString,
+                                 self.TargetCompID,
+                                 self.TargetSubID,
+                                 self.TargetLocationID,
+                                 self.SenderCompID,
+                                 self.SenderSubID,
+                                 self.SenderLocationID);
         }
     }
 }

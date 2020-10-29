@@ -1,15 +1,9 @@
 <Project>
-    <PropertyGroup Label="Build">
+    <PropertyGroup Label="Compilation">
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-    </PropertyGroup>
-
-    <PropertyGroup Label="Compilation">
-        <TargetFramework>net462</TargetFramework>
-        <PlatformTarget>$(Platform)</PlatformTarget>
-        <Prefer32Bit>false</Prefer32Bit>
-        <DebugType Condition=" '$(Configuration)' == 'Debug' ">full</DebugType>
-        <DebugType Condition=" '$(Configuration)' == 'Release' ">pdbonly</DebugType>
+        <LangVersion>7</LangVersion>
+        <Platforms>AnyCPU;x64;x86</Platforms>
     </PropertyGroup>
 
     <PropertyGroup Label="Run">

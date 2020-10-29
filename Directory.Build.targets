@@ -6,6 +6,6 @@
         <Message Importance="High" Text="Platform=$(Platform)" />
         <Message Importance="High" Text="PlatformTarget=$(PlatformTarget) / Prefer32Bit=$(Prefer32Bit)" />
         <Message Importance="High" Text="NuGetProjectStyle=$(NuGetProjectStyle)" />
-        <Message Importance="High" Text="NUGET_PACKAGES=$(NUGET_PACKAGES)" />
+        <Message Importance="High" Text="NuGetPackageRoot=$(NuGetPackageRoot)" />
     </Target>
 </Project>
