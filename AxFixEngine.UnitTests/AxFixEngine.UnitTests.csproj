@@ -5,6 +5,9 @@
         <TargetFramework>net462</TargetFramework>
         <PlatformTarget>$(Platform)</PlatformTarget>
         <Prefer32Bit>false</Prefer32Bit>
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    </PropertyGroup>
+    <PropertyGroup>
         <DebugType Condition=" '$(Configuration)' == 'Debug' ">full</DebugType>
         <DebugType Condition=" '$(Configuration)' == 'Release' ">pdbonly</DebugType>
     </PropertyGroup>
