@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using AxConfiguration.Interfaces;
 using AxConfiguration.UnitTests.Test.Logger.Implementations;
 using AxConfiguration.UnitTests.Test.Logger.Interfaces;

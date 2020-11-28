@@ -3,7 +3,7 @@
         <AssemblyTitle>AxCommonLogger</AssemblyTitle>
         <OutputPath>bin\$(Configuration)\</OutputPath>
         <TargetFramework>net462</TargetFramework>
-        <PlatformTarget>$(Platform)</PlatformTarget>
+        <PlatformTarget>AnyCPU</PlatformTarget>
         <Prefer32Bit>false</Prefer32Bit>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     </PropertyGroup>
@@ -40,5 +40,13 @@
         <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
         <PackageReference Include="System.Threading.Tasks.Extensions" />
         <PackageReference Include="System.ValueTuple" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Update="Appenders\log4net.async.sample.config">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </None>
+      <None Update="log4net.config">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 </Project>

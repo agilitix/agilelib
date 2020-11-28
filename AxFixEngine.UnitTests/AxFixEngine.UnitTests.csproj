@@ -3,7 +3,7 @@
         <AssemblyTitle>AxQuickFix.UnitTests</AssemblyTitle>
         <OutputPath>bin\$(Configuration)\</OutputPath>
         <TargetFramework>net462</TargetFramework>
-        <PlatformTarget>$(Platform)</PlatformTarget>
+        <PlatformTarget>AnyCPU</PlatformTarget>
         <Prefer32Bit>false</Prefer32Bit>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     </PropertyGroup>
@@ -29,9 +29,7 @@
     <ItemGroup>
         <PackageReference Include="FluentAssertions" />
         <PackageReference Include="NUnit" />
-        <PackageReference Include="NUnit3TestAdapter">
-            <PrivateAssets>all</PrivateAssets>
-        </PackageReference>
+        <PackageReference Include="NUnit3TestAdapter" />
         <PackageReference Include="QuickFIXn.Core" />
         <PackageReference Include="QuickFIXn.FIX4.4" />
         <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
@@ -40,5 +38,6 @@
         <PackageReference Include="Unity.Abstractions" />
         <PackageReference Include="Unity.Configuration" />
         <PackageReference Include="Unity.Container" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" />
     </ItemGroup>
 </Project>

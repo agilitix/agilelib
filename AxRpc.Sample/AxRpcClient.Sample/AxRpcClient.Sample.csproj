@@ -4,7 +4,7 @@
         <AssemblyTitle>AxRpcClient.Sample</AssemblyTitle>
         <OutputPath>bin\$(Configuration)\</OutputPath>
         <TargetFramework>net462</TargetFramework>
-        <PlatformTarget>$(Platform)</PlatformTarget>
+        <PlatformTarget>AnyCPU</PlatformTarget>
         <Prefer32Bit>false</Prefer32Bit>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     </PropertyGroup>

@@ -1,24 +1,15 @@
 ﻿using System;
-using System.Reflection;
-using log4net;
 using Topshelf;
-using TopShelfSample;
 
 namespace TopShelfSamples
 {
     class Program
     {
-        private static ILog _systemEventLogger;
-        private static ILog _logger;
-
         static void Main(string[] args)
         {
             TopshelfExitCode rc = HostFactory.Run(x =>
                                                   {
                                                       x.UseLog4Net("log4net.config");
-
-                                                      _systemEventLogger = LogManager.GetLogger("SystemEventLog");
-                                                      _logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
                                                       x.Service<Service>(sc =>
                                                                          {

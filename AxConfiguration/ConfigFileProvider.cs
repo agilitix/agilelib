@@ -22,13 +22,13 @@ namespace AxConfiguration
 
         public string GetConfigFile(string baseName)
         {
-            // .\Config\{baseName}.host.somehost.config
             // .\Config\{baseName}.user.awindowsacccount.config
+            // .\Config\{baseName}.host.somehost.config
             // .\Config\{baseName}.config
             string[] possibleConfigFiles =
             {
-                Path.Combine(ConfigDirectory, $"{baseName}.host.{Dns.GetHostName().ToLower()}.config"),
                 Path.Combine(ConfigDirectory, $"{baseName}.user.{Environment.UserName.ToLower()}.config"),
+                Path.Combine(ConfigDirectory, $"{baseName}.host.{Dns.GetHostName().ToLower()}.config"),
                 Path.Combine(ConfigDirectory, $"{baseName}.config"),
             };
 

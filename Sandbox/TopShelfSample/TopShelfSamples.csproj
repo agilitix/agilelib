@@ -4,7 +4,7 @@
         <AssemblyTitle>TopShelfSamples</AssemblyTitle>
         <OutputPath>bin\$(Configuration)\</OutputPath>
         <TargetFramework>net462</TargetFramework>
-        <PlatformTarget>$(Platform)</PlatformTarget>
+        <PlatformTarget>AnyCPU</PlatformTarget>
         <Prefer32Bit>false</Prefer32Bit>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     </PropertyGroup>
@@ -23,5 +23,10 @@
         <PackageReference Include="log4net" />
         <PackageReference Include="Topshelf" />
         <PackageReference Include="Topshelf.Log4Net" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Update="log4net.config">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 </Project>

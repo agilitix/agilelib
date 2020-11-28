@@ -3,7 +3,7 @@
         <AssemblyTitle>AxUnit</AssemblyTitle>
         <OutputPath>bin\$(Configuration)\</OutputPath>
         <TargetFramework>net462</TargetFramework>
-        <PlatformTarget>$(Platform)</PlatformTarget>
+        <PlatformTarget>AnyCPU</PlatformTarget>
         <Prefer32Bit>false</Prefer32Bit>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     </PropertyGroup>
@@ -17,8 +17,7 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="NUnit" />
-        <PackageReference Include="NUnit3TestAdapter">
-            <PrivateAssets>all</PrivateAssets>
-        </PackageReference>
+        <PackageReference Include="NUnit3TestAdapter" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" />
     </ItemGroup>
 </Project>

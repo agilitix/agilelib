@@ -3,7 +3,7 @@
         <AssemblyTitle>AxConfiguration.UnitTests</AssemblyTitle>
         <OutputPath>bin\$(Configuration)\</OutputPath>
         <TargetFramework>net462</TargetFramework>
-        <PlatformTarget>$(Platform)</PlatformTarget>
+        <PlatformTarget>AnyCPU</PlatformTarget>
         <Prefer32Bit>false</Prefer32Bit>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     </PropertyGroup>
@@ -31,6 +31,7 @@
         <PackageReference Include="Unity.Abstractions" />
         <PackageReference Include="Unity.Configuration" />
         <PackageReference Include="Unity.Container" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" />
     </ItemGroup>
     <ItemGroup>
         <None Update="AppConfiguration\app.main.config">

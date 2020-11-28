@@ -29,7 +29,7 @@ namespace AxConfiguration
                                 : string.Empty;
 
             _container = new UnityContainer();
-            LoadUnityContainer(ConfigFile);
+            LoadUnityContainer2(ConfigFile);
 
             _baseAliases = null;
         }
@@ -48,7 +48,7 @@ namespace AxConfiguration
                        : _container.Resolve<T>(name);
         }
 
-        protected void LoadUnityContainer(string configFile)
+        protected void LoadUnityContainer2(string configFile)
         {
             // Open the configurationFileName file.
             var fileMap = new ExeConfigurationFileMap {ExeConfigFilename = configFile};
@@ -68,7 +68,7 @@ namespace AxConfiguration
                     }
 
                     // Go to base file.
-                    LoadUnityContainer(baseFile);
+                    LoadUnityContainer2(baseFile);
                 }
             }
 
