@@ -7,6 +7,6 @@
     </PropertyGroup>
 
     <PropertyGroup Label="Run">
-        <UseVSHostingProcess Condition=" $(OutputType.ToLowerInvariant()) == 'exe' ">false</UseVSHostingProcess>
+        <UseVSHostingProcess Condition=" '$(OutputType.ToLowerInvariant())' == 'exe' ">false</UseVSHostingProcess>
     </PropertyGroup>
 </Project>
