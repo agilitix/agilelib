@@ -45,27 +45,27 @@ namespace AxFixApp
             Logger.Info("Starting FIX engine version=" + Assembly.GetEntryAssembly()?.GetName().Version);
             Logger.Info("Main => PID=" + Process.GetCurrentProcess().Id + " / ThreadID=" + Thread.CurrentThread.ManagedThreadId);
 
+            // Command line parser.
             ICommandLineArguments commandLineArguments = new CommandLineArguments(args);
             Logger.Info("Command line arguments: " + commandLineArguments);
 
-            string initiatorConfig = null;
-            if (appConfig.GetKey<bool>("initiator_enabled"))
-            {
-                initiatorConfig = appConfig.GetKey<string>("initiator_settings");
-            }
 
-            string acceptorConfig = null;
+            // Create the fix engine manager and build the acceptor/initiator engines.
+            IFixEngineManager fixEngineManager = new FixEngineManager();
+
             if (appConfig.GetKey<bool>("acceptor_enabled"))
             {
-                acceptorConfig = appConfig.GetKey<string>("acceptor_settings");
+                var acceptorConfig = appConfig.GetKey<string>("acceptor_settings");
+                fixEngineManager.CreateFixEngine(acceptorConfig);
             }
 
-            // Create the fix engine manager and build the internal fix engines,
-            // one for the acceptor then one for the initiator.
-            // Nothing happens if the corresponding config file does not exits.
-            IFixEngineManager fixEngineManager = new FixEngineManager();
-            fixEngineManager.CreateFixEngine(acceptorConfig);
-            fixEngineManager.CreateFixEngine(initiatorConfig);
+            if (appConfig.GetKey<bool>("initiator_enabled"))
+            {
+                var initiatorConfig = appConfig.GetKey<string>("initiator_settings");
+                fixEngineManager.CreateFixEngine(initiatorConfig);
+            }
+
+            // Start the acceptor/initiator engines.
             fixEngineManager.Start();
 
             do
@@ -75,7 +75,7 @@ namespace AxFixApp
             }
             while (Console.ReadKey().Key != ConsoleKey.X);
 
-            // Stop the internal fix engines.
+            // Stop the acceptor/initiator engines.
             fixEngineManager.Stop();
         }
     }
