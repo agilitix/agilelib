@@ -1,11 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
+        <OutputType>Library</OutputType>
         <AssemblyTitle>AxRpcServer</AssemblyTitle>
         <OutputPath>bin\$(Configuration)\</OutputPath>
         <TargetFramework>net472</TargetFramework>
         <PlatformTarget>AnyCPU</PlatformTarget>
-        <Prefer32Bit>false</Prefer32Bit>
-        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     </PropertyGroup>
     <PropertyGroup>
         <DebugType Condition=" '$(Configuration)' == 'Debug' ">full</DebugType>
