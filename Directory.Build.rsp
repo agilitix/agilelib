@@ -1,2 +1,2 @@
 -restore
--maxCpuCount:8
+-maxCpuCount:1

@@ -4,6 +4,12 @@
         <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
         <LangVersion>7</LangVersion>
         <Platforms>AnyCPU;x64;x86</Platforms>
+
+        <!-- Avoid copying assemblies from msbuild tooling / Microsoft.NET.Build.Extensions, see https://github.com/dotnet/runtime/issues/24382 -->
+        <ImplicitlyExpandNETStandardFacades>false</ImplicitlyExpandNETStandardFacades>
+
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     </PropertyGroup>
 
     <PropertyGroup Label="Run">

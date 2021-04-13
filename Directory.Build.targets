@@ -3,11 +3,13 @@
 
     <Target Name="BuildInfos" AfterTargets="Build">
         <Message Importance="High" Text="MSBuildProjectName=$(MSBuildProjectName)" />
+        <Message Importance="High" Text="=>MSBuildNodeCount=$(MSBuildNodeCount)" />
         <Message Importance="High" Text="=>Configuration|Platform=$(Configuration)|$(Platform)" />
         <Message Importance="High" Text="=>PlatformTarget=$(PlatformTarget)" />
         <Message Importance="High" Text="=>OutputType=$(OutputType)" />
-        <Message Importance="High" Condition=" '$(OutputType.ToLowerInvariant())' == 'exe' or '$(OutputType.ToLowerInvariant())' == 'winexe' " Text="=>Prefer32Bit=$(Prefer32Bit)" />
+        <Message Importance="High" Condition=" ('$(OutputType.ToLowerInvariant())' == 'exe' or '$(OutputType.ToLowerInvariant())' == 'winexe') and '$(PlatformTarget)' == 'AnyCPU' " Text="=>Prefer32Bit=$(Prefer32Bit)" />
         <Message Importance="High" Text="=>OutputPath=$(OutputPath)" />
+        <Message Importance="High" Text="=>TargetDir=$(TargetDir)" />
         <Message Importance="High" Text="=>NuGetProjectStyle=$(NuGetProjectStyle)" />
         <Message Importance="High" Text="=>NuGetPackageRoot=$(NuGetPackageRoot)" />
     </Target>

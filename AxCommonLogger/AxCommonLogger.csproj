@@ -2,10 +2,9 @@
     <PropertyGroup>
         <AssemblyTitle>AxCommonLogger</AssemblyTitle>
         <OutputPath>bin\$(Configuration)\</OutputPath>
-        <TargetFramework>net462</TargetFramework>
+        <TargetFramework>net472</TargetFramework>
         <PlatformTarget>AnyCPU</PlatformTarget>
         <Prefer32Bit>false</Prefer32Bit>
-        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     </PropertyGroup>
     <PropertyGroup>
         <DebugType Condition=" '$(Configuration)' == 'Debug' ">full</DebugType>
