@@ -12,16 +12,13 @@
         <DebugType Condition=" '$(Configuration)' == 'Release' ">pdbonly</DebugType>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="System.Configuration.Install" />
-        <Reference Include="System.ServiceProcess" />
-        <Reference Include="System.Data.DataSetExtensions" />
-        <Reference Include="Microsoft.CSharp" />
-        <Reference Include="System.Net.Http" />
-    </ItemGroup>
-    <ItemGroup>
         <PackageReference Include="log4net" />
         <PackageReference Include="Topshelf" />
         <PackageReference Include="Topshelf.Log4Net" />
+        <PackageReference Include="System.ServiceProcess.ServiceController" />
+        <PackageReference Include="System.Data.DataSetExtensions" />
+        <PackageReference Include="Microsoft.CSharp" />
+        <PackageReference Include="System.Net.Http" />
     </ItemGroup>
     <ItemGroup>
       <None Update="log4net.config">

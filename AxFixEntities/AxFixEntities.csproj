@@ -12,11 +12,6 @@
         <DebugType Condition=" '$(Configuration)' == 'Release' ">pdbonly</DebugType>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="System.Configuration" />
-        <Reference Include="System.Data.DataSetExtensions" />
-        <Reference Include="Microsoft.CSharp" />
-    </ItemGroup>
-    <ItemGroup>
         <Content Include="Spec\FIX44.xml">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
@@ -32,6 +27,9 @@
         <PackageReference Include="Unity.Abstractions" />
         <PackageReference Include="Unity.Configuration" />
         <PackageReference Include="Unity.Container" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" />
+        <PackageReference Include="System.Data.DataSetExtensions" />
+        <PackageReference Include="Microsoft.CSharp" />
     </ItemGroup>
     <ItemGroup>
         <Compile Remove="EnumsGenerator - Copie.cs" />

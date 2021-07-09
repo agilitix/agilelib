@@ -11,18 +11,16 @@
         <DebugType Condition=" '$(Configuration)' == 'Release' ">pdbonly</DebugType>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="System.Configuration" />
-        <Reference Include="System.Data.DataSetExtensions" />
-        <Reference Include="Microsoft.CSharp" />
-    </ItemGroup>
-    <ItemGroup>
         <ProjectReference Include="..\AxCommandLine\AxCommandLine.csproj" />
         <ProjectReference Include="..\AxQuality\AxQuality.csproj" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="FluentAssertions" />
+        <PackageReference Include="Microsoft.CSharp" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" />
         <PackageReference Include="NUnit" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" />
+        <PackageReference Include="System.Data.DataSetExtensions" />
         <PackageReference Include="System.ValueTuple" />
     </ItemGroup>
 </Project>

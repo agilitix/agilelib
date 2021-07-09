@@ -11,18 +11,6 @@
         <DebugType Condition=" '$(Configuration)' == 'Release' ">pdbonly</DebugType>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="System.Configuration" />
-        <Reference Include="System.IO.Compression" />
-        <Reference Include="System.Net" />
-        <Reference Include="System.ServiceModel" />
-        <Reference Include="System.Transactions" />
-        <Reference Include="System.Windows" />
-        <Reference Include="System.Windows.Forms" />
-        <Reference Include="System.Data.DataSetExtensions" />
-        <Reference Include="Microsoft.CSharp" />
-        <Reference Include="WindowsBase" />
-    </ItemGroup>
-    <ItemGroup>
         <ProjectReference Include="..\AxUtils\AxUtils.csproj" />
     </ItemGroup>
     <ItemGroup>
@@ -39,6 +27,12 @@
         <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
         <PackageReference Include="System.Threading.Tasks.Extensions" />
         <PackageReference Include="System.ValueTuple" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" />
+        <PackageReference Include="System.IO.Compression" />
+        <PackageReference Include="System.Net.Primitives" />
+        <PackageReference Include="System.ServiceModel" />
+        <PackageReference Include="System.Data.DataSetExtensions" />
+        <PackageReference Include="Microsoft.CSharp" />
     </ItemGroup>
     <ItemGroup>
       <None Update="Appenders\log4net.async.sample.config">

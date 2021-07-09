@@ -12,12 +12,9 @@
         <DebugType Condition=" '$(Configuration)' == 'Release' ">pdbonly</DebugType>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="System.Web.Extensions" />
-        <Reference Include="System.Data.DataSetExtensions" />
-        <Reference Include="Microsoft.CSharp" />
-        <Reference Include="System.Net.Http" />
-    </ItemGroup>
-    <ItemGroup>
+        <PackageReference Include="System.Data.DataSetExtensions" />
+        <PackageReference Include="Microsoft.CSharp" />
+        <PackageReference Include="System.Net.Http" />
         <PackageReference Include="Newtonsoft.Json" />
     </ItemGroup>
 </Project>

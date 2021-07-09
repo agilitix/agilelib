@@ -2,6 +2,7 @@
     <PropertyGroup Label="Compilation">
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+
         <LangVersion>7</LangVersion>
         <Platforms>AnyCPU;x64;x86</Platforms>
 

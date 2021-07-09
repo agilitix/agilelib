@@ -11,11 +11,6 @@
         <DebugType Condition=" '$(Configuration)' == 'Release' ">pdbonly</DebugType>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="System.Data.DataSetExtensions" />
-        <Reference Include="Microsoft.CSharp" />
-        <Reference Include="System.Net.Http" />
-    </ItemGroup>
-    <ItemGroup>
         <Protobuf Include="HelloWorld.proto" />
     </ItemGroup>
     <ItemGroup>
@@ -23,9 +18,7 @@
         <PackageReference Include="Grpc" />
         <PackageReference Include="Grpc.Core" />
         <PackageReference Include="Grpc.Core.Api" />
-        <PackageReference Include="Grpc.Tools">
-            <PrivateAssets>all</PrivateAssets>
-        </PackageReference>
+        <PackageReference Include="Grpc.Tools" PrivateAssets="All" />
         <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" />
         <PackageReference Include="System.Buffers" />
         <PackageReference Include="System.Interactive.Async" />
@@ -34,5 +27,8 @@
         <PackageReference Include="System.Numerics.Vectors" />
         <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
         <PackageReference Include="System.Threading.Tasks.Extensions" />
+        <PackageReference Include="System.Data.DataSetExtensions" />
+        <PackageReference Include="Microsoft.CSharp" />
+        <PackageReference Include="System.Net.Http" />
     </ItemGroup>
 </Project>

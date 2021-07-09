@@ -13,10 +13,12 @@
     </PropertyGroup>
     <ItemGroup>
         <Reference Include="System.Messaging" />
-        <Reference Include="System.Data.DataSetExtensions" />
-        <Reference Include="Microsoft.CSharp" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\AxMsmq\AxMsmq.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="System.Data.DataSetExtensions" />
+        <PackageReference Include="Microsoft.CSharp" />
     </ItemGroup>
 </Project>

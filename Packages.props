@@ -1,59 +1,72 @@
 <Project>
     <ItemGroup>
-        <!-- Include = reference a package in all projects -->
-        <!-- Update  = define the package version if referenced in a csproj/PackageReference -->
-        <!-- GeneratePathProperty="true" = create a property path for the concerned NuGet, e.g.: $(PkgNewtonsoft_Json)="C:\Users\xxxxx\.nuget\PackRef\newtonsoft.json\12.0.3" -->
+        <!-- Enable building .NET Framework projects on any machine with at least MSBuild or the .NET Core SDK installed -->
+        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="All" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- Include => reference a package in all projects -->
+        <!-- Update  => define the package version if referenced in a csproj/PackageReference -->
+        <!-- GeneratePathProperty="true" => create a property path for the concerned NuGet, e.g.: $(PkgNewtonsoft_Json)="C:\Users\xxxxx\.nuget\PackRef\newtonsoft.json\12.0.3" -->
         <!-- NoWarn NU1605: a package version downgrade is ok -->
         <!-- NoWarn NU1608: a package not in dependency constraints is ok -->
-        <PackageReference Update="Antlr3.Runtime" Version="[3.5.1]" />
-        <PackageReference Update="Castle.Core" Version="[4.4.1]" />
-        <PackageReference Update="Dapper" Version="[2.0.78]" />
-        <PackageReference Update="Desharp" Version="[1.3.0.3]" />
-        <PackageReference Update="FluentAssertions" Version="[5.10.3]" />
-        <PackageReference Update="FluentNHibernate" Version="[3.0.1]" />
-        <PackageReference Update="Google.Protobuf" Version="[3.13.0]" />
-        <PackageReference Update="Grpc" Version="[2.33.1]" />
-        <PackageReference Update="Grpc.Core" Version="[2.33.1]" />
-        <PackageReference Update="Grpc.Core.Api" Version="[2.33.1]" />
-        <PackageReference Update="Grpc.Tools" Version="[2.33.1]" />
-        <PackageReference Update="Iesi.Collections" Version="[4.0.4]" />
-        <PackageReference Update="log4net" Version="[2.0.12]" />
-        <PackageReference Update="Microsoft.Bcl.AsyncInterfaces" Version="[1.1.1]" />
-        <PackageReference Update="Microsoft.NET.Test.Sdk" Version="[16.8.0]" />
-        <PackageReference Update="Newtonsoft.Json" Version="[12.0.3]" />
-        <PackageReference Update="NHibernate" Version="[5.3.3]" />
-        <PackageReference Update="NLog" Version="[4.7.5]" />
-        <PackageReference Update="NLog.Config" Version="[4.7.5]" />
-        <PackageReference Update="NLog.Schema" Version="[4.7.5]" />
-        <PackageReference Update="NSubstitute" Version="[4.2.2]" />
-        <PackageReference Update="NUnit" Version="[3.12.0]" />
-        <PackageReference Update="NUnit3TestAdapter" Version="[3.17.0]" />
-        <PackageReference Update="QuickFIXn.Core" Version="[1.10.0]" />
-        <PackageReference Update="QuickFIXn.FIX4.4" Version="[1.10.0]" />
-        <PackageReference Update="Remotion.Linq" Version="[2.2.0]" />
-        <PackageReference Update="Remotion.Linq.EagerFetching" Version="[2.2.0]" />
-        <PackageReference Update="System.Buffers" Version="[4.5.1]" />
-        <PackageReference Update="System.Interactive.Async" Version="[4.1.1]" />
-        <PackageReference Update="System.Linq.Async" Version="[4.1.1]" />
-        <PackageReference Update="System.Memory" Version="[4.5.4]" />
-        <PackageReference Update="System.Numerics.Vectors" Version="[4.5.0]" />
-        <PackageReference Update="System.Reactive" Version="[4.4.1]" />
-        <PackageReference Update="System.Reactive.Core" Version="[4.4.1]" />
-        <PackageReference Update="System.Reactive.Interfaces" Version="[4.4.1]" />
-        <PackageReference Update="System.Reactive.Linq" Version="[4.4.1]" />
-        <PackageReference Update="System.Reactive.PlatformServices" Version="[4.4.1]" />
-        <PackageReference Update="System.Reactive.Windows.Threading" Version="[4.4.1]" />
-        <PackageReference Update="System.Runtime.CompilerServices.Unsafe" Version="[4.7.1]" />
-        <PackageReference Update="System.Runtime.CompilerServices.Unsafe" Version="[4.7.1]" />
-        <PackageReference Update="System.Runtime.CompilerServices.Unsafe" Version="[4.7.1]" />
-        <PackageReference Update="System.Threading.Tasks.Extensions" Version="[4.5.4]" />
-        <PackageReference Update="System.Threading.Tasks.Extensions" Version="[4.5.4]" />
-        <PackageReference Update="System.Threading.Tasks.Extensions" Version="[4.5.4]" />
-        <PackageReference Update="System.ValueTuple" Version="[4.5.0]" />
-        <PackageReference Update="Topshelf" Version="[4.2.1]" />
-        <PackageReference Update="Topshelf.Log4Net" Version="[4.2.1]" />
-        <PackageReference Update="Unity.Abstractions" Version="[5.11.6]" />
-        <PackageReference Update="Unity.Configuration" Version="[5.11.2]" />
-        <PackageReference Update="Unity.Container" Version="[5.11.8]" />
+        <PackageReference Update="Antlr3.Runtime" Version="3.5.1" />
+        <PackageReference Update="Castle.Core" Version="4.4.1" />
+        <PackageReference Update="Dapper" Version="2.0.78" />
+        <PackageReference Update="Desharp" Version="1.3.0.3" />
+        <PackageReference Update="FluentAssertions" Version="5.10.3" />
+        <PackageReference Update="FluentNHibernate" Version="3.0.1" />
+        <PackageReference Update="Google.Protobuf" Version="3.13.0" />
+        <PackageReference Update="Grpc" Version="2.33.1" />
+        <PackageReference Update="Grpc.Core" Version="2.33.1" />
+        <PackageReference Update="Grpc.Core.Api" Version="2.33.1" />
+        <PackageReference Update="Grpc.Tools" Version="2.33.1" />
+        <PackageReference Update="Iesi.Collections" Version="4.0.4" />
+        <PackageReference Update="log4net" Version="2.0.12" />
+        <PackageReference Update="Microsoft.Bcl.AsyncInterfaces" Version="1.1.1" />
+        <PackageReference Update="Microsoft.CSharp" Version="1.0.0" />
+        <PackageReference Update="Microsoft.NET.Test.Sdk" Version="16.8.0" />
+        <PackageReference Update="Newtonsoft.Json" Version="12.0.3" />
+        <PackageReference Update="NHibernate" Version="5.3.3" />
+        <PackageReference Update="NLog" Version="4.7.5" />
+        <PackageReference Update="NLog.Config" Version="4.7.5" />
+        <PackageReference Update="NLog.Schema" Version="4.7.5" />
+        <PackageReference Update="NSubstitute" Version="4.2.2" />
+        <PackageReference Update="NUnit" Version="3.12.0" />
+        <PackageReference Update="NUnit3TestAdapter" Version="3.17.0" />
+        <PackageReference Update="QuickFIXn.Core" Version="1.10.0" />
+        <PackageReference Update="QuickFIXn.FIX4.4" Version="1.10.0" />
+        <PackageReference Update="Remotion.Linq" Version="2.2.0" />
+        <PackageReference Update="Remotion.Linq.EagerFetching" Version="2.2.0" />
+        <PackageReference Update="System.Buffers" Version="4.5.1" />
+        <PackageReference Update="System.ComponentModel.Annotations" Version="5.0.0" />
+        <PackageReference Update="System.Configuration.ConfigurationManager" Version="4.4.0" />
+        <PackageReference Update="System.Data.DataSetExtensions" Version="4.5.0" />
+        <PackageReference Update="System.Interactive.Async" Version="4.1.1" />
+        <PackageReference Update="System.IO.Compression" Version="4.0.0" />
+        <PackageReference Update="System.Linq.Async" Version="4.1.1" />
+        <PackageReference Update="System.Memory" Version="4.5.4" />
+        <PackageReference Update="System.Net.Http" Version="4.3.4" />
+        <PackageReference Update="System.Net.Primitives" Version="3.9.0" />
+        <PackageReference Update="System.Numerics.Vectors" Version="4.5.0" />
+        <PackageReference Update="System.Reactive" Version="4.4.1" />
+        <PackageReference Update="System.Reactive.Core" Version="4.4.1" />
+        <PackageReference Update="System.Reactive.Interfaces" Version="4.4.1" />
+        <PackageReference Update="System.Reactive.Linq" Version="4.4.1" />
+        <PackageReference Update="System.Reactive.PlatformServices" Version="4.4.1" />
+        <PackageReference Update="System.Reactive.Windows.Threading" Version="4.4.1" />
+        <PackageReference Update="System.Runtime.CompilerServices.Unsafe" Version="4.7.1" />
+        <PackageReference Update="System.Runtime.CompilerServices.Unsafe" Version="4.7.1" />
+        <PackageReference Update="System.Runtime.CompilerServices.Unsafe" Version="4.7.1" />
+        <PackageReference Update="System.Security.Cryptography.ProtectedData" Version="4.0.0" />
+        <PackageReference Update="System.ServiceModel" Version="1.0.0" />
+        <PackageReference Update="System.ServiceProcess.ServiceController" Version="4.1.0" />
+        <PackageReference Update="System.Threading.Tasks.Extensions" Version="4.5.4" />
+        <PackageReference Update="System.ValueTuple" Version="4.5.0" />
+        <PackageReference Update="Topshelf" Version="4.2.1" />
+        <PackageReference Update="Topshelf.Log4Net" Version="4.2.1" />
+        <PackageReference Update="Unity.Abstractions" Version="5.11.6" />
+        <PackageReference Update="Unity.Configuration" Version="5.11.2" />
+        <PackageReference Update="Unity.Container" Version="5.11.8" />
     </ItemGroup>
 </Project>

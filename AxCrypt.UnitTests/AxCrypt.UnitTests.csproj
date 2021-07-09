@@ -11,12 +11,6 @@
         <DebugType Condition=" '$(Configuration)' == 'Release' ">pdbonly</DebugType>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="System.Configuration" />
-        <Reference Include="System.Security" />
-        <Reference Include="System.Data.DataSetExtensions" />
-        <Reference Include="Microsoft.CSharp" />
-    </ItemGroup>
-    <ItemGroup>
         <ProjectReference Include="..\AxCrypt\AxCrypt.csproj" />
         <ProjectReference Include="..\AxQuality\AxQuality.csproj" />
     </ItemGroup>
@@ -26,5 +20,9 @@
         <PackageReference Include="NUnit3TestAdapter" />
         <PackageReference Include="System.ValueTuple" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" />
+        <PackageReference Include="System.Security.Cryptography.ProtectedData" />
+        <PackageReference Include="System.Data.DataSetExtensions" />
+        <PackageReference Include="Microsoft.CSharp" />
     </ItemGroup>
 </Project>

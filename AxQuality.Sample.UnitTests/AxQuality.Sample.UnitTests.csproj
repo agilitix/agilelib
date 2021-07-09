@@ -11,11 +11,6 @@
         <DebugType Condition=" '$(Configuration)' == 'Release' ">pdbonly</DebugType>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="System.Configuration" />
-        <Reference Include="System.Data.DataSetExtensions" />
-        <Reference Include="Microsoft.CSharp" />
-    </ItemGroup>
-    <ItemGroup>
         <ProjectReference Include="..\AxExtensions\AxExtensions.csproj" />
         <ProjectReference Include="..\AxQuality.Sample\AxQuality.Sample.Interfaces\AxQuality.Sample.Interfaces.csproj" />
         <ProjectReference Include="..\AxQuality.Sample\AxQuality.Sample\AxQuality.Sample.csproj" />
@@ -31,5 +26,8 @@
         <PackageReference Include="System.Threading.Tasks.Extensions" />
         <PackageReference Include="System.ValueTuple" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" />
+        <PackageReference Include="System.Data.DataSetExtensions" />
+        <PackageReference Include="Microsoft.CSharp" />
     </ItemGroup>
 </Project>

@@ -14,11 +14,7 @@
         <Reference Include="Sybase.AdoNet4.AseClient">
             <HintPath>Sybase.AdoNet4.AseClient\Sybase.AdoNet4.AseClient.dll</HintPath>
         </Reference>
-        <Reference Include="System.Configuration" />
-        <Reference Include="System.ServiceModel" />
         <Reference Include="System.Transactions" />
-        <Reference Include="System.Data.DataSetExtensions" />
-        <Reference Include="Microsoft.CSharp" />
     </ItemGroup>
     <ItemGroup>
         <Content Include="Dapper\samples.txt" />
@@ -33,12 +29,15 @@
         <PackageReference Include="NHibernate" />
         <PackageReference Include="Remotion.Linq" />
         <PackageReference Include="Remotion.Linq.EagerFetching" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" />
+        <PackageReference Include="System.ServiceModel" />
+        <PackageReference Include="System.Data.DataSetExtensions" />
+        <PackageReference Include="Microsoft.CSharp" />
     </ItemGroup>
     <ItemGroup>
         <Compile Remove="NHibernate\SybaseFluentConfiguration.cs" />
         <Compile Remove="NHibernate\SybaseFluentPersistenceConfiguration.cs" />
     </ItemGroup>
-
     <Target Name="CopySybaseAdoNet" AfterTargets="Build">
         <ItemGroup>
             <SybaseFiles Include="Sybase.AdoNet4.AseClient/*.*" />

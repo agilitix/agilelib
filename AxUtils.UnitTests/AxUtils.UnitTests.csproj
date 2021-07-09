@@ -21,13 +21,11 @@
         </None>
     </ItemGroup>
     <ItemGroup>
-        <Reference Include="System.Configuration" />
-    </ItemGroup>
-    <ItemGroup>
         <PackageReference Include="FluentAssertions" />
         <PackageReference Include="NUnit" />
         <PackageReference Include="NUnit3TestAdapter" />
         <PackageReference Include="System.ValueTuple" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" />
     </ItemGroup>
 </Project>

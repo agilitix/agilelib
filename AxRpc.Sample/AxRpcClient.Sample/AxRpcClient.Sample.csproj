@@ -12,11 +12,6 @@
         <DebugType Condition=" '$(Configuration)' == 'Release' ">pdbonly</DebugType>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="System.Data.DataSetExtensions" />
-        <Reference Include="Microsoft.CSharp" />
-        <Reference Include="System.Net.Http" />
-    </ItemGroup>
-    <ItemGroup>
         <ProjectReference Include="..\..\AxRpcClient\AxRpcClient.csproj" />
         <ProjectReference Include="..\..\AxRpcProto.Sample\AxRpcProto.Sample.csproj" />
     </ItemGroup>
@@ -33,5 +28,8 @@
         <PackageReference Include="System.Numerics.Vectors" />
         <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
         <PackageReference Include="System.Threading.Tasks.Extensions" />
+        <PackageReference Include="System.Data.DataSetExtensions" />
+        <PackageReference Include="Microsoft.CSharp" />
+        <PackageReference Include="System.Net.Http" />
     </ItemGroup>
 </Project>

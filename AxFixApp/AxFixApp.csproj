@@ -12,17 +12,6 @@
         <DebugType Condition=" '$(Configuration)' == 'Release' ">pdbonly</DebugType>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="System.Configuration" />
-        <Reference Include="System.Web" />
-        <Reference Include="System.Data.DataSetExtensions" />
-        <Reference Include="Microsoft.CSharp" />
-    </ItemGroup>
-    <ItemGroup>
-        <None Include="Config\initiator.ini">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-    </ItemGroup>
-    <ItemGroup>
         <ProjectReference Include="..\AxCommandLine\AxCommandLine.csproj" />
         <ProjectReference Include="..\AxCommonLogger\AxCommonLogger.csproj" />
         <ProjectReference Include="..\AxConfiguration\AxConfiguration.csproj" />
@@ -37,6 +26,10 @@
         <PackageReference Include="Unity.Abstractions" />
         <PackageReference Include="Unity.Configuration" />
         <PackageReference Include="Unity.Container" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" />
+        <PackageReference Include="System.Net.Http" />
+        <PackageReference Include="System.Data.DataSetExtensions" />
+        <PackageReference Include="Microsoft.CSharp" />
     </ItemGroup>
     <ItemGroup>
         <Content Include="Spec\FIX40.xml">
@@ -68,6 +61,9 @@
         </Content>
     </ItemGroup>
     <ItemGroup>
+        <None Include="Config\initiator.ini">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
         <None Update="Config\acceptor.ini">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>

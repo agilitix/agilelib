@@ -12,16 +12,14 @@
         <DebugType Condition=" '$(Configuration)' == 'Release' ">pdbonly</DebugType>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="System.Configuration" />
-        <Reference Include="System.Data.DataSetExtensions" />
-        <Reference Include="Microsoft.CSharp" />
-    </ItemGroup>
-    <ItemGroup>
         <ProjectReference Include="..\AxCommandLine\AxCommandLine.csproj" />
         <ProjectReference Include="..\AxConfiguration\AxConfiguration.csproj" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="log4net" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" />
+        <PackageReference Include="System.Data.DataSetExtensions" />
+        <PackageReference Include="Microsoft.CSharp" />
     </ItemGroup>
     <ItemGroup>
       <None Update="Configuration\log4net.config">
