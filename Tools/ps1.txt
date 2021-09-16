@@ -1,5 +1,9 @@
 
+# Git bash
 export YELLOW='\[\033[33m\]'
 export BLUE='\[\033[36m\]'
 export WINDOW_TITLE='\[\033]0;$PWD`__git_ps1`\007\]'
 PROMPT_COMMAND='PS1="$WINDOW_TITLE$YELLOW\W$BLUE`__git_ps1`$YELLOW$"'
+
+# Cygwin
+export PS1="\[\e]0;\w\a\]\[\e[32m\]\W\[\e[33m\]\[\e[0m\]$ "
